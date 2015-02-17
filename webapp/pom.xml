@@ -13,32 +13,24 @@
         <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <url>http://www.ebi.ac.uk/arrayexpress</url>
+    <url>http://www.ebi.ac.uk/biostudies</url>
 
     <scm>
-        <connection>scm:svn:svn://bar.ebi.ac.uk/trunk/arrayexpress-interface/webapp</connection>
-        <developerConnection>scm:svn:svn://bar.ebi.ac.uk/trunk/arrayexpress-interface/webapp</developerConnection>
-        <url>svn://bar.ebi.ac.uk/trunk/arrayexpress-interface/webapp</url>
+        <url>https://github.com/EBIBioStudies/FrontEndUI</url>
+        <connection>scm:git:git://github.com/EBIBioStudies/FrontEndUI.git</connection>
+        <developerConnection>scm:git:git@github.com:EBIBioStudies/FrontEndUI.git</developerConnection>
     </scm>
 
-    <!-- default values for repository related properties -->
     <properties>
         <interface.application.log.default.priority>INFO</interface.application.log.default.priority>
         <interface.application.log.appender.ref>ROLLINGFILE</interface.application.log.appender.ref>
         <interface.application.webxml.security.transport.guarantee>NONE</interface.application.webxml.security.transport.guarantee>
 
-        <interface.application.link.atlas.base.url>/gxa/</interface.application.link.atlas.base.url>
-        <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
-
         <interface.application.pref.reports.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
         <interface.application.pref.reports.hidden-recipients>kolais&#64;ebi.ac.uk</interface.application.pref.reports.hidden-recipients>
-        <interface.application.pref.feedback.recipients>arrayexpress&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
+        <interface.application.pref.feedback.recipients>kolais&#64;ebi.ac.uk
+        </interface.application.pref.feedback.recipients>
         <interface.application.pref.remind.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
-
-        <interface.application.pref.experiments.ae1.source.location>/ebi/microarray/home/arrayexpress/ae1_aepub2_aepub3/</interface.application.pref.experiments.ae1.source.location>
-        <interface.application.pref.experiments.ae1.connections/>
-        <interface.application.pref.experiments.ae1.reload.schedule>0 30 6 * * ?</interface.application.pref.experiments.ae1.reload.schedule>
-        <interface.application.pref.experiments.ae1.export.location/>
 
         <interface.application.pref.experiments.ae2.source.location>/ebi/microarray/home/arrayexpress/ae2_production/software/browse/</interface.application.pref.experiments.ae2.source.location>
         <interface.application.pref.experiments.ae2.reload.schedule>0 35 6 * * ?</interface.application.pref.experiments.ae2.reload.schedule>
@@ -49,10 +41,8 @@
         <interface.application.pref.files.root.location>/ebi/ArrayExpress-ftp</interface.application.pref.files.root.location>
         <interface.application.pref.files.list-all.command>find ${interface.application.pref.files.root.location}/ -regextype posix-egrep -mindepth 3 -maxdepth 5 -not -iname ".*" -and -iregex ".+/[a-z]{4}/[ae]-[a-z]{4}-[0-9]+($|/.+$)" -print0 | xargs -0 ls -L -dl -Q --time-style=long-iso</interface.application.pref.files.list-all.command>
 
-        <interface.application.pref.files.prefix>ae</interface.application.pref.files.prefix>
         <interface.application.pref.files.rescan.interval>60</interface.application.pref.files.rescan.interval>
 
-        <interface.application.css.local-masthead-color>#A1BEDF</interface.application.css.local-masthead-color>
         <interface.application.pref.files.check.schedule/>
         <interface.application.google.analytics/>
     </properties>
@@ -64,97 +54,6 @@
                 <interface.application.pref.feedback.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
                 <interface.application.pref.remind.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
                 <interface.application.log.default.priority>ALL</interface.application.log.default.priority>
-            </properties>
-        </profile>
-        <profile>
-            <id>export.aepub1</id>
-            <properties>
-                <interface.application.link.atlas.base.url>http://www.ebi.ac.uk/gxa/</interface.application.link.atlas.base.url>
-                <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
-
-                <interface.application.pref.experiments.ae1.source.location/>
-                <interface.application.pref.experiments.ae1.connections>aepub1</interface.application.pref.experiments.ae1.connections>
-                <interface.application.pref.experiments.ae1.reload.schedule>0 0 0/1 * * ?</interface.application.pref.experiments.ae1.reload.schedule>
-                <interface.application.pref.experiments.ae1.export.location>/ebi/microarray/home/arrayexpress/ae1_aepub1/</interface.application.pref.experiments.ae1.export.location>
-
-                <interface.application.pref.experiments.ae2.source.location/>
-                <interface.application.pref.experiments.ae2.reload.schedule/>
-
-                <interface.application.pref.files.prefix>ae-aepub1</interface.application.pref.files.prefix>
-                <interface.application.pref.files.rescan.interval>60</interface.application.pref.files.rescan.interval>
-            </properties>
-        </profile>
-        <profile>
-            <id>export.aepub2_aepub3</id>
-            <properties>
-                <interface.application.link.atlas.base.url>http://www.ebi.ac.uk/gxa/</interface.application.link.atlas.base.url>
-                <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
-
-                <interface.application.pref.experiments.ae1.source.location/>
-                <interface.application.pref.experiments.ae1.connections>aepub2,aepub3</interface.application.pref.experiments.ae1.connections>
-                <interface.application.pref.experiments.ae1.reload.schedule>0 0 6 * * ?</interface.application.pref.experiments.ae1.reload.schedule>
-                <interface.application.pref.experiments.ae1.export.location>/ebi/microarray/home/arrayexpress/ae1_aepub2_aepub3/</interface.application.pref.experiments.ae1.export.location>
-
-                <interface.application.pref.experiments.ae2.source.location/>
-                <interface.application.pref.experiments.ae2.reload.schedule/>
-
-                <interface.application.pref.files.prefix>ae</interface.application.pref.files.prefix>
-                <interface.application.pref.files.rescan.interval>60</interface.application.pref.files.rescan.interval>
-            </properties>
-        </profile>
-        <profile>
-            <id>test.ae2_perftest</id>
-            <properties>
-                <interface.application.link.atlas.base.url>http://www.ebi.ac.uk/gxa/</interface.application.link.atlas.base.url>
-                <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
-
-                <interface.application.pref.experiments.ae1.source.location/>
-                <interface.application.pref.experiments.ae1.connections/>
-                <interface.application.pref.experiments.ae1.reload.schedule/>
-
-                <interface.application.pref.experiments.ae2.source.location>/ebi/microarray/home/arrayexpress/ae2_perftest/software/browse/</interface.application.pref.experiments.ae2.source.location>
-                <interface.application.pref.experiments.ae2.reload.schedule>0 0/15 * * * ?</interface.application.pref.experiments.ae2.reload.schedule>
-
-                <interface.application.pref.files.root.location>/ebi/microarray/home/arrayexpress/ae2_perftest/data</interface.application.pref.files.root.location>
-                <interface.application.pref.files.prefix>ae2-perftest</interface.application.pref.files.prefix>
-                <interface.application.pref.files.rescan.interval>30</interface.application.pref.files.rescan.interval>
-
-                <interface.application.css.local-masthead-color>moccasin</interface.application.css.local-masthead-color>
-            </properties>
-        </profile>
-        <profile>
-            <id>test.ae2_curator</id>
-            <properties>
-                <interface.application.link.atlas.base.url>http://www.ebi.ac.uk/gxa/</interface.application.link.atlas.base.url>
-                <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
-
-                <interface.application.pref.experiments.ae1.source.location/>
-                <interface.application.pref.experiments.ae1.connections/>
-                <interface.application.pref.experiments.ae1.reload.schedule/>
-
-                <interface.application.pref.experiments.ae2.source.location>/ebi/microarray/home/arrayexpress/ae2_curator/software/browse/</interface.application.pref.experiments.ae2.source.location>
-                <interface.application.pref.experiments.ae2.reload.schedule>0 0/15 * * * ?</interface.application.pref.experiments.ae2.reload.schedule>
-
-                <interface.application.pref.files.root.location>/ebi/microarray/home/arrayexpress/ae2_curator/data</interface.application.pref.files.root.location>
-                <interface.application.pref.files.prefix>ae2-curator</interface.application.pref.files.prefix>
-                <interface.application.pref.files.rescan.interval>30</interface.application.pref.files.rescan.interval>
-
-                <interface.application.css.local-masthead-color>pink</interface.application.css.local-masthead-color>
-            </properties>
-        </profile>
-        <profile>
-            <id>test.ae2_production</id>
-            <properties>
-                <interface.application.link.atlas.base.url>http://www.ebi.ac.uk/gxa/</interface.application.link.atlas.base.url>
-                <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
-
-                <interface.application.pref.experiments.ae1.connections/>
-                <interface.application.pref.experiments.ae1.reload.schedule/>
-
-                <interface.application.pref.experiments.ae2.reload.schedule>0 0/15 * * * ?</interface.application.pref.experiments.ae2.reload.schedule>
-
-                <interface.application.pref.files.prefix>ae2-production</interface.application.pref.files.prefix>
-                <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
             </properties>
         </profile>
         <profile>
@@ -189,17 +88,14 @@
             <properties>
                 <interface.application.google.analytics>
                     <![CDATA[
-<script type="text/javascript">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-21742948-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  ga('create', 'UA-59860741-1', 'auto');
+  ga('send', 'pageview');
 
 </script>
 ]]>
@@ -211,9 +107,6 @@
             <id>london</id>
             <properties>
                 <interface.application.log.appender.ref>ROLLINGFILE-LONDON</interface.application.log.appender.ref>
-                <interface.application.pref.experiments.ae1.source.location>/nfs/public/rw/fg/arrayexpress/xml/ae1/</interface.application.pref.experiments.ae1.source.location>
-                <interface.application.pref.experiments.ae1.connections/>
-                <interface.application.pref.experiments.ae1.export.location/>
 
                 <interface.application.pref.experiments.ae2.source.location>/nfs/public/rw/fg/arrayexpress/xml/ae2/</interface.application.pref.experiments.ae2.source.location>
                 <interface.application.pref.experiments.ae2.export.location/>
@@ -279,7 +172,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <finalName>${interface.application.pref.files.prefix}-interface</finalName>
+        <finalName>${project.parent.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -290,6 +183,7 @@
                             <directory>${basedir}/src/main/webapp</directory>
                             <includes>
                                 <include>assets/stylesheets/ae-common*.css</include>
+                                <include>assets/stylesheets/biostudies-colours.css</include>
                                 <include>WEB-INF/web.xml</include>
                                 <include>WEB-INF/urlrewrite.xml</include>
                                 <include>WEB-INF/server-assets/stylesheets/*.xsl</include>
@@ -317,6 +211,7 @@
                 <configuration>
                     <doCheck>false</doCheck>
                     <doUpdate>false</doUpdate>
+                    <shortRevisionLength>10</shortRevisionLength>
                 </configuration>
             </plugin>
         </plugins>

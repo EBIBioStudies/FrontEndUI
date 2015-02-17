@@ -43,35 +43,54 @@
     </xsl:template>
 
     <xsl:template name="ae-content-section">
-        <div class="grid_18 alpha">
-            <section>
-                <h2>ArrayExpress – functional genomics data</h2>
-                <p class="intro justify">ArrayExpress is a database of functional genomics experiments that can be queried and the data downloaded. It includes gene expression data from microarray and high throughput sequencing studies.  Data is collected to <a href="http://www.mged.org/Workgroups/MIAME/miame.html">MIAME</a> and <a href="http://www.fged.org/projects/minseqe/">MINSEQE</a> standards. Experiments are submitted directly to ArrayExpress or are imported from the NCBI GEO database.</p>
-            </section>
-        </div>
-
         <xsl:variable name="vExperiments" select="search:queryIndex('experiments', 'visible:true public:true')"/>
         <xsl:variable name="vTotal" select="fn:count($vExperiments)"/>
         <xsl:variable name="vRetrieved" select="$vExperiments[1]/../@retrieved"/>
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>
         <xsl:variable name="vNews" select="doc('news.xml')"/>
 
+
+        <div>
+            <xsl:attribute name="class">alpha
+                <xsl:choose>
+                    <xsl:when test="$vTotal > 0">grid_18</xsl:when>
+                    <xsl:otherwise>grid_24 omega</xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <section>
+                <h2>BioStudies – database of biological studies</h2>
+                <p class="intro justify">The goal of the BioStudies database is to provide light-weight means for
+                    capturing data from biological studies, especially for the cases where due to the pace of
+                    high-throughput technology development the generated data does not fit into any of the specialized
+                    EBI databases, or where established technologies are used in combination. The database will be able
+                    to accept a wide range of types of studies described via a simple format, and will not impose
+                    minimum requirements outside the respective community agreements. It will also enable manuscript
+                    authors to submit supplementary information and link to it from the publication.
+                </p>
+            </section>
+        </div>
+
         <xsl:if test="$vTotal > 0">
             <div class="grid_6 omega">
                 <section>
-                    <h3 class="icon icon-generic" data-icon="g">Data Content</h3>
+                    <h3 class="icon icon-generic" data-icon="g">Statistics</h3>
                     <xsl:if test="fn:string-length($vRetrieved) > 1">
                         <h5>Updated <xsl:value-of select="ae:formatDateTime2($vRetrieved)"/></h5>
                     </xsl:if>
-                    <!-- <p>ArrayExpress statistics:</p> -->
                     <ul>
-                        <li><xsl:value-of select="$vTotal"/> experiment<xsl:if test="fn:count($vExperiments) > 1">s</xsl:if></li>
-                        <li><xsl:value-of select="fn:sum($vExperiments/assays) cast as xs:integer"/> assays</li>
+                        <li>
+                            <xsl:value-of select="$vTotal"/> stud
+                            <xsl:choose>
+                                <xsl:when test="fn:count($vExperiments) > 1">ies</xsl:when>
+                                <xsl:otherwise>y</xsl:otherwise>
+                            </xsl:choose>
+                        </li>
                         <li><xsl:value-of select="ae:formatFileSize(fn:sum($vFiles/@size) cast as xs:integer)"/> of archived data</li>
                     </ul>
                 </section>
             </div>
         </xsl:if>
+        <!--
         <div class="grid_24 alpha">
             <xsl:if test="fn:count($vNews/news/item) > 0">
                 <section id="ae-news">
@@ -108,6 +127,6 @@
                 </div>
             </section>
         </div>
+        -->
     </xsl:template>
-
 </xsl:stylesheet>

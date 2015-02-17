@@ -3,69 +3,59 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>${project.name} v${project.version}.r${buildNumber}</display-name>
     <servlet>
-        <description>ArrayExpress Application Status Servlet</description>
+        <description>Application Status Servlet</description>
         <servlet-name>StatusServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.StatusServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Error Pages Servlet</description>
+        <description>Error Pages Servlet</description>
         <servlet-name>ErrorServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.ErrorServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Experiments Query Servlet</description>
+        <description>Query Servlet</description>
         <servlet-name>QueryServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.QueryServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Flat File Transformation Servlet</description>
+        <description>Flat File Transformation Servlet</description>
         <servlet-name>FlatFileTransformationServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.FlatFileTransformationServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress File Download Servlet</description>
+        <description>File Download Servlet</description>
         <servlet-name>FileDownloadServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.FileDownloadServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Archived File Download Servlet</description>
+        <description>Archived File Download Servlet</description>
         <servlet-name>ArchivedFileDownloadServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.ArchivedFileDownloadServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Data Control Servlet</description>
+        <description>Control Servlet</description>
         <servlet-name>ControlServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.ControlServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Feedback Reporter Servlet</description>
+        <description>Feedback Reporter Servlet</description>
         <servlet-name>FeedbackServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.FeedbackServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Authentication Servlet</description>
+        <description>Authentication Servlet</description>
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.AuthServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress HTTP Proxy Servlet</description>
+        <description>HTTP Proxy Servlet</description>
         <servlet-name>HttpProxyServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.HttpProxyServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>ArrayExpress Data Lookup Servlet</description>
+        <description>Data Lookup Servlet</description>
         <servlet-name>LookupServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.LookupServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <description>ArrayExpress GenomeSpace Authentication Servlet</description>
-        <servlet-name>GenomeSpaceAuthServlet</servlet-name>
-        <servlet-class>uk.ac.ebi.arrayexpress.servlets.GenomeSpaceAuthServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <description>ArrayExpress GenomeSpace Upload Servlet</description>
-        <servlet-name>GenomeSpaceUploadServlet</servlet-name>
-        <servlet-class>uk.ac.ebi.arrayexpress.servlets.GenomeSpaceUploadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StatusServlet</servlet-name>
@@ -110,14 +100,6 @@
     <servlet-mapping>
         <servlet-name>LookupServlet</servlet-name>
         <url-pattern>/servlets/lookup/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GenomeSpaceAuthServlet</servlet-name>
-        <url-pattern>/gs/auth</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GenomeSpaceUploadServlet</servlet-name>
-        <url-pattern>/gs/upload</url-pattern>
     </servlet-mapping>
 
     <filter>

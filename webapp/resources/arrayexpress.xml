@@ -2,13 +2,13 @@
 <configuration>
     <app>
         <reports>
-            <originator>"ArrayExpress" &lt;ae-mgmt@ebi.ac.uk&gt;</originator>
+            <originator>"BioStudies" &lt;ae-mgmt@ebi.ac.uk&gt;</originator>
             <recipients>${interface.application.pref.reports.recipients}</recipients>
             <hidden-recipients>${interface.application.pref.reports.hidden-recipients}</hidden-recipients>
             <subject>Runtime exception report</subject>
             <smtp>
-                <host>smtp.ebi.ac.uk</host>
-                <port>25</port>
+                <host>localhost</host>
+                <port>25025</port>
             </smtp>
         </reports>
         <restart>${interface.application.pref.restart.command}</restart>
@@ -16,67 +16,13 @@
     <ae>
         <feedback>
             <recipients>${interface.application.pref.feedback.recipients}</recipients>
-            <subject>ArrayExpress user feedback</subject>
+            <subject>BioStudies user feedback</subject>
         </feedback>
         <password-remind>
-            <originator>"ArrayExpress" &lt;arrayexpress@ebi.ac.uk&gt;</originator>
+            <originator>"BioStudies" &lt;biostudies@ebi.ac.uk&gt;</originator>
             <recipients>${interface.application.pref.remind.recipients}</recipients>
-            <subject>ArrayExpress account information</subject>
+            <subject>BioStudies account information</subject>
         </password-remind>
-        <db>
-            <connections>
-                <connection>
-                    <name>local</name>
-                    <driver>oracle.jdbc.OracleDriver</driver>
-                    <url>jdbc:oracle:thin:@localhost:1521:AEPUB1</url>
-                    <username>${interface.application.db.username}</username>
-                    <password>${interface.application.db.password}</password>
-                    <minConnections>30</minConnections>
-                    <maxConnections>30</maxConnections>
-                    <testStatement>select 1 from tt_security where rownum = 1</testStatement>
-                </connection>
-                <connection>
-                    <name>aepub1</name>
-                    <driver>oracle.jdbc.OracleDriver</driver>
-                    <url>jdbc:oracle:thin:@otto.ebi.ac.uk:1521:AEPUB1</url>
-                    <username>${interface.application.db.username}</username>
-                    <password>${interface.application.db.password}</password>
-                    <minConnections>30</minConnections>
-                    <maxConnections>30</maxConnections>
-                    <testStatement>select 1 from tt_security where rownum = 1</testStatement>
-                </connection>
-                <connection>
-                    <name>aepub2</name>
-                    <driver>oracle.jdbc.OracleDriver</driver>
-                    <url>jdbc:oracle:thin:@moe.ebi.ac.uk:1521:AEPUB2</url>
-                    <username>${interface.application.db.username}</username>
-                    <password>${interface.application.db.password}</password>
-                    <minConnections>30</minConnections>
-                    <maxConnections>30</maxConnections>
-                    <testStatement>select 1 from tt_security where rownum = 1</testStatement>
-                </connection>
-                <connection>
-                    <name>aepub3</name>
-                    <driver>oracle.jdbc.OracleDriver</driver>
-                    <url>jdbc:oracle:thin:@smithers.ebi.ac.uk:1521:AEPUB3</url>
-                    <username>${interface.application.db.username}</username>
-                    <password>${interface.application.db.password}</password>
-                    <minConnections>30</minConnections>
-                    <maxConnections>30</maxConnections>
-                    <testStatement>select 1 from tt_security where rownum = 1</testStatement>
-                </connection>
-                <connection>
-                    <name>aecur</name>
-                    <driver>oracle.jdbc.OracleDriver</driver>
-                    <url>jdbc:oracle:thin:@moe.ebi.ac.uk:1521:AECUR</url>
-                    <username>${interface.application.db.username}</username>
-                    <password>${interface.application.db.password}</password>
-                    <minConnections>30</minConnections>
-                    <maxConnections>30</maxConnections>
-                    <testStatement>select 1 from tt_security where rownum = 1</testStatement>
-                </connection>
-            </connections>
-        </db>
 
         <experiments>
             <ae1>
@@ -97,55 +43,36 @@
                 </reload>
             </ae2>
 
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-experiments.xml</persistence-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-experiments.xml</persistence-location>
         </experiments>
 
-        <similarity>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-similarity.xml</persistence-location>
-            <properties>
-                <ignoreList>/WEB-INF/classes/sim-efo-ignore.txt</ignoreList>
-                <lowPriorityOntologyURIs>/WEB-INF/classes/low-priority-URIs.txt</lowPriorityOntologyURIs>
-                <persistence-location-distances>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-ontology-distances.ser</persistence-location-distances>
-                <persistence-location-pubMed>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-PubMed-results.ser</persistence-location-pubMed>
-                <!-- URL with no escape characters - http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&fromdb=pubmed&rettype=xml&id=    -->
-                <pub_med_url>http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&amp;fromdb=pubmed&amp;rettype=xml&amp;id=</pub_med_url>
-                <max_ontology_distance>2</max_ontology_distance>
-                <max_pubmed_distance>1</max_pubmed_distance>     <!-- negative value disables pubmed calculations -->
-                <max_displayed_OWL_similarities>20</max_displayed_OWL_similarities>
-                <max_displayed_PubMed_similarities>20</max_displayed_PubMed_similarities>
-                <small_experiment_assay_count_limit>500</small_experiment_assay_count_limit>
-                <minimal_calculated_ontology_distance>1.9</minimal_calculated_ontology_distance>
-                <quartz_job_group_name>similarity-jobs</quartz_job_group_name>
-                <concurrent_job_limit>10</concurrent_job_limit>
-            </properties>
-        </similarity>
 
         <arrays>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-arrays.xml</persistence-location>
-            <dropdown-html-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-arrays-dropdown-html.txt</dropdown-html-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-arrays.xml</persistence-location>
+            <dropdown-html-location>${sys:java.io.tmpdir}/bs-arrays-dropdown-html.txt</dropdown-html-location>
         </arrays>
 
         <protocols>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-protocols.xml</persistence-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-protocols.xml</persistence-location>
         </protocols>
 
         <users>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-users.xml</persistence-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-users.xml</persistence-location>
         </users>
 
         <events>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-events.xml</persistence-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-events.xml</persistence-location>
         </events>
 
         <news>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-news.xml</persistence-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-news.xml</persistence-location>
         </news>
 
         <files>
             <root><location>${interface.application.pref.files.root.location}</location></root>
             <list-all-command>${interface.application.pref.files.list-all.command}</list-all-command>
             <get-md5-base64-encoded-command>openssl md5 -binary ${arg.file} | openssl base64</get-md5-base64-encoded-command>
-            <persistence-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-files.xml</persistence-location>
+            <persistence-location>${sys:java.io.tmpdir}/bs-files.xml</persistence-location>
             <rescan><interval>${interface.application.pref.files.rescan.interval}</interval></rescan>
             <check>
                 <atstart>false</atstart>
@@ -154,7 +81,7 @@
         </files>
 
         <species>
-            <dropdown-html-location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-species-dropdown-html.txt</dropdown-html-location>
+            <dropdown-html-location>${sys:java.io.tmpdir}/bs-species-dropdown-html.txt</dropdown-html-location>
         </species>
 
         <efo>
@@ -167,16 +94,20 @@
             <ignoreList>/WEB-INF/classes/efo-ignore.txt</ignoreList>
             <synonyms>/WEB-INF/classes/synonyms.txt</synonyms>
             <stopWords>a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your</stopWords>
-            <index><location>${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index/efo</location></index>
+            <index>
+                <location>${sys:java.io.tmpdir}/bs-index/efo</location>
+            </index>
         </efo>
 
-        <index id="events" location="${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index" defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
+        <index id="events" location="${sys:java.io.tmpdir}/bs-index"
+               defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
             <document path="/events/event" defaultField="category">
                 <field name="category" title="" type="string" path="category" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="success" title="" type="boolean" path="successful/text() = 'true'"/>
             </document>
         </index>
-        <index id="experiments" location="${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index" defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
+        <index id="experiments" location="${sys:java.io.tmpdir}/bs-index"
+               defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
             <document path="/experiments/experiment" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
                 <field name="similarto" title="by Relevance" type="string" path="similarto/@accession" analyze="true" store="false" escape="false" expand="false"/>
@@ -221,7 +152,8 @@
                 <field name="seq-score" type="boolean" path="(minseqescores/measuredbioassaydatascore = '1')"/>
             </document>
         </index>
-        <index id="arrays" location="${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index" defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
+        <index id="arrays" location="${sys:java.io.tmpdir}/bs-index"
+               defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/array_designs/array_design" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="accession" title="by Accession" type="string" path="accession" analyze="true" store="false" escape="false" expand="false"/>
@@ -237,7 +169,8 @@
                 <field name="visible" type="boolean" path="@visible = 'true'"/>
             </document>
         </index>
-        <index id="protocols" location="${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index" defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
+        <index id="protocols" location="${sys:java.io.tmpdir}/bs-index"
+               defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/protocols/protocol" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="id" title="" type="string" path="id" analyze="true" store="false" escape="false" expand="false"/>
@@ -249,7 +182,8 @@
                 <field name="public" type="boolean" path="user/@id = '1'"/>
             </document>
         </index>
-        <index id="files" location="${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index" defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
+        <index id="files" location="${sys:java.io.tmpdir}/bs-index"
+               defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/files/folder/file" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//@*, ' ')" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="accession" title="by Accession" type="string" path="../@accession" analyze="true" store="false" escape="false" expand="false"/>
@@ -260,7 +194,8 @@
                 <field name="userid" type="string" path="ae:getMappedValue('users-for-accession', ../@accession)" analyze="false" store="false" escape="false" expand="false"/>
             </document>
         </index>
-        <index id="users" location="${sys:java.io.tmpdir}/${interface.application.pref.files.prefix}-index" defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
+        <index id="users" location="${sys:java.io.tmpdir}/bs-index"
+               defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/users/user" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="id" title="" type="string" path="id" analyze="true" store="false" escape="false" expand="false"/>

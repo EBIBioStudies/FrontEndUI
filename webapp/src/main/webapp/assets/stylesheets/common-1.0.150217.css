@@ -1,3 +1,20 @@
+/*
+ * Copyright 2009-2015 European Molecular Biology Laboratory
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 * {
     text-align: inherit;
     font-weight: inherit
@@ -86,158 +103,18 @@ ul#secondary-nav li.active > a {
 }
 
 #global-footer ul {
-    padding: 0 0 0 5px;
+    padding: 0 0 0 6px;
 }
 
 #global-footer ul li a, #ebi-footer-meta p a {
-    padding: 0 4px;
+    padding: 0 3px;
     display: inline-block;
 }
 
 #ebi-footer-meta p a {
-    margin-left: -4px;
-    margin-right: -4px;
+    margin-left: -3px;
+    margin-right: -3px;
 }
-
-/*
- Palette color codes
-
- Palette URL: http://colorschemedesigner.com/#3B61ThNE8w0w0
- */
-
-.primary-1 { background-color: #5E8CC0 }
-.primary-2 { background-color: #597390 }
-.primary-3 { background-color: #1E4B7D }
-.primary-4 { background-color: #8AB2DF }
-.primary-5 { background-color: #A1BEDF }
-
-.secondary-a-1 { background-color: #7068C8 }
-.secondary-a-2 { background-color: #656096 }
-.secondary-a-3 { background-color: #2A2282 }
-.secondary-a-4 { background-color: #9991E3 }
-.secondary-a-5 { background-color: #ADA7E3 }
-
-.secondary-b-1 { background-color: #56C1A1 }
-.secondary-b-2 { background-color: #54917F }
-.secondary-b-3 { background-color: #1C7E60 }
-.secondary-b-4 { background-color: #83E0C4 }
-.secondary-b-5 { background-color: #9CE0CB }
-
-.complement-1 { background-color: #FFC771 }
-.complement-2 { background-color: #BFA070 }
-.complement-3 { background-color: #A67325 }
-.complement-4 { background-color: #FFD595 }
-.complement-5 { background-color: #FFE0B1 }
-
-/* EBI template colour substitutions */
-
-/* These style rules will over-ride the core EBI styles and apply
-    your custom colour palette in a consistent manner */
-
-/* Links */
-a:link,
-a:visited { border-bottom-color: #5E8CC0; }
-
-a:hover,
-a:focus,
-a:active {
-    color: #5E8CC0;
-    border-bottom: 1px solid #5E8CC0;
-}
-
-a.special:hover,
-a.special:focus,
-a.special:active {
-    color: #5E8CC0;
-    border-bottom: 3px double #5E8CC0;
-}
-
-
-a:link { color: #2A2282; }
-
-a:hover,
-a:focus,
-a:active { color: #1C7E60; }
-
-a.special { background-color: #9CE0CB; }
-
-
-/* Headings */
-h1, h2, h3, h4, h5, h6 { color: #222222; }
-
-h1 { color: #5E8CC0; }
-
-h2 { color: #1E4B7D; }
-
-h3 { color: #BFA070; }
-
-h1 a:link,
-h2 a:link,
-h3 a:link,
-h4 a:link,
-h5 a:link,
-h6 a:link,
-h1 a:visited,
-h2 a:visited,
-h3 a:visited,
-h4 a:visited,
-h5 a:visited,
-h6 a:visited {
-    border-bottom-color: #5E8CC0;
-}
-
-
-/* Table heading cells */
-th { background-color: #EEEEEE; }
-
-
-/* Form submission button */
-form input.submit {
-    /* colours */
-    color: #fff;
-    text-shadow: #1E4B7D 1px 1px;
-    border-top: 1px solid #A1BEDF;
-    border-left: 1px solid #A1BEDF;
-    border-right: 1px solid #1E4B7D;
-    border-bottom: 1px solid #1E4B7D;
-
-    background-image: -moz-linear-gradient(top, #5E8CC0, #597390);
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ccc),color-stop(1, #597390));
-    background-image: -webkit-linear-gradient(#5E8CC0, #597390);
-    background-image: linear-gradient(top, #5E8CC0, #597390);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#5E8CC0', EndColorStr='#597390');
-}
-
-/* Define the basic colour your local masthead */
-div#local-masthead { background-color: ${interface.application.css.local-masthead-color}; }
-
-/* Colour the faux-underline for local menu items */
-div#local-masthead ul li a:hover,
-div#local-masthead ul li a:focus,
-div#local-masthead ul li a:active {
-    border-bottom: 3px solid #5E8CC0;
-}
-
-/* --------------------------------- */
-
-::-webkit-input-placeholder {
-    font-style: italic;
-    color: #999
-}
-:-moz-placeholder {
-    font-style: italic;
-    color: #999
-}
-::-moz-placeholder {
-    font-style: italic;
-    color: #999
-}
-:-ms-input-placeholder {
-    font-style: italic;
-    color: #999
-}
-
-/* --------------------------------- */
 
 #ae-login *
 , #ae-feedback * {

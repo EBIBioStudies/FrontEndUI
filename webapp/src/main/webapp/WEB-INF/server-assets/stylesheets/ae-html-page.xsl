@@ -82,7 +82,7 @@
 
             <title>
                 <xsl:if test="$pTitleTrail"><xsl:value-of select="$pTitleTrail"/> &lt; </xsl:if>
-                <xsl:text>ArrayExpress &lt; EMBL-EBI</xsl:text>
+                <xsl:text>BioStudies &lt; EMBL-EBI</xsl:text>
             </title>
             <meta name="description" content="EMBL-EBI"/>   <!-- Describe what this page is about -->
             <meta name="keywords" content="bioinformatics, europe, institute"/> <!-- A few keywords that relate to the content of THIS PAGE (not the whol project) -->
@@ -96,8 +96,9 @@
             <!-- CSS: implied media=all -->
             <!-- CSS concatenated and minified via ant build script-->
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css" type="text/css"/>
+            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/biostudies-colours.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/font-awesome.css" type="text/css"/>
-            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/ae-common-1.0.150116.css" type="text/css"/>
+            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/common-1.0.150217.css" type="text/css"/>
             <xsl:copy-of select="$pExtraCode"/>
             <!-- end CSS-->
 
@@ -161,9 +162,11 @@
                         <!-- local-title -->
                         <div id="local-title">
                             <xsl:attribute name="class">logo-title<xsl:if test="$pIsSearchVisible"> grid_12 alpha</xsl:if></xsl:attribute>
-                            <img class="svg" src="{$context-path}/assets/images/ae-logo-64.svg" width="64" height="64" alt="AE"/>
+                            <!-- <img class="svg" src="{$context-path}/assets/images/ae-logo-64.svg" width="64" height="64" alt="AE"/> -->
                             <span>
-                                <h1><a href="{$context-path}/" title="Back to ArrayExpress homepage">ArrayExpress</a></h1>
+                                <h1>
+                                    <a href="{$context-path}/" title="Back to BioStudies homepage">BioStudies</a>
+                                </h1>
                             </span>
                         </div>
                         <!-- /local-title -->
@@ -182,13 +185,18 @@
                                                 </input>
                                             </label>
                                             <!-- Include some example searchterms - keep them short and few! -->
-                                            <span class="examples">Examples: <a href="{$context-path}/search?query=E-MEXP-31">E-MEXP-31</a>, <a href="{$context-path}/search?query=cancer">cancer</a>, <a href="{$context-path}/search?query=p53">p53</a>, <a href="{$context-path}/search?query=Geuvadis">Geuvadis</a></span>
+                                            <span class="examples">Examples:<a
+                                                    href="{$context-path}/search?query=cancer">cancer</a>,
+                                                <a href="{$context-path}/search?query=p53">p53</a>
+                                            </span>
                                         </div>
                                         <div class="right">
                                             <input type="submit" value="Search" class="submit"/>
                                             <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search,
                                            with whatever features you want available -->
+                                            <!--
                                             <span class="adv"><a href="{$context-path}/help/how_to_search.html#AdvancedSearchExperiment" id="adv-search" title="Advanced">Advanced</a></span>
+                                            -->
                                         </div>
                                     </fieldset>
                                     <xsl:copy-of select="$pExtraSearchFields"/>
@@ -201,44 +209,34 @@
                             <ul class="grid_24" id="local-nav">
                                 <li>
                                     <xsl:attribute name="class">first<xsl:if test="$relative-uri = '/'"> active</xsl:if></xsl:attribute>
-                                    <a href="{$context-path}/" title="ArrayExpress ${project.version}.r${buildNumber}">Home</a>
+                                    <a href="{$context-path}/" title="BioStudies ${project.version} r.${buildNumber}">
+                                        Home
+                                    </a>
                                 </li>
+                                <!--
                                 <li>
-                                    <xsl:if test="fn:starts-with($relative-uri, '/experiments/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/experiments/browse.html" title="Experiments">Experiments</a>
+                                    <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+                                    <a href="{$context-path}/studies/" title="Studies">Studies</a>
                                 </li>
-                                <li>
-                                    <xsl:if test="fn:starts-with($relative-uri, '/arrays/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/arrays/browse.html?directsub=on" title="Arrays">Arrays</a>
-                                </li>
-                                <xsl:if test="not($userid)">
-                                    <li>
-                                        <xsl:if test="fn:starts-with($relative-uri, '/protocols/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                        <a href="{$context-path}/protocols/browse.html" title="Protocols">Protocols</a>
-                                    </li>
-                                    <li>
-                                        <xsl:if test="fn:starts-with($relative-uri, '/files/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                        <a href="{$context-path}/files/browse.html" title="Files">Files</a>
-                                    </li>
-                                    <li>
-                                        <xsl:if test="fn:starts-with($relative-uri, '/users/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                        <a href="{$context-path}/users/browse.html" title="Users">Users</a>
-                                    </li>
-                                </xsl:if>
+                                -->
+                                <!--
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/submit/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
                                     <a href="{$context-path}/submit/overview.html" title="Submit">Submit</a></li>
+                                -->
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
                                     <a href="{$context-path}/help/index.html" title="Help">Help</a>
                                 </li>
                                 <li class="last">
                                     <xsl:if test="$relative-uri = '/about.html'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/about.html">About ArrayExpress</a></li>
+                                    <a href="{$context-path}/about.html">About BioStudies</a>
+                                </li>
                                 <!-- If you need to include functional (as opposed to purely navigational) links in your local menu,
                                  add them here, and give them a class of "functional". Remember: you'll need a class of "last" for
                                  whichever one will show up last...
                                  For example: -->
+                                <!--
                                 <li class="functional last">
                                     <a href="#" class="icon icon-functional login" data-icon="l">
                                         <xsl:choose>
@@ -248,7 +246,10 @@
                                         </xsl:choose>
                                     </a>
                                 </li>
-                                <li class="functional"><a href="#" class="icon icon-static feedback" data-icon="\">Feedback</a></li>
+                                -->
+                                <li class="functional last">
+                                    <a href="#" class="icon icon-static feedback" data-icon="\">Feedback</a>
+                                </li>
                                 <!--
                                 <li class="functional"><a href="#" class="icon icon-functional" data-icon="r">Share</a></li>
                                 -->
@@ -259,6 +260,7 @@
                 </header>
 
                 <div id="content" role="main" class="grid_24 clearfix">
+                    <!--
                     <section id="ae-login" style="display:none">
                         <h3>ArrayExpress submitter/reviewer login<a id="ae-login-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
                         <form id="ae-login-form" method="post" action="{$secure-host}{$context-path}/auth">
@@ -292,6 +294,7 @@
                             <input class="submit" type="submit" value="Send"/>
                         </form>
                     </section>
+                    -->
                     <section id="ae-feedback" style="display:none">
                         <h3>Have your say<a id="ae-feedback-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
                         <form method="post" action="#" onsubmit="return false">
@@ -316,7 +319,11 @@
                                 <xsl:attribute name="class" select="'grid_18 alpha'"/>
                             </xsl:if>
                             <nav id="breadcrumb">
-                                <p><a href="{$context-path}/">ArrayExpress</a> &gt; <xsl:copy-of select="$pBreadcrumbTrail"/></p>
+                                <p>
+                                    <a href="{$context-path}/">BioStudies</a>
+                                    &gt;
+                                    <xsl:copy-of select="$pBreadcrumbTrail"/>
+                                </p>
                             </nav>
                         </section>
                         <xsl:copy-of select="$pEBISearchWidget"/>
@@ -368,7 +375,15 @@
                         </nav>
                         <section id="ebi-footer-meta">
                             <p class="address">EMBL-EBI, Wellcome Trust Genome Campus, Hinxton, Cambridgeshire, CB10 1SD, UK &#160; &#160; +44 (0)1223 49 44 44</p>
-                            <p class="legal">Copyright &#169; EMBL-EBI 2013 | EBI is an Outstation of the <a href="http://www.embl.org">European Molecular Biology Laboratory</a> | <a href="/about/privacy">Privacy</a> | <a href="/about/cookies">Cookies</a> | <a href="/about/terms-of-use">Terms of use</a></p>
+                            <p class="legal">Copyright &#169; EMBL-EBI 2015 | EBI is an Outstation of the
+                                <a href="http://www.embl.org">European Molecular Biology Laboratory</a>
+                                |
+                                <a href="/about/privacy">Privacy</a>
+                                |
+                                <a href="/about/cookies">Cookies</a>
+                                |
+                                <a href="/about/terms-of-use">Terms of use</a>
+                            </p>
                         </section>
                     </div>
                 </footer>

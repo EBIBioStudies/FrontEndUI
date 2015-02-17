@@ -6,14 +6,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>ArrayExpress &lt; EMBL-EBI</title>
+    <title>BioStudies &lt; EMBL-EBI</title>
     <meta name="description" content="EMBL-EBI">
     <meta name="keywords" content="bioinformatics, europe, institute">
     <meta name="author" content="EMBL-EBI">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="http://www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css" type="text/css">
+    <link rel="stylesheet" href="../../../assets/stylesheets/biostudies-colours.css" type="text/css">
     <link rel="stylesheet" href="../../../assets/stylesheets/font-awesome.css" type="text/css">
-    <link rel="stylesheet" href="../../../assets/stylesheets/ae-common-1.0.150116.css" type="text/css">
+    <link rel="stylesheet" href="../../../assets/stylesheets/common-1.0.150217.css" type="text/css">
     <script type="text/javascript" src="../../../assets/scripts/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="../../../assets/scripts/jquery.query-2.1.7m-ebi.js"></script>
     <script type="text/javascript" src="../../../assets/scripts/jquery.ae-preview-1.0.130315.js"></script>
@@ -46,52 +47,35 @@
             </nav>
         </div>
         <div id="local-masthead" class="masthead grid_24 nomenu">
-            <div id="local-title" class="grid_12 alpha"><h1><a href="/arrayexpress/"
-                                                               title="Back to ArrayExpress homepage">ArrayExpress</a>
+            <div id="local-title" class="grid_12 alpha"><h1><a href="/biostudies/"
+                                                               title="Back to BioStudies homepage">BioStudies</a>
             </h1></div>
             <div class="grid_12 omega">
-                <form id="local-search" name="local-search" action="/arrayexpress/search" method="get">
+                <form id="local-search" name="local-search" action="/biostudies/search" method="get">
                     <fieldset>
                         <div class="left"><label><input type="text" name="query" id="local-searchbox"></label><span
-                                class="examples">Examples: <a href="/arrayexpress/search?query=E-MEXP-31">E-MEXP-31</a>, <a
-                                href="/arrayexpress/search?query=cancer">cancer</a>, <a
-                                href="/arrayexpress/search?query=p53">p53</a>, <a
-                                href="/arrayexpress/search?query=Geuvadis">Geuvadis</a></span></div>
-                        <div class="right"><input type="submit" value="Search" class="submit"><span class="adv"><a
-                                href="/arrayexpress/search" id="adv-search" title="Advanced">Advanced</a></span></div>
+                                class="examples">Examples: <a
+                                href="/biostudies/search?query=cancer">cancer</a>, <a
+                                href="/biostudies/search?query=p53">p53</a>/span></div>
+                        <div class="right"><input type="submit" value="Search" class="submit"><!-- <span class="adv"><a
+                                href="/arrayexpress/search" id="adv-search" title="Advanced">Advanced</a></span>-->
+                        </div>
                     </fieldset>
                 </form>
             </div>
             <nav>
                 <ul class="grid_24" id="local-nav">
-                    <li class="first"><a href="/arrayexpress/" title="ArrayExpress 2.0.r23189">Home</a></li>
-                    <li><a href="/arrayexpress/experiments/browse.html" title="Experiments">Experiments</a></li>
-                    <li><a href="/arrayexpress/arrays/browse.html?directsub=on" title="Arrays">Arrays</a></li>
-                    <li><a href="/arrayexpress/submit/overview.html" title="Submit">Submit</a></li>
-                    <li><a href="/arrayexpress/help/index.html" title="Help">Help</a></li>
-                    <li class="last"><a href="/arrayexpress/about.html">About ArrayExpress</a></li>
-                    <li class="functional last login"><a href="#" class="icon icon-functional" data-icon="l">Login</a>
+                    <li class="first"><a href="/biostudies/" title="BioStudies 1.0">Home</a></li>
+                    <li><a href="/biostudies/studies/" title="Studies">Studies</a></li>
+                    <li><a href="/biostudies/help/index.html" title="Help">Help</a></li>
+                    <li class="last"><a href="/biostudies/about.html">About BioStudies</a></li>
+                    <li class="functional last feedback"><a href="#" class="icon icon-static" data-icon="\">Feedback</a>
                     </li>
-                    <li class="functional feedback"><a href="#" class="icon icon-static" data-icon="\">Feedback</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     <div id="content" role="main" class="grid_24 clearfix">
-        <section>
-            <div id="ae-login-window" style="display:none"><h3>ArrayExpress submitter/reviewer login<a
-                    id="ae-login-close" href="#" class="icon icon-functional" data-icon="x"></a></h3>
-
-                <form id="ae-login" method="post" action="https://www.ebi.ac.uk/arrayexpress/auth">
-                    <fieldset><label for="ae-user-field">User name</label><input id="ae-user-field" name="u"
-                                                                                 maxlength="50"></fieldset>
-                    <fieldset><label for="ae-pass-field">Password</label><input id="ae-pass-field" type="password"
-                                                                                name="p" maxlength="50"></fieldset>
-                    <span><input id="ae-login-remember" name="r" type="checkbox"><label for="ae-login-remember">Remember
-                        me</label></span><input id="ae-login-submit" type="submit" name="s" value="Login"></form>
-                <div id="ae-login-status"></div>
-            </div>
-        </section>
         <section>
             <div id="ae-feedback-window" style="display:none"><h3>Have your say<a id="ae-feedback-close" href="#"
                                                                                   class="icon icon-functional"
@@ -126,7 +110,7 @@
             <section id="ebi-footer-meta"><p class="address">EMBL-EBI, Wellcome Trust Genome Campus, Hinxton,
                 Cambridgeshire, CB10 1SD, UK &nbsp; &nbsp; +44 (0)1223 49 44 44</p>
 
-                <p class="legal">Copyright © EMBL-EBI 2013 | EBI is an Outstation of the <a href="http://www.embl.org">European
+                <p class="legal">Copyright © EMBL-EBI 2015 | EBI is an Outstation of the <a href="http://www.embl.org">European
                     Molecular Biology Laboratory</a> | <a href="/about/privacy">Privacy</a> | <a href="/about/cookies">Cookies</a>
                     | <a href="/about/terms-of-use">Terms of use</a></p></section>
         </div>
@@ -134,10 +118,10 @@
 </div>
 <script defer src="http://www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"></script>
 <script defer src="http://www.ebi.ac.uk/web_guidelines/js/foot.js"></script>
-<script src="http://www.ebi.ac.uk/arrayexpress/assets/scripts/jquery.cookie-1.0.js"></script>
-<script src="http://www.ebi.ac.uk/arrayexpress/assets/scripts/jquery.caret-range-1.0.js"></script>
-<script src="http://www.ebi.ac.uk/arrayexpress/assets/scripts/jquery.autocomplete-1.1.0.130305.js"></script>
-<script src="http://www.ebi.ac.uk/arrayexpress/assets/scripts/jquery.ae-common-1.0.130312.js"></script>
-<script type="text/javascript">var contextPath = "/arrayexpress";</script>
+<script src="../../../assets/scripts/jquery.cookie-1.0.js"></script>
+<script src="../../../assets/scripts/jquery.caret-range-1.0.js"></script>
+<script src="../../../assets/scripts/jquery.autocomplete-1.1.0.130305.js"></script>
+<script src="../../../assets/scripts/jquery.ae-common-1.0.130312.js"></script>
+<script type="text/javascript">var contextPath = "/biostudies";</script>
 </body>
 </html>
