@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +15,12 @@ package uk.ac.ebi.arrayexpress.utils.saxon;
  *
  */
 
-public class SaxonException extends Exception
-{
+package uk.ac.ebi.arrayexpress.utils.saxon;
+
+public class SaxonException extends Exception {
     private static final long serialVersionUID = 7783136999141837623L;
 
-    public SaxonException( Throwable x )
-    {
+    public SaxonException(Throwable x) {
         super(x);
     }
 }

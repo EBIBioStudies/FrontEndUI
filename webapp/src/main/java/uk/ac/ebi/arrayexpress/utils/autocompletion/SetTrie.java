@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.autocompletion;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,41 +15,37 @@ package uk.ac.ebi.arrayexpress.utils.autocompletion;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.autocompletion;
+
 import java.util.*;
 
-public class SetTrie
-{
+public class SetTrie {
     private TreeSet<String> lines;
 
-    public SetTrie()
-    {
+    public SetTrie() {
         lines = new TreeSet<String>();
     }
 
-    public SetTrie( Comparator<? super String> comp )
-    {
+    public SetTrie(Comparator<? super String> comp) {
         lines = new TreeSet<String>(comp);
     }
 
-    public void clear()
-    {
-        synchronized(this) {
+    public void clear() {
+        synchronized (this) {
             lines.clear();
         }
     }
 
-    public void add( String line )
-    {
-        synchronized(this) {
+    public void add(String line) {
+        synchronized (this) {
             lines.add(line);
         }
     }
 
-    public synchronized boolean matchPrefix( String prefix )
-    {
+    public synchronized boolean matchPrefix(String prefix) {
         Set<String> tailSet;
 
-        synchronized(this) {
+        synchronized (this) {
             tailSet = lines.tailSet(prefix);
         }
 
@@ -63,12 +57,11 @@ public class SetTrie
         return false;
     }
 
-    public synchronized List<String> findCompletions( String prefix )
-    {
+    public synchronized List<String> findCompletions(String prefix) {
         List<String> completions = new ArrayList<String>();
         Set<String> tailSet;
 
-        synchronized(this) {
+        synchronized (this) {
             tailSet = lines.tailSet(prefix);
         }
 

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,39 +15,34 @@ package uk.ac.ebi.arrayexpress.utils.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.search;
+
 import org.apache.lucene.analysis.*;
 
 import java.io.IOException;
 import java.io.Reader;
 
-public class AttributeFieldAnalyzer extends Analyzer
-{
-       private static class AttributeFieldTokenizer extends CharTokenizer
-    {
-        public AttributeFieldTokenizer( Reader in)
-        {
+public class AttributeFieldAnalyzer extends Analyzer {
+    private static class AttributeFieldTokenizer extends CharTokenizer {
+        public AttributeFieldTokenizer(Reader in) {
             super(in);
         }
 
-        protected boolean isTokenChar(int c)
-        {
-            return !Character.isWhitespace(c) && !(',' == c ||  ';' == c || '(' == c || ')' == c);
+        protected boolean isTokenChar(int c) {
+            return !Character.isWhitespace(c) && !(',' == c || ';' == c || '(' == c || ')' == c);
         }
 
-        protected int normalize(int c)
-        {
-            return Character.toLowerCase((char)c);
+        protected int normalize(int c) {
+            return Character.toLowerCase((char) c);
         }
     }
 
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         return new ASCIIFoldingFilter(new AttributeFieldTokenizer(reader));
     }
 
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException
-    {
-        Tokenizer tokenizer = (Tokenizer)getPreviousTokenStream();
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+        Tokenizer tokenizer = (Tokenizer) getPreviousTokenStream();
         if (tokenizer == null) {
             tokenizer = new AttributeFieldTokenizer(reader);
             setPreviousTokenStream(tokenizer);

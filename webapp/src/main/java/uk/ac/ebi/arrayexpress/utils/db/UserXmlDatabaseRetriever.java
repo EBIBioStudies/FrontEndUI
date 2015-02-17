@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.db;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.db;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.db;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
@@ -25,46 +25,41 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserXmlDatabaseRetriever extends SqlStatementExecutor
-{
+public class UserXmlDatabaseRetriever extends SqlStatementExecutor {
     // logging facility
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final static String getUserListSql =
             "select distinct id, name, password, email, priviledge" +
-            " from" +
-            "  pl_user" +
-            " order by" +
-            "  id asc";
+                    " from" +
+                    "  pl_user" +
+                    " order by" +
+                    "  id asc";
 
     private String userXml;
 
-    public UserXmlDatabaseRetriever( IConnectionSource connSource )
-    {
+    public UserXmlDatabaseRetriever(IConnectionSource connSource) {
         super(connSource, getUserListSql);
     }
 
-    public String getXml()
-    {
+    public String getXml() {
         if (!execute(false)) {
             logger.error("There was a problem retrieving user information, check log for errors or exceptions");
         }
         return userXml;
     }
 
-    protected void setParameters( PreparedStatement stmt ) throws SQLException
-    {
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
         // nothing to do here
     }
 
-    protected void processResultSet( ResultSet resultSet ) throws SQLException
-    {
+    protected void processResultSet(ResultSet resultSet) throws SQLException {
         StringBuilder sb = new StringBuilder(4000000);
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
                 .append("<users>")
-                ;
+        ;
 
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             sb.append("<user><id>")
                     .append(StringTools.safeToString(resultSet.getLong(1), ""))
                     .append("</id><name>")

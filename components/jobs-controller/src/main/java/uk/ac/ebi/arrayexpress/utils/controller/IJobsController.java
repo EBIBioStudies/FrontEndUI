@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.controller;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.controller;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.controller;
+
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobListener;
@@ -24,13 +24,12 @@ import org.quartz.SchedulerException;
 
 import java.util.Map;
 
-public interface IJobsController
-{
-    public void addJob( String name, Class<? extends Job> c, Map<String, Object> dataMap, String group ) throws SchedulerException;
+public interface IJobsController {
+    public void addJob(String name, Class<? extends Job> c, Map<String, Object> dataMap, String group) throws SchedulerException;
 
-    public void addJob( String name, Class<? extends Job> c, JobDetail jobDetail ) throws SchedulerException;
+    public void addJob(String name, Class<? extends Job> c, JobDetail jobDetail) throws SchedulerException;
 
-    public void executeJob( String name, String group ) throws SchedulerException;
+    public void executeJob(String name, String group) throws SchedulerException;
 
-    public void addJobListener( JobListener jl ) throws SchedulerException;
+    public void addJobListener(JobListener jl) throws SchedulerException;
 }

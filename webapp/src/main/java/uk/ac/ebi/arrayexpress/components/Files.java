@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.components;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.components;
 
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.NodeInfo;
@@ -34,8 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class Files extends ApplicationComponent implements IDocumentSource
-{
+public class Files extends ApplicationComponent implements IDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -54,13 +53,11 @@ public class Files extends ApplicationComponent implements IDocumentSource
 
     public final String INDEX_ID = "files";
 
-    public Files()
-    {
+    public Files() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.maps = (MapEngine) getComponent("MapEngine");
         this.saxon = (SaxonEngine) getComponent("SaxonEngine");
         this.search = (SearchEngine) getComponent("SearchEngine");
@@ -81,27 +78,23 @@ public class Files extends ApplicationComponent implements IDocumentSource
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
     // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI()
-    {
+    public String getDocumentURI() {
         return "files.xml";
     }
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException
-    {
+    public synchronized DocumentInfo getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
     @Override
-    public synchronized void setDocument( DocumentInfo doc ) throws IOException, InterruptedException
-    {
+    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer("files", doc));
             updateIndex();
@@ -111,14 +104,12 @@ public class Files extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public void reload( DocumentInfo doc, String message ) throws IOException, InterruptedException
-    {
+    public void reload(DocumentInfo doc, String message) throws IOException, InterruptedException {
         setDocument(doc);
         this.lastReloadMessage = message;
     }
 
-    private void updateIndex() throws IOException, InterruptedException
-    {
+    private void updateIndex() throws IOException, InterruptedException {
         Thread.sleep(0);
         try {
             this.search.getController().index(INDEX_ID, this.getDocument());
@@ -128,8 +119,7 @@ public class Files extends ApplicationComponent implements IDocumentSource
     }
 
     @SuppressWarnings("unchecked")
-    private void updateAccelerators() throws IOException
-    {
+    private void updateAccelerators() throws IOException {
         this.logger.debug("Updating maps for files");
 
         maps.clearMap(MAP_FOLDER);
@@ -137,7 +127,7 @@ public class Files extends ApplicationComponent implements IDocumentSource
         maps.clearMap(MAP_PROCESSED_FILES);
         maps.clearMap(MAP_FILES_TOTAL);
 
-         try {
+        try {
             DocumentInfo doc = getDocument();
             List<Object> documentNodes = saxon.evaluateXPath(doc, "/files/folder");
 
@@ -149,19 +139,18 @@ public class Files extends ApplicationComponent implements IDocumentSource
                 maps.setMappedValue(MAP_FOLDER, accession, node);
                 //todo: remove redundancy here
                 if ("experiment".equals(folderKind)) {
-                    maps.setMappedValue(MAP_RAW_FILES, accession, saxon.evaluateXPathSingle((NodeInfo)node, "count(file[@kind = 'raw'])"));
-                    maps.setMappedValue(MAP_PROCESSED_FILES, accession, saxon.evaluateXPathSingle((NodeInfo)node, "count(file[@kind = 'processed'])"));
-                    maps.setMappedValue(MAP_FILES_TOTAL, accession, saxon.evaluateXPathSingle((NodeInfo)node, "sum(file/@size)"));
+                    maps.setMappedValue(MAP_RAW_FILES, accession, saxon.evaluateXPathSingle((NodeInfo) node, "count(file[@kind = 'raw'])"));
+                    maps.setMappedValue(MAP_PROCESSED_FILES, accession, saxon.evaluateXPathSingle((NodeInfo) node, "count(file[@kind = 'processed'])"));
+                    maps.setMappedValue(MAP_FILES_TOTAL, accession, saxon.evaluateXPathSingle((NodeInfo) node, "sum(file/@size)"));
                 }
             }
             this.logger.debug("Maps updated");
-         } catch (XPathException x) {
-             throw new RuntimeException(x);
-         }
+        } catch (XPathException x) {
+            throw new RuntimeException(x);
+        }
     }
 
-    public synchronized void setRootFolder( String folder )
-    {
+    public synchronized void setRootFolder(String folder) {
         if (null != folder && 0 < folder.length()) {
             if (folder.endsWith(File.separator)) {
                 this.rootFolder = folder;
@@ -173,44 +162,40 @@ public class Files extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public synchronized String getRootFolder()
-    {
+    public synchronized String getRootFolder() {
         if (null == this.rootFolder) {
             this.rootFolder = getPreferences().getString("ae.files.root.location");
         }
         return this.rootFolder;
     }
 
-    public String getLastReloadMessage()
-    {
+    public String getLastReloadMessage() {
         return this.lastReloadMessage;
     }
 
-    private String getFileLocatingXPQuery( String accession, String kind, String name )
-    {
+    private String getFileLocatingXPQuery(String accession, String kind, String name) {
         accession = StringEscapeUtils.escapeXml(accession);
         kind = StringEscapeUtils.escapeXml(kind);
         name = StringEscapeUtils.escapeXml(name);
         return "/files/folder" +
-                ( StringUtils.isNotBlank(accession) ? "[@accession = '" + accession + "']" : "" ) +
+                (StringUtils.isNotBlank(accession) ? "[@accession = '" + accession + "']" : "") +
                 "/file[@name = '" + name + "'" +
-                ( StringUtils.isNotBlank(kind) ? " and @kind = '" + kind + "'" : "" ) +
+                (StringUtils.isNotBlank(kind) ? " and @kind = '" + kind + "'" : "") +
                 "]";
     }
 
     // returns true is file is registered in the registry
-    public boolean doesExist( String accession, String kind, String name ) throws IOException
-    {
+    public boolean doesExist(String accession, String kind, String name) throws IOException {
         boolean result = false;
 
         if (StringUtils.isNotBlank(name)) {
 
             try {
-                result = (Boolean)this.saxon.evaluateXPathSingle(
+                result = (Boolean) this.saxon.evaluateXPathSingle(
                         getDocument()
                         , "exists(" + getFileLocatingXPQuery(accession, kind, name) + ")"
                 );
-            } catch ( XPathException x ) {
+            } catch (XPathException x) {
                 logger.error("Caught an exception:", x);
             }
         }
@@ -218,8 +203,7 @@ public class Files extends ApplicationComponent implements IDocumentSource
     }
 
     // returns absolute file location (if file exists, null otherwise) in local filesystem
-    public String getLocation( String accession, String kind, String name ) throws IOException
-    {
+    public String getLocation(String accession, String kind, String name) throws IOException {
         String location = null;
 
         if (StringUtils.isNotBlank(name)) {
@@ -230,7 +214,7 @@ public class Files extends ApplicationComponent implements IDocumentSource
                         getDocument()
                         , xPathQuery
                 );
-            } catch ( XPathException x ) {
+            } catch (XPathException x) {
                 logger.error("Caught an exception:", x);
             }
         }

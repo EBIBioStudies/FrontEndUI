@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.app;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.app;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.app;
 
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.slf4j.Logger;
@@ -34,8 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class Application
-{
+public abstract class Application {
     // logging machinery
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
@@ -46,8 +45,7 @@ public abstract class Application
 
     private static Application appInstance = null;
 
-    public Application( String prefsName )
-    {
+    public Application(String prefsName) {
         prefs = new ApplicationPreferences(prefsName);
         components = new LinkedHashMap<>();
         // setting application instance available to whoever wants it
@@ -58,10 +56,9 @@ public abstract class Application
 
     public abstract String getName();
 
-    public abstract URL getResource( String path ) throws MalformedURLException;
+    public abstract URL getResource(String path) throws MalformedURLException;
 
-    public void addComponent( ApplicationComponent component )
-    {
+    public void addComponent(ApplicationComponent component) {
         if (components.containsKey(component.getName())) {
             logger.error("The component [{}] has already been added to the application", component.getName());
         } else {
@@ -69,21 +66,18 @@ public abstract class Application
         }
     }
 
-    public ApplicationComponent getComponent( String name )
-    {
+    public ApplicationComponent getComponent(String name) {
         if (components.containsKey(name))
             return components.get(name);
         else
             return null;
     }
 
-    public ApplicationPreferences getPreferences()
-    {
+    public ApplicationPreferences getPreferences() {
         return prefs;
     }
 
-    public void initialize()
-    {
+    public void initialize() {
         logger.debug("Initializing the application...");
         prefs.initialize();
         emailer = new EmailSender(
@@ -109,8 +103,7 @@ public abstract class Application
         }
     }
 
-    public void terminate()
-    {
+    public void terminate() {
         logger.debug("Terminating the application...");
         ApplicationComponent[] compArray = components.values().toArray(new ApplicationComponent[components.size()]);
 
@@ -133,8 +126,7 @@ public abstract class Application
         }
     }
 
-    public void sendEmail( String originator, String[] recipients, String subject, String message )
-    {
+    public void sendEmail(String originator, String[] recipients, String subject, String message) {
         try {
             Thread currentThread = Thread.currentThread();
             String hostName = "unknown";
@@ -171,17 +163,16 @@ public abstract class Application
         }
     }
 
-    public void handleException(String message, Throwable x)
-    {
+    public void handleException(String message, Throwable x) {
         sendEmail(
                 null
                 , null
                 , getPreferences().getString("app.reports.subject")
                 , message + ": " + x.getMessage() + StringTools.EOL
-                    + "Application [${variable.appname}]" + StringTools.EOL
-                    + "Host [${variable.hostname}]" + StringTools.EOL
-                    + "Thread [${variable.thread}]" + StringTools.EOL
-                    + getStackTrace(x)
+                        + "Application [${variable.appname}]" + StringTools.EOL
+                        + "Host [${variable.hostname}]" + StringTools.EOL
+                        + "Thread [${variable.thread}]" + StringTools.EOL
+                        + getStackTrace(x)
         );
 
         if (x instanceof OutOfMemoryError) {
@@ -189,16 +180,14 @@ public abstract class Application
         }
     }
 
-    private String getStackTrace( Throwable x )
-    {
+    private String getStackTrace(Throwable x) {
         final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
         x.printStackTrace(printWriter);
         return result.toString();
     }
 
-    public void requestRestart()
-    {
+    public void requestRestart() {
         String command = getPreferences().getString("app.restart");
         if (StringTools.isNotEmpty(command)) {
             logger.info("Restart requested, performing [{}]", command);
@@ -218,16 +207,14 @@ public abstract class Application
         }
     }
 
-    public static Application getInstance()
-    {
+    public static Application getInstance() {
         if (null == appInstance) {
             logger.error("Attempted to obtain application instance before initialization or after destruction");
         }
         return appInstance;
     }
 
-    public static ApplicationComponent getAppComponent( String name )
-    {
+    public static ApplicationComponent getAppComponent(String name) {
         return getInstance().getComponent(name);
     }
 }

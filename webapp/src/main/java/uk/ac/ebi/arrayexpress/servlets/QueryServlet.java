@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import net.sf.saxon.om.DocumentInfo;
 import org.apache.lucene.queryParser.ParseException;
@@ -37,15 +37,13 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class QueryServlet extends AuthAwareApplicationServlet
-{
+public class QueryServlet extends AuthAwareApplicationServlet {
     private static final long serialVersionUID = 6806580383145704364L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 
@@ -55,8 +53,7 @@ public class QueryServlet extends AuthAwareApplicationServlet
             , HttpServletResponse response
             , RequestType requestType
             , String authUserName
-    ) throws ServletException, IOException
-    {
+    ) throws ServletException, IOException {
         RegexHelper PARSE_ARGUMENTS_REGEX = new RegexHelper("/([^/]+)/([^/]+)/([^/]+)$", "i");
 
         logRequest(logger, request, requestType);
@@ -136,7 +133,7 @@ public class QueryServlet extends AuthAwareApplicationServlet
                         , stylesheetName
                         , params
                         , out
-                    )) {                     // where to dump resulting text
+                )) {                     // where to dump resulting text
                     throw new Exception("Transformation returned an error");
                 }
             } catch (ParseException x) {
@@ -146,9 +143,9 @@ public class QueryServlet extends AuthAwareApplicationServlet
                         , params.getString("keywords"));
             } catch (SaxonException x) {
                 if (x.getCause() instanceof HTTPStatusException) {
-                    HTTPStatusException xx = (HTTPStatusException)x.getCause();
+                    HTTPStatusException xx = (HTTPStatusException) x.getCause();
                     logger.warn("ae:httpStatus({}) called from the transformation", xx.getStatusCode());
-                    if ( null != xx.getStatusCode() && xx.getStatusCode() > 200 && xx.getStatusCode() < 500 ) {
+                    if (null != xx.getStatusCode() && xx.getStatusCode() > 200 && xx.getStatusCode() < 500) {
                         response.sendError(xx.getStatusCode());
                     } else {
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

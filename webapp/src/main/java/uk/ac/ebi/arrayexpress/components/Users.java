@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.components;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.components;
 
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
@@ -40,8 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Users extends ApplicationComponent implements IDocumentSource
-{
+public class Users extends ApplicationComponent implements IDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -56,27 +55,25 @@ public class Users extends ApplicationComponent implements IDocumentSource
 
     public final String INDEX_ID = "users";
 
-    public enum UserSource
-    {
+    public enum UserSource {
         AE1, AE2;
 
-        public String getStylesheetName()
-        {
+        public String getStylesheetName() {
             switch (this) {
-                case AE1:   return "preprocess-users-ae1-xml.xsl";
-                case AE2:   return "preprocess-users-ae2-xml.xsl";
+                case AE1:
+                    return "preprocess-users-ae1-xml.xsl";
+                case AE2:
+                    return "preprocess-users-ae2-xml.xsl";
             }
             return null;
         }
     }
 
-    public Users()
-    {
+    public Users() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.saxon = (SaxonEngine) getComponent("SaxonEngine");
         this.search = (SearchEngine) getComponent("SearchEngine");
         this.document = new FilePersistence<>(
@@ -97,28 +94,24 @@ public class Users extends ApplicationComponent implements IDocumentSource
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
     // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI()
-    {
+    public String getDocumentURI() {
         return "users.xml";
     }
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException
-    {
+    public synchronized DocumentInfo getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
     // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument( DocumentInfo doc ) throws IOException, InterruptedException
-    {
+    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer("users", doc));
             updateIndex();
@@ -127,13 +120,11 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public void registerUserMap( MapEngine.IValueMap map )
-    {
+    public void registerUserMap(MapEngine.IValueMap map) {
         this.userMap.addMap(map);
     }
 
-    public void clearUserMap( String name )
-    {
+    public void clearUserMap(String name) {
         MapEngine.IValueMap map = this.userMap.getMap(name);
         if (null != map) {
             map.clearValues();
@@ -142,8 +133,7 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public void setUserMapping( String name, String accession, Object ids )
-    {
+    public void setUserMapping(String name, String accession, Object ids) {
         MapEngine.IValueMap map = this.userMap.getMap(name);
         if (null != map) {
             map.setValue(accession, ids);
@@ -153,10 +143,9 @@ public class Users extends ApplicationComponent implements IDocumentSource
     }
 
 
-    public boolean isAccessible( String accession, List<String> userIds ) throws IOException
-    {
+    public boolean isAccessible(String accession, List<String> userIds) throws IOException {
         @SuppressWarnings("unchecked")
-        Set<String> ids = (Set<String>)this.userMap.getValue(accession);
+        Set<String> ids = (Set<String>) this.userMap.getValue(accession);
         for (String userId : userIds) {
             if (isPrivilegedByID(userId) || (null != ids && ids.contains(userId)))
                 return true;
@@ -164,8 +153,7 @@ public class Users extends ApplicationComponent implements IDocumentSource
         return false;
     }
 
-    public void update( String xmlString, UserSource source ) throws IOException, InterruptedException
-    {
+    public void update(String xmlString, UserSource source) throws IOException, InterruptedException {
         try {
             DocumentInfo updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
             if (null != updateDoc) {
@@ -176,8 +164,7 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    private void updateIndex() throws IOException, InterruptedException
-    {
+    private void updateIndex() throws IOException, InterruptedException {
         Thread.sleep(0);
         try {
             this.search.getController().index(INDEX_ID, this.getDocument());
@@ -186,11 +173,10 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public boolean isPrivilegedByName( String name ) throws IOException
-    {
+    public boolean isPrivilegedByName(String name) throws IOException {
         name = StringEscapeUtils.escapeXml(name);
         try {
-            return  (Boolean)saxon.evaluateXPathSingle(
+            return (Boolean) saxon.evaluateXPathSingle(
                     getDocument()
                     , "(/users/user[name = '" + name + "']/is_privileged = true())"
             );
@@ -199,31 +185,29 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public boolean isPrivilegedByID( String id ) throws IOException
-    {
+    public boolean isPrivilegedByID(String id) throws IOException {
         id = StringEscapeUtils.escapeXml(id);
         try {
-            return (Boolean)saxon.evaluateXPathSingle(
-                getDocument()
-                , "(/users/user[id = '" + id + "']/is_privileged = true())"
-        );
+            return (Boolean) saxon.evaluateXPathSingle(
+                    getDocument()
+                    , "(/users/user[id = '" + id + "']/is_privileged = true())"
+            );
         } catch (XPathException x) {
             throw new RuntimeException(x);
         }
     }
 
-    public List<String> getUserIDs( String name ) throws IOException
-    {
+    public List<String> getUserIDs(String name) throws IOException {
         name = StringEscapeUtils.escapeXml(name);
         try {
             List idNodes = this.saxon.evaluateXPath(
-                            getDocument()
-                            , "/users/user[name = '" + name + "']/id"
-                    );
+                    getDocument()
+                    , "/users/user[name = '" + name + "']/id"
+            );
 
             ArrayList<String> ids = new ArrayList<>(idNodes.size());
-            for (Object node : idNodes ) {
-                ids.add(((Item)node).getStringValue());
+            for (Object node : idNodes) {
+                ids.add(((Item) node).getStringValue());
             }
 
             return ids;
@@ -232,8 +216,7 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    private List<String> getUserPasswords( String name ) throws IOException
-    {
+    private List<String> getUserPasswords(String name) throws IOException {
         name = StringEscapeUtils.escapeXml(name);
         try {
             List passwordNodes = this.saxon.evaluateXPath(
@@ -242,8 +225,8 @@ public class Users extends ApplicationComponent implements IDocumentSource
             );
 
             ArrayList<String> passwords = new ArrayList<>(passwordNodes.size());
-            for (Object node : passwordNodes ) {
-                passwords.add(((Item)node).getStringValue());
+            for (Object node : passwordNodes) {
+                passwords.add(((Item) node).getStringValue());
             }
             return passwords;
 
@@ -252,24 +235,22 @@ public class Users extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public String hashLogin( String username, String password, String suffix ) throws IOException
-    {
-        if ( null != username && null != password && null != suffix ) {
+    public String hashLogin(String username, String password, String suffix) throws IOException {
+        if (null != username && null != password && null != suffix) {
             List<String> userPasswords = getUserPasswords(username);
             for (String userPassword : userPasswords)
-                if ( password.equals(userPassword) ) {
+                if (password.equals(userPassword)) {
                     return this.authHelper.generateHash(username, password, suffix);
                 }
         }
         return "";
     }
 
-    public boolean verifyLogin( String username, String hash, String suffix ) throws IOException
-    {
-        if ( null != username && null != hash && null != suffix ) {
+    public boolean verifyLogin(String username, String hash, String suffix) throws IOException {
+        if (null != username && null != hash && null != suffix) {
             List<String> userPasswords = getUserPasswords(username);
             for (String userPassword : userPasswords)
-                if ( this.authHelper.verifyHash(hash, username, userPassword, suffix) ) {
+                if (this.authHelper.verifyHash(hash, username, userPassword, suffix)) {
                     return true;
                 }
         }
@@ -277,8 +258,7 @@ public class Users extends ApplicationComponent implements IDocumentSource
     }
 
     @SuppressWarnings("unchecked")
-    public String remindPassword( String nameOrEmail, String accession ) throws IOException
-    {
+    public String remindPassword(String nameOrEmail, String accession) throws IOException {
         nameOrEmail = StringEscapeUtils.escapeXml(nameOrEmail);
         accession = null != accession ? accession.toUpperCase() : "";
 
@@ -287,7 +267,7 @@ public class Users extends ApplicationComponent implements IDocumentSource
 
             Object userIds = this.userMap.getValue(accession);
             if (userIds instanceof Set) {
-                Set<String> uids = (Set<String>)(userIds);
+                Set<String> uids = (Set<String>) (userIds);
                 String ids = StringTools.arrayToString(uids.toArray(new String[uids.size()]), ",");
 
                 users = this.saxon.evaluateXPath(
@@ -300,24 +280,24 @@ public class Users extends ApplicationComponent implements IDocumentSource
             String result = "Unable to find matching account information, please contact us for assistance.";
             if (null != users && users.size() > 0) {
                 if (1 == users.size()) {
-                    String username = (String)this.saxon.evaluateXPathSingle((NodeInfo)users.get(0), "string(name)");
-                    String email = (String)this.saxon.evaluateXPathSingle((NodeInfo)users.get(0), "string(email)");
-                    String password = (String)this.saxon.evaluateXPathSingle((NodeInfo)users.get(0), "string(password)");
+                    String username = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(name)");
+                    String email = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(email)");
+                    String password = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(password)");
 
                     getApplication().sendEmail(
                             getPreferences().getString("ae.password-remind.originator")
                             , new String[]{email}
                             , getPreferences().getString("ae.password-remind.subject")
                             , "Dear " + username + "," + StringTools.EOL
-                            + StringTools.EOL
-                            + "Your ArrayExpress account information is:" + StringTools.EOL
-                            + StringTools.EOL
-                            + "    User name: " + username + StringTools.EOL
-                            + "    Password: " + password + StringTools.EOL
-                            + StringTools.EOL
-                            + "Regards," + StringTools.EOL
-                            + "ArrayExpress." + StringTools.EOL
-                            + StringTools.EOL
+                                    + StringTools.EOL
+                                    + "Your ArrayExpress account information is:" + StringTools.EOL
+                                    + StringTools.EOL
+                                    + "    User name: " + username + StringTools.EOL
+                                    + "    Password: " + password + StringTools.EOL
+                                    + StringTools.EOL
+                                    + "Regards," + StringTools.EOL
+                                    + "ArrayExpress." + StringTools.EOL
+                                    + StringTools.EOL
                     );
 
 
@@ -337,9 +317,9 @@ public class Users extends ApplicationComponent implements IDocumentSource
                     , getPreferences().getStringArray("ae.password-remind.recipients")
                     , "ArrayExpress account information request"
                     , reportMessage + StringTools.EOL
-                    + StringTools.EOL
-                    + "Sent by [${variable.appname}] running on [${variable.hostname}]" + StringTools.EOL
-                    + StringTools.EOL
+                            + StringTools.EOL
+                            + "Sent by [${variable.appname}] running on [${variable.hostname}]" + StringTools.EOL
+                            + StringTools.EOL
             );
             return result;
 

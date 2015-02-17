@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
+
 import net.sf.saxon.om.NodeInfo;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.lucene.analysis.Analyzer;
@@ -31,8 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IndexEnvironment
-{
+public class IndexEnvironment {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -49,8 +48,7 @@ public class IndexEnvironment
     public String indexDocumentPath;
 
     // field information, parsed
-    public static class FieldInfo
-    {
+    public static class FieldInfo {
         public String name;
         public String title;
         public String type;
@@ -61,8 +59,7 @@ public class IndexEnvironment
         public boolean shouldEscape;
         public boolean shouldExpand;
 
-        public FieldInfo( HierarchicalConfiguration fieldConfig )
-        {
+        public FieldInfo(HierarchicalConfiguration fieldConfig) {
             this.name = fieldConfig.getString("[@name]");
             this.title = fieldConfig.containsKey("[@title]") ? fieldConfig.getString("[@title]") : null;
             this.type = fieldConfig.getString("[@type]");
@@ -83,20 +80,17 @@ public class IndexEnvironment
     public int documentHashCode;
     public List<NodeInfo> documentNodes;
 
-    public IndexEnvironment( HierarchicalConfiguration indexConfig )
-    {
+    public IndexEnvironment(HierarchicalConfiguration indexConfig) {
         this.indexConfig = indexConfig;
         populateIndexConfiguration();
     }
 
-    public void putDocumentInfo( int documentHashCode, List<NodeInfo> documentNodes )
-    {
+    public void putDocumentInfo(int documentHashCode, List<NodeInfo> documentNodes) {
         this.documentHashCode = documentHashCode;
         this.documentNodes = documentNodes;
     }
 
-    private void populateIndexConfiguration()
-    {
+    private void populateIndexConfiguration() {
         try {
             this.indexId = this.indexConfig.getString("[@id]");
 
@@ -104,7 +98,7 @@ public class IndexEnvironment
             this.indexDirectory = FSDirectory.open(new File(indexBaseLocation, this.indexId));
 
             String indexAnalyzer = this.indexConfig.getString("[@defaultAnalyzer]");
-            Analyzer a = (Analyzer)Class.forName(indexAnalyzer).newInstance();
+            Analyzer a = (Analyzer) Class.forName(indexAnalyzer).newInstance();
 
             this.indexDocumentPath = indexConfig.getString("document[@path]");
 
@@ -113,13 +107,13 @@ public class IndexEnvironment
             List fieldsConfig = indexConfig.configurationsAt("document.field");
 
             this.fields = new HashMap<>();
-            Map<String,Analyzer> fieldAnalyzers = new HashMap<>();
+            Map<String, Analyzer> fieldAnalyzers = new HashMap<>();
 
             for (Object fieldConfig : fieldsConfig) {
-                FieldInfo fieldInfo = new FieldInfo((HierarchicalConfiguration)fieldConfig);
+                FieldInfo fieldInfo = new FieldInfo((HierarchicalConfiguration) fieldConfig);
                 fields.put(fieldInfo.name, fieldInfo);
                 if (null != fieldInfo.analyzer) {
-                    Analyzer fa = (Analyzer)Class.forName(fieldInfo.analyzer).newInstance();
+                    Analyzer fa = (Analyzer) Class.forName(fieldInfo.analyzer).newInstance();
                     fieldAnalyzers.put(fieldInfo.name, fa);
                 }
             }
@@ -131,8 +125,7 @@ public class IndexEnvironment
         }
     }
 
-    public boolean doesFieldExist( String fieldName )
-    {
+    public boolean doesFieldExist(String fieldName) {
         return fields.containsKey(fieldName);
     }
 }

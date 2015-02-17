@@ -1,12 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Query;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,39 +15,39 @@ import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
  *
  */
 
-public class EFOExpandableQueryInfo extends QueryInfo
-{
+package uk.ac.ebi.arrayexpress.utils.search;
+
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Query;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
+
+public class EFOExpandableQueryInfo extends QueryInfo {
     private Query originalQuery;
     private BooleanQuery synonymPartQuery = new BooleanQuery();
     private BooleanQuery efoExpansionPartQuery = new BooleanQuery();
 
-    public Query getOriginalQuery()
-    {
+    public Query getOriginalQuery() {
         return originalQuery;
     }
 
-    public void setOriginalQuery( Query originalQuery )
-    {
+    public void setOriginalQuery(Query originalQuery) {
         this.originalQuery = originalQuery;
     }
 
-    public Query getSynonymPartQuery()
-    {
+    public Query getSynonymPartQuery() {
         return synonymPartQuery;
     }
 
-    public void addToSynonymPartQuery( Query part )
-    {
+    public void addToSynonymPartQuery(Query part) {
         synonymPartQuery.add(part, BooleanClause.Occur.SHOULD);
     }
 
-    public Query getEfoExpansionPartQuery()
-    {
+    public Query getEfoExpansionPartQuery() {
         return efoExpansionPartQuery;
     }
 
-    public void addToEfoExpansionPartQuery( Query part )
-    {
+    public void addToEfoExpansionPartQuery(Query part) {
         efoExpansionPartQuery.add(part, BooleanClause.Occur.SHOULD);
     }
 }

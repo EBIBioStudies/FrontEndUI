@@ -1,13 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.autocompletion;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +15,20 @@ import java.util.List;
  *
  */
 
-public class AutocompleteStore
-{
+package uk.ac.ebi.arrayexpress.utils.autocompletion;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+public class AutocompleteStore {
     private SetTrie trie;
     private HashMap<String, AutocompleteData> objects;
 
-    private static class AutocompleteComparator implements Comparator<String>, Serializable
-    {
-        public int compare( String s1, String s2 )
-        {
+    private static class AutocompleteComparator implements Comparator<String>, Serializable {
+        public int compare(String s1, String s2) {
             // the ultimate idea of this comparison is to get ontology terms before keywords
             //
             //
@@ -61,28 +58,24 @@ public class AutocompleteStore
         }
     }
 
-    public AutocompleteStore()
-    {
+    public AutocompleteStore() {
         this.trie = new SetTrie(new AutocompleteComparator());
         this.objects = new HashMap<String, AutocompleteData>();
     }
 
-    public void clear()
-    {
+    public void clear() {
         trie.clear();
         objects.clear();
     }
 
-    public void addData( AutocompleteData data )
-    {
+    public void addData(AutocompleteData data) {
         String key = data.getText() + "|" + data.getDataType() + "_" + data.getData();
 
         this.trie.add(key);
         this.objects.put(key, data);
     }
 
-    public List<AutocompleteData> findCompletions( String prefix, String fieldName, Integer limit )
-    {
+    public List<AutocompleteData> findCompletions(String prefix, String fieldName, Integer limit) {
         List<AutocompleteData> comps = new ArrayList<AutocompleteData>();
         if ("".equals(fieldName) || -1 == " assaycount samplecount rawcount processedcount efcount sacount miamescore ".indexOf(" " + fieldName + " ")) {
             List<String> matches = trie.findCompletions(prefix);

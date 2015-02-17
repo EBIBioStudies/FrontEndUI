@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AuthAwareApplicationServlet extends ApplicationServlet
-{
+public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
     private static final long serialVersionUID = -82727624065665432L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
@@ -45,12 +44,10 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
     private final static List<String> AE_PUBLIC_ACCESS = Arrays.asList("1");
     private final static List<String> AE_UNRESTRICTED_ACCESS = new ArrayList<>();
 
-    private static class AuthApplicationServletException extends ServletException
-    {
+    private static class AuthApplicationServletException extends ServletException {
         private static final long serialVersionUID = 1030249369830812548L;
 
-        public AuthApplicationServletException( Throwable x )
-        {
+        public AuthApplicationServletException(Throwable x) {
             super(x);
         }
     }
@@ -60,11 +57,10 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
             , HttpServletResponse response
             , RequestType requestType
             , String authUserName
-            ) throws ServletException, IOException;
+    ) throws ServletException, IOException;
 
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws ServletException, IOException {
         if (!checkAuthCookies(request)) {
             invalidateAuthCookies(response);
         }
@@ -73,8 +69,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
         doAuthenticatedRequest(request, response, requestType, authUserName);
     }
 
-    private boolean checkAuthCookies( HttpServletRequest request ) throws ServletException
-    {
+    private boolean checkAuthCookies(HttpServletRequest request) throws ServletException {
         try {
             CookieMap cookies = new CookieMap(request.getCookies());
             String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
@@ -88,7 +83,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
                     userName
                     , token
                     , request.getRemoteAddr().concat(
-                        userAgent != null ? userAgent : "unknown"
+                            userAgent != null ? userAgent : "unknown"
                     )
             );
         } catch (Exception x) {
@@ -96,8 +91,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
         }
     }
 
-    private void invalidateAuthCookies( HttpServletResponse response )
-    {
+    private void invalidateAuthCookies(HttpServletResponse response) {
         // deleting user cookie
         Cookie userCookie = new Cookie(AE_LOGIN_USER_COOKIE, "");
         userCookie.setPath("/");
@@ -106,8 +100,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
         response.addCookie(userCookie);
     }
 
-    protected String getAuthUserName( HttpServletRequest request ) throws ServletException
-    {
+    protected String getAuthUserName(HttpServletRequest request) throws ServletException {
         if (checkAuthCookies(request)) {
             try {
                 String userName = new CookieMap(request.getCookies()).getCookieValue(AE_LOGIN_USER_COOKIE);
@@ -121,8 +114,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
         return null;
     }
 
-    protected List<String> getUserIds( String userName ) throws ServletException
-    {
+    protected List<String> getUserIds(String userName) throws ServletException {
         if (null == userName) {
             return AE_PUBLIC_ACCESS;
         }
@@ -139,7 +131,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet
                 return userIds;
             }
         } catch (Exception x) {
-           throw new AuthApplicationServletException(x);
+            throw new AuthApplicationServletException(x);
         }
     }
 }

@@ -1,13 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon;
-
-import net.sf.saxon.om.DocumentInfo;
-import uk.ac.ebi.arrayexpress.app.Application;
-import uk.ac.ebi.arrayexpress.components.SaxonEngine;
-
-import java.io.IOException;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +15,20 @@ import java.io.IOException;
  *
  */
 
-public class DocumentUpdater implements IDocumentSource
-{
+package uk.ac.ebi.arrayexpress.utils.saxon;
+
+import net.sf.saxon.om.DocumentInfo;
+import uk.ac.ebi.arrayexpress.app.Application;
+import uk.ac.ebi.arrayexpress.components.SaxonEngine;
+
+import java.io.IOException;
+
+public class DocumentUpdater implements IDocumentSource {
     private IDocumentSource source;
     private SaxonEngine saxon;
     private DocumentInfo update;
 
-    public DocumentUpdater( IDocumentSource source, DocumentInfo update )
-    {
+    public DocumentUpdater(IDocumentSource source, DocumentInfo update) {
         this.source = source;
         this.saxon = (SaxonEngine) Application.getAppComponent("SaxonEngine");
         this.update = update;
@@ -38,28 +36,24 @@ public class DocumentUpdater implements IDocumentSource
 
     // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI()
-    {
+    public String getDocumentURI() {
         return "update-" + source.getDocumentURI();
     }
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException
-    {
+    public synchronized DocumentInfo getDocument() throws IOException {
         return this.update;
     }
 
     // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument( DocumentInfo doc ) throws IOException
-    {
+    public synchronized void setDocument(DocumentInfo doc) throws IOException {
         // nothing
     }
 
-    public void update() throws SaxonException, IOException, InterruptedException
-    {
-        synchronized(getClass()) {
+    public void update() throws SaxonException, IOException, InterruptedException {
+        synchronized (getClass()) {
             saxon.registerDocumentSource(this);
             source.setDocument(saxon.transform(source.getDocument(), getDocumentURI().replace(".xml", "-xml.xsl"), null));
             saxon.unregisterDocumentSource(this);

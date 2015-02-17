@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  *
  */
 
+package uk.ac.ebi.arrayexpress.servlets;
+
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +31,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ControlServlet extends ApplicationServlet
-{
+public class ControlServlet extends ApplicationServlet {
     private static final long serialVersionUID = -4509580274404536983L;
 
     private static final String REFERER_HEADER = "Referer";
-    
+
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
-    
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 
     // Respond to HTTP requests from browsers.
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType ) throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType) throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         String command = "";
@@ -62,12 +59,12 @@ public class ControlServlet extends ApplicationServlet
         try {
             if (
                     "reload-atlas-info".equals(command)
-                    || "reload-ae2-xml".equals(command)
-                    || "reload-efo".equals(command)
-                    || "update-efo".equals(command)
-                    || "check-files".equals(command)
-                    || "check-experiments".equals(command)
-                    || "reload-atlas-info".equals(command)
+                            || "reload-ae2-xml".equals(command)
+                            || "reload-efo".equals(command)
+                            || "update-efo".equals(command)
+                            || "check-files".equals(command)
+                            || "check-experiments".equals(command)
+                            || "reload-atlas-info".equals(command)
                     ) {
                 ((JobsController) getComponent("JobsController")).executeJob(command);
             } else if ("reload-ae1-xml".equals(command)) {
@@ -83,7 +80,7 @@ public class ControlServlet extends ApplicationServlet
                         , null
                         , "Test message"
                         , "This test message was sent from [${variable.appname}] running on [${variable.hostname}], please ignore."
-                            + StringTools.EOL
+                                + StringTools.EOL
                 );
             } else if ("restart".equals(command)) {
                 getApplication().requestRestart();

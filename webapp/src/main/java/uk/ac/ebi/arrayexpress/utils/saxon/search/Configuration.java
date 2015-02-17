@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
@@ -28,15 +28,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Configuration
-{
+public class Configuration {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Map<String, HierarchicalConfiguration> indicesConfig = new HashMap<String, HierarchicalConfiguration>();
 
-    public Configuration( URL configResource )
-    {
+    public Configuration(URL configResource) {
         try {
             // set list delimiter to bogus value to disable list parsing in configuration values
             XMLConfiguration.setDefaultListDelimiter('\uffff');
@@ -47,13 +45,11 @@ public class Configuration
         }
     }
 
-    public Configuration( HierarchicalConfiguration config )
-    {
+    public Configuration(HierarchicalConfiguration config) {
         readConfiguration(config);
     }
 
-    public HierarchicalConfiguration getIndexConfig( String indexId )
-    {
+    public HierarchicalConfiguration getIndexConfig(String indexId) {
         if (indicesConfig.containsKey(indexId)) {
             return indicesConfig.get(indexId);
         }
@@ -61,12 +57,11 @@ public class Configuration
         return null;
     }
 
-    private void readConfiguration( HierarchicalConfiguration config )
-    {
+    private void readConfiguration(HierarchicalConfiguration config) {
         List indexList = config.configurationsAt("index");
 
         for (Object conf : indexList) {
-            HierarchicalConfiguration indexConfig = (HierarchicalConfiguration)conf;
+            HierarchicalConfiguration indexConfig = (HierarchicalConfiguration) conf;
             String indexId = indexConfig.getString("[@id]");
             this.indicesConfig.put(indexId, indexConfig);
         }

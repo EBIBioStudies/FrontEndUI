@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,14 +32,12 @@ public class LinuxShellCommandExecutor {
     private String output;
     private String errors;
 
-    public LinuxShellCommandExecutor()
-    {
+    public LinuxShellCommandExecutor() {
         output = "";
         errors = "";
     }
 
-    public boolean execute( String command, boolean waitForResult ) throws IOException, InterruptedException
-    {
+    public boolean execute(String command, boolean waitForResult) throws IOException, InterruptedException {
         List<String> commandParams = new ArrayList<String>();
         commandParams.add("/bin/sh");
         commandParams.add("-c");

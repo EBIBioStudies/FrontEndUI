@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+
 import net.sf.saxon.expr.JPConverter;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
@@ -30,51 +30,42 @@ import net.sf.saxon.value.SequenceType;
 import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.MapEngine;
 
-public class GetMappedValueFunction extends ExtensionFunctionDefinition
-{
+public class GetMappedValueFunction extends ExtensionFunctionDefinition {
     private static final long serialVersionUID = 4695269638102509735L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "getMappedValue");
 
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 2;
     }
 
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 2;
     }
 
-    public SequenceType[] getArgumentTypes()
-    {
-        return new SequenceType[]{ SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING };
+    public SequenceType[] getArgumentTypes() {
+        return new SequenceType[]{SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING};
     }
 
-    public SequenceType getResultType( SequenceType[] suppliedArgumentTypes )
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.ANY_SEQUENCE;
     }
 
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new GetMappedValueCall();
     }
 
-    private static class GetMappedValueCall extends ExtensionFunctionCall
-    {
+    private static class GetMappedValueCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = -1342342397189997194L;
 
         private MapEngine mapEngine = (MapEngine) Application.getAppComponent("MapEngine");
 
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             if (null == mapEngine) {
                 return EmptySequence.getInstance();
             }

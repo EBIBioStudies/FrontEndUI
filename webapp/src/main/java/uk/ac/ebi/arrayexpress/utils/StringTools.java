@@ -1,12 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
-import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,22 +15,25 @@ import java.util.*;
  *
  */
 
-public class StringTools
-{
-    private StringTools()
-    {
+package uk.ac.ebi.arrayexpress.utils;
+
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class StringTools {
+    private StringTools() {
     }
 
     public final static String EOL = System.getProperty("line.separator");
     public final static String EMPTY_STRING = "";
 
-    public static boolean isNotEmpty( String s )
-    {
+    public static boolean isNotEmpty(String s) {
         return null != s && !s.isEmpty();
     }
 
-    public static String listToString( List<String> l, String separator )
-    {
+    public static String listToString(List<String> l, String separator) {
         if (null == l) {
             return null;
         }
@@ -45,8 +41,7 @@ public class StringTools
         return arrayToString(l.toArray(new String[l.size()]), separator);
     }
 
-    public static String arrayToString( String[] a, String separator )
-    {
+    public static String arrayToString(String[] a, String separator) {
         if (null == a || null == separator) {
             return null;
         }
@@ -62,8 +57,7 @@ public class StringTools
         return result.toString();
     }
 
-    public static String streamToString( InputStream is, String encoding ) throws IOException
-    {
+    public static String streamToString(InputStream is, String encoding) throws IOException {
         if (is != null) {
             StringBuilder sb = new StringBuilder();
             String line;
@@ -81,14 +75,12 @@ public class StringTools
         }
     }
 
-    public static Set<String> streamToStringSet( InputStream is, String encoding ) throws IOException
-    {
+    public static Set<String> streamToStringSet(InputStream is, String encoding) throws IOException {
         String[] lines = streamToString(is, encoding).split(EOL);
         return new HashSet<>(Arrays.asList(lines));
     }
 
-    public static String fileToString( File f, String encoding ) throws IOException
-    {
+    public static String fileToString(File f, String encoding) throws IOException {
         if (f.exists()) {
             InputStream is = new FileInputStream(f);
             return streamToString(is, encoding);
@@ -97,8 +89,7 @@ public class StringTools
         }
     }
 
-    public static void stringToFile( String string, File file, String encoding ) throws IOException
-    {
+    public static void stringToFile(String string, File file, String encoding) throws IOException {
         BufferedWriter w = new BufferedWriter(
                 new OutputStreamWriter(
                         new FileOutputStream(file)
@@ -110,13 +101,11 @@ public class StringTools
         w.close();
     }
 
-    public static String longDateTimeToXSDDateTime( long dateTime )
-    {
+    public static String longDateTimeToXSDDateTime(long dateTime) {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date(dateTime));
     }
 
-    public static Date rfc822StringToDate( String rfc822 )
-    {
+    public static Date rfc822StringToDate(String rfc822) {
         Date date = null;
         try {
             if (null != rfc822) {
@@ -130,17 +119,15 @@ public class StringTools
         return date;
     }
 
-    public static String safeToString( Object obj, String nullObjString )
-    {
+    public static String safeToString(Object obj, String nullObjString) {
         return (null == obj) ? nullObjString : obj.toString();
     }
 
-    public static String nullToEmpty( String str ) {
+    public static String nullToEmpty(String str) {
         return (null == str) ? EMPTY_STRING : str;
     }
 
-    public static Boolean stringToBoolean( String boolString )
-    {
+    public static Boolean stringToBoolean(String boolString) {
         if (null == boolString) {
             throw new IllegalArgumentException("Cannot accept null argument");
         } else {
@@ -148,8 +135,7 @@ public class StringTools
         }
     }
 
-    public static String unescapeXMLDecimalEntities( String in )
-    {
+    public static String unescapeXMLDecimalEntities(String in) {
         if (null == in)
             return null;
 
@@ -187,13 +173,11 @@ public class StringTools
             732, 8482, 353, 8250, 339, ILLEGAL_CHAR_REPRESENATION, 382, 376
     };
 
-    public static String escapeChar( char in )
-    {
+    public static String escapeChar(char in) {
         return "&#" + String.valueOf((int) in) + ";";
     }
 
-    public static Character transcodeUnsafeHTMLChar(char in)
-    {
+    public static Character transcodeUnsafeHTMLChar(char in) {
         if (0x09 == in || 0x0a == in || 0x0d == in || (in >= 0x20 && in <= 0x7e)) {
             return in;
         } else if (in >= 0x80 && in <= 0x9f) {
@@ -207,8 +191,7 @@ public class StringTools
         }
     }
 
-    public static String replaceIllegalHTMLCharacters( String in )
-    {
+    public static String replaceIllegalHTMLCharacters(String in) {
         if (null == in)
             return null;
 
@@ -224,8 +207,7 @@ public class StringTools
         return out.toString();
     }
 
-    public static String detectDecodeUTF8Sequences( String in )
-    {
+    public static String detectDecodeUTF8Sequences(String in) {
         if (null == in)
             return null;
 
@@ -284,18 +266,16 @@ public class StringTools
         return sb.toString();
     }
 
-    public static char decodeUTF8( int[] b )
-    {
+    public static char decodeUTF8(int[] b) {
         if (2 == b.length) {
-            return decodeUTF8((byte)b[0], (byte)b[1]);
+            return decodeUTF8((byte) b[0], (byte) b[1]);
         } else if (3 == b.length)
-            return decodeUTF8((byte)b[0], (byte)b[1], (byte)b[2]);
+            return decodeUTF8((byte) b[0], (byte) b[1], (byte) b[2]);
         else
             return ILLEGAL_CHAR_REPRESENATION;
     }
 
-    public static char decodeUTF8( byte b0, byte b1 )
-    {
+    public static char decodeUTF8(byte b0, byte b1) {
         if ((0xc0 == (b0 & 0xe0)) && (0x80 == (b1 & 0xc0))) {
             return (char) (((b0 & 0x1f) << 6) + (b1 & 0x3f));
         } else {
@@ -303,8 +283,7 @@ public class StringTools
         }
     }
 
-    public static char decodeUTF8( byte b0, byte b1, byte b2 )
-    {
+    public static char decodeUTF8(byte b0, byte b1, byte b2) {
         if ((0xe0 == (b0 & 0xf0)) && (0x80 == (b1 & 0xc0)) && (0x80 == (b2 & 0xc0))) {
             return (char) (((b0 & 0x0f) << 12) + ((b1 & 0x3f) << 6) + (b2 & 0x3f));
         } else {

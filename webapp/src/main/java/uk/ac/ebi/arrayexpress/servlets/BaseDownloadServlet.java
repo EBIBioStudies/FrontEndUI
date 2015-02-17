@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  *
  */
 
+package uk.ac.ebi.arrayexpress.servlets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
@@ -31,8 +31,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
-{
+public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
     private static final long serialVersionUID = 292987974909737157L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
@@ -43,32 +42,31 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
     // multipart boundary constant
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
 
-    protected final static class DownloadServletException extends Exception
-    {
+    protected final static class DownloadServletException extends Exception {
         private static final long serialVersionUID = 8774998591374274629L;
 
-        public DownloadServletException( String message )
-        {
+        public DownloadServletException(String message) {
             super(message);
         }
 
-        public DownloadServletException( Throwable x )
-        {
+        public DownloadServletException(Throwable x) {
             super(x);
         }
     }
 
-    protected interface IDownloadFile
-    {
+    protected interface IDownloadFile {
         public String getName();
+
         public String getPath();
 
         public long getLength();
+
         public long getLastModified();
 
         public boolean canDownload();
 
         public boolean isRandomAccessSupported();
+
         public RandomAccessFile getRandomAccessFile() throws IOException;
 
         public InputStream getInputStream() throws IOException;
@@ -77,8 +75,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
     }
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return true; // all requests are supported
     }
 
@@ -88,8 +85,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
             , HttpServletResponse response
             , RequestType requestType
             , String authUserName
-    ) throws ServletException, IOException
-    {
+    ) throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         IDownloadFile downloadFile = null;
@@ -120,15 +116,15 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
             }
         }
     }
+
     protected abstract IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
             , HttpServletResponse response
             , List<String> authUserIDs
     ) throws DownloadServletException;
 
-    private void verifyFile( IDownloadFile file, HttpServletResponse response )
-            throws DownloadServletException, IOException
-    {
+    private void verifyFile(IDownloadFile file, HttpServletResponse response)
+            throws DownloadServletException, IOException {
         // Check if file is actually supplied to the request URL.
         if (null == file) {
             // Do your thing if the file is not supplied to the request URL.
@@ -144,15 +140,14 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             throw new DownloadServletException("Specified file [" + file.getPath() + "] does not exist in file system or is not a file");
         }
-   }
+    }
 
     private void sendSequentialFile(
             IDownloadFile downloadFile
             , HttpServletRequest request
             , HttpServletResponse response
             , RequestType requestType
-    ) throws IOException
-    {
+    ) throws IOException {
         // Prepare some variables. The ETag is an unique identifier of the file
         String fileName = downloadFile.getName();
         long length = downloadFile.getLength();
@@ -235,9 +230,8 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
         }
     }
 
-    private void sendRandomAccessFile( IDownloadFile downloadFile, HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws IOException, DownloadServletException
-    {
+    private void sendRandomAccessFile(IDownloadFile downloadFile, HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws IOException, DownloadServletException {
         // Prepare some variables. The ETag is an unique identifier of the file
         String fileName = downloadFile.getName();
         long length = downloadFile.getLength();
@@ -371,8 +365,8 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
 
         // Send requested file (part(s)) to client ------------------------------------------------
 
-        try ( RandomAccessFile input = downloadFile.getRandomAccessFile();
-              ServletOutputStream output = response.getOutputStream() ) {
+        try (RandomAccessFile input = downloadFile.getRandomAccessFile();
+             ServletOutputStream output = response.getOutputStream()) {
 
             if (ranges.isEmpty() || ranges.get(0) == full) {
 
@@ -434,40 +428,43 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
             output.flush();
         }
     }
-    
+
     /**
      * Returns true if the given accept header accepts the given value.
+     *
      * @param acceptHeader The accept header.
-     * @param toAccept The value to be accepted.
+     * @param toAccept     The value to be accepted.
      * @return True if the given accept header accepts the given value.
      */
     private boolean accepts(String acceptHeader, String toAccept) {
         String[] acceptValues = acceptHeader.split("\\s*(,|;)\\s*");
         Arrays.sort(acceptValues);
         return Arrays.binarySearch(acceptValues, toAccept) > -1
-            || Arrays.binarySearch(acceptValues, toAccept.replaceAll("/.*$", "/*")) > -1
-            || Arrays.binarySearch(acceptValues, "*/*") > -1;
+                || Arrays.binarySearch(acceptValues, toAccept.replaceAll("/.*$", "/*")) > -1
+                || Arrays.binarySearch(acceptValues, "*/*") > -1;
     }
 
     /**
      * Returns true if the given match header matches the given value.
+     *
      * @param matchHeader The match header.
-     * @param toMatch The value to be matched.
+     * @param toMatch     The value to be matched.
      * @return True if the given match header matches the given value.
      */
     private static boolean matches(String matchHeader, String toMatch) {
         String[] matchValues = matchHeader.split("\\s*,\\s*");
         Arrays.sort(matchValues);
         return Arrays.binarySearch(matchValues, toMatch) > -1
-            || Arrays.binarySearch(matchValues, "*") > -1;
+                || Arrays.binarySearch(matchValues, "*") > -1;
     }
 
     /**
      * Returns a substring of the given string value from the given begin index to the given end
      * index as a long. If the substring is empty, then -1 will be returned
-     * @param value The string value to return a substring as long for.
+     *
+     * @param value      The string value to return a substring as long for.
      * @param beginIndex The begin index of the substring to be returned as long.
-     * @param endIndex The end index of the substring to be returned as long.
+     * @param endIndex   The end index of the substring to be returned as long.
      * @return A substring of the given string value as long or -1 if substring is empty.
      */
     private long sublong(String value, int beginIndex, int endIndex) {
@@ -477,15 +474,15 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
 
     /**
      * Copy the given byte range of the given input to the given output.
-     * @param input The input to copy the given range to the given output for.
+     *
+     * @param input  The input to copy the given range to the given output for.
      * @param output The output to copy the given range from the given input for.
-     * @param start Start of the byte range.
+     * @param start  Start of the byte range.
      * @param length Length of the byte range.
      * @throws IOException If something fails at I/O level.
      */
     private void copy(RandomAccessFile input, OutputStream output, long start, long length)
-        throws IOException
-    {
+            throws IOException {
         byte[] buffer = new byte[TRANSFER_BUFFER_SIZE];
         int read;
 
@@ -512,6 +509,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
 
     /**
      * Close the given resource.
+     *
      * @param resource The resource to be closed.
      */
     private void close(Closeable resource) {
@@ -538,8 +536,9 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet
 
         /**
          * Construct a byte range.
+         *
          * @param start Start of the byte range.
-         * @param end End of the byte range.
+         * @param end   End of the byte range.
          * @param total Total length of the byte source.
          */
         public Range(long start, long end, long total) {

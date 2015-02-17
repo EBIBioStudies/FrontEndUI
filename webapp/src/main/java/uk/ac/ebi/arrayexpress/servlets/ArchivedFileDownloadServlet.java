@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  *
  */
 
+package uk.ac.ebi.arrayexpress.servlets;
+
 import de.schlichtherle.util.zip.ZipEntry;
 import de.schlichtherle.util.zip.ZipFile;
 import org.slf4j.Logger;
@@ -31,22 +31,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
 
-public class ArchivedFileDownloadServlet extends BaseDownloadServlet
-{
+public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909731234L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected final class ArchivedDownloadFile implements IDownloadFile
-    {
+    protected final class ArchivedDownloadFile implements IDownloadFile {
         private final File file;
         private final String entryName;
         private final ZipFile zipFile;
         private final ZipEntry zipEntry;
 
-        public ArchivedDownloadFile( File archiveFile, String entryName ) throws IOException
-        {
-            if ( null == archiveFile || null == entryName ) {
+        public ArchivedDownloadFile(File archiveFile, String entryName) throws IOException {
+            if (null == archiveFile || null == entryName) {
                 throw new IllegalArgumentException("Arguments cannot be null");
             }
             this.file = archiveFile;
@@ -55,74 +52,61 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet
             this.zipEntry = this.zipFile.getEntry(this.entryName);
         }
 
-        private File getFile()
-        {
+        private File getFile() {
             return this.file;
         }
-        
-        private String getEntryName()
-        {
+
+        private String getEntryName() {
             return this.entryName;
         }
 
-        private ZipEntry getZipEntry()
-        {
+        private ZipEntry getZipEntry() {
             return this.zipEntry;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return getEntryName();
         }
 
-        public String getPath()
-        {
+        public String getPath() {
             return getFile().getName() + File.separator + getEntryName();
         }
 
-        public long getLength()
-        {
+        public long getLength() {
             return (null != getZipEntry() ? getZipEntry().getSize() : 0L);
         }
 
-        public long getLastModified()
-        {
+        public long getLastModified() {
             return (null != getZipEntry() ? getZipEntry().getTime() : 0L);
         }
 
-        public boolean canDownload()
-        {
+        public boolean canDownload() {
             return null != getZipEntry();
         }
 
-        public boolean isRandomAccessSupported()
-        {
+        public boolean isRandomAccessSupported() {
             return false;
         }
 
-        public RandomAccessFile getRandomAccessFile() throws IOException
-        {
+        public RandomAccessFile getRandomAccessFile() throws IOException {
             throw new IllegalArgumentException("Method not supported");
         }
 
-        public InputStream getInputStream() throws IOException
-        {
+        public InputStream getInputStream() throws IOException {
             if (null == getZipEntry())
                 throw new FileNotFoundException("Archived file not found");
             return this.zipFile.getInputStream(getZipEntry());
         }
 
-        public void close() throws IOException
-        {
+        public void close() throws IOException {
             if (null != this.zipFile) {
                 zipFile.close();
             }
         }
     }
 
-    protected IDownloadFile getDownloadFileFromRequest( HttpServletRequest request, HttpServletResponse response, List<String> userIDs )
-            throws DownloadServletException
-    {
+    protected IDownloadFile getDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response, List<String> userIDs)
+            throws DownloadServletException {
         RegexHelper PARSE_ARGUMENTS_REGEX = new RegexHelper("/([^/]+)/([^/]+)/([^/]+)$", "i");
         String[] requestArgs = PARSE_ARGUMENTS_REGEX.match(request.getRequestURL().toString());
 
@@ -183,7 +167,7 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet
 
                 logger.debug("Will be serving archive [{}]", archLocation);
                 file = new ArchivedDownloadFile(new File(files.getRootFolder(), archLocation), fileName);
-    
+
                 if (!file.canDownload()) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     throw new DownloadServletException(

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress;
  *
  */
 
+package uk.ac.ebi.arrayexpress;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -30,15 +30,13 @@ import javax.servlet.ServletContextListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AEInterfaceApplication extends Application implements ServletContextListener
-{
+public class AEInterfaceApplication extends Application implements ServletContextListener {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private ServletContext servletContext;
 
-    public AEInterfaceApplication()
-    {
+    public AEInterfaceApplication() {
         super("arrayexpress");
 
         addComponent(new MapEngine());
@@ -57,19 +55,16 @@ public class AEInterfaceApplication extends Application implements ServletContex
         addComponent(new Ontologies());
     }
 
-    public String getName()
-    {
+    public String getName() {
         return null != servletContext ? servletContext.getServletContextName() : null;
     }
 
-    public URL getResource( String path ) throws MalformedURLException
-    {
+    public URL getResource(String path) throws MalformedURLException {
         return null != servletContext ? servletContext.getResource(path) : null;
     }
 
 
-    public synchronized void contextInitialized( ServletContextEvent sce )
-    {
+    public synchronized void contextInitialized(ServletContextEvent sce) {
         servletContext = sce.getServletContext();
 
         logger.info("****************************************************************************************************************************");
@@ -84,8 +79,7 @@ public class AEInterfaceApplication extends Application implements ServletContex
         initialize();
     }
 
-    public synchronized void contextDestroyed( ServletContextEvent sce )
-    {
+    public synchronized void contextDestroyed(ServletContextEvent sce) {
         terminate();
 
         // restore java.util.logging calls to the original state

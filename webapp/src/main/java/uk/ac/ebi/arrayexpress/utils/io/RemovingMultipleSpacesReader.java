@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.io;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,29 +15,27 @@ package uk.ac.ebi.arrayexpress.utils.io;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.io;
+
 import java.io.IOException;
 import java.io.Reader;
 
-public class RemovingMultipleSpacesReader extends Reader
-{
+public class RemovingMultipleSpacesReader extends Reader {
     private Reader in;
 
     private enum ReaderState {
-        NormalCharacterFlow
-        , SuppressWhiteSpaceCharacter
+        NormalCharacterFlow, SuppressWhiteSpaceCharacter
     }
 
     private ReaderState state;
 
-    public RemovingMultipleSpacesReader( Reader in )
-    {
+    public RemovingMultipleSpacesReader(Reader in) {
         super(in);
         this.in = in;
         this.state = ReaderState.NormalCharacterFlow;
     }
 
-    public int read(char[] cbuf, int off, int len) throws IOException
-    {
+    public int read(char[] cbuf, int off, int len) throws IOException {
         synchronized (lock) {
             if (null == cbuf)
                 throw new IOException("Null array passed for reading");
@@ -49,7 +45,7 @@ public class RemovingMultipleSpacesReader extends Reader
             if (-1 != charsRead) {
                 int result = 0;
                 Character ch;
-    
+
                 for (int pos = 0; pos < charsRead; ++pos) {
                     ch = inBuffer[pos];
                     if (0x20 == ch) {
@@ -73,8 +69,7 @@ public class RemovingMultipleSpacesReader extends Reader
         }
     }
 
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         synchronized (lock) {
             if (null != in) {
                 in.close();

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -35,8 +35,7 @@ import java.io.PrintWriter;
  *  This servlet supports openId authentication to GenomeSpace
  *  and experiment upload functionality
  */
-public class AuthServlet extends ApplicationServlet
-{
+public class AuthServlet extends ApplicationServlet {
     private static final long serialVersionUID = -4788567497622259711L;
 
     private final transient Logger logger = LoggerFactory.getLogger(getClass());
@@ -49,15 +48,13 @@ public class AuthServlet extends ApplicationServlet
     private static final String REFERER_HEADER = "Referer";
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return requestType == RequestType.GET || requestType == RequestType.POST;
     }
 
     @Override
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         String returnURL = request.getHeader(REFERER_HEADER);
@@ -124,14 +121,12 @@ public class AuthServlet extends ApplicationServlet
     }
 
     @SuppressWarnings("unused")
-    private String getCookie( HttpServletRequest request, String name )
-    {
+    private String getCookie(HttpServletRequest request, String name) {
         CookieMap cookies = new CookieMap(request.getCookies());
         return cookies.containsKey(name) ? cookies.get(name).getValue() : null;
     }
 
-    private void setCookie( HttpServletResponse response, String name, String value, Integer maxAge )
-    {
+    private void setCookie(HttpServletResponse response, String name, String value, Integer maxAge) {
         Cookie cookie = new Cookie(name, null != value ? value : "");
         // if the value is null - delete cookie by expiring it
         cookie.setPath("/");

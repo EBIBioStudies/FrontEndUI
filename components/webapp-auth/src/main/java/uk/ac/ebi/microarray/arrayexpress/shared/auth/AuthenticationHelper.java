@@ -1,7 +1,5 @@
-package uk.ac.ebi.microarray.arrayexpress.shared.auth;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +15,21 @@ package uk.ac.ebi.microarray.arrayexpress.shared.auth;
  *
  */
 
+package uk.ac.ebi.microarray.arrayexpress.shared.auth;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class AuthenticationHelper
-{
+public class AuthenticationHelper {
     // embedded encoder class
     private final ModifiedBase64Encoder encoder = new ModifiedBase64Encoder();
 
-    public boolean verifyHash( String hash, String username, String password, String suffix )
-    {
+    public boolean verifyHash(String hash, String username, String password, String suffix) {
         String computedHash = generateHash(username, password, suffix);
         return (null != hash && hash.equals(computedHash));
     }
 
-    public String generateHash( String username, String password, String suffix )
-    {
+    public String generateHash(String username, String password, String suffix) {
         String hash = null;
         try {
             MessageDigest digest = MessageDigest.getInstance("sha-512");
@@ -51,13 +48,11 @@ public class AuthenticationHelper
         return hash;
     }
 
-    private static class ModifiedBase64Encoder
-    {
+    private static class ModifiedBase64Encoder {
         // Mapping table from 6-bit nibbles to Base64 characters.
         private char[] map1 = new char[64];
 
-        public ModifiedBase64Encoder()
-        {
+        public ModifiedBase64Encoder() {
             int i = 0;
             for (char c = 'A'; c <= 'Z'; c++) map1[i++] = c;
             for (char c = 'a'; c <= 'z'; c++) map1[i++] = c;
@@ -73,8 +68,7 @@ public class AuthenticationHelper
          * @param in an array containing the data bytes to be encoded.
          * @return A character array with the Base64 encoded data.
          */
-        public char[] encode( byte[] in )
-        {
+        public char[] encode(byte[] in) {
             return encode(in, in.length);
         }
 
@@ -86,8 +80,7 @@ public class AuthenticationHelper
          * @param iLen number of bytes to process in <code>in</code>.
          * @return A character array with the Base64 encoded data.
          */
-        public char[] encode( byte[] in, int iLen )
-        {
+        public char[] encode(byte[] in, int iLen) {
             int oDataLen = (iLen * 4 + 2) / 3;       // output length without padding
             int oLen = ((iLen + 2) / 3) * 4;         // output length including padding
             char[] out = new char[oLen];

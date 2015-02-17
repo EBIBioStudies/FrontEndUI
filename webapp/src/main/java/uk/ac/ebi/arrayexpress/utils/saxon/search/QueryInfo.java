@@ -1,11 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
-import org.apache.lucene.search.Query;
-
-import java.util.Map;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,39 +15,38 @@ import java.util.Map;
  *
  */
 
-public class QueryInfo
-{
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
+
+import org.apache.lucene.search.Query;
+
+import java.util.Map;
+
+public class QueryInfo {
     private String indexId;
     private Map<String, String[]> params;
     private Query query;
 
-    public void setIndexId( String indexId )
-    {
+    public void setIndexId(String indexId) {
         this.indexId = indexId;
     }
 
-    public String getIndexId()
-    {
+    public String getIndexId() {
         return this.indexId;
     }
 
-    public void setParams( Map<String, String[]> params )
-    {
+    public void setParams(Map<String, String[]> params) {
         this.params = params;
     }
 
-    public Map<String, String[]> getParams()
-    {
+    public Map<String, String[]> getParams() {
         return params;
     }
 
-    public void setQuery( Query query )
-    {
+    public void setQuery(Query query) {
         this.query = query;
     }
 
-    public Query getQuery()
-    {
+    public Query getQuery() {
         return query;
     }
 }

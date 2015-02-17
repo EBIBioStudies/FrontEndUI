@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.io;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +15,22 @@ package uk.ac.ebi.arrayexpress.utils.io;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.io;
+
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.io.IOException;
 import java.io.Reader;
 
-public class FilteringIllegalHTMLCharactersReader extends Reader
-{
+public class FilteringIllegalHTMLCharactersReader extends Reader {
     private Reader in;
 
-    public FilteringIllegalHTMLCharactersReader( Reader in )
-    {
+    public FilteringIllegalHTMLCharactersReader(Reader in) {
         super(in);
         this.in = in;
     }
 
-    public int read(char[] cbuf, int off, int len) throws IOException
-    {
+    public int read(char[] cbuf, int off, int len) throws IOException {
         synchronized (lock) {
             Character ch;
             if (null == cbuf)
@@ -51,12 +48,11 @@ public class FilteringIllegalHTMLCharactersReader extends Reader
                     cbuf[pos] = ch;
                 }
             }
-        return result;
+            return result;
         }
     }
 
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         synchronized (lock) {
             if (null != in) {
                 in.close();

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.jobs;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.jobs;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.jobs;
 
 import net.sf.saxon.om.DocumentInfo;
 import org.quartz.JobExecutionContext;
@@ -38,13 +38,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RescanFilesJob extends ApplicationJob
-{
+public class RescanFilesJob extends ApplicationJob {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void doExecute( JobExecutionContext jec ) throws Exception
-    {
+    public void doExecute(JobExecutionContext jec) throws Exception {
         Files files = (Files) getComponent("Files");
         SaxonEngine saxonEngine = (SaxonEngine) getComponent("SaxonEngine");
 
@@ -67,7 +65,7 @@ public class RescanFilesJob extends ApplicationJob
 
             InputStream stdOut = process.getInputStream();
             InputStream stdErr = process.getErrorStream();
-            
+
             SAXSource source = new SAXSource();
             source.setInputSource(
                     new InputSource(
@@ -82,9 +80,9 @@ public class RescanFilesJob extends ApplicationJob
             );
 
             source.setXMLReader(new FlatFileXMLReader(' ', '\"'));
-            
+
             Map<String, String[]> transformParams = new HashMap<>();
-            transformParams.put("rootFolder", new String[] { rootFolder });
+            transformParams.put("rootFolder", new String[]{rootFolder});
             /*
             StringTools.stringToFile(
                     saxonEngine.serializeDocument(source)
@@ -99,13 +97,13 @@ public class RescanFilesJob extends ApplicationJob
                     source
                     , "preprocess-files-xml.xsl"
                     , transformParams
-                    );
+            );
 
             String errorString = StringTools.streamToString(stdErr, "US-ASCII");
             int returnCode = process.waitFor();
 
             if (0 == returnCode) {
-                ((Files)getComponent("Files")).reload(result, errorString);
+                ((Files) getComponent("Files")).reload(result, errorString);
                 this.logger.info("Rescan of downloadable files completed");
             } else {
                 this.logger.error("Rescan returned exit code [{}], update not performed", returnCode);

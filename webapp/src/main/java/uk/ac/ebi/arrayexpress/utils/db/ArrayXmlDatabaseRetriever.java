@@ -1,17 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.db;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
-
-import java.io.IOException;
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +15,19 @@ import java.sql.SQLException;
  *
  */
 
-public class ArrayXmlDatabaseRetriever extends SqlStatementExecutor
-{
+package uk.ac.ebi.arrayexpress.utils.db;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.ac.ebi.arrayexpress.utils.StringTools;
+
+import java.io.IOException;
+import java.sql.Clob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ArrayXmlDatabaseRetriever extends SqlStatementExecutor {
     // logging facility
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -93,14 +92,12 @@ public class ArrayXmlDatabaseRetriever extends SqlStatementExecutor
 
     private StringBuilder arrayDesignXml;
 
-    public ArrayXmlDatabaseRetriever( IConnectionSource connSource )
-    {
+    public ArrayXmlDatabaseRetriever(IConnectionSource connSource) {
         super(connSource, getArrayDesignSql);
         arrayDesignXml = new StringBuilder(40000000);
     }
 
-    public String getXml()
-    {
+    public String getXml() {
         if (!execute(false)) {
             logger.error("There was a problem retrieving array design information, check log for errors or exceptions");
             return null;
@@ -114,15 +111,13 @@ public class ArrayXmlDatabaseRetriever extends SqlStatementExecutor
         );
     }
 
-    protected void setParameters( PreparedStatement stmt ) throws SQLException
-    {
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
         // nothing to do here
     }
 
-    protected void processResultSet( ResultSet resultSet ) throws IOException, SQLException
-    {
+    protected void processResultSet(ResultSet resultSet) throws IOException, SQLException {
         arrayDesignXml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><array_designs>");
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             Clob xmlClob = resultSet.getClob(1);
             if (null != xmlClob) {
                 arrayDesignXml.append(clobToString(xmlClob));

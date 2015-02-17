@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils.saxon;
 
 import au.com.bytecode.opencsv.CSVReader;
 import joptsimple.OptionParser;
@@ -37,8 +37,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class FlatFileXMLReader extends AbstractCustomXMLReader
-{
+public class FlatFileXMLReader extends AbstractCustomXMLReader {
     private static final Attributes EMPTY_ATTR = new AttributesImpl();
 
     private static final String EMPTY_NAMESPACE = "";
@@ -53,21 +52,19 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
     private static final String OPTION_SORT_BY = "sortby";
     private static final String OPTION_SORT_ORDER = "sortorder";
 
-    private enum ColDataType    { STRING, INTEGER, DECIMAL }
+    private enum ColDataType {STRING, INTEGER, DECIMAL}
 
     private char columnDelimiter;
     private char columnQuoteChar;
 
     private OptionSet options = null;
 
-    public FlatFileXMLReader()
-    {
+    public FlatFileXMLReader() {
         this.columnDelimiter = DEFAULT_COL_DELIMITER;
         this.columnQuoteChar = DEFAULT_COL_QUOTE_CHAR;
     }
 
-    public FlatFileXMLReader( String options )
-    {
+    public FlatFileXMLReader(String options) {
         this();
 
         OptionParser parser = new OptionParser();
@@ -80,14 +77,12 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         this.options = parser.parse(null != options ? options.split("[ ;]") : new String[]{""});
     }
 
-    public FlatFileXMLReader( final char columnDelimiter, final char columnQuoteChar )
-    {
+    public FlatFileXMLReader(final char columnDelimiter, final char columnQuoteChar) {
         this.columnDelimiter = columnDelimiter;
         this.columnQuoteChar = columnQuoteChar;
     }
-    
-    public void parse( InputSource input ) throws IOException, SAXException
-    {
+
+    public void parse(InputSource input) throws IOException, SAXException {
         int headerRows = getIntOptionValue(OPTION_HEADER_ROWS, 0);
         int page = getIntOptionValue(OPTION_PAGE, 0);
         int pageSize = getIntOptionValue(OPTION_PAGE_SIZE, -1);
@@ -103,7 +98,7 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         if (input.getCharacterStream() != null) {
             inStream = input.getCharacterStream();
         } else if (input.getByteStream() != null) {
-            inStream =  new InputStreamReader(input.getByteStream());
+            inStream = new InputStreamReader(input.getByteStream());
         } else if (input.getSystemId() != null) {
             URL url = new URL(input.getSystemId());
             inStream = new InputStreamReader(url.openStream());
@@ -135,7 +130,7 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         // 2. determines if column to be sorted is numeric
         ColDataType sortColDataType = ColDataType.INTEGER;
         int colTypeSkipRows = headerRows;
-        for (Iterator<String[]> iterator = ff.iterator(); iterator.hasNext();) {
+        for (Iterator<String[]> iterator = ff.iterator(); iterator.hasNext(); ) {
             String[] row = iterator.next();
             if (row.length != cols || isRowBlank(row)) {
                 iterator.remove();
@@ -193,12 +188,11 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         ch.endDocument();
     }
 
-    private void outputRow( ContentHandler ch, boolean isHeader, String seqValue, String[] rowData ) throws SAXException
-    {
+    private void outputRow(ContentHandler ch, boolean isHeader, String seqValue, String[] rowData) throws SAXException {
         String rowElement = isHeader ? "header" : "row";
 
         AttributesImpl rowAttrs = new AttributesImpl();
-        if (null !=seqValue) {
+        if (null != seqValue) {
             rowAttrs.addAttribute(EMPTY_NAMESPACE, "seq", "seq", CDATA_TYPE, seqValue);
         }
         rowAttrs.addAttribute(EMPTY_NAMESPACE, "cols", "cols", CDATA_TYPE, String.valueOf(rowData.length));
@@ -215,26 +209,23 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         ch.endElement(EMPTY_NAMESPACE, rowElement, rowElement);
     }
 
-    private Integer getIntOptionValue( String option, Integer defaultValue )
-    {
+    private Integer getIntOptionValue(String option, Integer defaultValue) {
         if (null != options && options.has(option)) {
-            return (Integer)this.options.valueOf(option);
+            return (Integer) this.options.valueOf(option);
         } else {
             return defaultValue;
         }
     }
 
-    private String getStringOptionValue( String option, String defaultValue )
-    {
+    private String getStringOptionValue(String option, String defaultValue) {
         if (null != options && options.has(option)) {
-            return (String)this.options.valueOf(option);
+            return (String) this.options.valueOf(option);
         } else {
             return defaultValue;
         }
     }
 
-    private boolean isRowBlank( String[] row )
-    {
+    private boolean isRowBlank(String[] row) {
         if (null != row) {
             for (String col : row) {
                 if (StringUtils.isNotBlank(col)) {
@@ -245,8 +236,7 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         return true;
     }
 
-    private ColDataType getColDataType( String string )
-    {
+    private ColDataType getColDataType(String string) {
         if (null != string) {
             if (string.matches("^\\s*\\d+\\s*$")) {
                 return ColDataType.INTEGER;
@@ -257,14 +247,12 @@ public class FlatFileXMLReader extends AbstractCustomXMLReader
         return ColDataType.STRING;
     }
 
-    private class SortColumnComparator implements Comparator<String[]>
-    {
+    private class SortColumnComparator implements Comparator<String[]> {
         private int sortBy;
         private String sortOrder;
         ColDataType sortColDataType;
 
-        public SortColumnComparator( int sortBy, String sortOrder, ColDataType sortColDataType )
-        {
+        public SortColumnComparator(int sortBy, String sortOrder, ColDataType sortColDataType) {
             this.sortBy = sortBy;
             this.sortOrder = sortOrder;
             this.sortColDataType = sortColDataType;

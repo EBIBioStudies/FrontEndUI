@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +15,33 @@ package uk.ac.ebi.arrayexpress.utils;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
-public class HttpServletRequestParameterMap extends HashMap<String,String[]>
-{
+public class HttpServletRequestParameterMap extends HashMap<String, String[]> {
     private static final long serialVersionUID = -9113326940165926711L;
 
     private final static RegexHelper ALL_SANS_SQUARE_BRACKETS = new RegexHelper("^(.*)\\[\\d*\\]$", "ig");
 
     private final static Map<String, String> PARAM_ALIASES_MAP = createAliasesMap();
 
-    private static Map<String, String> createAliasesMap()
-    {
+    private static Map<String, String> createAliasesMap() {
         Map<String, String> result = new HashMap<>();
         result.put("query", "keywords");
         result.put("species", "organism");
         return Collections.unmodifiableMap(result);
     }
 
-    public HttpServletRequestParameterMap( HttpServletRequest request ) throws UnsupportedEncodingException
-    {
+    public HttpServletRequestParameterMap(HttpServletRequest request) throws UnsupportedEncodingException {
         if (null != request) {
             Map params = request.getParameterMap();
-            for ( Object param : params.entrySet() ) {
+            for (Object param : params.entrySet()) {
                 Map.Entry p = (Map.Entry) param;
-                String key = filterArrayBrackets((String)p.getKey());
-                String[] values = fixUTF8Values((String[])p.getValue());
+                String key = filterArrayBrackets((String) p.getKey());
+                String[] values = fixUTF8Values((String[]) p.getValue());
                 List<String> newValues = Arrays.asList(values);
                 if (this.containsKey(key)) {
                     List<String> oldValues = Arrays.asList(this.get(key));
@@ -81,16 +78,14 @@ public class HttpServletRequestParameterMap extends HashMap<String,String[]>
     }
 
     @Override
-    public String[] put( String key, String[] value )
-    {
+    public String[] put(String key, String[] value) {
         if (PARAM_ALIASES_MAP.containsKey(key)) {
             key = PARAM_ALIASES_MAP.get(key);
         }
         return super.put(key, value);
     }
 
-    public void put( String key, String value )
-    {
+    public void put(String key, String value) {
         if (null != value) {
             String[] arrValue = new String[1];
             arrValue[0] = value;
@@ -98,29 +93,25 @@ public class HttpServletRequestParameterMap extends HashMap<String,String[]>
         }
     }
 
-    public void put( String key, List<String> values )
-    {
+    public void put(String key, List<String> values) {
         if (null != values) {
             this.put(key, values.toArray(new String[values.size()]));
         }
     }
 
-    public String getString( String key )
-    {
+    public String getString(String key) {
         if (this.containsKey(key)) {
             return StringTools.arrayToString(this.get(key), ",");
         }
         return null;
     }
 
-    private String filterArrayBrackets( String key )
-    {
+    private String filterArrayBrackets(String key) {
         String result = ALL_SANS_SQUARE_BRACKETS.matchFirst(key);
         return !"".equals(result) ? result : key;
     }
 
-    private String[] fixUTF8Values( String[] values ) throws UnsupportedEncodingException
-    {
+    private String[] fixUTF8Values(String[] values) throws UnsupportedEncodingException {
         if (null != values && 0 != values.length) {
             String[] fixedValues = new String[values.length];
             for (int pos = 0; pos < values.length; ++pos) {

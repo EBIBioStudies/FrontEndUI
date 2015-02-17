@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -27,53 +27,44 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.IntegerValue;
 import net.sf.saxon.value.SequenceType;
 
-public class HTTPStatusFunction extends ExtensionFunctionDefinition
-{
+public class HTTPStatusFunction extends ExtensionFunctionDefinition {
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "httpStatus");
 
     private static final long serialVersionUID = -4356084047364706861L;
 
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 1;
     }
 
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 1;
     }
 
-    public SequenceType[] getArgumentTypes()
-    {
-        return new SequenceType[]{ SequenceType.SINGLE_INTEGER };
+    public SequenceType[] getArgumentTypes() {
+        return new SequenceType[]{SequenceType.SINGLE_INTEGER};
     }
 
-    public SequenceType getResultType( SequenceType[] suppliedArgumentTypes )
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.EMPTY_SEQUENCE;
     }
 
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new HTTPStatusCall();
     }
 
-    private static class HTTPStatusCall extends ExtensionFunctionCall
-    {
+    private static class HTTPStatusCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = -5713635829718999558L;
 
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             IntegerValue statusValue = (IntegerValue) SequenceTool.asItem(arguments[0]);
 
-            throw new HTTPStatusException((int)statusValue.longValue());
+            throw new HTTPStatusException((int) statusValue.longValue());
         }
     }
 }

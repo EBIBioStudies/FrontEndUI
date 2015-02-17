@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -29,52 +29,43 @@ import net.sf.saxon.value.NumericValue;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 
-public class FormatFileSizeFunction extends ExtensionFunctionDefinition
-{
+public class FormatFileSizeFunction extends ExtensionFunctionDefinition {
     private static final long serialVersionUID = 7995886291705633633L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "formatFileSize");
 
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 1;
     }
 
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 1;
     }
 
-    public SequenceType[] getArgumentTypes()
-    {
-        return new SequenceType[]{ SequenceType.SINGLE_INTEGER };
+    public SequenceType[] getArgumentTypes() {
+        return new SequenceType[]{SequenceType.SINGLE_INTEGER};
     }
 
-    public SequenceType getResultType( SequenceType[] suppliedArgumentTypes )
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.SINGLE_STRING;
     }
 
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new FormatFileSizeCall();
     }
 
-    private static class FormatFileSizeCall extends ExtensionFunctionCall
-    {
+    private static class FormatFileSizeCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = -8209172163832123502L;
 
         @SuppressWarnings("unchecked")
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             NumericValue sizeValue = (NumericValue) SequenceTool.asItem(arguments[0]);
-            Long size = (sizeValue instanceof Int64Value) ? ((Int64Value)sizeValue).asBigInteger().longValue() : sizeValue.longValue();
+            Long size = (sizeValue instanceof Int64Value) ? ((Int64Value) sizeValue).asBigInteger().longValue() : sizeValue.longValue();
 
             StringBuilder str = new StringBuilder();
             if (922L > size) {

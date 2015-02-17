@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.io;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +15,27 @@ package uk.ac.ebi.arrayexpress.utils.io;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.io;
+
 import java.io.IOException;
 import java.io.Reader;
 
-public class UnescapingXMLNumericReferencesReader extends Reader
-{
+public class UnescapingXMLNumericReferencesReader extends Reader {
     private Reader in;
 
     private enum UnescapeState {
-        AnyCharExpected
-        , NumberSignExpected
-        , HexPrefixOrDecDigitExpected
-        , DecDigitOrSemicolonExpected
-        , HexDigitOrSemicolonExpected
+        AnyCharExpected, NumberSignExpected, HexPrefixOrDecDigitExpected, DecDigitOrSemicolonExpected, HexDigitOrSemicolonExpected
     }
 
     private char[] lastReadExcess;
 
-    public UnescapingXMLNumericReferencesReader( Reader in )
-    {
+    public UnescapingXMLNumericReferencesReader(Reader in) {
         super(in);
         this.in = in;
         this.lastReadExcess = null;
     }
 
-    public int read(char[] cbuf, int off, int len) throws IOException
-    {
+    public int read(char[] cbuf, int off, int len) throws IOException {
         synchronized (lock) {
 
             if (null == cbuf)
@@ -126,7 +119,7 @@ public class UnescapingXMLNumericReferencesReader extends Reader
 
                         case DecDigitOrSemicolonExpected:
                             if (';' == ch) {
-                                cbuf[cbufPos++] = (char)((int)Integer.valueOf(number.toString()));
+                                cbuf[cbufPos++] = (char) ((int) Integer.valueOf(number.toString()));
                                 state = UnescapeState.AnyCharExpected;
                                 pos++;
                             } else if (Character.isDigit(ch)) {
@@ -141,7 +134,7 @@ public class UnescapingXMLNumericReferencesReader extends Reader
 
                         case HexDigitOrSemicolonExpected:
                             if (';' == ch) {
-                                cbuf[cbufPos++] = (char)((int)Integer.valueOf(number.toString(), 16));
+                                cbuf[cbufPos++] = (char) ((int) Integer.valueOf(number.toString(), 16));
                                 state = UnescapeState.AnyCharExpected;
                                 pos++;
                             } else if (Character.isDigit(ch)
@@ -174,12 +167,11 @@ public class UnescapingXMLNumericReferencesReader extends Reader
                 inSize = cbufPos - off;
             }
 
-        return inSize;
+            return inSize;
         }
     }
 
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         synchronized (lock) {
             if (null != in) {
                 in.close();

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.components;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.components;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,26 +41,21 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class Ontologies extends ApplicationComponent
-{
-    private class EFOSubclassesOptions extends HTMLOptions
-    {
+public class Ontologies extends ApplicationComponent {
+    private class EFOSubclassesOptions extends HTMLOptions {
         private String defaultOption;
 
-        public EFOSubclassesOptions( String defaultOption )
-        {
+        public EFOSubclassesOptions(String defaultOption) {
             this.defaultOption = defaultOption;
             initialize();
         }
 
-        private void initialize()
-        {
+        private void initialize() {
             clearOptions();
             addOption("", defaultOption);
         }
 
-        public void reload( IEFO efo, String baseNode )
-        {
+        public void reload(IEFO efo, String baseNode) {
             initialize();
             EFONode node = efo.getMap().get(baseNode);
             if (null != node) {
@@ -77,7 +72,7 @@ public class Ontologies extends ApplicationComponent
     private IEFO efo;
     private EFOExpansionLookupIndex lookupIndex;
 
-    
+
     private AtomicBoolean hasEfoLoaded = new AtomicBoolean(false);
 
     private SearchEngine search;
@@ -86,13 +81,11 @@ public class Ontologies extends ApplicationComponent
     private EFOSubclassesOptions assayByMolecule;
     private EFOSubclassesOptions assayByInstrument;
 
-    public Ontologies()
-    {
+    public Ontologies() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.search = (SearchEngine) getComponent("SearchEngine");
         this.autocompletion = (Autocompletion) getComponent("Autocompletion");
         initLookupIndex();
@@ -104,12 +97,10 @@ public class Ontologies extends ApplicationComponent
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
-    public void update( InputStream ontologyStream ) throws IOException, InterruptedException
-    {
+    public void update(InputStream ontologyStream) throws IOException, InterruptedException {
         setEfoLoadedFlag(false);
 
         // load custom synonyms to lookup index
@@ -131,28 +122,23 @@ public class Ontologies extends ApplicationComponent
         setEfoLoadedFlag(true);
     }
 
-    public IEFO getEfo()
-    {
+    public IEFO getEfo() {
         return this.efo;
     }
 
-    public String getAssayByMoleculeOptions()
-    {
+    public String getAssayByMoleculeOptions() {
         return this.assayByMolecule.getHtml();
     }
 
-    public String getAssayByInstrumentOptions()
-    {
+    public String getAssayByInstrumentOptions() {
         return this.assayByInstrument.getHtml();
     }
 
-    public EFOExpansionLookupIndex getExpansionLookupIndex()
-    {
+    public EFOExpansionLookupIndex getExpansionLookupIndex() {
         return this.lookupIndex;
     }
 
-    private void loadCustomSynonyms() throws IOException
-    {
+    private void loadCustomSynonyms() throws IOException {
         String synFileLocation = getPreferences().getString("ae.efo.synonyms");
         if (null != synFileLocation) {
             try (InputStream is = getApplication().getResource(synFileLocation).openStream()) {
@@ -165,8 +151,7 @@ public class Ontologies extends ApplicationComponent
         }
     }
 
-    public IEFO removeIgnoredClasses( IEFO efo, String ignoreListFileLocation ) throws IOException
-    {
+    public IEFO removeIgnoredClasses(IEFO efo, String ignoreListFileLocation) throws IOException {
         if (null != ignoreListFileLocation) {
             try (InputStream is = getApplication().getResource(ignoreListFileLocation).openStream()) {
                 Set<String> ignoreList = StringTools.streamToStringSet(is, "UTF-8");
@@ -182,13 +167,11 @@ public class Ontologies extends ApplicationComponent
         return efo;
     }
 
-    private IEFO removeIgnoredClasses( IEFO efo ) throws IOException
-    {
+    private IEFO removeIgnoredClasses(IEFO efo) throws IOException {
         return removeIgnoredClasses(efo, getPreferences().getString("ae.efo.ignoreList"));
     }
 
-    private void removeEFONode( IEFO efo, String nodeId )
-    {
+    private void removeEFONode(IEFO efo, String nodeId) {
         EFONode node = efo.getMap().get(nodeId);
         // step 1: for all parents remove node as a child
         for (EFONode parent : node.getParents()) {
@@ -207,8 +190,7 @@ public class Ontologies extends ApplicationComponent
         logger.debug("Removed [{}] -> [{}]", node.getId(), node.getTerm());
     }
 
-    private void initLookupIndex() throws IOException
-    {
+    private void initLookupIndex() throws IOException {
         Set<String> stopWords = new HashSet<>();
         String[] words = getPreferences().getString("ae.efo.stopWords").split("\\s*,\\s*");
         if (null != words && words.length > 0) {
@@ -224,13 +206,11 @@ public class Ontologies extends ApplicationComponent
         c.setQueryHighlighter(new EFOExpandedHighlighter());
     }
 
-    public boolean getEfoLoadedFlag()
-    {
+    public boolean getEfoLoadedFlag() {
         return hasEfoLoaded.get();
     }
 
-    private void setEfoLoadedFlag( boolean flag )
-    {
+    private void setEfoLoadedFlag(boolean flag) {
         hasEfoLoaded.set(flag);
     }
 }

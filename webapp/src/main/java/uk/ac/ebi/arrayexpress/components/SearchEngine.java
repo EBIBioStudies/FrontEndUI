@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.components;
  *
  */
 
+package uk.ac.ebi.arrayexpress.components;
+
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.saxon.functions.search.HighlightQueryFunction;
@@ -24,20 +24,17 @@ import uk.ac.ebi.arrayexpress.utils.saxon.functions.search.QueryIndexFunction;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 import uk.ac.ebi.arrayexpress.utils.search.BatchQueryConstructor;
 
-public class SearchEngine extends ApplicationComponent
-{
+public class SearchEngine extends ApplicationComponent {
     private Controller controller;
 
-    public SearchEngine()
-    {
+    public SearchEngine() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
-        SaxonEngine saxon = (SaxonEngine)getComponent("SaxonEngine");
+    public void initialize() throws Exception {
+        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
 
-        this.controller = new Controller((HierarchicalConfiguration)getPreferences().getConfSubset("ae"));
+        this.controller = new Controller((HierarchicalConfiguration) getPreferences().getConfSubset("ae"));
         getController().setQueryConstructor(new BatchQueryConstructor());
         getController().setXPathEngine(saxon);
         if (null != saxon) {
@@ -47,12 +44,10 @@ public class SearchEngine extends ApplicationComponent
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
-    public Controller getController()
-    {
+    public Controller getController() {
         return this.controller;
     }
 }

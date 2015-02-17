@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,55 +15,48 @@ package uk.ac.ebi.arrayexpress.utils;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class HTMLOptions
-{
-    private class Option
-    {
+public class HTMLOptions {
+    private class Option {
         private String value;
         private String label;
 
-        public Option( String value, String label )
-        {
+        public Option(String value, String label) {
             this.value = value;
             this.label = label;
         }
 
-        public String getHtml()
-        {
+        public String getHtml() {
             return "<option value=\"" + StringEscapeUtils.escapeHtml(value) + "\">" + label + "</option>";
         }
 
         @Override
-        public boolean equals( Object other )
-        {
-            return (other instanceof Option) && ((Option)other).getHtml().equals(getHtml());
+        public boolean equals(Object other) {
+            return (other instanceof Option) && ((Option) other).getHtml().equals(getHtml());
         }
     }
 
     private Set<Option> options;
 
-    public HTMLOptions()
-    {
+    public HTMLOptions() {
         this.options = new LinkedHashSet<Option>();
     }
 
-    public void clearOptions()
-    {
+    public void clearOptions() {
         this.options.clear();
     }
 
-    public void addOption( String value, String label )
-    {
+    public void addOption(String value, String label) {
         this.options.add(new Option(value, label));
     }
 
-    public String getHtml()
-    {
+    public String getHtml() {
         StringBuilder sb = new StringBuilder();
 
         for (Option o : options) {

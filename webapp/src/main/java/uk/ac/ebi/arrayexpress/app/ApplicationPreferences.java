@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.app;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.app;
  *
  */
 
+package uk.ac.ebi.arrayexpress.app;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConversionException;
 import org.apache.commons.configuration.XMLConfiguration;
@@ -26,45 +26,38 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.util.NoSuchElementException;
 
-public class ApplicationPreferences
-{
+public class ApplicationPreferences {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private String prefsFileName;
     private Configuration prefs;
 
-    public ApplicationPreferences( String fileName )
-    {
+    public ApplicationPreferences(String fileName) {
         this.prefsFileName = fileName;
     }
 
-    public void initialize()
-    {
+    public void initialize() {
         load();
     }
 
-    public void terminate()
-    {
+    public void terminate() {
         if (null != prefs) {
             prefs = null;
         }
     }
 
-    public String getString( String key )
-    {
+    public String getString(String key) {
         return prefs.getString(key);
     }
 
-    public String[] getStringArray( String key )
-    {
+    public String[] getStringArray(String key) {
         String value = prefs.getString(key);
 
         return value.contains(",") ? value.split("\\s*,\\s*") : new String[]{value};
     }
 
-    public Integer getInteger( String key )
-    {
+    public Integer getInteger(String key) {
         Integer value = null;
         try {
             value = prefs.getInt(key);
@@ -78,8 +71,7 @@ public class ApplicationPreferences
         return value;
     }
 
-    public Long getLong( String key )
-    {
+    public Long getLong(String key) {
         Long value = null;
         try {
             value = prefs.getLong(key);
@@ -93,8 +85,7 @@ public class ApplicationPreferences
         return value;
     }
 
-    public Boolean getBoolean( String key )
-    {
+    public Boolean getBoolean(String key) {
         Boolean value = null;
         try {
             value = prefs.getBoolean(key);
@@ -107,20 +98,18 @@ public class ApplicationPreferences
         return value;
     }
 
-    public Configuration getConfSubset( String key )
-    {
+    public Configuration getConfSubset(String key) {
         return prefs.subset(key);
     }
 
-    private void load()
-    {
+    private void load() {
         // todo: what to do if file is not there? must be a clear error message + shutdown
         XMLConfiguration.setDefaultListDelimiter('\uffff');
         XMLConfiguration xmlConfig = new XMLConfiguration();
 
         try (InputStream prefStream = Application.getInstance().getResource(
-                    "/WEB-INF/classes/" + prefsFileName + ".xml"
-            ).openStream()) {
+                "/WEB-INF/classes/" + prefsFileName + ".xml"
+        ).openStream()) {
             xmlConfig.load(prefStream);
 
             prefs = xmlConfig;

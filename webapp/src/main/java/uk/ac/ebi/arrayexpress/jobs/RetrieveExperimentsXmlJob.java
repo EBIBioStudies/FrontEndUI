@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.jobs;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.jobs;
  *
  */
 
+package uk.ac.ebi.arrayexpress.jobs;
+
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,19 +26,17 @@ import uk.ac.ebi.arrayexpress.utils.db.IConnectionSource;
 
 import java.util.List;
 
-public class RetrieveExperimentsXmlJob implements InterruptableJob
-{
+public class RetrieveExperimentsXmlJob implements InterruptableJob {
     // logging facitlity
     private final Logger logger = LoggerFactory.getLogger(getClass());
     // worker thread object
     private Thread myThread;
 
-    public void execute( JobExecutionContext jec ) throws JobExecutionException
-    {
+    public void execute(JobExecutionContext jec) throws JobExecutionException {
         myThread = Thread.currentThread();
         try {
             JobDataMap jdm = jec.getMergedJobDataMap();
-            IConnectionSource connSource = (IConnectionSource)jdm.get("connectionSource");
+            IConnectionSource connSource = (IConnectionSource) jdm.get("connectionSource");
             List exps = (List) jdm.get("exps");
             StringBuffer xmlBuffer = (StringBuffer) jdm.get("xmlBuffer");
             xmlBuffer.append(
@@ -46,9 +44,9 @@ public class RetrieveExperimentsXmlJob implements InterruptableJob
                             connSource,
                             exps).getExperimentXml()
             );
-        } catch ( InterruptedException x ) {
+        } catch (InterruptedException x) {
             logger.debug("Job [{}] was interrupted", jec.getJobDetail().getKey());
-        } catch ( Error x ) {
+        } catch (Error x) {
             logger.error("[SEVERE] Runtime error while executing job [" + jec.getJobDetail().getKey() + "]:", x);
             Application.getInstance().handleException("[SEVERE] Runtime error while executing job [" + jec.getJobDetail().getKey() + "]", x);
             throw new JobExecutionException(x);
@@ -56,8 +54,7 @@ public class RetrieveExperimentsXmlJob implements InterruptableJob
         myThread = null;
     }
 
-    public void interrupt() throws UnableToInterruptJobException
-    {
+    public void interrupt() throws UnableToInterruptJobException {
         logger.debug("Attempting to interrupt job");
         if (null != myThread)
             myThread.interrupt();

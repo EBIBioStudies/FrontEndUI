@@ -1,7 +1,5 @@
-package uk.ac.ebi.microarray.arrayexpress.shared.auth;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.microarray.arrayexpress.shared.auth;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.microarray.arrayexpress.shared.auth;
 
 import org.junit.Before;
 import org.junit.Test;

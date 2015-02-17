@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.components;
  *
  */
 
+package uk.ac.ebi.arrayexpress.components;
+
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.trans.XPathException;
 import org.slf4j.Logger;
@@ -31,8 +31,7 @@ import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import java.io.File;
 import java.io.IOException;
 
-public class News extends ApplicationComponent implements IDocumentSource
-{
+public class News extends ApplicationComponent implements IDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -41,13 +40,11 @@ public class News extends ApplicationComponent implements IDocumentSource
 
     public final String DOCUMENT_ID = "news";
 
-    public News()
-    {
+    public News() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.saxon = (SaxonEngine) getComponent("SaxonEngine");
 
         this.document = new FilePersistence<>(
@@ -59,28 +56,24 @@ public class News extends ApplicationComponent implements IDocumentSource
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
     // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI()
-    {
+    public String getDocumentURI() {
         return DOCUMENT_ID + ".xml";
     }
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException
-    {
+    public synchronized DocumentInfo getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
     // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument( DocumentInfo doc ) throws IOException, InterruptedException
-    {
+    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer(DOCUMENT_ID, doc));
         } else {
@@ -88,8 +81,7 @@ public class News extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public void update( String xmlString) throws IOException, InterruptedException
-    {
+    public void update(String xmlString) throws IOException, InterruptedException {
         try {
             DocumentInfo updateDoc = this.saxon.buildDocument(xmlString);
             if (null != updateDoc) {

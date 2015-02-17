@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +15,16 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
+
 import org.apache.lucene.search.Query;
 
 import java.io.IOException;
 
-public interface IQueryExpander
-{
+public interface IQueryExpander {
     // returns special kind of query info that holds expansions etc
     public QueryInfo newQueryInfo();
-    // does query expansion 
-    public Query expandQuery( IndexEnvironment env, QueryInfo info ) throws IOException;
+
+    // does query expansion
+    public Query expandQuery(IndexEnvironment env, QueryInfo info) throws IOException;
 }

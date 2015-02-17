@@ -1,19 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.NullFragmenter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import uk.ac.ebi.arrayexpress.utils.RegexHelper;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.IQueryHighlighter;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexEnvironment;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +15,21 @@ import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
  *
  */
 
-public class EFOExpandedHighlighter implements IQueryHighlighter
-{
+package uk.ac.ebi.arrayexpress.utils.search;
+
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.NullFragmenter;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.ac.ebi.arrayexpress.utils.RegexHelper;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.IQueryHighlighter;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexEnvironment;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
+
+public class EFOExpandedHighlighter implements IQueryHighlighter {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -47,18 +46,16 @@ public class EFOExpandedHighlighter implements IQueryHighlighter
     private final RegexHelper EFO_AND_SYN_REGEX = new RegexHelper(SYN_OPEN_MARK + EFO_OPEN_MARK + "([^" + EFO_CLOSE_MARK + SYN_CLOSE_MARK + "]+)" + EFO_CLOSE_MARK + SYN_CLOSE_MARK, "g");
     private final RegexHelper EFO_AND_HIT_REGEX = new RegexHelper(HIT_OPEN_MARK + EFO_OPEN_MARK + "([^" + EFO_CLOSE_MARK + HIT_CLOSE_MARK + "]+)" + EFO_CLOSE_MARK + HIT_CLOSE_MARK, "g");
 
-    public IQueryHighlighter setEnvironment( IndexEnvironment env )
-    {
+    public IQueryHighlighter setEnvironment(IndexEnvironment env) {
         this.env = env;
         return this;
     }
 
-    public String highlightQuery( QueryInfo info, String fieldName, String text )
-    {
+    public String highlightQuery(QueryInfo info, String fieldName, String text) {
         EFOExpandableQueryInfo queryInfo = null;
 
         if (info instanceof EFOExpandableQueryInfo) {
-            queryInfo = (EFOExpandableQueryInfo)info;
+            queryInfo = (EFOExpandableQueryInfo) info;
         }
 
         if (null == queryInfo) {
@@ -76,8 +73,7 @@ public class EFOExpandedHighlighter implements IQueryHighlighter
         }
     }
 
-    private String doHighlightQuery( Query query, String fieldName, String text, String openMark, String closeMark )
-    {
+    private String doHighlightQuery(Query query, String fieldName, String text, String openMark, String closeMark) {
         try {
             SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(openMark, closeMark);
             Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query, fieldName, this.env.defaultField));

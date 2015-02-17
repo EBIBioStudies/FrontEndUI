@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
@@ -41,22 +41,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Indexer
-{
+public class Indexer {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IndexEnvironment env;
     private SaxonEngine saxon;
 
-    public Indexer( IndexEnvironment env, SaxonEngine saxon )
-    {
+    public Indexer(IndexEnvironment env, SaxonEngine saxon) {
         this.env = env;
         this.saxon = saxon;
     }
 
-    public List<NodeInfo> index( DocumentInfo document ) throws IndexerException, InterruptedException
-    {
+    public List<NodeInfo> index(DocumentInfo document) throws IndexerException, InterruptedException {
         try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
 
             List documentNodes = saxon.evaluateXPath(document, this.env.indexDocumentPath);
@@ -68,7 +65,7 @@ public class Indexer
                 // get all the fields taken care of
                 for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
                     try {
-                        List<Object> values = saxon.evaluateXPath((NodeInfo)node, field.path);
+                        List<Object> values = saxon.evaluateXPath((NodeInfo) node, field.path);
                         for (Object v : values) {
                             if ("integer".equals(field.type)) {
                                 addIntIndexField(d, field.name, v);
@@ -76,14 +73,14 @@ public class Indexer
                                 // todo: addDateIndexField(d, field.name, v);
                                 logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
                             } else if ("boolean".equals(field.type)) {
-                               addBooleanIndexField(d, field.name, v);
+                                addBooleanIndexField(d, field.name, v);
                             } else {
                                 addIndexField(d, field.name, v, field.shouldAnalyze, field.shouldStore);
                             }
                             Thread.sleep(0);
                         }
                     } catch (XPathException x) {
-                        String expression = ((NodeInfo)node).getStringValue();
+                        String expression = ((NodeInfo) node).getStringValue();
                         logger.error("Caught an exception while indexing expression [" + field.path + "] for document [" + expression.substring(0, expression.length() > 20 ? 20 : expression.length()) + "...]", x);
                         throw x;
                     }
@@ -91,33 +88,31 @@ public class Indexer
 
                 w.addDocument(d);
                 // append node to the list
-                indexedNodes.add((NodeInfo)node);
+                indexedNodes.add((NodeInfo) node);
             }
 
             w.commit();
 
             return indexedNodes;
-        } catch (IOException|XPathException x) {
+        } catch (IOException | XPathException x) {
             throw new IndexerException(x);
         }
     }
 
 
-    private IndexWriter createIndex( Directory indexDirectory, Analyzer analyzer ) throws IOException
-    {
+    private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
         IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31, analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
         return new IndexWriter(indexDirectory, config);
     }
 
-    private void addIndexField( Document document, String name, Object value, boolean shouldAnalyze, boolean shouldStore )
-    {
+    private void addIndexField(Document document, String name, Object value, boolean shouldAnalyze, boolean shouldStore) {
         String stringValue;
         if (value instanceof String) {
-            stringValue = (String)value;
+            stringValue = (String) value;
         } else if (value instanceof NodeInfo) {
-            stringValue = ((NodeInfo)value).getStringValue();
+            stringValue = ((NodeInfo) value).getStringValue();
         } else {
             stringValue = value.toString();
             logger.warn("Not sure if I handle string value of [{}] for the field [{}] correctly, relying on Object.toString()", value.getClass().getName(), name);
@@ -126,15 +121,14 @@ public class Indexer
         document.add(new Field(name, stringValue, shouldStore ? Field.Store.YES : Field.Store.NO, shouldAnalyze ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED));
     }
 
-    private void addBooleanIndexField( Document document, String name, Object value )
-    {
+    private void addBooleanIndexField(Document document, String name, Object value) {
         Boolean boolValue = null;
         if (value instanceof Boolean) {
-            boolValue = (Boolean)value;
+            boolValue = (Boolean) value;
         } else if (value instanceof BooleanValue) {
-            boolValue = ((BooleanValue)value).getBooleanValue();
+            boolValue = ((BooleanValue) value).getBooleanValue();
         } else if (value instanceof Item) {
-            String stringValue = ((Item)value).getStringValue();
+            String stringValue = ((Item) value).getStringValue();
             boolValue = StringTools.stringToBoolean(stringValue);
         } else {
             logger.error("Cannot convert value of type [{}] for the field [{}] to boolean", value.getClass(), name);
@@ -143,13 +137,12 @@ public class Indexer
         document.add(new Field(name, null == boolValue ? "" : boolValue.toString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
     }
 
-    private void addIntIndexField( Document document, String name, Object value )
-    {
+    private void addIntIndexField(Document document, String name, Object value) {
         Long longValue;
         if (value instanceof BigInteger) {
-            longValue = ((BigInteger)value).longValue();
+            longValue = ((BigInteger) value).longValue();
         } else if (value instanceof NodeInfo) {
-            longValue = Long.parseLong(((NodeInfo)value).getStringValue());
+            longValue = Long.parseLong(((NodeInfo) value).getStringValue());
         } else {
             longValue = Long.parseLong(value.toString());
             logger.warn("Not sure if I handle long value of [{}] for the field [{}] correctly, relying on Object.toString()", value.getClass().getName(), name);

@@ -1,17 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
-import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.autocompletion.AutocompleteData;
-import uk.ac.ebi.arrayexpress.utils.autocompletion.AutocompleteStore;
-import uk.ac.ebi.arrayexpress.utils.efo.EFONode;
-import uk.ac.ebi.arrayexpress.utils.efo.IEFO;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,21 +15,30 @@ import java.util.Set;
  *
  */
 
-public class Autocompletion extends ApplicationComponent
-{
+package uk.ac.ebi.arrayexpress.components;
+
+import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
+import uk.ac.ebi.arrayexpress.utils.autocompletion.AutocompleteData;
+import uk.ac.ebi.arrayexpress.utils.autocompletion.AutocompleteStore;
+import uk.ac.ebi.arrayexpress.utils.efo.EFONode;
+import uk.ac.ebi.arrayexpress.utils.efo.IEFO;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
+public class Autocompletion extends ApplicationComponent {
     private AutocompleteStore autocompleteStore;
 
     private Experiments experiments;
     private SearchEngine search;
     private IEFO efo;
 
-    public Autocompletion()
-    {
+    public Autocompletion() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.autocompleteStore = new AutocompleteStore();
 
         this.experiments = (Experiments) getComponent("Experiments");
@@ -49,22 +46,18 @@ public class Autocompletion extends ApplicationComponent
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
-    private IEFO getEfo()
-    {
+    private IEFO getEfo() {
         return this.efo;
     }
 
-    public void setEfo( IEFO efo )
-    {
+    public void setEfo(IEFO efo) {
         this.efo = efo;
     }
 
-    public String getKeywords( String prefix, String field, Integer limit )
-    {
+    public String getKeywords(String prefix, String field, Integer limit) {
         StringBuilder sb = new StringBuilder("");
         List<AutocompleteData> matches = getStore().findCompletions(prefix, field, limit);
         for (AutocompleteData match : matches) {
@@ -73,8 +66,7 @@ public class Autocompletion extends ApplicationComponent
         return sb.toString();
     }
 
-    public String getEfoWords( String prefix, Integer limit )
-    {
+    public String getEfoWords(String prefix, Integer limit) {
         StringBuilder sb = new StringBuilder("");
         List<AutocompleteData> matches = getStore().findCompletions(prefix, "", 1000);
         int counter = 0;
@@ -91,8 +83,7 @@ public class Autocompletion extends ApplicationComponent
         return sb.toString();
     }
 
-    public String getEfoChildren( String efoId )
-    {
+    public String getEfoChildren(String efoId) {
         StringBuilder sb = new StringBuilder();
 
         if (null != getEfo()) {
@@ -113,8 +104,7 @@ public class Autocompletion extends ApplicationComponent
         return sb.toString();
     }
 
-    public void rebuild() throws IOException
-    {
+    public void rebuild() throws IOException {
         getStore().clear();
 
         // adding field terms (for all non-numerical fields) and names (if there is a description)
@@ -149,8 +139,7 @@ public class Autocompletion extends ApplicationComponent
         }
     }
 
-    private void addEfoNodeWithDescendants( String nodeId )
-    {
+    private void addEfoNodeWithDescendants(String nodeId) {
         EFONode node = getEfo().getMap().get(nodeId);
         // make node expandable only if it has children and not organizational class
         if (null != node) {
@@ -170,8 +159,7 @@ public class Autocompletion extends ApplicationComponent
         }
     }
 
-    private AutocompleteStore getStore()
-    {
+    private AutocompleteStore getStore() {
         return this.autocompleteStore;
     }
 }

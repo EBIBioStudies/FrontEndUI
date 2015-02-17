@@ -1,9 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
-
-import net.sf.saxon.trans.XPathException;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +15,21 @@ import net.sf.saxon.trans.XPathException;
  *
  */
 
-public class HTTPStatusException extends XPathException
-{
+package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+
+import net.sf.saxon.trans.XPathException;
+
+public class HTTPStatusException extends XPathException {
     private static final long serialVersionUID = 3616976123541179808L;
 
     private Integer statusCode;
 
-    public HTTPStatusException( Integer statusCode )
-    {
+    public HTTPStatusException(Integer statusCode) {
         super("HTTP Status [" + String.valueOf(statusCode) + "]");
         this.statusCode = statusCode;
     }
 
-    public Integer getStatusCode()
-    {
+    public Integer getStatusCode() {
         return this.statusCode;
     }
 }

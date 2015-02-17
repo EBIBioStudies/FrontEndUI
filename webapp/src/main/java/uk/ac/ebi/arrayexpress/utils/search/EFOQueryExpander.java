@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.search;
+
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
 import org.slf4j.Logger;
@@ -29,30 +29,26 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class EFOQueryExpander implements IQueryExpander
-{
+public final class EFOQueryExpander implements IQueryExpander {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IEFOExpansionLookup lookup;
 
-    public EFOQueryExpander( IEFOExpansionLookup lookup )
-    {
+    public EFOQueryExpander(IEFOExpansionLookup lookup) {
         this.lookup = lookup;
     }
 
-    public QueryInfo newQueryInfo()
-    {
+    public QueryInfo newQueryInfo() {
         return new EFOExpandableQueryInfo();
     }
 
-    public Query expandQuery( IndexEnvironment env, QueryInfo info ) throws IOException
-    {
+    public Query expandQuery(IndexEnvironment env, QueryInfo info) throws IOException {
         EFOExpandableQueryInfo queryInfo = null;
 
         if (info instanceof EFOExpandableQueryInfo) {
-             queryInfo = (EFOExpandableQueryInfo)info;
-         }
+            queryInfo = (EFOExpandableQueryInfo) info;
+        }
 
         if (null != queryInfo) {
             queryInfo.setOriginalQuery(queryInfo.getQuery());
@@ -63,8 +59,7 @@ public final class EFOQueryExpander implements IQueryExpander
         }
     }
 
-    private Query expand( IndexEnvironment env, EFOExpandableQueryInfo queryInfo, Query query ) throws IOException
-    {
+    private Query expand(IndexEnvironment env, EFOExpandableQueryInfo queryInfo, Query query) throws IOException {
         Query result;
 
         if (query instanceof BooleanQuery) {
@@ -88,8 +83,7 @@ public final class EFOQueryExpander implements IQueryExpander
         return result;
     }
 
-    private Query doExpand( IndexEnvironment env, EFOExpandableQueryInfo queryInfo, Query query ) throws IOException
-    {
+    private Query doExpand(IndexEnvironment env, EFOExpandableQueryInfo queryInfo, Query query) throws IOException {
         String field = getQueryField(query);
         if (null != field) {
 
@@ -122,8 +116,7 @@ public final class EFOQueryExpander implements IQueryExpander
         return query;
     }
 
-    private String getQueryField( Query query )
-    {
+    private String getQueryField(Query query) {
         String field = null;
         try {
             if (query instanceof PrefixQuery) {
@@ -154,8 +147,7 @@ public final class EFOQueryExpander implements IQueryExpander
         return field;
     }
 
-    public Query newQueryFromString( String text, String field )
-    {
+    public Query newQueryFromString(String text, String field) {
         if (text.contains(" ")) {
             String[] tokens = text.split("\\s+");
             PhraseQuery q = new PhraseQuery();
@@ -168,15 +160,14 @@ public final class EFOQueryExpander implements IQueryExpander
         }
     }
 
-    private boolean queryPartIsRedundant( Query query, Query part )
-    {
+    private boolean queryPartIsRedundant(Query query, Query part) {
         Term partTerm = getFirstTerm(part);
 
         if (query instanceof PrefixQuery) {
-            Term prefixTerm = ((PrefixQuery)query).getPrefix();
+            Term prefixTerm = ((PrefixQuery) query).getPrefix();
             return prefixTerm.field().equals(partTerm.field()) && (partTerm.text().startsWith(prefixTerm.text()));
         } else if (query instanceof WildcardQuery) {
-            Term wildcardTerm = ((WildcardQuery)query).getTerm();
+            Term wildcardTerm = ((WildcardQuery) query).getTerm();
             String wildcard = "^" + wildcardTerm.text().replaceAll("\\?", "\\.").replaceAll("\\*", "\\.*") + "$";
             return wildcardTerm.field().equals(partTerm.field()) && (partTerm.text().matches(wildcard));
         } else {
@@ -185,15 +176,14 @@ public final class EFOQueryExpander implements IQueryExpander
 
     }
 
-    private Term getFirstTerm( Query query )
-    {
+    private Term getFirstTerm(Query query) {
         if (query instanceof PhraseQuery) {
-            Term[] terms = ((PhraseQuery)query).getTerms();
+            Term[] terms = ((PhraseQuery) query).getTerms();
             if (0 != terms.length) {
                 return terms[0];
             }
         } else if (query instanceof TermQuery) {
-            return ((TermQuery)query).getTerm();
+            return ((TermQuery) query).getTerm();
         } else {
             Set<Term> terms = new HashSet<Term>();
             query.extractTerms(terms);

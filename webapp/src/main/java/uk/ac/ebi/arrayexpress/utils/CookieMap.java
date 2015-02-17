@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +15,21 @@ package uk.ac.ebi.arrayexpress.utils;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils;
+
 import javax.servlet.http.Cookie;
 import java.util.HashMap;
 
-public class CookieMap extends HashMap<String, Cookie>
-{
-    public CookieMap( Cookie[] cookies )
-    {
-        if ( null != cookies ) {
-            for ( Cookie c : cookies ) {
+public class CookieMap extends HashMap<String, Cookie> {
+    public CookieMap(Cookie[] cookies) {
+        if (null != cookies) {
+            for (Cookie c : cookies) {
                 this.put(c.getName(), c);
             }
         }
     }
 
-    public String getCookieValue( String name )
-    {
+    public String getCookieValue(String name) {
         if (this.containsKey(name)) {
             return this.get(name).getValue();
         }

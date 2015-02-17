@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +15,20 @@ package uk.ac.ebi.arrayexpress.utils;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexHelper
-{
+public class RegexHelper {
     private Pattern pattern = null;
     private String flags = "";
 
-    public RegexHelper( String regexp )
-    {
+    public RegexHelper(String regexp) {
         pattern = Pattern.compile(regexp);
     }
 
-    public RegexHelper( String regexp, String aFlags )
-    {
+    public RegexHelper(String regexp, String aFlags) {
         if (null != aFlags) {
             flags = aFlags.toLowerCase();
         }
@@ -40,18 +37,16 @@ public class RegexHelper
             pattern = Pattern.compile(
                     regexp
                     , (flags.contains("m") ? Pattern.MULTILINE : 0)
-                    + (flags.contains("i") ? Pattern.CASE_INSENSITIVE : 0)
+                            + (flags.contains("i") ? Pattern.CASE_INSENSITIVE : 0)
             );
         }
     }
 
-    public boolean test( String input )
-    {
+    public boolean test(String input) {
         return (null != pattern) && (null != input) && pattern.matcher(input).find();
     }
 
-    public String matchFirst( String input )
-    {
+    public String matchFirst(String input) {
         if (null != pattern && null != input) {
             Matcher matcher = pattern.matcher(input);
             if (matcher.find() && 0 < matcher.groupCount()) {
@@ -61,23 +56,21 @@ public class RegexHelper
         return "";
     }
 
-    public String[] match( String input )
-    {
+    public String[] match(String input) {
         String result[] = null;
         if (null != pattern && null != input) {
             Matcher matcher = pattern.matcher(input);
             if (matcher.find() && 0 < matcher.groupCount()) {
                 result = new String[matcher.groupCount()];
                 for (int i = 1; i <= matcher.groupCount(); ++i) {
-                    result[i-1] = matcher.group(i);
+                    result[i - 1] = matcher.group(i);
                 }
             }
         }
         return result;
     }
 
-    public String replace( String input, String replace )
-    {
+    public String replace(String input, String replace) {
         if (null == replace) {
             replace = "";
         }

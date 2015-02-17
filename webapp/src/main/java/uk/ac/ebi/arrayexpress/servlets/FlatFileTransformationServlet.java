@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,15 +36,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.sax.SAXSource;
 import java.io.*;
 
-public class FlatFileTransformationServlet extends AuthAwareApplicationServlet
-{
+public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
     private static final long serialVersionUID = -2909054413280338250L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 
@@ -54,8 +52,7 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet
             , HttpServletResponse response
             , RequestType requestType
             , String authUserName
-    ) throws ServletException, IOException
-    {
+    ) throws ServletException, IOException {
         RegexHelper PARSE_ARGUMENTS_REGEX = new RegexHelper("/([^/]+)/([^/]+)/([^/]+)/([^/]+)$", "i");
 
         logRequest(logger, request, requestType);
@@ -134,7 +131,7 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet
                         , params
                         , out
                 )) {                     // where to dump resulting text
-                        throw new Exception("Transformation returned an error");
+                    throw new Exception("Transformation returned an error");
                 }
             }
         } catch (Exception x) {

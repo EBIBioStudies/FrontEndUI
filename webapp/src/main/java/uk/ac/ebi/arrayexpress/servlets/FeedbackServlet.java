@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  *
  */
 
+package uk.ac.ebi.arrayexpress.servlets;
+
 import net.sf.uadetector.UserAgent;
 import net.sf.uadetector.UserAgentStringParser;
 import net.sf.uadetector.service.UADetectorServiceFactory;
@@ -31,22 +31,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class FeedbackServlet extends ApplicationServlet
-{
+public class FeedbackServlet extends ApplicationServlet {
     private static final long serialVersionUID = -4509580274404536345L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 
     // Respond to HTTP requests from browsers.
     @Override
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType ) throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType) throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         String message = request.getParameter("m");
@@ -67,16 +64,16 @@ public class FeedbackServlet extends ApplicationServlet
                     , getPreferences().getStringArray("ae.feedback.recipients")
                     , getPreferences().getString("ae.feedback.subject")
                     , (!originator.equals(email) ? ("From: " + ("".equals(email) ? "unknown sender" : email) + StringTools.EOL + StringTools.EOL) : "")
-                    + message + StringTools.EOL
-                    + StringTools.EOL
-                    + "---" + StringTools.EOL
-                    + "Page [" + page + "]" + StringTools.EOL
-                    + (!"".equals(ref) ? "Referrer [" + ref + "]" + StringTools.EOL : "")
-                    + "Using [" + agent.getName() + " " + agent.getVersionNumber().toVersionString()
-                    + " on " + agent.getOperatingSystem().getName() + "]" + StringTools.EOL
-                    + StringTools.EOL
-                    + "Sent by [${variable.appname}] running on [${variable.hostname}]" + StringTools.EOL
-                    + StringTools.EOL
+                            + message + StringTools.EOL
+                            + StringTools.EOL
+                            + "---" + StringTools.EOL
+                            + "Page [" + page + "]" + StringTools.EOL
+                            + (!"".equals(ref) ? "Referrer [" + ref + "]" + StringTools.EOL : "")
+                            + "Using [" + agent.getName() + " " + agent.getVersionNumber().toVersionString()
+                            + " on " + agent.getOperatingSystem().getName() + "]" + StringTools.EOL
+                            + StringTools.EOL
+                            + "Sent by [${variable.appname}] running on [${variable.hostname}]" + StringTools.EOL
+                            + StringTools.EOL
             );
         }
 

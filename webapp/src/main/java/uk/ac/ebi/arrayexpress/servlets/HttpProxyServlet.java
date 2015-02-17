@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -34,8 +34,7 @@ import java.io.*;
 import java.nio.CharBuffer;
 import java.util.Enumeration;
 
-public class HttpProxyServlet extends ApplicationServlet
-{
+public class HttpProxyServlet extends ApplicationServlet {
     private static final long serialVersionUID = 4470393129326932507L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
@@ -45,8 +44,7 @@ public class HttpProxyServlet extends ApplicationServlet
     private HttpClient httpClient;
 
     @Override
-    public void init( ServletConfig config ) throws ServletException
-    {
+    public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
         httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
@@ -62,15 +60,13 @@ public class HttpProxyServlet extends ApplicationServlet
     }
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET);
     }
 
     @Override
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws ServletException, IOException {
         RegexHelper MATCH_URL_REGEX = new RegexHelper("/+(.+)", "i");
         RegexHelper TEST_HOST_IN_URL_REGEX = new RegexHelper("^http\\:/{2}([^/]+)/", "i");
         RegexHelper SQUARE_BRACKETS_REGEX = new RegexHelper("\\[\\]", "g");
@@ -114,7 +110,7 @@ public class HttpProxyServlet extends ApplicationServlet
                 for (Header responseHeader : responseHeaders) {
                     String name = responseHeader.getName();
                     String value = responseHeader.getValue();
-                    if ( null != name
+                    if (null != name
                             && null != value
                             && !(name.equals("Server") || name.equals("Date") || name.equals("Transfer-Encoding"))
                             ) {
@@ -134,7 +130,7 @@ public class HttpProxyServlet extends ApplicationServlet
                     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
 
                     CharBuffer buffer = CharBuffer.allocate(PROXY_BUFFER_SIZE);
-                    while ( in.read(buffer) >= 0 ) {
+                    while (in.read(buffer) >= 0) {
                         buffer.flip();
                         out.append(buffer);
                         buffer.clear();
@@ -143,7 +139,7 @@ public class HttpProxyServlet extends ApplicationServlet
                     in.close();
                     out.close();
                 }
-            } catch ( Exception x ) {
+            } catch (Exception x) {
                 if (x.getClass().getName().equals("org.apache.catalina.connector.ClientAbortException")) {
                     logger.warn("Client aborted connection");
                 } else {

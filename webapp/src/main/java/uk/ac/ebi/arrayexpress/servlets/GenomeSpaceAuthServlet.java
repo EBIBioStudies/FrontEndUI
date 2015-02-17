@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.openid4java.OpenIDException;
@@ -62,8 +62,7 @@ import java.util.Set;
  *  This servlet supports openId authentication to GenomeSpace
  *  and experiment upload functionality
  */
-public class GenomeSpaceAuthServlet extends ApplicationServlet
-{
+public class GenomeSpaceAuthServlet extends ApplicationServlet {
     private static final long serialVersionUID = -3446967645131419250L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
@@ -87,8 +86,7 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
     private static final String REFERER_HEADER = "Referer";
 
     @Override
-    public void init( ServletConfig config ) throws ServletException
-    {
+    public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
         // --- Forward proxy setup (only if needed) ---
@@ -115,18 +113,16 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
     }
 
     @Override
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 
     @Override
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
-        GenomeSpace gs = (GenomeSpace)getComponent("GenomeSpace");
+        GenomeSpace gs = (GenomeSpace) getComponent("GenomeSpace");
 
         if ("true".equals(request.getParameter("is_cancel"))) {
             // User clicked "cancel" on the openID login page.
@@ -194,10 +190,9 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
         }
     }
 
-    private void displayResult( HttpServletResponse response,
-                                String returnURL, String username, String token, String message )
-            throws ServletException, IOException
-    {
+    private void displayResult(HttpServletResponse response,
+                               String returnURL, String username, String token, String message)
+            throws ServletException, IOException {
         setCookie(response, GS_TOKEN_COOKIE, token);
         setCookie(response, GS_USERNAME_COOKIE, username);
         setCookie(response, GS_AUTH_MESSAGE_COOKIE, message);
@@ -222,9 +217,8 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
     }
 
     //@SuppressWarnings("rawtypes")
-    private void authRequest( String claimedID, String returnURL, HttpServletRequest httpRequest, HttpServletResponse httpResponse )
-            throws IOException, ServletException
-    {
+    private void authRequest(String claimedID, String returnURL, HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+            throws IOException, ServletException {
         try {
             // "return_to URL" needs to come back to this servlet
             // in order to verify the OP response.
@@ -291,9 +285,8 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
      * GenomeSpace token and username, if they are found in the response, and an
      * empty ParameterList if not found. If the verify fails, returns null
      */
-    private ParameterList verifyProviderResponse( HttpServletRequest httpRequest )
-            throws ServletException
-    {
+    private ParameterList verifyProviderResponse(HttpServletRequest httpRequest)
+            throws ServletException {
         try {
             // extract the parameters from the authentication response
             // (which comes in as a HTTP request from the OpenID provider)
@@ -301,7 +294,7 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
 
             // retrieve the previously stored discovery information
             DiscoveryInformation discovered =
-                    (DiscoveryInformation)httpRequest.getSession().getAttribute("openid-disc");
+                    (DiscoveryInformation) httpRequest.getSession().getAttribute("openid-disc");
 
             // extract the receiving URL from the HTTP request
             StringBuffer receivingURL = httpRequest.getRequestURL();
@@ -354,11 +347,12 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
         }
     }
 
-    /** Extracts the GenomeSpace token from the OpenId message. */
+    /**
+     * Extracts the GenomeSpace token from the OpenId message.
+     */
     @SuppressWarnings("rawtypes")
-    private ParameterList extractGenomeSpaceToken( AuthSuccess authSuccess )
-            throws MessageException
-    {
+    private ParameterList extractGenomeSpaceToken(AuthSuccess authSuccess)
+            throws MessageException {
         if (authSuccess == null) {
             return null;
         }
@@ -383,7 +377,7 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
 
                     SRegResponse sregResp = (SRegResponse) ext;
                     for (Object name : sregResp.getAttributeNames()) {
-                        String value = sregResp.getParameterValue((String)name);
+                        String value = sregResp.getParameterValue((String) name);
                         logger.info("Found SReg attribute " + name + ":" + value);
                         // Maps SReg nickname -> GenomeSpace username
                         if (name.equals("nickname")) {
@@ -406,7 +400,7 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
                     FetchResponse fetchResp = (FetchResponse) authSuccess.getExtension(extAlias);
                     List aliases = fetchResp.getAttributeAliases();
                     for (Object name : aliases) {
-                        List values = fetchResp.getAttributeValues((String)name);
+                        List values = fetchResp.getAttributeValues((String) name);
                         if (values.size() > 0) {
                             String keyValue = name + ":" + values.get(0);
                             logger.info("Found AX attribute " + keyValue);
@@ -428,8 +422,7 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
         return returnList;
     }
 
-    private ProxyProperties getProxyProperties()
-    {
+    private ProxyProperties getProxyProperties() {
         ProxyProperties proxyProps = null;
 
         String proxyHost = System.getProperty("http.proxyHost");
@@ -444,14 +437,12 @@ public class GenomeSpaceAuthServlet extends ApplicationServlet
         return proxyProps;
     }
 
-    private String getCookie( HttpServletRequest request, String name )
-    {
+    private String getCookie(HttpServletRequest request, String name) {
         CookieMap cookies = new CookieMap(request.getCookies());
         return cookies.containsKey(name) ? cookies.get(name).getValue() : null;
     }
 
-    private void setCookie( HttpServletResponse response, String name, String value )
-    {
+    private void setCookie(HttpServletResponse response, String name, String value) {
         Cookie cookie = new Cookie(name, null != value ? value : "");
         // if the value is null - delete cookie by expiring it
         cookie.setPath(getServletContext().getContextPath());

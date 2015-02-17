@@ -1,8 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +15,8 @@ package uk.ac.ebi.arrayexpress.components;
  *
  */
 
+package uk.ac.ebi.arrayexpress.components;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
@@ -31,8 +30,7 @@ import java.util.Properties;
  * GenomeSpace CDK and OpenID wrapper
  */
 
-public class GenomeSpace extends ApplicationComponent
-{
+public class GenomeSpace extends ApplicationComponent {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -43,25 +41,21 @@ public class GenomeSpace extends ApplicationComponent
     private Properties gsProperties = null;
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
-    public String getPropertyValue( String key )
-    {
+    public String getPropertyValue(String key) {
         if (null == gsProperties) {
             loadProperties();
         }
         return (null != gsProperties) ? gsProperties.getProperty(key) : null;
     }
 
-    private void loadProperties()
-    {
+    private void loadProperties() {
         try (InputStream is = new URL(GS_PROPERTIES_URL).openStream()) {
             gsProperties = new Properties();
             gsProperties.load(is);

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
+
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -29,8 +29,7 @@ import net.sf.saxon.value.StringValue;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 
-public class HighlightQueryFunction extends ExtensionFunctionDefinition
-{
+public class HighlightQueryFunction extends ExtensionFunctionDefinition {
     private static final long serialVersionUID = 7070707985404434594L;
 
     private static final StructuredQName qName =
@@ -38,54 +37,44 @@ public class HighlightQueryFunction extends ExtensionFunctionDefinition
 
     private Controller searchController;
 
-    public HighlightQueryFunction( Controller controller )
-    {
+    public HighlightQueryFunction(Controller controller) {
         this.searchController = controller;
     }
 
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 3;
     }
 
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 3;
     }
 
-    public SequenceType[] getArgumentTypes()
-    {
+    public SequenceType[] getArgumentTypes() {
         return new SequenceType[]{SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING};
     }
 
-    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes)
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.SINGLE_STRING;
     }
 
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new HighlightQueryCall(searchController);
     }
 
-    private static class HighlightQueryCall extends ExtensionFunctionCall
-    {
+    private static class HighlightQueryCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = 2547530501711855449L;
 
         private Controller searchController;
 
-        public HighlightQueryCall( Controller searchController )
-        {
+        public HighlightQueryCall(Controller searchController) {
             this.searchController = searchController;
         }
 
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             String queryId = SequenceTool.getStringValue(arguments[0]);
             String fieldName = SequenceTool.getStringValue(arguments[1]);
             String text = SequenceTool.getStringValue(arguments[2]);

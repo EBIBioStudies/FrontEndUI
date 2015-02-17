@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.db;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.db;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.db;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExperimentXmlDatabaseRetriever extends SqlStatementExecutor
-{
+public class ExperimentXmlDatabaseRetriever extends SqlStatementExecutor {
     // logging facility
     private final Logger logger = LoggerFactory.getLogger(getClass());
     // sql code
@@ -68,15 +67,13 @@ public class ExperimentXmlDatabaseRetriever extends SqlStatementExecutor
     // current experiment id (being executed)
     private Long experimentId;
 
-    public ExperimentXmlDatabaseRetriever( IConnectionSource connSource, List expList )
-    {
+    public ExperimentXmlDatabaseRetriever(IConnectionSource connSource, List expList) {
         super(connSource, getExperimentXmlSql);
         experimentList = expList;
         experimentXml = new StringBuilder(4000 * expList.size());
     }
 
-    public String getExperimentXml() throws InterruptedException
-    {
+    public String getExperimentXml() throws InterruptedException {
         logger.debug("Retrieving experiment data for [{}] experiments", experimentList.size());
         try {
             for (Object exp : experimentList) {
@@ -100,13 +97,11 @@ public class ExperimentXmlDatabaseRetriever extends SqlStatementExecutor
         return experimentXml.toString();
     }
 
-    protected void setParameters( PreparedStatement stmt ) throws SQLException
-    {
+    protected void setParameters(PreparedStatement stmt) throws SQLException {
         stmt.setLong(1, experimentId);
     }
 
-    protected void processResultSet( ResultSet resultSet ) throws IOException, SQLException
-    {
+    protected void processResultSet(ResultSet resultSet) throws IOException, SQLException {
         if (resultSet.next()) {
             Clob xmlClob = resultSet.getClob(1);
             if (null != xmlClob) {

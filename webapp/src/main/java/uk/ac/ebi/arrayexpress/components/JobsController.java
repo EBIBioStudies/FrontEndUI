@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.components;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.components;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -34,8 +34,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 import static org.quartz.impl.matchers.EverythingMatcher.allJobs;
 
 
-public class JobsController extends ApplicationComponent implements IJobsController
-{
+public class JobsController extends ApplicationComponent implements IJobsController {
     // jobs group
     private static final String AE_JOBS_GROUP = "ae-jobs";
 
@@ -43,8 +42,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
     private Scheduler scheduler;
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         // create scheduler
         this.scheduler = new StdSchedulerFactory().getScheduler();
 
@@ -69,46 +67,39 @@ public class JobsController extends ApplicationComponent implements IJobsControl
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
         terminateJobs();
     }
 
-    public void executeJob( String name ) throws SchedulerException
-    {
+    public void executeJob(String name) throws SchedulerException {
         getScheduler().triggerJob(new JobKey(name, AE_JOBS_GROUP));
     }
 
     @Override
-    public void executeJob( String name, String group ) throws SchedulerException
-    {
+    public void executeJob(String name, String group) throws SchedulerException {
         getScheduler().triggerJob(new JobKey(name, group));
     }
 
-    public void executeJobWithParam( String name, String paramName, String paramValue ) throws SchedulerException
-    {
+    public void executeJobWithParam(String name, String paramName, String paramValue) throws SchedulerException {
         JobDataMap map = new JobDataMap();
         map.put(paramName, paramValue);
         getScheduler().triggerJob(new JobKey(name, AE_JOBS_GROUP), map);
     }
 
     @Override
-    public void addJobListener( JobListener jl ) throws SchedulerException
-    {
+    public void addJobListener(JobListener jl) throws SchedulerException {
         if (null != jl) {
             getScheduler().getListenerManager().addJobListener(jl, allJobs());
         }
     }
 
-    public void removeJobListener( JobListener jl ) throws SchedulerException
-    {
+    public void removeJobListener(JobListener jl) throws SchedulerException {
         if (null != jl) {
             getScheduler().getListenerManager().removeJobListener(jl.getName());
         }
     }
 
-    public void scheduleJobNow( String name ) throws SchedulerException
-    {
+    public void scheduleJobNow(String name) throws SchedulerException {
         Trigger nowTrigger = newTrigger()
                 .withIdentity(name + "_at_start_trigger", AE_JOBS_GROUP)
                 .forJob(name, AE_JOBS_GROUP)
@@ -117,8 +108,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         getScheduler().scheduleJob(nowTrigger);
     }
 
-    public void scheduleJobInFuture( String name, Integer intervalInMinutes ) throws SchedulerException
-    {
+    public void scheduleJobInFuture(String name, Integer intervalInMinutes) throws SchedulerException {
         TriggerKey triggerId = new TriggerKey(name + "_in_" + String.valueOf(intervalInMinutes) + "_mins_trigger", AE_JOBS_GROUP);
         if (getScheduler().checkExists(triggerId)) {
             getScheduler().unscheduleJob(triggerId);
@@ -131,8 +121,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         getScheduler().scheduleJob(inFutureTrigger);
     }
 
-    public void scheduleIntervalJob( String name, Integer interval ) throws SchedulerException
-    {
+    public void scheduleIntervalJob(String name, Integer interval) throws SchedulerException {
         Trigger intervalTrigger = newTrigger()
                 .withIdentity(name + "_interval_trigger", AE_JOBS_GROUP)
                 .forJob(name, AE_JOBS_GROUP)
@@ -147,18 +136,15 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         getScheduler().scheduleJob(intervalTrigger);
     }
 
-    private void startScheduler() throws SchedulerException
-    {
+    private void startScheduler() throws SchedulerException {
         getScheduler().start();
     }
 
-    private Scheduler getScheduler()
-    {
+    private Scheduler getScheduler() {
         return scheduler;
     }
 
-    public void addJob( String name, Class<? extends Job> c ) throws SchedulerException
-    {
+    public void addJob(String name, Class<? extends Job> c) throws SchedulerException {
         JobDetail j = newJob(c)
                 .withIdentity(name, AE_JOBS_GROUP)
                 .storeDurably(true)
@@ -167,8 +153,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         getScheduler().addJob(j, false);
     }
 
-    public void addJob( String name, Class<? extends Job> c, Map<String, Object> dataMap, String group ) throws SchedulerException
-    {
+    public void addJob(String name, Class<? extends Job> c, Map<String, Object> dataMap, String group) throws SchedulerException {
         JobDetail j = newJob(c)
                 .withIdentity(name, group)
                 .storeDurably(true)
@@ -179,13 +164,11 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         getScheduler().addJob(j, true);
     }
 
-    public void addJob( String name, Class<? extends Job> c, JobDetail jobDetail ) throws SchedulerException
-    {
+    public void addJob(String name, Class<? extends Job> c, JobDetail jobDetail) throws SchedulerException {
         getScheduler().addJob(jobDetail, true);
     }
 
-    private void scheduleJob( String name, String preferencePrefix ) throws ParseException, SchedulerException
-    {
+    private void scheduleJob(String name, String preferencePrefix) throws ParseException, SchedulerException {
         String schedule = getPreferences().getString(preferencePrefix + ".schedule");
         Integer interval = getPreferences().getInteger(preferencePrefix + ".interval");
         Boolean atStart = getPreferences().getBoolean(preferencePrefix + ".atstart");
@@ -214,8 +197,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         }
     }
 
-    private void terminateJobs() throws SchedulerException
-    {
+    private void terminateJobs() throws SchedulerException {
         if (null != getScheduler()) {
             getScheduler().pauseAll();
 

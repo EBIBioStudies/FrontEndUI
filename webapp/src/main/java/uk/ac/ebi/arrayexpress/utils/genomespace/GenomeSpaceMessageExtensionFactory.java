@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.genomespace;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +15,22 @@ package uk.ac.ebi.arrayexpress.utils.genomespace;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.genomespace;
+
 import org.openid4java.message.MessageException;
 import org.openid4java.message.MessageExtension;
 import org.openid4java.message.MessageExtensionFactory;
 import org.openid4java.message.ParameterList;
 
-public class GenomeSpaceMessageExtensionFactory implements MessageExtensionFactory
-{
+public class GenomeSpaceMessageExtensionFactory implements MessageExtensionFactory {
     @Override
-    public String getTypeUri()
-    {
+    public String getTypeUri() {
         return GenomeSpaceMessageExtension.URI;
     }
 
     @Override
     public MessageExtension getExtension(ParameterList parameterList,
-                                         boolean isRequest) throws MessageException
-    {
+                                         boolean isRequest) throws MessageException {
         GenomeSpaceMessageExtension messageExtension = new GenomeSpaceMessageExtension();
         messageExtension.setParameters(parameterList);
         return messageExtension;

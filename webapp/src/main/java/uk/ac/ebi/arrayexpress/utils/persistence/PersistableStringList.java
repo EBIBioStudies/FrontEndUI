@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.persistence;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,42 +15,38 @@ package uk.ac.ebi.arrayexpress.utils.persistence;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.persistence;
+
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PersistableStringList extends ArrayList<String> implements Persistable
-{
-    public PersistableStringList()
-    {
+public class PersistableStringList extends ArrayList<String> implements Persistable {
+    public PersistableStringList() {
     }
 
-    public PersistableStringList( List<String> listToCopy )
-    {
-        super(listToCopy);    
+    public PersistableStringList(List<String> listToCopy) {
+        super(listToCopy);
     }
 
-    public String toPersistence()
-    {
+    public String toPersistence() {
         StringBuilder sb = new StringBuilder();
 
-        for ( String entry : this ) {
+        for (String entry : this) {
             sb.append(entry).append(StringTools.EOL);
         }
 
         return sb.toString();
     }
 
-    public void fromPersistence( String str )
-    {
+    public void fromPersistence(String str) {
         this.clear();
         this.addAll(Arrays.asList(str.split("" + StringTools.EOL)));
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return (0 == this.size());
     }
 }

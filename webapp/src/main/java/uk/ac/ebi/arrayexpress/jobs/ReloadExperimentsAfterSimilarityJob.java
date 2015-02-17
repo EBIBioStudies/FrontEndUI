@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.jobs;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.jobs;
  *
  */
 
+package uk.ac.ebi.arrayexpress.jobs;
+
 import net.sf.saxon.om.DocumentInfo;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
@@ -25,22 +25,20 @@ import uk.ac.ebi.arrayexpress.app.ApplicationJob;
 import uk.ac.ebi.arrayexpress.components.Experiments;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 
-public class ReloadExperimentsAfterSimilarityJob extends ApplicationJob
-{
+public class ReloadExperimentsAfterSimilarityJob extends ApplicationJob {
     @SuppressWarnings("unused")
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void doExecute(JobExecutionContext jobExecutionContext) throws Exception
-    {
+    public void doExecute(JobExecutionContext jobExecutionContext) throws Exception {
         SaxonEngine saxonEngine = (SaxonEngine) getComponent("SaxonEngine");
         Experiments experiments = (Experiments) getComponent("Experiments");
 
         DocumentInfo result = saxonEngine.transform(
-                    experiments.getDocument()
-                    , "add-similarity-experiments-xml.xsl"
-                    , null
-                    );
+                experiments.getDocument()
+                , "add-similarity-experiments-xml.xsl"
+                , null
+        );
 
         experiments.setDocument(result);
     }

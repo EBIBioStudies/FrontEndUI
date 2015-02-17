@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +15,16 @@ package uk.ac.ebi.arrayexpress.utils.saxon;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon;
+
 import net.sf.saxon.om.DocumentInfo;
 
 import java.io.IOException;
 
-public interface IDocumentSource
-{
+public interface IDocumentSource {
     public String getDocumentURI();
+
     public DocumentInfo getDocument() throws IOException;
+
     public void setDocument(DocumentInfo doc) throws IOException, InterruptedException;
 }

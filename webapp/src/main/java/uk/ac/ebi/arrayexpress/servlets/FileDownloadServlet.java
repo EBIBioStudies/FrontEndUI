@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  *
  */
 
+package uk.ac.ebi.arrayexpress.servlets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
@@ -28,71 +28,58 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
 
-public class FileDownloadServlet extends BaseDownloadServlet
-{
+public class FileDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909737571L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected final class RegularDownloadFile implements IDownloadFile
-    {
+    protected final class RegularDownloadFile implements IDownloadFile {
         private final File file;
-        
-        public RegularDownloadFile( File file )
-        {
+
+        public RegularDownloadFile(File file) {
             if (null == file) {
                 throw new IllegalArgumentException("File cannot be null");
             }
             this.file = file;
         }
 
-        private File getFile()
-        {
+        private File getFile() {
             return this.file;
         }
-        
-        public String getName()
-        {
+
+        public String getName() {
             return getFile().getName();
         }
-        
-        public String getPath()
-        {
+
+        public String getPath() {
             return getFile().getPath();
         }
 
-        public long getLength()
-        {
+        public long getLength() {
             return getFile().length();
         }
-        
-        public long getLastModified()
-        {
+
+        public long getLastModified() {
             return getFile().lastModified();
         }
 
-        public boolean canDownload()
-        {
+        public boolean canDownload() {
             return getFile().exists() && getFile().isFile() && getFile().canRead();
         }
 
-        public boolean isRandomAccessSupported()
-        {
+        public boolean isRandomAccessSupported() {
             return true;
         }
-        
-        public RandomAccessFile getRandomAccessFile() throws IOException
-        {
+
+        public RandomAccessFile getRandomAccessFile() throws IOException {
             return new RandomAccessFile(getFile(), "r");
         }
 
-        public InputStream getInputStream() throws IOException
-        {
+        public InputStream getInputStream() throws IOException {
             return new FileInputStream(getFile());
         }
 
-        public void close() throws IOException
-        {
+        public void close() throws IOException {
         }
     }
 
@@ -100,8 +87,7 @@ public class FileDownloadServlet extends BaseDownloadServlet
             HttpServletRequest request
             , HttpServletResponse response
             , List<String> userIDs
-    ) throws DownloadServletException
-    {
+    ) throws DownloadServletException {
         String accession = "";
         String kind = "";
         String name = "";
@@ -124,7 +110,6 @@ public class FileDownloadServlet extends BaseDownloadServlet
             logger.info("Requested download of [" + name + "], kind [" + kind + "], accession [" + accession + "]");
             Files files = (Files) getComponent("Files");
             Users users = (Users) getComponent("Users");
-
 
 
             if (!files.doesExist(accession, kind, name)) {

@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.autocompletion;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.autocompletion;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.autocompletion;
+
 public class AutocompleteData {
 
     public static final Character DATA_TEXT = 't';
@@ -27,30 +27,25 @@ public class AutocompleteData {
     private Character dataType;
     private String data;
 
-    public AutocompleteData( String text, Character dataType, String data )
-    {
+    public AutocompleteData(String text, Character dataType, String data) {
         this.text = text;
         this.dataType = dataType;
         this.data = data;
     }
 
-    public String getText()
-    {
+    public String getText() {
         return this.text;
     }
 
-    public String getData()
-    {
+    public String getData() {
         return this.data;
     }
 
-    public Character getDataType()
-    {
+    public Character getDataType() {
         return this.dataType;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return this.text + "|" + this.dataType + "|" + this.data;
     }
 }

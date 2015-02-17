@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +15,12 @@ package uk.ac.ebi.arrayexpress.utils.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.search;
+
 import org.apache.lucene.search.Query;
 
 import java.io.IOException;
 
-public interface IEFOExpansionLookup
-{
-    public EFOExpansionTerms getExpansionTerms( Query query ) throws IOException;
+public interface IEFOExpansionLookup {
+    public EFOExpansionTerms getExpansionTerms(Query query) throws IOException;
 }

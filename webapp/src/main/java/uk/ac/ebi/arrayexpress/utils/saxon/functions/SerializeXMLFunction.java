@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils.saxon.functions;
 
 import net.sf.saxon.event.PipelineConfiguration;
 import net.sf.saxon.event.Receiver;
@@ -37,64 +37,54 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.util.Properties;
 
-public class SerializeXMLFunction extends ExtensionFunctionDefinition
-{
+public class SerializeXMLFunction extends ExtensionFunctionDefinition {
     private static final long serialVersionUID = 2833370612309346918L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "serializeXml");
 
     @Override
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
     @Override
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 2;
     }
 
     @Override
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 2;
     }
 
     @Override
-    public SequenceType[] getArgumentTypes()
-    {
+    public SequenceType[] getArgumentTypes() {
         return new SequenceType[]{SequenceType.OPTIONAL_NODE, SequenceType.SINGLE_STRING};
     }
 
     @Override
-    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes)
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.SINGLE_STRING;
     }
 
     @Override
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new SerializeXMLCall();
     }
 
-    private static class SerializeXMLCall extends ExtensionFunctionCall
-    {
+    private static class SerializeXMLCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = 4046135620725571811L;
 
         private int locationId;
 
         @Override
-        public void  supplyStaticContext(StaticContext context, int locationId, Expression[] arguments) throws XPathException
-        {
+        public void supplyStaticContext(StaticContext context, int locationId, Expression[] arguments) throws XPathException {
             this.locationId = locationId;
         }
 
         @Override
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             Item node = SequenceTool.asItem(arguments[0]);
             if (!(node instanceof NodeInfo)) {
                 return StringValue.EMPTY_STRING;
@@ -125,11 +115,12 @@ public class SerializeXMLFunction extends ExtensionFunctionDefinition
 
                 SequenceReceiver out = c2.getReceiver();
                 out.open();
-                ((NodeInfo)node).copy(out, NodeInfo.ALL_NAMESPACES, locationId);
+                ((NodeInfo) node).copy(out, NodeInfo.ALL_NAMESPACES, locationId);
                 out.close();
                 return new StringValue(result.toString());
             } catch (XPathException err) {
                 throw new XPathException(err);
             }
         }
-    }}
+    }
+}

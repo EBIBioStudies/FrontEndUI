@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.jobs;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.jobs;
  *
  */
 
+package uk.ac.ebi.arrayexpress.jobs;
+
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,22 +29,20 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 
-public class UpdateOntologyJob extends ApplicationJob
-{
+public class UpdateOntologyJob extends ApplicationJob {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void doExecute( JobExecutionContext jec ) throws Exception
-    {
+    public void doExecute(JobExecutionContext jec) throws Exception {
         // check the version of EFO from update location; if newer, copy it
         // over to our location and launch a reload process
         String efoLocation = getPreferences().getString("ae.efo.update.source");
         URI efoURI = new URI(efoLocation);
         logger.info("Checking EFO ontology version from [{}]", efoURI.toString());
         String version = EFOLoader.getOWLVersion(efoURI);
-        String loadedVersion = ((Ontologies)getComponent("Ontologies")).getEfo().getVersionInfo();
-        if ( null != version
+        String loadedVersion = ((Ontologies) getComponent("Ontologies")).getEfo().getVersionInfo();
+        if (null != version
                 && !version.equals(loadedVersion)
                 && isVersionNewer(version, loadedVersion)
 
@@ -59,20 +57,19 @@ public class UpdateOntologyJob extends ApplicationJob
                         , null
                         , "EFO update"
                         , "Experimental Factor Ontology has been updated to version [" + version + "]" + StringTools.EOL
-                            + StringTools.EOL
-                            + "Application [${variable.appname}]" + StringTools.EOL
-                            + "Host [${variable.hostname}]" + StringTools.EOL
+                                + StringTools.EOL
+                                + "Application [${variable.appname}]" + StringTools.EOL
+                                + "Host [${variable.hostname}]" + StringTools.EOL
                 );
                 getController().executeJob("reload-efo");
             }
-            
+
         } else {
             logger.info("Current ontology version [{}] is up-to-date", loadedVersion);
         }
     }
 
-    private boolean isVersionNewer( String version, String baseVersion )
-    {
+    private boolean isVersionNewer(String version, String baseVersion) {
         return null != version
                 && null != baseVersion
                 && Float.parseFloat("0." + version.replace(".", "")) > Float.parseFloat("0." + baseVersion.replace(".", ""));

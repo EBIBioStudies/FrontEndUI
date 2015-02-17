@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.app;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +15,28 @@ package uk.ac.ebi.arrayexpress.app;
  *
  */
 
-abstract public class ApplicationComponent
-{
+package uk.ac.ebi.arrayexpress.app;
+
+abstract public class ApplicationComponent {
     private String componentName;
 
-    public ApplicationComponent()
-    {
+    public ApplicationComponent() {
         componentName = getClass().getName().replaceFirst("^.+\\.", "");
     }
 
-    public String getName()
-    {
+    public String getName() {
         return componentName;
     }
 
-    public Application getApplication()
-    {
+    public Application getApplication() {
         return Application.getInstance();
     }
 
-    public ApplicationComponent getComponent( String name )
-    {
+    public ApplicationComponent getComponent(String name) {
         return Application.getInstance().getComponent(name);
     }
 
-    public ApplicationPreferences getPreferences()
-    {
+    public ApplicationPreferences getPreferences() {
         return Application.getInstance().getPreferences();
     }
 

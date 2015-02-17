@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
 import org.apache.lucene.index.IndexReader;
@@ -33,20 +33,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Querier
-{
+public class Querier {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IndexEnvironment env;
 
-    public Querier( IndexEnvironment env )
-    {
+    public Querier(IndexEnvironment env) {
         this.env = env;
     }
 
-    public List<String> getTerms( String fieldName, int minFreq ) throws IOException
-    {
+    public List<String> getTerms(String fieldName, int minFreq) throws IOException {
         List<String> termsList = new ArrayList<>();
 
         try (IndexReader reader = IndexReader.open(this.env.indexDirectory); TermEnum terms = reader.terms(new Term(fieldName, ""))) {
@@ -65,8 +62,7 @@ public class Querier
         return termsList;
     }
 
-    public void dumpTerms( String fieldName ) throws IOException
-    {
+    public void dumpTerms(String fieldName) throws IOException {
         try (IndexReader reader = IndexReader.open(this.env.indexDirectory); TermEnum terms = reader.terms(new Term(fieldName, ""))) {
 
             File f = new File(System.getProperty("java.io.tmpdir"), fieldName + "_terms.txt");
@@ -82,9 +78,8 @@ public class Querier
         }
     }
 
-    public Integer getDocCount( Query query ) throws IOException
-    {
-        try (IndexReader reader =  IndexReader.open(this.env.indexDirectory); IndexSearcher searcher = new IndexSearcher(reader)) {
+    public Integer getDocCount(Query query) throws IOException {
+        try (IndexReader reader = IndexReader.open(this.env.indexDirectory); IndexSearcher searcher = new IndexSearcher(reader)) {
 
             // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
             TopDocs hits = searcher.search(query, this.env.documentNodes.size() + 1);
@@ -94,14 +89,13 @@ public class Querier
         }
     }
 
-    public List<NodeInfo> query( Query query ) throws IOException
-    {
+    public List<NodeInfo> query(Query query) throws IOException {
         List<NodeInfo> result;
 
-        try (IndexReader reader =  IndexReader.open(this.env.indexDirectory); IndexSearcher searcher = new IndexSearcher(reader)) {
+        try (IndexReader reader = IndexReader.open(this.env.indexDirectory); IndexSearcher searcher = new IndexSearcher(reader)) {
 
             // empty query returns everything
-            if (query instanceof BooleanQuery && ((BooleanQuery)query).clauses().isEmpty()) {
+            if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
                 logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
                 return this.env.documentNodes;
             }
@@ -120,14 +114,13 @@ public class Querier
         return result;
     }
 
-    public List<NodeInfo> query( QueryInfo queryInfo ) throws IOException
-    {
+    public List<NodeInfo> query(QueryInfo queryInfo) throws IOException {
         List<NodeInfo> result;
 
-        try (IndexReader reader =  IndexReader.open(this.env.indexDirectory); IndexSearcher searcher = new IndexSearcher(reader)) {
+        try (IndexReader reader = IndexReader.open(this.env.indexDirectory); IndexSearcher searcher = new IndexSearcher(reader)) {
 
             // empty query returns everything
-            if (queryInfo.getQuery() instanceof BooleanQuery && ((BooleanQuery)queryInfo.getQuery()).clauses().isEmpty()) {
+            if (queryInfo.getQuery() instanceof BooleanQuery && ((BooleanQuery) queryInfo.getQuery()).clauses().isEmpty()) {
                 logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
                 return this.env.documentNodes;
             }

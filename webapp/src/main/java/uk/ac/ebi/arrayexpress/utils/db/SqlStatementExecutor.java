@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.db;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.db;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.db;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,16 +24,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 
-public abstract class SqlStatementExecutor
-{
+public abstract class SqlStatementExecutor {
     // logging facility
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     // statement
     private PreparedStatement statement;
 
-    public SqlStatementExecutor( IConnectionSource source, String sql )
-    {
+    public SqlStatementExecutor(IConnectionSource source, String sql) {
         if (null != sql && null != source) {
             try {
                 Connection conn = source.getConnection();
@@ -44,8 +42,7 @@ public abstract class SqlStatementExecutor
         }
     }
 
-    protected boolean execute( boolean shouldRetainConnection )
-    {
+    protected boolean execute(boolean shouldRetainConnection) {
         boolean result = false;
         if (null != statement) {
             ResultSet rs = null;
@@ -82,13 +79,12 @@ public abstract class SqlStatementExecutor
     }
 
     // overridable method that would allow user to set additional parameters (if any)
-    protected abstract void setParameters( PreparedStatement stmt ) throws SQLException;
+    protected abstract void setParameters(PreparedStatement stmt) throws SQLException;
 
     // overridable method that would allow user to parse the result set upon successful execution
-    protected abstract void processResultSet( ResultSet resultSet ) throws IOException, SQLException;
+    protected abstract void processResultSet(ResultSet resultSet) throws IOException, SQLException;
 
-    private PreparedStatement prepareStatement( Connection conn, String sql ) throws SQLException
-    {
+    private PreparedStatement prepareStatement(Connection conn, String sql) throws SQLException {
         PreparedStatement stmt = null;
         if (null != conn) {
             stmt = conn.prepareStatement(sql);
@@ -97,16 +93,14 @@ public abstract class SqlStatementExecutor
         return stmt;
     }
 
-    protected void closeConnection() throws SQLException
-    {
+    protected void closeConnection() throws SQLException {
         if (null != statement) {
             statement.getConnection().close();
             statement = null;
         }
     }
 
-    protected String clobToString( Clob cl ) throws IOException, SQLException
-    {
+    protected String clobToString(Clob cl) throws IOException, SQLException {
         if (cl == null)
             return null;
 

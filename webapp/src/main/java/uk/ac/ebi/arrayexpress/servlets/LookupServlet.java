@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  *
  */
 
+package uk.ac.ebi.arrayexpress.servlets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
@@ -31,21 +31,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class LookupServlet extends ApplicationServlet
-{
+public class LookupServlet extends ApplicationServlet {
     private static final long serialVersionUID = -5043275356216186598L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 
     // Respond to HTTP requests from browsers.
-    protected void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws ServletException, IOException
-    {
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         String[] requestArgs = new RegexHelper("/([^/]+)$", "i")
@@ -78,9 +75,9 @@ public class LookupServlet extends ApplicationServlet
 
         // Output goes to the response PrintWriter.
         try (PrintWriter out = response.getWriter()) {
-            Experiments experiments = (Experiments)getComponent("Experiments");
-            Autocompletion autocompletion = (Autocompletion)getComponent("Autocompletion");
-            Ontologies ontologies = (Ontologies)getComponent("Ontologies");
+            Experiments experiments = (Experiments) getComponent("Experiments");
+            Autocompletion autocompletion = (Autocompletion) getComponent("Autocompletion");
+            Ontologies ontologies = (Ontologies) getComponent("Ontologies");
             if ("arrays".equals(type) && null != experiments) {
                 out.print(experiments.getArrays());
             } else if ("species".equals(type) && null != experiments) {

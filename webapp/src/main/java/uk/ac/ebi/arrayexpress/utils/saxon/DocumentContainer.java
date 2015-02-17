@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +15,25 @@ package uk.ac.ebi.arrayexpress.utils.saxon;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon;
+
 import net.sf.saxon.om.DocumentInfo;
 
-public class DocumentContainer
-{
+public class DocumentContainer {
     private DocumentInfo document = null;
 
-    public DocumentContainer()
-    {
+    public DocumentContainer() {
     }
 
-    public DocumentContainer(DocumentInfo doc)
-    {
+    public DocumentContainer(DocumentInfo doc) {
         setDocument(doc);
     }
 
-    public DocumentInfo getDocument()
-    {
+    public DocumentInfo getDocument() {
         return this.document;
     }
 
-    public void setDocument(DocumentInfo doc)
-    {
+    public void setDocument(DocumentInfo doc) {
         this.document = doc;
     }
 }

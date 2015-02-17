@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +15,12 @@ package uk.ac.ebi.arrayexpress.utils;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LRUMap<K,V> extends LinkedHashMap<K,V>
-{
+public class LRUMap<K, V> extends LinkedHashMap<K, V> {
     private int maxCapacity;
 
     public LRUMap(int maxCapacity) {
@@ -30,8 +29,7 @@ public class LRUMap<K,V> extends LinkedHashMap<K,V>
     }
 
     @Override
-    protected boolean removeEldestEntry(Map.Entry<K,V> eldest)
-    {
+    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
         return size() > this.maxCapacity;
     }
 }

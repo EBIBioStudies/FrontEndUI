@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.persistence;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.persistence;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.persistence;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
@@ -24,8 +24,7 @@ import uk.ac.ebi.arrayexpress.utils.StringTools;
 import java.io.File;
 import java.io.IOException;
 
-public class FilePersistence<T extends Persistable> extends Persistence<T>
-{
+public class FilePersistence<T extends Persistable> extends Persistence<T> {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -33,14 +32,12 @@ public class FilePersistence<T extends Persistable> extends Persistence<T>
 
     private final static String PERSISTENCE_FILE_ENCODING = "UTF-8";
 
-    public FilePersistence( T object, File persistenceFile )
-    {
+    public FilePersistence(T object, File persistenceFile) {
         super(object);
         this.persistenceFile = persistenceFile;
     }
 
-    protected void persist( T object ) throws IOException
-    {
+    protected void persist(T object) throws IOException {
         logger.debug("Persisting object [{}] to [{}]"
                 , object.getClass().toString()
                 , persistenceFile.getName());
@@ -48,8 +45,7 @@ public class FilePersistence<T extends Persistable> extends Persistence<T>
         StringTools.stringToFile(object.toPersistence(), persistenceFile, PERSISTENCE_FILE_ENCODING);
     }
 
-    protected void restore( T object ) throws IOException
-    {
+    protected void restore(T object) throws IOException {
 
         logger.debug("Restoring object [{}] from [{}]"
                 , object.getClass().toString()

@@ -1,8 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +15,8 @@ package uk.ac.ebi.arrayexpress.components;
  *
  */
 
+package uk.ac.ebi.arrayexpress.components;
+
 import au.com.bytecode.opencsv.CSVReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,26 +31,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapEngine extends ApplicationComponent
-{
+public class MapEngine extends ApplicationComponent {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Map<String, IValueMap> mapRegistry;
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         mapRegistry = new HashMap<>();
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
-    public void registerMap( IValueMap map )
-    {
+    public void registerMap(IValueMap map) {
         if (mapRegistry.containsKey(map.getName())) {
             logger.error("Unable to register map [{}] - already registered", map.getName());
         } else {
@@ -59,8 +54,7 @@ public class MapEngine extends ApplicationComponent
         }
     }
 
-    public synchronized void clearMap( String mapName )
-    {
+    public synchronized void clearMap(String mapName) {
         if (mapRegistry.containsKey(mapName)) {
             mapRegistry.get(mapName).clearValues();
         } else {
@@ -68,8 +62,7 @@ public class MapEngine extends ApplicationComponent
         }
     }
 
-    public synchronized void loadMap( String mapName, File tsvFile ) throws IOException
-    {
+    public synchronized void loadMap(String mapName, File tsvFile) throws IOException {
         if (mapRegistry.containsKey(mapName)) {
             clearMap(mapName);
             CSVReader tsvReader = new CSVReader(
@@ -91,8 +84,7 @@ public class MapEngine extends ApplicationComponent
         }
     }
 
-    public synchronized Object getMappedValue( String mapName, String mapKey )
-    {
+    public synchronized Object getMappedValue(String mapName, String mapKey) {
         if (mapRegistry.containsKey(mapName)) {
             IValueMap map = mapRegistry.get(mapName);
             if (null != map && map.containsKey(mapKey)) {
@@ -107,8 +99,7 @@ public class MapEngine extends ApplicationComponent
         return null;
     }
 
-    public synchronized void setMappedValue( String mapName, String mapKey, Object mapValue )
-    {
+    public synchronized void setMappedValue(String mapName, String mapKey, Object mapValue) {
         if (mapRegistry.containsKey(mapName)) {
             IValueMap map = mapRegistry.get(mapName);
             if (null != map) {
@@ -123,8 +114,7 @@ public class MapEngine extends ApplicationComponent
         }
     }
 
-    public synchronized void addMappedValue( String mapName, String mapKey, Object mapValue )
-    {
+    public synchronized void addMappedValue(String mapName, String mapKey, Object mapValue) {
         if (mapRegistry.containsKey(mapName)) {
             IValueMap map = mapRegistry.get(mapName);
             if (null != map) {
@@ -132,7 +122,7 @@ public class MapEngine extends ApplicationComponent
                     Object oldValue = map.getValue(mapKey);
                     MapList mapList = new MapList();
                     if (oldValue instanceof MapList) {
-                        mapList = (MapList)oldValue;
+                        mapList = (MapList) oldValue;
                     } else {
                         mapList.add(oldValue);
                     }
@@ -147,35 +137,30 @@ public class MapEngine extends ApplicationComponent
         }
     }
 
-    private class MapList extends ArrayList<Object>
-    {
+    private class MapList extends ArrayList<Object> {
     }
 
-    public interface IValueMap
-    {
+    public interface IValueMap {
         public String getName();
 
-        public boolean containsKey( String key );
+        public boolean containsKey(String key);
 
-        public Object getValue( String key );
+        public Object getValue(String key);
 
         public void clearValues();
 
-        public void setValue( String key, Object value );
+        public void setValue(String key, Object value);
     }
 
-    public static class SimpleValueMap implements IValueMap
-    {
+    public static class SimpleValueMap implements IValueMap {
         private String name;
         private Map<String, Object> map;
 
-        public SimpleValueMap( String name )
-        {
+        public SimpleValueMap(String name) {
             this(name, new HashMap<String, Object>());
         }
 
-        public SimpleValueMap( String name, HashMap<String, Object> map )
-        {
+        public SimpleValueMap(String name, HashMap<String, Object> map) {
             if (null == name || null == map) {
                 throw new IllegalArgumentException("Null map and/or name not allowed");
             }
@@ -184,57 +169,48 @@ public class MapEngine extends ApplicationComponent
         }
 
         @Override
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
         @Override
-        public boolean containsKey( String key )
-        {
+        public boolean containsKey(String key) {
             return map.containsKey(key);
         }
 
         @Override
-        public Object getValue( String key )
-        {
+        public Object getValue(String key) {
             return containsKey(key) ? map.get(key) : null;
         }
 
         @Override
-        public void clearValues()
-        {
+        public void clearValues() {
             map.clear();
         }
 
         @Override
-        public void setValue( String key, Object value )
-        {
+        public void setValue(String key, Object value) {
             map.put(key, value);
         }
     }
 
-    public static class JointValueMap implements IValueMap
-    {
+    public static class JointValueMap implements IValueMap {
         private String name;
         private Map<String, IValueMap> maps;
 
-        public JointValueMap( String name )
-        {
+        public JointValueMap(String name) {
             this.name = name;
             this.maps = new HashMap<>();
         }
 
         @Override
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
         @Override
-        public boolean containsKey( String key )
-        {
-            for ( IValueMap map : maps.values() ) {
+        public boolean containsKey(String key) {
+            for (IValueMap map : maps.values()) {
                 if (map.containsKey(key)) {
                     return true;
                 }
@@ -243,9 +219,8 @@ public class MapEngine extends ApplicationComponent
         }
 
         @Override
-        public Object getValue( String key )
-        {
-            for ( IValueMap map : maps.values() ) {
+        public Object getValue(String key) {
+            for (IValueMap map : maps.values()) {
                 if (map.containsKey(key)) {
                     return map.getValue(key);
                 }
@@ -254,19 +229,16 @@ public class MapEngine extends ApplicationComponent
         }
 
         @Override
-        public void clearValues()
-        {
+        public void clearValues() {
             throw new IllegalArgumentException("Method not supported");
         }
 
         @Override
-        public void setValue( String key, Object value )
-        {
+        public void setValue(String key, Object value) {
             throw new IllegalArgumentException("Method not supported");
         }
 
-        public void addMap( IValueMap map )
-        {
+        public void addMap(IValueMap map) {
             if (maps.containsKey(map.getName())) {
                 throw new IllegalArgumentException("Map [" + map.getName() + "] already added");
             } else {
@@ -274,8 +246,7 @@ public class MapEngine extends ApplicationComponent
             }
         }
 
-        public IValueMap getMap( String name )
-        {
+        public IValueMap getMap(String name) {
             if (maps.containsKey(name)) {
                 return maps.get(name);
             } else {

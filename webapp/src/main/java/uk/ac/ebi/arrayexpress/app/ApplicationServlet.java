@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.app;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.app;
  *
  */
 
+package uk.ac.ebi.arrayexpress.app;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,31 +26,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public abstract class ApplicationServlet extends HttpServlet
-{
+public abstract class ApplicationServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public Application getApplication()
-    {
+    public Application getApplication() {
         return Application.getInstance();
     }
 
-    public ApplicationComponent getComponent( String name )
-    {
+    public ApplicationComponent getComponent(String name) {
         return getApplication().getComponent(name);
     }
 
-    public ApplicationPreferences getPreferences()
-    {
+    public ApplicationPreferences getPreferences() {
         return getApplication().getPreferences();
     }
 
-    protected enum RequestType
-    {
+    protected enum RequestType {
         HEAD, GET, POST;
 
-        public String toString()
-        {
+        public String toString() {
             switch (this) {
                 case HEAD:
                     return "HEAD";
@@ -64,26 +58,22 @@ public abstract class ApplicationServlet extends HttpServlet
     }
 
     @Override
-    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response, RequestType.GET);
     }
 
     @Override
-    public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response, RequestType.POST);
     }
 
     @Override
-    public void doHead( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
+    public void doHead(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response, RequestType.HEAD);
     }
 
-    private void processRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
-            throws ServletException, IOException
-    {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+            throws ServletException, IOException {
         try {
             if (canAcceptRequest(request, requestType)) {
                 doRequest(request, response, requestType);
@@ -105,24 +95,22 @@ public abstract class ApplicationServlet extends HttpServlet
         }
     }
 
-    protected abstract boolean canAcceptRequest( HttpServletRequest request, RequestType requestType );
+    protected abstract boolean canAcceptRequest(HttpServletRequest request, RequestType requestType);
 
-    protected abstract void doRequest( HttpServletRequest request, HttpServletResponse response, RequestType requestType )
+    protected abstract void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
             throws ServletException, IOException;
 
-    protected void logRequest( Logger logger, HttpServletRequest request, RequestType requestType )
-    {
+    protected void logRequest(Logger logger, HttpServletRequest request, RequestType requestType) {
         logger.info("Processing {}", requestToString(request, requestType));
     }
 
-    protected String requestToString( HttpServletRequest request, RequestType requestType )
-    {
+    protected String requestToString(HttpServletRequest request, RequestType requestType) {
         return "["
                 + requestType.toString()
                 + "] request ["
                 + request.getRequestURL().append(
-                    null != request.getQueryString() ? "?" + request.getQueryString() : ""
-                )
+                null != request.getQueryString() ? "?" + request.getQueryString() : ""
+        )
                 + "]";
     }
 

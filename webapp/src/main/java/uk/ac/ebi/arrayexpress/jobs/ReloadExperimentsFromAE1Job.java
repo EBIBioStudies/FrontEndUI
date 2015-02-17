@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.jobs;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.jobs;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.jobs;
 
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -38,8 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobListener
-{
+public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobListener {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -51,8 +50,7 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
     private int expsPerThread;
 
     @Override
-    public void doExecute( JobExecutionContext jec ) throws Exception
-    {
+    public void doExecute(JobExecutionContext jec) throws Exception {
         String usersXml = null;
         String arrayDesignsXml = null;
         String experimentsXml = null;
@@ -154,8 +152,7 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
         }
     }
 
-    private String getXmlFromFile(File xmlFile) throws IOException
-    {
+    private String getXmlFromFile(File xmlFile) throws IOException {
         logger.info("Getting XML from file [{}]", xmlFile);
         return StringTools.fileToString(
                 xmlFile
@@ -163,16 +160,14 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
         );
     }
 
-    private void updateUsers( String xmlString ) throws IOException, InterruptedException
-    {
+    private void updateUsers(String xmlString) throws IOException, InterruptedException {
         ((Users) getComponent("Users")).update(xmlString, Users.UserSource.AE1);
 
         logger.info("User information reload completed");
 
     }
 
-    private void updateExperiments( String xmlString, UpdateSourceInformation sourceInformation ) throws IOException, InterruptedException
-    {
+    private void updateExperiments(String xmlString, UpdateSourceInformation sourceInformation) throws IOException, InterruptedException {
         ((Experiments) getComponent("Experiments")).update(
                 xmlString
                 , sourceInformation
@@ -182,8 +177,7 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
 
     }
 
-    private void updateArrayDesigns( String xmlString ) throws IOException, InterruptedException
-    {
+    private void updateArrayDesigns(String xmlString) throws IOException, InterruptedException {
         ((ArrayDesigns) getComponent("ArrayDesigns")).update(
                 xmlString
                 , ArrayDesigns.ArrayDesignSource.AE1
@@ -193,18 +187,15 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
 
     }
 
-    private String getUsersXmlFromDb()
-    {
+    private String getUsersXmlFromDb() {
         return new UserXmlDatabaseRetriever(this.connectionSource).getXml();
     }
 
-    private String getArrayDesignsXmlFromDb()
-    {
+    private String getArrayDesignsXmlFromDb() {
         return new ArrayXmlDatabaseRetriever(this.connectionSource).getXml();
     }
 
-    private String getExperimentsXmlFromDb() throws IOException, SchedulerException, InterruptedException
-    {
+    private String getExperimentsXmlFromDb() throws IOException, SchedulerException, InterruptedException {
         String experimentsXml = null;
         Long threads = getPreferences().getLong("ae.experiments.ae1.reload.threads");
         if (null != threads) {
@@ -218,7 +209,7 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
             xmlBuffer = new StringBuffer(20000000);
             xmlBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
                     .append("<experiments total=\"").append(exps.size()).append("\">")
-                    ;
+            ;
 
             getController().addJobListener(this);
 
@@ -262,17 +253,15 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
                 );
             }
         }
-    return experimentsXml;
+        return experimentsXml;
     }
 
     // jobListener support
-    public String getName()
-    {
+    public String getName() {
         return "job-listener";
     }
 
-    public void jobToBeExecuted( JobExecutionContext jec )
-    {
+    public void jobToBeExecuted(JobExecutionContext jec) {
         if (jec.getJobDetail().getKey().getName().equals("retrieve-xml")) {
             JobDataMap jdm = jec.getMergedJobDataMap();
             int index = Integer.parseInt(jdm.getString("index"));
@@ -282,8 +271,7 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
         }
     }
 
-    public void jobExecutionVetoed( JobExecutionContext jec )
-    {
+    public void jobExecutionVetoed(JobExecutionContext jec) {
         if (jec.getJobDetail().getKey().getName().equals("retrieve-xml")) {
             try {
                 interrupt();
@@ -293,8 +281,7 @@ public class ReloadExperimentsFromAE1Job extends ApplicationJob implements JobLi
         }
     }
 
-    public void jobWasExecuted( JobExecutionContext jec, JobExecutionException jobException )
-    {
+    public void jobWasExecuted(JobExecutionContext jec, JobExecutionException jobException) {
         if (jec.getJobDetail().getKey().getName().equals("retrieve-xml")) {
             JobDataMap jdm = jec.getMergedJobDataMap();
             jdm.remove("xmlBuffer");

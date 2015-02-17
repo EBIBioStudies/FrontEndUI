@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.servlets;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.servlets;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.servlets;
 
 import net.sf.saxon.om.DocumentInfo;
 import org.slf4j.Logger;
@@ -36,8 +36,7 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected boolean canAcceptRequest( HttpServletRequest request, RequestType requestType )
-    {
+    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
         return true;
     }
 
@@ -46,8 +45,7 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
             , HttpServletResponse response
             , RequestType requestType
             , String authUserName
-    ) throws ServletException, IOException
-    {
+    ) throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         response.setContentType("text/html; charset=UTF-8");
@@ -57,7 +55,7 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
             String stylesheetName = "error-html.xsl";
 
             HttpServletRequestParameterMap params = new HttpServletRequestParameterMap(request);
-            params.put("original-request-uri", (String)request.getAttribute("javax.servlet.error.request_uri"));
+            params.put("original-request-uri", (String) request.getAttribute("javax.servlet.error.request_uri"));
             params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
             params.put("username", authUserName);
 
@@ -75,4 +73,5 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
         } catch (Exception x) {
             throw new RuntimeException(x);
         }
-    }}
+    }
+}

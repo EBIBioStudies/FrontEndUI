@@ -1,13 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.db;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.pool.HikariPool;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,26 +15,30 @@ import java.sql.SQLException;
  *
  */
 
-public class ConnectionSource implements IConnectionSource
-{
+package uk.ac.ebi.arrayexpress.utils.db;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.pool.HikariPool;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class ConnectionSource implements IConnectionSource {
     private HikariPool connectionPool;
     private String name;
 
-    public ConnectionSource( String name, HikariConfig cpConfig ) throws SQLException
-    {
+    public ConnectionSource(String name, HikariConfig cpConfig) throws SQLException {
         this.name = name;
         this.connectionPool = new HikariPool(cpConfig);
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
     @Override
-    public Connection getConnection() throws SQLException
-    {
+    public Connection getConnection() throws SQLException {
         if (null != this.connectionPool) {
             return this.connectionPool.getConnection();
         } else {
@@ -51,8 +47,7 @@ public class ConnectionSource implements IConnectionSource
     }
 
     @Override
-    public void close() throws InterruptedException
-    {
+    public void close() throws InterruptedException {
         this.connectionPool.shutdown();
         this.connectionPool = null;
     }

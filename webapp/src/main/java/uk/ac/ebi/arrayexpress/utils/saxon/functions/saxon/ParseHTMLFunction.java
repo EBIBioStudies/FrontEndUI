@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions.saxon;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions.saxon;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils.saxon.functions.saxon;
 
 import net.sf.saxon.Controller;
 import net.sf.saxon.event.Builder;
@@ -40,55 +40,46 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import java.io.StringReader;
 
-public class ParseHTMLFunction extends ExtensionFunctionDefinition
-{
+public class ParseHTMLFunction extends ExtensionFunctionDefinition {
     private static final long serialVersionUID = 8579273476850096996L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.SAXON, "parse-html");
 
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 1;
     }
 
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 1;
     }
 
-    public SequenceType[] getArgumentTypes()
-    {
+    public SequenceType[] getArgumentTypes() {
         return new SequenceType[]{SequenceType.SINGLE_STRING};
     }
 
-    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes)
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.SINGLE_NODE;
     }
 
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new ParseHTMLCall();
     }
 
-    private static class ParseHTMLCall extends ExtensionFunctionCall
-    {
+    private static class ParseHTMLCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = 1907927904336872728L;
 
         private String baseURI;
         private transient Parser parser;
 
         @SuppressWarnings("unchecked")
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             Controller controller = context.getController();
-            baseURI = (null != context.getContextItem()) ? ((NodeInfo)context.getContextItem()).getBaseURI() : "";
+            baseURI = (null != context.getContextItem()) ? ((NodeInfo) context.getContextItem()).getBaseURI() : "";
 
             StringReader sr = new StringReader(SequenceTool.getStringValue(arguments[0]));
 
@@ -113,8 +104,7 @@ public class ParseHTMLFunction extends ExtensionFunctionDefinition
             }
         }
 
-        private Parser getParser()
-        {
+        private Parser getParser() {
             if (null == parser) {
                 parser = new Parser();
                 // configure it the way we want

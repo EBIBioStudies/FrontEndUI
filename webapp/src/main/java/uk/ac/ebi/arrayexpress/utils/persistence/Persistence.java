@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.persistence;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +15,18 @@ package uk.ac.ebi.arrayexpress.utils.persistence;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.persistence;
+
 import java.io.IOException;
 
-public abstract class Persistence<T extends Persistable>
-{
-	private T object = null;
+public abstract class Persistence<T extends Persistable> {
+    private T object = null;
 
-    public Persistence( T object )
-    {
+    public Persistence(T object) {
         assignObject(object);
     }
 
-    private void assignObject( T object )
-    {
+    private void assignObject(T object) {
         if (null == object) {
             throw new IllegalArgumentException("Persistence created with null object");
         }
@@ -37,20 +34,19 @@ public abstract class Persistence<T extends Persistable>
         this.object = object;
     }
 
-	public T getObject() throws IOException
-	{
-		if (this.object.isEmpty()) {
-			restore(this.object);
-		}
+    public T getObject() throws IOException {
+        if (this.object.isEmpty()) {
+            restore(this.object);
+        }
         return this.object;
-	}
+    }
 
-	public void setObject( T object ) throws IOException
-	{
+    public void setObject(T object) throws IOException {
         assignObject(object);
-		persist(this.object);
-	}
+        persist(this.object);
+    }
 
-	abstract void persist( T object ) throws IOException;
-	abstract void restore( T object ) throws IOException;
+    abstract void persist(T object) throws IOException;
+
+    abstract void restore(T object) throws IOException;
 }

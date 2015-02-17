@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.io;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.io;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.io;
+
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.nio.ByteBuffer;
@@ -25,18 +25,15 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
-public class SmartUTF8CharsetDecoder extends CharsetDecoder
-{
+public class SmartUTF8CharsetDecoder extends CharsetDecoder {
     int[] buffer;
     int decodeState;
 
-    public SmartUTF8CharsetDecoder()
-    {
+    public SmartUTF8CharsetDecoder() {
         super(Charset.forName("iso-8859-1"), 1f, 1f);
     }
 
-    protected CoderResult decodeLoop(ByteBuffer in, CharBuffer out)
-    {
+    protected CoderResult decodeLoop(ByteBuffer in, CharBuffer out) {
         if (!flushBuffer(out)) {
             return CoderResult.OVERFLOW;
         }
@@ -118,14 +115,12 @@ public class SmartUTF8CharsetDecoder extends CharsetDecoder
         return CoderResult.UNDERFLOW;
     }
 
-    protected void implReset()
-    {
+    protected void implReset() {
         buffer = null;
         decodeState = 0;
     }
 
-    protected CoderResult implFlush(CharBuffer out)
-    {
+    protected CoderResult implFlush(CharBuffer out) {
         if (!flushBuffer(out)) {
             return CoderResult.OVERFLOW;
         }
@@ -134,8 +129,7 @@ public class SmartUTF8CharsetDecoder extends CharsetDecoder
         return CoderResult.UNDERFLOW;
     }
 
-    private boolean flushBuffer( CharBuffer out )
-    {
+    private boolean flushBuffer(CharBuffer out) {
         if (buffer == null)
             return true;
         for (int i = 0; i < buffer.length; i++)
@@ -151,10 +145,9 @@ public class SmartUTF8CharsetDecoder extends CharsetDecoder
         return true;
     }
 
-    private boolean out(CharBuffer out, int b)
-    {
-        if(out.remaining() > 0) {
-            out.put((char)b);
+    private boolean out(CharBuffer out, int b) {
+        if (out.remaining() > 0) {
+            out.put((char) b);
             return true;
         } else {
             buffer = new int[]{b};

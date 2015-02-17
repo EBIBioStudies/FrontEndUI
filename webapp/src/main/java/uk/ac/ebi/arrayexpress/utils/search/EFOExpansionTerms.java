@@ -1,11 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
-import java.util.Set;
-import java.util.TreeSet;
-
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +15,19 @@ import java.util.TreeSet;
  *
  */
 
-public class EFOExpansionTerms
-{
-    public String           term;
-    public Set<String>      synonyms;
-    public Set<String>      efo;
+package uk.ac.ebi.arrayexpress.utils.search;
 
-    public EFOExpansionTerms()
-    {
+import java.util.Set;
+import java.util.TreeSet;
+
+public class EFOExpansionTerms {
+    public String term;
+    public Set<String> synonyms;
+    public Set<String> efo;
+
+    public EFOExpansionTerms() {
         term = "";
-        synonyms = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-        efo = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+        synonyms = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        efo = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
     }
 }

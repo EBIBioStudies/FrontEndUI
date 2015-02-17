@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.jobs;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.jobs;
  *
  */
 
+package uk.ac.ebi.arrayexpress.jobs;
+
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,19 +28,17 @@ import uk.ac.ebi.arrayexpress.utils.StringTools;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckFilesJob extends ApplicationJob
-{
+public class CheckFilesJob extends ApplicationJob {
     @SuppressWarnings("unused")
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void doExecute( JobExecutionContext jec ) throws Exception
-    {
-        Files files = (Files)getComponent("Files");
-        SaxonEngine saxon = (SaxonEngine)getComponent("SaxonEngine");
+    public void doExecute(JobExecutionContext jec) throws Exception {
+        Files files = (Files) getComponent("Files");
+        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
 
         Map<String, String[]> transformParams = new HashMap<String, String[]>();
-        transformParams.put("rescanMessage", new String[] { files.getLastReloadMessage() });
+        transformParams.put("rescanMessage", new String[]{files.getLastReloadMessage()});
 
         String report = saxon.transformToString(files.getDocument(), "check-files-plain.xsl", transformParams);
 

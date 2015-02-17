@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -25,19 +25,16 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class EmailSender
-{
+public class EmailSender {
     private final String smtpHost;
     private final int smtpPort;
 
-    public EmailSender( String smtpHost, int smtpPort )
-    {
+    public EmailSender(String smtpHost, int smtpPort) {
         this.smtpHost = smtpHost;
         this.smtpPort = smtpPort;
     }
 
-    public void send( String recipients[], String hiddenRecipients[], String subject, String message, String from ) throws MessagingException
-    {
+    public void send(String recipients[], String hiddenRecipients[], String subject, String message, String from) throws MessagingException {
         boolean debug = false;
 
         //Set the host smtp address and port

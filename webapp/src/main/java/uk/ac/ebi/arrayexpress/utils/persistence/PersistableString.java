@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.persistence;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,42 +15,36 @@ package uk.ac.ebi.arrayexpress.utils.persistence;
  *
  */
 
-public class PersistableString implements Persistable
-{
+package uk.ac.ebi.arrayexpress.utils.persistence;
+
+public class PersistableString implements Persistable {
     private String string;
 
-    public PersistableString()
-    {
+    public PersistableString() {
         string = "";
     }
 
-    public PersistableString( String str )
-    {
+    public PersistableString(String str) {
         string = str;
     }
 
-    public String get()
-    {
+    public String get() {
         return string;
     }
 
-    public void set( String str )
-    {
+    public void set(String str) {
         string = str;
     }
 
-    public String toPersistence()
-    {
+    public String toPersistence() {
         return string;
     }
 
-    public void fromPersistence( String str )
-    {
+    public void fromPersistence(String str) {
         string = str;
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return (0 == string.length());
     }
 }

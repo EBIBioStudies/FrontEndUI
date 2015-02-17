@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.components;
  *
  */
 
+package uk.ac.ebi.arrayexpress.components;
+
 import net.sf.saxon.om.DocumentInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +31,7 @@ import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
 import java.io.File;
 import java.io.IOException;
 
-public class Protocols extends ApplicationComponent implements IDocumentSource
-{
+public class Protocols extends ApplicationComponent implements IDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -42,27 +41,25 @@ public class Protocols extends ApplicationComponent implements IDocumentSource
 
     public final String INDEX_ID = "protocols";
 
-    public enum ProtocolsSource
-    {
+    public enum ProtocolsSource {
         AE1, AE2;
 
-        public String getStylesheetName()
-        {
+        public String getStylesheetName() {
             switch (this) {
-                case AE1:   return "preprocess-protocols-ae1-xml.xsl";
-                case AE2:   return "preprocess-protocols-ae2-xml.xsl";
+                case AE1:
+                    return "preprocess-protocols-ae1-xml.xsl";
+                case AE2:
+                    return "preprocess-protocols-ae2-xml.xsl";
             }
             return null;
         }
     }
 
-    public Protocols()
-    {
+    public Protocols() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.saxon = (SaxonEngine) getComponent("SaxonEngine");
         this.search = (SearchEngine) getComponent("SearchEngine");
 
@@ -76,25 +73,21 @@ public class Protocols extends ApplicationComponent implements IDocumentSource
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
     // implementation of IDocumentSource.getDocumentURI()
-    public String getDocumentURI()
-    {
+    public String getDocumentURI() {
         return "protocols.xml";
     }
 
     // implementation of IDocumentSource.getDocument()
-    public synchronized DocumentInfo getDocument() throws IOException
-    {
+    public synchronized DocumentInfo getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
     // implementation of IDocumentSource.setDocument(DocumentInfo)
-    public synchronized void setDocument( DocumentInfo doc ) throws IOException, InterruptedException
-    {
+    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer("protocols", doc));
             updateIndex();
@@ -103,8 +96,7 @@ public class Protocols extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public void update( String xmlString, ProtocolsSource source ) throws IOException, InterruptedException
-    {
+    public void update(String xmlString, ProtocolsSource source) throws IOException, InterruptedException {
         try {
             DocumentInfo updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
             if (null != updateDoc) {
@@ -115,8 +107,7 @@ public class Protocols extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    private void updateIndex() throws IOException, InterruptedException
-    {
+    private void updateIndex() throws IOException, InterruptedException {
         Thread.sleep(0);
         try {
             this.search.getController().index(INDEX_ID, this.getDocument());

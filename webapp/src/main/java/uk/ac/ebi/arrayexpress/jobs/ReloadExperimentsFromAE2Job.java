@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,12 @@ import java.io.IOException;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-public class ReloadExperimentsFromAE2Job extends ApplicationJob
-{
+public class ReloadExperimentsFromAE2Job extends ApplicationJob {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void doExecute( JobExecutionContext jec ) throws Exception
-    {
+    public void doExecute(JobExecutionContext jec) throws Exception {
         try {
             // check preferences and if source location is defined, use that
             String sourceLocation = getPreferences().getString("ae.experiments.ae2.source-location");
@@ -57,10 +55,9 @@ public class ReloadExperimentsFromAE2Job extends ApplicationJob
         }
     }
 
-    private String getXmlFromFile( File xmlFile ) throws IOException
-    {
+    private String getXmlFromFile(File xmlFile) throws IOException {
         logger.info("Getting XML from file [{}]", xmlFile);
-        String xml =  StringTools.fileToString(
+        String xml = StringTools.fileToString(
                 xmlFile
                 , "UTF-8"
         );
@@ -71,20 +68,17 @@ public class ReloadExperimentsFromAE2Job extends ApplicationJob
         return xml;
     }
 
-    private void loadMapFromFile( String mapName, File mapFile ) throws IOException
-    {
+    private void loadMapFromFile(String mapName, File mapFile) throws IOException {
         if (null != mapFile && mapFile.exists()) {
             ((MapEngine) getComponent("MapEngine")).loadMap(mapName, mapFile);
         }
     }
 
-    private void clearMap( String mapName )
-    {
+    private void clearMap(String mapName) {
         ((MapEngine) getComponent("MapEngine")).clearMap(mapName);
     }
 
-    private void updateNews( File xmlFile ) throws IOException, InterruptedException
-    {
+    private void updateNews(File xmlFile) throws IOException, InterruptedException {
         if (null != xmlFile && xmlFile.exists()) {
             String xmlString = getXmlFromFile(xmlFile);
             if (isNotBlank(xmlString)) {
@@ -94,8 +88,7 @@ public class ReloadExperimentsFromAE2Job extends ApplicationJob
         }
     }
 
-    private void updateUsers( File xmlFile ) throws IOException, InterruptedException
-    {
+    private void updateUsers(File xmlFile) throws IOException, InterruptedException {
         if (null != xmlFile && xmlFile.exists()) {
             String xmlString = getXmlFromFile(xmlFile);
             if (isNotBlank(xmlString)) {
@@ -109,8 +102,7 @@ public class ReloadExperimentsFromAE2Job extends ApplicationJob
         }
     }
 
-    private void updateExperiments( File experimentsFile ) throws IOException, InterruptedException
-    {
+    private void updateExperiments(File experimentsFile) throws IOException, InterruptedException {
         if (null != experimentsFile && experimentsFile.exists()) {
             String experimentsXml = getXmlFromFile(experimentsFile);
 
@@ -171,8 +163,7 @@ public class ReloadExperimentsFromAE2Job extends ApplicationJob
         }
     }
 
-    private void updateArrayDesigns( File xmlFile ) throws IOException, InterruptedException
-    {
+    private void updateArrayDesigns(File xmlFile) throws IOException, InterruptedException {
         if (null != xmlFile && xmlFile.exists()) {
             String xmlString = getXmlFromFile(xmlFile);
             if (isNotBlank(xmlString)) {
@@ -186,8 +177,7 @@ public class ReloadExperimentsFromAE2Job extends ApplicationJob
         }
     }
 
-    private void updateProtocols( File xmlFile ) throws IOException, InterruptedException
-    {
+    private void updateProtocols(File xmlFile) throws IOException, InterruptedException {
         if (null != xmlFile && xmlFile.exists()) {
             String xmlString = getXmlFromFile(xmlFile);
             if (isNotBlank(xmlString)) {

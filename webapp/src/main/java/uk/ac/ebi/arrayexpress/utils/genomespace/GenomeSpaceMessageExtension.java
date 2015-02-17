@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.genomespace;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +15,12 @@ package uk.ac.ebi.arrayexpress.utils.genomespace;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.genomespace;
+
 import org.openid4java.message.MessageExtension;
 import org.openid4java.message.ParameterList;
 
-public class GenomeSpaceMessageExtension implements MessageExtension
-{
+public class GenomeSpaceMessageExtension implements MessageExtension {
     // These must match what the OpenID Provider definitions.
     public static final String URI = "http://identity.genomespace.org/openid/";
     public static final String TOKEN_ALIAS = "gs-token";
@@ -32,32 +31,27 @@ public class GenomeSpaceMessageExtension implements MessageExtension
     private ParameterList paramList = new ParameterList();
 
     @Override
-    public String getTypeUri()
-    {
+    public String getTypeUri() {
         return URI;
     }
 
     @Override
-    public ParameterList getParameters()
-    {
+    public ParameterList getParameters() {
         return paramList;
     }
 
     @Override
-    public void setParameters(ParameterList params)
-    {
+    public void setParameters(ParameterList params) {
         paramList = new ParameterList(params);
     }
 
     @Override
-    public boolean providesIdentifier()
-    {
+    public boolean providesIdentifier() {
         return false;
     }
 
     @Override
-    public boolean signRequired()
-    {
+    public boolean signRequired() {
         return false;
     }
 }

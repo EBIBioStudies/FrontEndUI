@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,39 +15,34 @@ package uk.ac.ebi.arrayexpress.utils.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.search;
+
 import org.apache.lucene.analysis.*;
 
 import java.io.IOException;
 import java.io.Reader;
 
-public final class ExperimentTextAnalyzer extends Analyzer
-{
-    private static class ExperimentTextTokenizer extends CharTokenizer
-    {
-        public ExperimentTextTokenizer(Reader in)
-        {
+public final class ExperimentTextAnalyzer extends Analyzer {
+    private static class ExperimentTextTokenizer extends CharTokenizer {
+        public ExperimentTextTokenizer(Reader in) {
             super(in);
         }
 
-        protected boolean isTokenChar(char c)
-        {
+        protected boolean isTokenChar(char c) {
             return Character.isLetter(c) | Character.isDigit(c) | ('-' == c);
         }
 
-        protected char normalize(char c)
-        {
+        protected char normalize(char c) {
             return Character.toLowerCase(c);
         }
     }
-    
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         return new ASCIIFoldingFilter(new ExperimentTextTokenizer(reader));
     }
 
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException
-    {
-        Tokenizer tokenizer = (Tokenizer)getPreviousTokenStream();
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+        Tokenizer tokenizer = (Tokenizer) getPreviousTokenStream();
         if (tokenizer == null) {
             tokenizer = new ExperimentTextTokenizer(reader);
             setPreviousTokenStream(tokenizer);

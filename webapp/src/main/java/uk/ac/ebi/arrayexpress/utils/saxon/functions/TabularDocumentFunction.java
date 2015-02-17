@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.utils.saxon.functions;
 
 import net.sf.saxon.Controller;
 import net.sf.saxon.event.Builder;
@@ -47,30 +47,25 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import java.io.*;
 
-public class TabularDocumentFunction extends ExtensionFunctionDefinition
-{
+public class TabularDocumentFunction extends ExtensionFunctionDefinition {
     private static final long serialVersionUID = 7434621414885530725L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "tabularDocument");
 
-    public StructuredQName getFunctionQName()
-    {
+    public StructuredQName getFunctionQName() {
         return qName;
     }
 
-    public int getMinimumNumberOfArguments()
-    {
+    public int getMinimumNumberOfArguments() {
         return 2;
     }
 
-    public int getMaximumNumberOfArguments()
-    {
+    public int getMaximumNumberOfArguments() {
         return 3;
     }
 
-    public SequenceType[] getArgumentTypes()
-    {
+    public SequenceType[] getArgumentTypes() {
         return new SequenceType[]{
                 SequenceType.SINGLE_STRING
                 , SequenceType.SINGLE_STRING
@@ -78,18 +73,15 @@ public class TabularDocumentFunction extends ExtensionFunctionDefinition
         };
     }
 
-    public SequenceType getResultType( SequenceType[] suppliedArgumentTypes )
-    {
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
         return SequenceType.OPTIONAL_NODE;
     }
 
-    public ExtensionFunctionCall makeCallExpression()
-    {
+    public ExtensionFunctionCall makeCallExpression() {
         return new TabularDocumentCall();
     }
 
-    private static class TabularDocumentCall extends ExtensionFunctionCall
-    {
+    private static class TabularDocumentCall extends ExtensionFunctionCall {
         private static final long serialVersionUID = 8149635307726580689L;
 
         // logging machinery
@@ -97,17 +89,15 @@ public class TabularDocumentFunction extends ExtensionFunctionDefinition
 
         private Files files;
 
-        public TabularDocumentCall()
-        {
+        public TabularDocumentCall() {
             files = (Files) Application.getAppComponent("Files");
         }
 
         @SuppressWarnings("unchecked")
-        public Sequence call( XPathContext context, Sequence[] arguments ) throws XPathException
-        {
+        public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
             try {
                 Controller controller = context.getController();
-                String baseURI = ((NodeInfo)context.getContextItem()).getBaseURI();
+                String baseURI = ((NodeInfo) context.getContextItem()).getBaseURI();
 
                 String accession = SequenceTool.getStringValue(arguments[0]);
                 String name = SequenceTool.getStringValue(arguments[1]);
@@ -140,7 +130,7 @@ public class TabularDocumentFunction extends ExtensionFunctionDefinition
                             Builder b = controller.makeBuilder();
                             Receiver s = b;
 
-                            source = AugmentedSource.makeAugmentedSource( source );
+                            source = AugmentedSource.makeAugmentedSource(source);
                             ((AugmentedSource) source).setStripSpace(Whitespace.XSLT);
 
                             if (controller.getExecutable().stripsInputTypeAnnotations()) {
@@ -164,7 +154,7 @@ public class TabularDocumentFunction extends ExtensionFunctionDefinition
                             , accession)
                     ;
                 }
-            } catch ( IOException x ) {
+            } catch (IOException x) {
                 throw new XPathException(x);
             }
             return EmptySequence.getInstance();

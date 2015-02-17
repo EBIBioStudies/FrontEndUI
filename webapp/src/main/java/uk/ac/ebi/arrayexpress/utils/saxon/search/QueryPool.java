@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.saxon.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.saxon.search;
+
 import org.apache.lucene.queryParser.ParseException;
 import uk.ac.ebi.arrayexpress.utils.LRUMap;
 
@@ -25,8 +25,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class QueryPool
-{
+public class QueryPool {
     // logging machinery
     //private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -36,8 +35,7 @@ public class QueryPool
 
     private Map<Integer, QueryInfo> queries = Collections.synchronizedMap(new LRUMap<Integer, QueryInfo>(MAX_NUMBER_OF_QUERIES));
 
-    public QueryPool()
-    {
+    public QueryPool() {
         this.queryId = new AtomicInteger(0);
     }
 
@@ -45,9 +43,8 @@ public class QueryPool
             IndexEnvironment env
             , IQueryConstructor queryConstructor
             , Map<String, String[]> queryParams
-            , IQueryExpander queryExpander )
-            throws ParseException, IOException
-    {
+            , IQueryExpander queryExpander)
+            throws ParseException, IOException {
         QueryInfo info;
 
         if (null != queryExpander) {
@@ -69,8 +66,7 @@ public class QueryPool
         return id;
     }
 
-    public QueryInfo getQueryInfo( Integer queryId )
-    {
+    public QueryInfo getQueryInfo(Integer queryId) {
         QueryInfo info = null;
 
         if (queries.containsKey(queryId)) {

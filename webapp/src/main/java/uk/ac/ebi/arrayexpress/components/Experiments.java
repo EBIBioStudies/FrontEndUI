@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.components;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@ package uk.ac.ebi.arrayexpress.components;
  * limitations under the License.
  *
  */
+
+package uk.ac.ebi.arrayexpress.components;
 
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
@@ -41,8 +41,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Experiments extends ApplicationComponent implements IDocumentSource
-{
+public class Experiments extends ApplicationComponent implements IDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -71,39 +70,38 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
 
     public final String INDEX_ID = "experiments";
 
-    public enum ExperimentSource
-    {
+    public enum ExperimentSource {
         AE1, AE2;
 
-        public String getStylesheetName()
-        {
+        public String getStylesheetName() {
             switch (this) {
-                case AE1:   return "preprocess-experiments-ae1-xml.xsl";
-                case AE2:   return "preprocess-experiments-ae2-xml.xsl";
+                case AE1:
+                    return "preprocess-experiments-ae1-xml.xsl";
+                case AE2:
+                    return "preprocess-experiments-ae2-xml.xsl";
             }
             return null;
         }
 
-        public String toString()
-        {
+        public String toString() {
             switch (this) {
-                case AE1:   return "AE1";
-                case AE2:   return "AE2";
+                case AE1:
+                    return "AE1";
+                case AE2:
+                    return "AE2";
             }
             return null;
 
         }
     }
 
-    public static class UpdateSourceInformation implements IEventInformation
-    {
+    public static class UpdateSourceInformation implements IEventInformation {
         private ExperimentSource source;
         private String location = null;
         private Long lastModified = null;
         private boolean outcome;
 
-        public UpdateSourceInformation( ExperimentSource source, File sourceFile )
-        {
+        public UpdateSourceInformation(ExperimentSource source, File sourceFile) {
             this.source = source;
             if (null != sourceFile && sourceFile.exists()) {
                 this.location = sourceFile.getAbsolutePath();
@@ -111,34 +109,30 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
             }
         }
 
-        public UpdateSourceInformation( ExperimentSource source, String location, Long lastModified )
-        {
+        public UpdateSourceInformation(ExperimentSource source, String location, Long lastModified) {
             this.source = source;
             this.location = location;
             this.lastModified = lastModified;
         }
 
-        public void setOutcome( boolean outcome )
-        {
+        public void setOutcome(boolean outcome) {
             this.outcome = outcome;
         }
 
-        public ExperimentSource getSource()
-        {
+        public ExperimentSource getSource() {
             return this.source;
         }
 
         @Override
-        public DocumentInfo getEventXML()
-        {
+        public DocumentInfo getEventXML() {
             String xml = "<?xml version=\"1.0\"?><event><category>experiments-update-"
-                            + this.source.toString().toLowerCase()
-                            + "</category><location>"
-                            + this.location + "</location><lastmodified>"
-                            + StringTools.longDateTimeToXSDDateTime(lastModified)
-                            + "</lastmodified><successful>"
-                            + (this.outcome ? "true" : "false")
-                            + "</successful></event>";
+                    + this.source.toString().toLowerCase()
+                    + "</category><location>"
+                    + this.location + "</location><lastmodified>"
+                    + StringTools.longDateTimeToXSDDateTime(lastModified)
+                    + "</lastmodified><successful>"
+                    + (this.outcome ? "true" : "false")
+                    + "</successful></event>";
             try {
                 return ((SaxonEngine) Application.getAppComponent("SaxonEngine")).buildDocument(xml);
             } catch (XPathException x) {
@@ -147,13 +141,11 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public Experiments()
-    {
+    public Experiments() {
     }
 
     @Override
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
         this.maps = (MapEngine) getComponent("MapEngine");
         this.saxon = (SaxonEngine) getComponent("SaxonEngine");
         this.search = (SearchEngine) getComponent("SearchEngine");
@@ -196,28 +188,24 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
     }
 
     @Override
-    public void terminate() throws Exception
-    {
+    public void terminate() throws Exception {
     }
 
     // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI()
-    {
+    public String getDocumentURI() {
         return "experiments.xml";
     }
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException
-    {
+    public synchronized DocumentInfo getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
     // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument( DocumentInfo doc ) throws IOException, InterruptedException
-    {
+    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer("experiments", doc));
             updateIndex();
@@ -227,18 +215,15 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    public String getSpecies() throws IOException
-    {
+    public String getSpecies() throws IOException {
         return this.species.getObject().get();
     }
 
-    public String getArrays() throws IOException
-    {
+    public String getArrays() throws IOException {
         return this.arrays.getObject().get();
     }
 
-    public void update( String xmlString, UpdateSourceInformation sourceInformation ) throws IOException, InterruptedException
-    {
+    public void update(String xmlString, UpdateSourceInformation sourceInformation) throws IOException, InterruptedException {
         boolean success = false;
         try {
             DocumentInfo updateDoc = this.saxon.transform(
@@ -259,8 +244,7 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    private void updateIndex() throws IOException, InterruptedException
-    {
+    private void updateIndex() throws IOException, InterruptedException {
         Thread.sleep(0);
         try {
             this.search.getController().index(INDEX_ID, this.getDocument());
@@ -270,8 +254,7 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    private void updateMaps() throws IOException
-    {
+    private void updateMaps() throws IOException {
         this.logger.debug("Updating maps for experiments");
 
         maps.clearMap(MAP_VISIBLE_EXPERIMENTS);
@@ -290,7 +273,7 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
 
             for (Object node : documentNodes) {
                 try {
-                    NodeInfo exp = (NodeInfo)node;
+                    NodeInfo exp = (NodeInfo) node;
 
                     String accession = saxon.evaluateXPathSingleAsString(exp, "accession");
                     maps.setMappedValue(MAP_VISIBLE_EXPERIMENTS, accession, exp);
@@ -298,10 +281,10 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
                     if (null != userIds && userIds.size() > 0) {
                         Set<String> usersForExperiment = new HashSet<>(userIds.size());
                         for (Object userId : userIds) {
-                            String id = ((Item)userId).getStringValue();
+                            String id = ((Item) userId).getStringValue();
 
                             @SuppressWarnings("unchecked")
-                            Set<String> experimentsForUser = (Set<String>)maps.getMappedValue(MAP_EXPERIMENTS_FOR_USER, id);
+                            Set<String> experimentsForUser = (Set<String>) maps.getMappedValue(MAP_EXPERIMENTS_FOR_USER, id);
                             if (null == experimentsForUser) {
                                 experimentsForUser = new HashSet<>();
                                 maps.setMappedValue(MAP_EXPERIMENTS_FOR_USER, id, experimentsForUser);
@@ -315,9 +298,9 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
                     List<Object> protocolIds = saxon.evaluateXPath(exp, "protocol/id");
                     if (null != protocolIds) {
                         for (Object protocolId : protocolIds) {
-                            String id = ((Item)protocolId).getStringValue();
+                            String id = ((Item) protocolId).getStringValue();
                             @SuppressWarnings("unchecked")
-                            Set<String> experimentsForProtocol = (Set<String>)maps.getMappedValue(MAP_EXPERIMENTS_FOR_PROTOCOL, id);
+                            Set<String> experimentsForProtocol = (Set<String>) maps.getMappedValue(MAP_EXPERIMENTS_FOR_PROTOCOL, id);
                             if (null == experimentsForProtocol) {
                                 experimentsForProtocol = new HashSet<>();
                                 maps.setMappedValue(MAP_EXPERIMENTS_FOR_PROTOCOL, id, experimentsForProtocol);
@@ -328,9 +311,9 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
                     List<Object> arrayAccessions = saxon.evaluateXPath(exp, "arraydesign/accession");
                     if (null != arrayAccessions) {
                         for (Object arrayAccession : arrayAccessions) {
-                            String arrayAcc = ((Item)arrayAccession).getStringValue();
+                            String arrayAcc = ((Item) arrayAccession).getStringValue();
                             @SuppressWarnings("unchecked")
-                            Set<String> experimentsForArray = (Set<String>)maps.getMappedValue(MAP_EXPERIMENTS_FOR_ARRAY, arrayAcc);
+                            Set<String> experimentsForArray = (Set<String>) maps.getMappedValue(MAP_EXPERIMENTS_FOR_ARRAY, arrayAcc);
                             if (null == experimentsForArray) {
                                 experimentsForArray = new HashSet<>();
                                 maps.setMappedValue(MAP_EXPERIMENTS_FOR_ARRAY, arrayAcc, experimentsForArray);
@@ -363,8 +346,7 @@ public class Experiments extends ApplicationComponent implements IDocumentSource
         }
     }
 
-    private void buildSpeciesArrays() throws IOException
-    {
+    private void buildSpeciesArrays() throws IOException {
         // todo: move this to a separate component (autocompletion?)
         try {
             String speciesString = saxon.transformToString(this.getDocument(), "build-species-list-html.xsl", null);

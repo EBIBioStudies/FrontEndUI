@@ -1,7 +1,5 @@
-package uk.ac.ebi.arrayexpress.utils.search;
-
 /*
- * Copyright 2009-2014 European Molecular Biology Laboratory
+ * Copyright 2009-2015 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +15,8 @@ package uk.ac.ebi.arrayexpress.utils.search;
  *
  */
 
+package uk.ac.ebi.arrayexpress.utils.search;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LetterTokenizer;
 import org.apache.lucene.analysis.TokenStream;
@@ -25,34 +25,27 @@ import org.apache.lucene.analysis.Tokenizer;
 import java.io.IOException;
 import java.io.Reader;
 
-public final class LowercaseAnalyzer extends Analyzer
-{
-   private static class LowercaseTokenizer extends LetterTokenizer
-    {
-        public LowercaseTokenizer(Reader in)
-        {
+public final class LowercaseAnalyzer extends Analyzer {
+    private static class LowercaseTokenizer extends LetterTokenizer {
+        public LowercaseTokenizer(Reader in) {
             super(in);
         }
 
-        protected char normalize(char c)
-        {
+        protected char normalize(char c) {
             return Character.toLowerCase(c);
         }
 
-        protected boolean isTokenChar(char c)
-        {
+        protected boolean isTokenChar(char c) {
             return true;
         }
     }
 
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         return new LowercaseTokenizer(reader);
     }
 
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException
-    {
-        Tokenizer tokenizer = (Tokenizer)getPreviousTokenStream();
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+        Tokenizer tokenizer = (Tokenizer) getPreviousTokenStream();
         if (tokenizer == null) {
             tokenizer = new LowercaseTokenizer(reader);
             setPreviousTokenStream(tokenizer);
