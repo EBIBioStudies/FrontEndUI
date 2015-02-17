@@ -22,8 +22,9 @@
     </scm>
 
     <properties>
-        <interface.application.log.default.priority>INFO</interface.application.log.default.priority>
-        <interface.application.log.appender.ref>ROLLINGFILE</interface.application.log.appender.ref>
+        <webapp.log.priority>info</webapp.log.priority>
+        <webapp.log.appender.ref>logfile</webapp.log.appender.ref>
+
         <interface.application.webxml.security.transport.guarantee>NONE</interface.application.webxml.security.transport.guarantee>
 
         <interface.application.pref.reports.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
@@ -53,7 +54,7 @@
                 <interface.application.pref.reports.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
                 <interface.application.pref.feedback.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
                 <interface.application.pref.remind.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
-                <interface.application.log.default.priority>ALL</interface.application.log.default.priority>
+                <webapp.log.priority>debug</webapp.log.priority>
             </properties>
         </profile>
         <profile>
@@ -106,8 +107,6 @@
         <profile>
             <id>london</id>
             <properties>
-                <interface.application.log.appender.ref>ROLLINGFILE-LONDON</interface.application.log.appender.ref>
-
                 <interface.application.pref.experiments.ae2.source.location>/nfs/public/rw/fg/arrayexpress/xml/ae2/</interface.application.pref.experiments.ae2.source.location>
                 <interface.application.pref.experiments.ae2.export.location/>
 
@@ -117,7 +116,7 @@
         <profile>
             <id>local</id>
             <properties>
-                <interface.application.log.appender.ref>CONSOLE</interface.application.log.appender.ref>
+                <webapp.log.appender.ref>console</webapp.log.appender.ref>
             </properties>
         </profile>
     </profiles>
@@ -237,29 +236,34 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jul-to-slf4j</artifactId>
-        </dependency>
+        <!-- logging: everything -> slf4j -> logback -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+        <!-- -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>

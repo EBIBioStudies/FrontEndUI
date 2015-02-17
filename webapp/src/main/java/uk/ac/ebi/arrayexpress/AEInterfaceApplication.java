@@ -73,17 +73,11 @@ public class AEInterfaceApplication extends Application implements ServletContex
         logger.info("*");
         logger.info("****************************************************************************************************************************");
 
-        // re-route all subsequent java.util.logging calls via slf4j
-        SLF4JBridgeHandler.install();
-
         initialize();
     }
 
     public synchronized void contextDestroyed(ServletContextEvent sce) {
         terminate();
-
-        // restore java.util.logging calls to the original state
-        SLF4JBridgeHandler.uninstall();
 
         servletContext = null;
 
