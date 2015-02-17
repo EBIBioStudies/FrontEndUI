@@ -30,7 +30,7 @@ import java.io.IOException;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-public class ReloadExperimentsFromAE2Job extends ApplicationJob {
+public class ReloadStudiesJob extends ApplicationJob {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
