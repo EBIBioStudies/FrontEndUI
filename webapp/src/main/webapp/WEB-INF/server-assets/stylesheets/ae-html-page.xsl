@@ -209,7 +209,7 @@
                             <ul class="grid_24" id="local-nav">
                                 <li>
                                     <xsl:attribute name="class">first<xsl:if test="$relative-uri = '/'"> active</xsl:if></xsl:attribute>
-                                    <a href="{$context-path}/" title="BioStudies ${project.version} r.${buildNumber}">
+                                    <a href="{$context-path}/" title="BioStudies ${project.version}.${buildNumber}">
                                         Home
                                     </a>
                                 </li>
