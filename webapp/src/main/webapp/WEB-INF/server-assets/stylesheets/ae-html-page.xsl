@@ -172,7 +172,7 @@
                         <!-- /local-title -->
                         <!-- local-search -->
                         <!-- NB: if you do not have a local-search, delete the following div, and drop the class="grid_12 alpha" class from local-title above -->
-                        <xsl:if test="$pIsSearchVisible">
+                        <xsl:if test="fn:false()"> <!-- $pIsSearchVisible -->
                             <div class="grid_12 omega">
                                 <form id="local-search" name="local-search" action="{$context-path}/search" method="get">
                                     <fieldset>
