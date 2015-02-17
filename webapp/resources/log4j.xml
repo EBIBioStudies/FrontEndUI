@@ -10,7 +10,7 @@
 
     <appender name="ROLLINGFILE" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
-        <param name="File" value="${catalina.base}/logs/${interface.application.pref.files.prefix}-interface.log"/>
+        <param name="File" value="${catalina.base}/logs/biostudies-ui.log"/>
         <layout class="org.apache.log4j.EnhancedPatternLayout">
             <param name="ConversionPattern" value="%d %-5p [%t] %c{1.} (%F:%L) - %m%n"/>
         </layout>
@@ -18,7 +18,7 @@
 
     <appender name="ROLLINGFILE-LONDON" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
-        <param name="File" value="${catalina.base}/logs/${tomcat.hostname}/${interface.application.pref.files.prefix}-interface.log"/>
+        <param name="File" value="${catalina.base}/logs/${tomcat.hostname}/biostudies-ui.log"/>
         <layout class="org.apache.log4j.EnhancedPatternLayout">
             <param name="ConversionPattern" value="%d %-5p [%t] %c{1.} (%F:%L) - %m%n"/>
         </layout>
