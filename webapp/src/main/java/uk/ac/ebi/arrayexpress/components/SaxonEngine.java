@@ -40,7 +40,6 @@ import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.arrayexpress.utils.saxon.functions.*;
 import uk.ac.ebi.arrayexpress.utils.saxon.functions.saxon.ParseHTMLFunction;
-import uk.ac.ebi.fg.utils.saxon.IXPathEngine;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
@@ -52,7 +51,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class SaxonEngine extends ApplicationComponent implements URIResolver, ErrorListener, IXPathEngine
+public class SaxonEngine extends ApplicationComponent implements URIResolver, ErrorListener
 {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());

@@ -28,6 +28,10 @@
         </developer>
     </developers>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <distributionManagement>
         <repository>
             <id>artifactory-local-repo</id>
