@@ -2,6 +2,23 @@
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>${project.name} v${project.version}.${buildNumber}</display-name>
+
+    <context-param>
+        <param-name>governator.bootstrap.class</param-name>
+        <param-value>uk.ac.ebi.fg.biostudies.ui.AppConfiguration</param-value>
+    </context-param>
+    <filter>
+        <filter-name>guiceFilter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>guiceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <listener-class>com.netflix.governator.guice.servlet.GovernatorServletContextListener</listener-class>
+    </listener>
+    <!--
     <servlet>
         <description>Application Status Servlet</description>
         <servlet-name>StatusServlet</servlet-name>
@@ -137,7 +154,8 @@
         </description>
         <listener-class>uk.ac.ebi.arrayexpress.AEInterfaceApplication</listener-class>
     </listener>
-
+    -->
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>secured</web-resource-name>
@@ -147,7 +165,7 @@
             <transport-guarantee>${interface.application.webxml.security.transport.guarantee}</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-
+    -->
     <session-config>
         <session-timeout>1</session-timeout>
     </session-config>
