@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>ae-interface-webapp</artifactId>
-    <name>ArrayExpress Interface Web Application</name>
-    <version>2.0</version>
+    <artifactId>biostudies-ui-webapp</artifactId>
+    <name>BioStudies UI Web Application</name>
+    <version>1.0</version>
     <packaging>war</packaging>
     <parent>
         <groupId>uk.ac.ebi.fg</groupId>
-        <artifactId>ae-interface</artifactId>
-        <version>2.0</version>
+        <artifactId>biostudies-ui</artifactId>
+        <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <url>http://www.ebi.ac.uk/arrayexpress</url>
@@ -391,19 +391,15 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>ae-interface-auth</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ae-jobs-controller</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>ae-efo-loader</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>ae-similarity</artifactId>
+            <artifactId>biostudies-ui-auth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>biostudies-ui-jobs-controller</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-configuration</groupId>
