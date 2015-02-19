@@ -57,8 +57,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         // schedule jobs
         scheduleJob("rescan-files", "ae.files.rescan");
         scheduleJob("check-files", "ae.files.check");
-        scheduleJob("reload-ae1-xml", "ae.experiments.ae1.reload");
-        scheduleJob("reload-ae2-xml", "ae.experiments.ae2.reload");
+        scheduleJob("reload-xml", "ae.experiments.ae2.reload");
         scheduleJob("update-efo", "ae.efo.update");
 
         startScheduler();
