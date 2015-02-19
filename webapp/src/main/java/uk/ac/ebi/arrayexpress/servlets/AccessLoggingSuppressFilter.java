@@ -17,20 +17,25 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
+import com.google.inject.Singleton;
+
 import javax.servlet.*;
 import java.io.IOException;
 
+@Singleton
 public class AccessLoggingSuppressFilter implements Filter {
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         request.setAttribute("health", Boolean.valueOf(true));
         chain.doFilter(request, response);
     }
 
-    public void init(FilterConfig filterconfig)
-            throws ServletException {
+    @Override
+    public void init(FilterConfig filterconfig) throws ServletException {
     }
 
+    @Override
     public void destroy() {
     }
 }

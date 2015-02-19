@@ -1,14 +1,25 @@
 package uk.ac.ebi.fg.biostudies.ui;
 
-import com.google.inject.AbstractModule;
+import com.google.inject.servlet.ServletModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.ebi.arrayexpress.servlets.AccessLoggingSuppressFilter;
+import uk.ac.ebi.arrayexpress.servlets.ErrorServlet;
+import uk.ac.ebi.arrayexpress.servlets.QueryServlet;
+import uk.ac.ebi.arrayexpress.servlets.StatusServlet;
 
-public class AppConfiguration extends AbstractModule {
+public class AppConfiguration extends ServletModule {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected void configure() {
+    @Override
+    protected void configureServlets() {
         logger.info("About to configure BioStudies UI");
+        
+        filter("/servlets/status").through(AccessLoggingSuppressFilter.class);
+        
+        serve("/servlets/status").with(StatusServlet.class);
+        //serveRegex("/servlets/error/.*").with(ErrorServlet.class);
+        //serveRegex("/servlets/query/.*").with(QueryServlet.class);
     }
 }

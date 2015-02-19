@@ -17,41 +17,31 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
-import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
+import com.google.inject.Singleton;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class StatusServlet extends ApplicationServlet {
+@Singleton
+public class StatusServlet extends HttpServlet {
     private static final long serialVersionUID = 8929729058610937695L;
 
     @Override
-    protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
-        return (requestType == RequestType.GET || requestType == RequestType.POST);
-    }
-
-    // Respond to HTTP requests from browsers.
-    @Override
-    protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain; charset=ISO-8859-1");
+        response.setContentType("text/plain; charset=UTF-8");
         response.addHeader("Pragma", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
         response.addHeader("Cache-Control", "must-revalidate");
         response.addHeader("Expires", "Fri, 16 May 2008 10:00:00 GMT"); // some date in the past
 
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
+        try (PrintWriter out = response.getWriter()) {
             out.println("OK");
-        } finally {
-            if (null != out) {
-                out.flush();
-                out.close();
-            }
+            out.flush();
         }
     }
 }
