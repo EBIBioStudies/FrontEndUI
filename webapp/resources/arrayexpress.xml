@@ -25,16 +25,6 @@
         </password-remind>
 
         <experiments>
-            <ae1>
-                <source-location>${interface.application.pref.experiments.ae1.source.location}</source-location>
-                <db-connections>${interface.application.pref.experiments.ae1.connections}</db-connections>
-                <reload>
-                    <atstart>false</atstart>
-                    <schedule>${interface.application.pref.experiments.ae1.reload.schedule}</schedule>
-                    <threads>25</threads>
-                </reload>
-                <export-location>${interface.application.pref.experiments.ae1.export.location}</export-location>
-            </ae1>
             <ae2>
                 <source-location>${interface.application.pref.experiments.ae2.source.location}</source-location>
                 <reload>
