@@ -34,7 +34,7 @@ public class CheckExperimentsJob extends ApplicationJob {
         SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
 
         String report = saxon.transformToString(
-                ((IDocumentSource) getComponent("Experiments")).getDocument()
+                ((IDocumentSource) getComponent("Studies")).getDocument()
                 , "check-experiments-plain.xsl"
                 , null);
 

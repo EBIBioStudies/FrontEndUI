@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="15.2">
+<project version="14.1">
     <meta>
         <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
-            <serialized version="15.2" xml:space="preserve">
+            <serialized version="14.1" xml:space="preserve">
                 <map>
                     <entry>
                         <String>enable.project.master.files.support</String>
@@ -3824,54 +3824,12 @@
     </meta>
     <projectTree name="xslt.xpr">
         <folder name="documents">
-            <file name="documents/sample-atlas-exps-not-processed.xml"/>
-            <file name="documents/sample-experiments.xml"/>
-            <file name="documents/sample-experiments-not-processed.xml"/>
-            <file name="documents/sample-experiments-not-processed-ae2.xml"/>
-            <file name="documents/sample-files-not-processed.xml"/>
-            <file name="documents/sample-files.xml"/>
-            <file name="documents/sample-protocols.xml"/>
-            <file name="documents/sample-protocols-not-processed.xml"/>
-            <file name="documents/sample-sdrf.xml"/>
-            <file name="documents/sample-users.xml"/>
+            <file name="documents/sample-submissions.xml"/>
         </folder>
         <folder name="stylesheets">
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/add-similarity-experiments-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-compare-experiments.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-date-functions.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-experiments-templates.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-extensions-stub.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-highlight.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-html-page.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-sort-arrays.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-sort-experiments.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-sort-files.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/ae-sort-users.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/build-arrays-list-html.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/build-species-list-html.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/check-files-plain.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/diff-experiment-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/experiments-api-v3-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/experiments-browse-html.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/experiments-ebeye-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/experiments-rss-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/experiments-samples-api-v3-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/experiments-samples-html.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-arrays-ae1-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-arrays-ae2-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-atlas-experiments-txt.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-experiments-ae1-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-experiments-ae2-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-files-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-protocols-ae2-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-users-ae1-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-users-ae2-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/test-html.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/update-arrays-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/update-events-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/update-experiments-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/update-protocols-xml.xsl"/>
-            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/update-users-xml.xsl"/>
+            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-studies-xml.xsl"/>
+            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/studies-browse-html.xsl"/>
+            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/update-studies-xml.xsl"/>
         </folder>
     </projectTree>
 </project>

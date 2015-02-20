@@ -48,7 +48,7 @@ public class RescanFilesJob extends ApplicationJob {
 
         String rootFolder = files.getRootFolder();
         if (null != rootFolder) {
-            String listAllFilesCommand = getPreferences().getString("ae.files.list-all-command");
+            String listAllFilesCommand = getPreferences().getString("bs.files.list-all-command");
             this.logger.info("Rescan of downloadable files from [{}] requested", rootFolder);
 
             List<String> commandParams = new ArrayList<>();

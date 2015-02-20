@@ -116,6 +116,12 @@ ul#secondary-nav li.active > a {
     margin-right: -3px;
 }
 
+.beta {
+    font-size: 60%;
+    margin-left: 5px;
+    color: #94d7f6;
+}
+
 #ae-login *
 , #ae-feedback * {
     box-sizing: border-box;

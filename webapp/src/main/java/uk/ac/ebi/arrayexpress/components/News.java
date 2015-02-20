@@ -49,7 +49,7 @@ public class News extends ApplicationComponent implements IDocumentSource {
 
         this.document = new FilePersistence<>(
                 new PersistableDocumentContainer(DOCUMENT_ID)
-                , new File(getPreferences().getString("ae.news.persistence-location"))
+                , new File(getPreferences().getString("bs.news.persistence-location"))
         );
 
         this.saxon.registerDocumentSource(this);

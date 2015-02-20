@@ -165,14 +165,14 @@
                             <!-- <img class="svg" src="{$context-path}/assets/images/ae-logo-64.svg" width="64" height="64" alt="AE"/> -->
                             <span>
                                 <h1>
-                                    <a href="{$context-path}/" title="Back to BioStudies homepage">BioStudies</a>
+                                    <a href="{$context-path}/" title="Back to BioStudies homepage">BioStudies<sup class="beta">β</sup></a>
                                 </h1>
                             </span>
                         </div>
                         <!-- /local-title -->
                         <!-- local-search -->
                         <!-- NB: if you do not have a local-search, delete the following div, and drop the class="grid_12 alpha" class from local-title above -->
-                        <xsl:if test="fn:false()"> <!-- $pIsSearchVisible -->
+                        <xsl:if test="$pIsSearchVisible">
                             <div class="grid_12 omega">
                                 <form id="local-search" name="local-search" action="{$context-path}/search" method="get">
                                     <fieldset>
@@ -185,7 +185,7 @@
                                                 </input>
                                             </label>
                                             <!-- Include some example searchterms - keep them short and few! -->
-                                            <span class="examples">Examples:<a
+                                            <span class="examples">Examples: <a
                                                     href="{$context-path}/search?query=cancer">cancer</a>,
                                                 <a href="{$context-path}/search?query=p53">p53</a>
                                             </span>
@@ -213,12 +213,10 @@
                                         Home
                                     </a>
                                 </li>
-                                <!--
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
                                     <a href="{$context-path}/studies/" title="Studies">Studies</a>
                                 </li>
-                                -->
                                 <!--
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/submit/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
@@ -400,7 +398,7 @@
             <script src="{$context-path}/assets/scripts/jquery.cookie-1.0.js"/>
             <script src="{$context-path}/assets/scripts/jquery.caret-range-1.0.js"/>
             <script src="{$context-path}/assets/scripts/jquery.autocomplete-1.1.0.130305.js"/>
-            <script src="{$context-path}/assets/scripts/jquery.ae-common-1.0.141028.js"/>
+            <script src="{$context-path}/assets/scripts/jquery.common-1.0.150220.js"/>
             <xsl:copy-of select="$pExtraCode"/>
             ${interface.application.google.analytics}
         </body>

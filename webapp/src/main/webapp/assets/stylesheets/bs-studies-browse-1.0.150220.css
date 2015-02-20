@@ -49,64 +49,17 @@
     text-align: left;
 }
 
-#ae-browse .col_type {
-    width: 140px;
-    text-align: left;
-}
-
-#ae-browse .col_organism {
-    width: 120px;
-    text-align: left;
-}
-
-#ae-browse .col_assays {
-    width: 70px;
-    text-align: left;
-}
-
-#ae-browse td.col_assays {
-    text-align: right;
-    padding-right: 20px;
-}
-
 #ae-browse .col_releasedate {
     width: 90px;
     text-align: left;
 }
 
-#ae-browse .col_processed {
+#ae-browse .col_files {
     width: 90px;
-    text-align: center;
-}
-
-#ae-browse .col_raw {
-    width: 60px;
-    text-align: center;
-}
-
-#ae-browse .col_atlas {
-    width: 60px;
-    text-align: center;
-}
-
-#ae-browse .col_views {
-    width: 80px;
-    text-align: center;
-}
-
-#ae-browse td.col_views {
     text-align: right;
-    padding-right: 20px;
 }
 
-#ae-browse .col_downloads,
-#ae-browse .col_complete_downloads {
-    width: 120px;
-    text-align: center;
-}
-
-#ae-browse td.col_downloads,
-#ae-browse td.col_complete_downloads {
+#ae-browse .col_links {
+    width: 90px;
     text-align: right;
-    padding-right: 20px;
 }

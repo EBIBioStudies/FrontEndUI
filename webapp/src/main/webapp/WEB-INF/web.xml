@@ -131,13 +131,9 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <listener>
-        <description>The class implementing the "ServletContextListener" interface and thus receiving the
-            "contextInitialized" and "contextDestroyed" messages indicating that the application
-            is being de/initialized.
-        </description>
-        <listener-class>uk.ac.ebi.arrayexpress.AEInterfaceApplication</listener-class>
+        <listener-class>uk.ac.ebi.arrayexpress.BSInterfaceApplication</listener-class>
     </listener>
-
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>secured</web-resource-name>
@@ -147,7 +143,7 @@
             <transport-guarantee>${interface.application.webxml.security.transport.guarantee}</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-
+    -->
     <session-config>
         <session-timeout>1</session-timeout>
     </session-config>

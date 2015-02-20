@@ -25,8 +25,8 @@
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-date-functions.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
+    <xsl:include href="bs-date-functions.xsl"/>
 
     <xsl:template match="/">
         <xsl:call-template name="ae-page">
@@ -43,12 +43,13 @@
     </xsl:template>
 
     <xsl:template name="ae-content-section">
-        <xsl:variable name="vExperiments" select="search:queryIndex('experiments', 'visible:true public:true')"/>
-        <xsl:variable name="vTotal" select="fn:count($vExperiments)"/>
-        <xsl:variable name="vRetrieved" select="$vExperiments[1]/../@retrieved"/>
+        <xsl:variable name="vStudies" select="search:queryIndex('studies', 'visible:true public:true')"/>
+        <xsl:variable name="vTotal" select="fn:count($vStudies)"/>
+        <xsl:variable name="vRetrieved" select="$vStudies[1]/../@updated"/>
+        <!--
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>
         <xsl:variable name="vNews" select="doc('news.xml')"/>
-
+        -->
 
         <div>
             <xsl:attribute name="class">alpha
@@ -81,11 +82,13 @@
                         <li>
                             <xsl:value-of select="$vTotal"/> stud
                             <xsl:choose>
-                                <xsl:when test="fn:count($vExperiments) > 1">ies</xsl:when>
+                                <xsl:when test="fn:count($vStudies) > 1">ies</xsl:when>
                                 <xsl:otherwise>y</xsl:otherwise>
                             </xsl:choose>
                         </li>
+                        <!--
                         <li><xsl:value-of select="ae:formatFileSize(fn:sum($vFiles/@size) cast as xs:integer)"/> of archived data</li>
+                        -->
                     </ul>
                 </section>
             </div>

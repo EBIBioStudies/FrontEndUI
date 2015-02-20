@@ -34,7 +34,7 @@ public class SearchEngine extends ApplicationComponent {
     public void initialize() throws Exception {
         SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
 
-        this.controller = new Controller((HierarchicalConfiguration) getPreferences().getConfSubset("ae"));
+        this.controller = new Controller((HierarchicalConfiguration) getPreferences().getConfSubset("bs"));
         getController().setQueryConstructor(new BatchQueryConstructor());
         getController().setXPathEngine(saxon);
         if (null != saxon) {

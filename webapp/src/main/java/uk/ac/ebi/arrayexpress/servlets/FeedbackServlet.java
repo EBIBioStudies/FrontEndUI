@@ -61,8 +61,8 @@ public class FeedbackServlet extends ApplicationServlet {
         if (!"".equals(message)) {
             getApplication().sendEmail(
                     originator
-                    , getPreferences().getStringArray("ae.feedback.recipients")
-                    , getPreferences().getString("ae.feedback.subject")
+                    , getPreferences().getStringArray("bs.feedback.recipients")
+                    , getPreferences().getString("bs.feedback.subject")
                     , (!originator.equals(email) ? ("From: " + ("".equals(email) ? "unknown sender" : email) + StringTools.EOL + StringTools.EOL) : "")
                             + message + StringTools.EOL
                             + StringTools.EOL

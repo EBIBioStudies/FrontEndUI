@@ -54,7 +54,7 @@ public class Events extends ApplicationComponent implements IDocumentSource {
 
         this.document = new FilePersistence<>(
                 new PersistableDocumentContainer("events")
-                , new File(getPreferences().getString("ae.events.persistence-location"))
+                , new File(getPreferences().getString("bs.events.persistence-location"))
         );
 
         updateIndex();

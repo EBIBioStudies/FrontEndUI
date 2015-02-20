@@ -32,26 +32,21 @@
 
     <xsl:param name="queryid"/>
     <xsl:param name="keywords"/>
-    <xsl:param name="directsub"/>
-    <xsl:param name="private"/>
-    <xsl:param name="organism"/>
-    <xsl:param name="array"/>
-    <xsl:param name="exptype"/>
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-highlight.xsl"/>
-    <xsl:include href="ae-sort-experiments.xsl"/>
-    <xsl:include href="ae-date-functions.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
+    <xsl:include href="bs-highlight.xsl"/>
+    <xsl:include href="bs-sort-studies.xsl"/>
+    <xsl:include href="bs-date-functions.xsl"/>
 
     <xsl:variable name="vSearchMode" select="$keywords != ''"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
 
-    <xsl:variable name="vFilteredExperiments" select="search:queryIndex($queryid)"/>
-    <xsl:variable name="vTotal" select="count($vFilteredExperiments)"/>
+    <xsl:variable name="vFilteredStudies" select="search:queryIndex($queryid)"/>
+    <xsl:variable name="vTotal" select="count($vFilteredStudies)"/>
 
     <xsl:template match="/">
-        <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Experiments matching &quot;', $keywords, '&quot;') else 'Experiments'"/>
+        <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
 
         <xsl:call-template name="ae-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
@@ -66,21 +61,23 @@
             </xsl:with-param>
             <xsl:with-param name="pSearchInputValue" select="$keywords"/>
             <xsl:with-param name="pExtraSearchFields">
+                <!--
                 <input id="ls-organism" type="hidden" name="organism" value="{$organism}"/>
                 <input id="ls-array" type="hidden" name="array" value="{$array}"/>
                 <input id="ls-expdesign" type="hidden" name="exptype[]" value="{$exptype[1]}"/>
                 <input id="ls-exptech" type="hidden" name="exptype[]" value="{$exptype[2]}"/>
+                -->
             </xsl:with-param>
             <xsl:with-param name="pTitleTrail" select="$vTitle"/>
             <xsl:with-param name="pExtraCSS">
-                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/ae-experiments-browse-1.0.140924.css" type="text/css"/>
+                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-studies-browse-1.0.150220.css" type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail"><xsl:if test="$vTotal > 0"><xsl:value-of select="$vTitle"/></xsl:if></xsl:with-param>
             <xsl:with-param name="pExtraJS">
                 <script src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js" type="text/javascript"/>
                 <script src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js" type="text/javascript"/>
                 <script src="{$context-path}/assets/scripts/jquery.query-2.1.7m-ebi.js" type="text/javascript"/>
-                <script src="{$context-path}/assets/scripts/jquery.ae-experiments-browse-1.0.140924.js" type="text/javascript"/>
+                <script src="{$context-path}/assets/scripts/jquery.bs-studies-browse-1.0.150220.js" type="text/javascript"/>
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses" select="if ($vTotal = 0) then 'noresults' else ''"/>
         </xsl:call-template>
@@ -113,6 +110,7 @@
                 <section class="grid_24 alpha omega">
                     <div id="ae-content">
                         <div id="ae-browse">
+                            <!--
                             <div id="ae-filters">
                                 <form method="get" action="{$context-path}/experiments/browse.html">
                                     <fieldset>
@@ -149,25 +147,17 @@
                                     </fieldset>
                                 </form>
                             </div>
+                            -->
                             <div class="persist-area">
                                 <table class="persist-header" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
                                     <col class="col_name"/>
-                                    <col class="col_type"/>
-                                    <col class="col_organism"/>
-                                    <col class="col_assays"/>
                                     <col class="col_releasedate"/>
-                                    <col class="col_processed"/>
-                                    <col class="col_raw"/>
-                                    <col class="col_atlas"/>
-                                    <xsl:if test="$vUnrestrictedAccess">
-                                        <col class="col_views"/>
-                                        <col class="col_downloads"/>
-                                        <col class="col_complete_downloads"/>
-                                    </xsl:if>
+                                    <col class="col_files"/>
+                                    <col class="col_links"/>
                                     <thead>
                                         <xsl:call-template name="table-pager">
-                                            <xsl:with-param name="pColumnsToSpan" select="if ($vUnrestrictedAccess) then 12 else 9"/>
+                                            <xsl:with-param name="pColumnsToSpan" select="5"/>
                                             <xsl:with-param name="pName" select="'experiment'"/>
                                             <xsl:with-param name="pTotal" select="$vTotal"/>
                                             <xsl:with-param name="pPage" select="$vPage"/>
@@ -190,30 +180,6 @@
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                            <th class="col_type sortable">
-                                                <xsl:text>Type</xsl:text>
-                                                <xsl:call-template name="add-table-sort">
-                                                    <xsl:with-param name="pKind" select="'type'"/>
-                                                    <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                    <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                </xsl:call-template>
-                                            </th>
-                                            <th class="col_organism sortable">
-                                                <xsl:text>Organism</xsl:text>
-                                                <xsl:call-template name="add-table-sort">
-                                                    <xsl:with-param name="pKind" select="'organism'"/>
-                                                    <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                    <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                </xsl:call-template>
-                                            </th>
-                                            <th class="col_assays sortable">
-                                                <xsl:text>Assays</xsl:text>
-                                                <xsl:call-template name="add-table-sort">
-                                                    <xsl:with-param name="pKind" select="'assays'"/>
-                                                    <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                    <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                </xsl:call-template>
-                                            </th>
                                             <th class="col_releasedate sortable">
                                                 <xsl:text>Released</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
@@ -222,88 +188,46 @@
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                            <th class="col_processed sortable">
-                                                <xsl:text>Processed</xsl:text>
+                                            <th class="col_files sortable">
+                                                <xsl:text>Files</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
-                                                    <xsl:with-param name="pKind" select="'processed'"/>
+                                                    <xsl:with-param name="pKind" select="'files'"/>
                                                     <xsl:with-param name="pSortBy" select="$vSortBy"/>
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                            <th class="col_raw sortable">
-                                                <xsl:text>Raw</xsl:text>
+                                            <th class="col_links sortable">
+                                                <xsl:text>Links</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
-                                                    <xsl:with-param name="pKind" select="'raw'"/>
+                                                    <xsl:with-param name="pKind" select="'links'"/>
                                                     <xsl:with-param name="pSortBy" select="$vSortBy"/>
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                            <th class="col_atlas sortable">
-                                                <xsl:text>Atlas</xsl:text>
-                                                <xsl:call-template name="add-table-sort">
-                                                    <xsl:with-param name="pKind" select="'atlas'"/>
-                                                    <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                    <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                </xsl:call-template>
-                                            </th>
-                                            <xsl:if test="$vUnrestrictedAccess">
-                                                <th class="col_views sortable">
-                                                    <xsl:text>Views</xsl:text>
-                                                    <xsl:call-template name="add-table-sort">
-                                                        <xsl:with-param name="pKind" select="'views'"/>
-                                                        <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                        <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                    </xsl:call-template>
-                                                </th>
-                                                <th class="col_downloads sortable">
-                                                    <xsl:text>DL Attempts</xsl:text>
-                                                    <xsl:call-template name="add-table-sort">
-                                                        <xsl:with-param name="pKind" select="'downloads'"/>
-                                                        <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                        <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                    </xsl:call-template>
-                                                </th>
-                                                <th class="col_complete_downloads sortable">
-                                                    <xsl:text>Complete DLs</xsl:text>
-                                                    <xsl:call-template name="add-table-sort">
-                                                        <xsl:with-param name="pKind" select="'complete_downloads'"/>
-                                                        <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                        <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                                    </xsl:call-template>
-                                                </th>
-                                            </xsl:if>
-
                                         </tr>
                                     </thead>
                                 </table>
                                 <table class="experiments" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
                                     <col class="col_name"/>
-                                    <col class="col_type"/>
-                                    <col class="col_organism"/>
-                                    <col class="col_assays"/>
                                     <col class="col_releasedate"/>
-                                    <col class="col_processed"/>
-                                    <col class="col_raw"/>
-                                    <col class="col_atlas"/>
-                                    <xsl:if test="$vUnrestrictedAccess">
-                                        <col class="col_views"/>
-                                        <col class="col_downloads"/>
-                                        <col class="col_complete_downloads"/>
-                                    </xsl:if>
+                                    <col class="col_files"/>
+                                    <col class="col_links"/>
                                     <tbody>
                                         <xsl:call-template name="ae-sort-experiments">
-                                            <xsl:with-param name="pExperiments" select="$vFilteredExperiments"/>
+                                            <xsl:with-param name="pExperiments" select="$vFilteredStudies"/>
                                             <xsl:with-param name="pFrom" select="$vFrom"/>
                                             <xsl:with-param name="pTo" select="$vTo"/>
                                             <xsl:with-param name="pSortBy" select="$vSortBy"/>
                                             <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                         </xsl:call-template>
                                         <tr>
-                                            <td colspan="{if ($vUnrestrictedAccess) then '12' else '9'}" class="col_footer">
+                                            <td colspan="5" class="col_footer">&#160;
+                                                <!--
                                                 <a href="{$context-path}/ArrayExpress-Experiments.txt{$vQueryString}" class="icon icon-functional" data-icon="S">Export table in Tab-delimited format</a>
                                                 <a href="{$context-path}/xml/v2/experiments{$vQueryString}" class="icon  icon-functional" data-icon="S">Export matching metadata in XML format</a>
                                                 <a href="{$context-path}/rss/v2/experiments{$vQueryString}" class="icon icon-socialmedia" data-icon="R">Subscribe to RSS feed matching this search</a>
+                                                -->
                                             </td>
                                         </tr>
                                     </tbody>
@@ -319,24 +243,24 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="experiment">
+    <xsl:template match="study">
         <xsl:param name="pFrom"/>
         <xsl:param name="pTo"/>
 
-
-
         <xsl:if test="position() >= $pFrom and not(position() > $pTo)">
             <xsl:variable name="vAccession" select="accession"/>
-            <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/>
+            <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
 
             <tr>
                 <td class="col_accession">
                     <div>
-                        <a href="{$context-path}/experiments/{accession}/{$vQueryString}">
+                        <a href="{$context-path}/studies/{accession}/{$vQueryString}">
+                            <!--
                             <xsl:if test="not(user/@id = '1')">
                                 <xsl:attribute name="class" select="'icon icon-functional'"/>
                                 <xsl:attribute name="data-icon" select="'L'"/>
                             </xsl:if>
+                            -->
                             <xsl:call-template name="highlight">
                                 <xsl:with-param name="pQueryId" select="$queryid"/>
                                 <xsl:with-param name="pText" select="accession"/>
@@ -349,37 +273,8 @@
                     <div>
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="fn:string-join(name, ', ')"/>
+                            <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
                             <xsl:with-param name="pFieldName"/>
-                        </xsl:call-template>
-
-                    </div>
-                </td>
-                <td class="col_type">
-                    <div>
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="fn:string-join(experimenttype, ', ')"/>
-                            <xsl:with-param name="pFieldName" select="'exptype'"/>
-                        </xsl:call-template>
-
-                    </div>
-                </td>
-                <td class="col_organism">
-                    <div>
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="fn:string-join(organism, ', ')"/>
-                            <xsl:with-param name="pFieldName" select="'organism'"/>
-                        </xsl:call-template>
-                    </div>
-                </td>
-                <td class="col_assays">
-                    <div>
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="assays"/>
-                            <xsl:with-param name="pFieldName" select="'assaycount'"/>
                         </xsl:call-template>
                     </div>
                 </td>
@@ -395,82 +290,21 @@
                         -->
                     </div>
                 </td>
-                <td class="col_processed">
+                <td class="col_files">
                     <div>
-                        <xsl:call-template name="data-files-main">
-                            <xsl:with-param name="pAccession" select="$vAccession"/>
-                            <xsl:with-param name="pEnaAccession" select="secondaryaccession[fn:matches(text(), '^(DRP|ERP|SRP)\d+$')]"/>
-                            <xsl:with-param name="pFiles" select="$vFiles"/>
-                            <xsl:with-param name="pKind" select="'processed'"/>
-                        </xsl:call-template>
+                        <xsl:value-of select="@files"/>    
                     </div>
                 </td>
-                <td class="col_raw">
+                <td class="col_links">
                     <div>
-                        <xsl:call-template name="data-files-main">
-                            <xsl:with-param name="pAccession" select="$vAccession"/>
-                            <xsl:with-param name="pEnaAccession" select="secondaryaccession[fn:matches(text(), '^(DRP|ERP|SRP)\d+$')]"/>
-                            <xsl:with-param name="pFiles" select="$vFiles"/>
-                            <xsl:with-param name="pKind" select="'raw'"/>
-                        </xsl:call-template>
+                        <xsl:value-of select="@links"/>   
                     </div>
                 </td>
-                <td class="col_atlas">
-                    <div>
-                        <xsl:choose>
-                            <xsl:when test="@loadedinatlas">
-                                <a href="${interface.application.link.atlas.exp_query.url}{accession}">
-                                    <span class="icon icon-generic" data-icon="L"/>
-                                </a>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:text>-</xsl:text>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </div>
-                </td>
-                <xsl:if test="$vUnrestrictedAccess">
-                    <td class="col_views">
-                        <div>
-                            <xsl:choose>
-                                <xsl:when test="@views">
-                                    <xsl:value-of select="@views"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text>-</xsl:text>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </div>
-                    </td>
-                    <td class="col_downloads">
-                        <div>
-                            <xsl:choose>
-                                <xsl:when test="@downloads">
-                                    <xsl:value-of select="@downloads"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text>-</xsl:text>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </div>
-                    </td>
-                    <td class="col_complete_downloads">
-                        <div>
-                            <xsl:choose>
-                                <xsl:when test="@completedownloads">
-                                    <xsl:value-of select="@completedownloads"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text>-</xsl:text>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </div>
-                    </td>
-                </xsl:if>
             </tr>
         </xsl:if>
     </xsl:template>
 
+    <!--
     <xsl:template name="data-files-main">
         <xsl:param name="pAccession"/>
         <xsl:param name="pEnaAccession"/>
@@ -535,8 +369,8 @@
                 </xsl:choose>
             </xsl:for-each-group>
         </xsl:if>
-
     </xsl:template>
+    -->
 
     <xsl:template name="browse-no-results">
 

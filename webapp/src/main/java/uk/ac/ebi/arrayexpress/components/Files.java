@@ -64,7 +64,7 @@ public class Files extends ApplicationComponent implements IDocumentSource {
 
         this.document = new FilePersistence<>(
                 new PersistableDocumentContainer("files"),
-                new File(getPreferences().getString("ae.files.persistence-location"))
+                new File(getPreferences().getString("bs.files.persistence-location"))
         );
 
         maps.registerMap(new MapEngine.SimpleValueMap(MAP_FOLDER));
@@ -164,7 +164,7 @@ public class Files extends ApplicationComponent implements IDocumentSource {
 
     public synchronized String getRootFolder() {
         if (null == this.rootFolder) {
-            this.rootFolder = getPreferences().getString("ae.files.root.location");
+            this.rootFolder = getPreferences().getString("bs.files.root.location");
         }
         return this.rootFolder;
     }

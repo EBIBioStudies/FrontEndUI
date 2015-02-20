@@ -78,14 +78,14 @@ public class Users extends ApplicationComponent implements IDocumentSource {
         this.search = (SearchEngine) getComponent("SearchEngine");
         this.document = new FilePersistence<>(
                 new PersistableDocumentContainer("users")
-                , new File(getPreferences().getString("ae.users.persistence-location"))
+                , new File(getPreferences().getString("bs.users.persistence-location"))
         );
 
         this.userMap = new MapEngine.JointValueMap(MAP_USERS_FOR_ACCESSION);
 
         MapEngine maps = ((MapEngine) getComponent("MapEngine"));
         maps.registerMap(this.userMap);
-        maps.registerMap(new MapEngine.SimpleValueMap(Experiments.MAP_EXPERIMENTS_FOR_USER));
+//        maps.registerMap(new MapEngine.SimpleValueMap(Studies.MAP_EXPERIMENTS_FOR_USER));
 
         updateIndex();
 
@@ -285,9 +285,9 @@ public class Users extends ApplicationComponent implements IDocumentSource {
                     String password = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(password)");
 
                     getApplication().sendEmail(
-                            getPreferences().getString("ae.password-remind.originator")
+                            getPreferences().getString("bs.password-remind.originator")
                             , new String[]{email}
-                            , getPreferences().getString("ae.password-remind.subject")
+                            , getPreferences().getString("bs.password-remind.subject")
                             , "Dear " + username + "," + StringTools.EOL
                                     + StringTools.EOL
                                     + "Your ArrayExpress account information is:" + StringTools.EOL
@@ -313,8 +313,8 @@ public class Users extends ApplicationComponent implements IDocumentSource {
             }
 
             getApplication().sendEmail(
-                    getPreferences().getString("ae.password-remind.originator")
-                    , getPreferences().getStringArray("ae.password-remind.recipients")
+                    getPreferences().getString("bs.password-remind.originator")
+                    , getPreferences().getStringArray("bs.password-remind.recipients")
                     , "ArrayExpress account information request"
                     , reportMessage + StringTools.EOL
                             + StringTools.EOL

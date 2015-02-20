@@ -65,7 +65,7 @@ public class Protocols extends ApplicationComponent implements IDocumentSource {
 
         this.document = new FilePersistence<>(
                 new PersistableDocumentContainer("protocols")
-                , new File(getPreferences().getString("ae.protocols.persistence-location"))
+                , new File(getPreferences().getString("bs.protocols.persistence-location"))
         );
 
         updateIndex();

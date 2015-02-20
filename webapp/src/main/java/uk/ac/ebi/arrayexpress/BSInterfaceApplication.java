@@ -19,7 +19,6 @@ package uk.ac.ebi.arrayexpress;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.*;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
@@ -30,27 +29,26 @@ import javax.servlet.ServletContextListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AEInterfaceApplication extends Application implements ServletContextListener {
+public class BSInterfaceApplication extends Application implements ServletContextListener {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private ServletContext servletContext;
 
-    public AEInterfaceApplication() {
-        super("arrayexpress");
+    public BSInterfaceApplication() {
+        super("biostudies");
 
         addComponent(new MapEngine());
         addComponent(new SaxonEngine());
         addComponent(new SearchEngine());
         addComponent(new Autocompletion());
-        addComponent(new GenomeSpace());
-        addComponent(new News());
-        addComponent(new Events());
-        addComponent(new Users());
-        addComponent(new Experiments());
-        addComponent(new ArrayDesigns());
-        addComponent(new Protocols());
-        addComponent(new Files());
+//        addComponent(new News());
+//        addComponent(new Events());
+//        addComponent(new Users());
+        addComponent(new Studies());
+//        addComponent(new ArrayDesigns());
+//        addComponent(new Protocols());
+//        addComponent(new Files());
         addComponent(new JobsController());
         addComponent(new Ontologies());
     }

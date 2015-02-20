@@ -59,7 +59,7 @@ public class ControlServlet extends ApplicationServlet {
         try {
             if (
                     "reload-atlas-info".equals(command)
-                            || "reload-ae2-xml".equals(command)
+                            || "reload-xml".equals(command)
                             || "reload-efo".equals(command)
                             || "update-efo".equals(command)
                             || "check-files".equals(command)
@@ -67,13 +67,13 @@ public class ControlServlet extends ApplicationServlet {
                             || "reload-atlas-info".equals(command)
                     ) {
                 ((JobsController) getComponent("JobsController")).executeJob(command);
-            } else if ("reload-ae1-xml".equals(command)) {
-                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
-            } else if ("rescan-files".equals(command)) {
-                if (!params.isEmpty()) {
-                    ((Files) getComponent("Files")).setRootFolder(params);
-                }
-                ((JobsController) getComponent("JobsController")).executeJob(command);
+//            } else if ("reload-ae1-xml".equals(command)) {
+//                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
+//            } else if ("rescan-files".equals(command)) {
+//                if (!params.isEmpty()) {
+//                    ((Files) getComponent("Files")).setRootFolder(params);
+//                }
+//                ((JobsController) getComponent("JobsController")).executeJob(command);
             } else if ("test-email".equals(command)) {
                 getApplication().sendEmail(
                         null

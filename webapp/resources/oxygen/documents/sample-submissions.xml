@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<submissions>
+ <submission id="SBM-EPMC1874622">
+  <attributes>
+   <attribute name="Title">
+    <value>Novel protein fold discovered in the PabI family of restriction enzymes.</value>
+   </attribute>
+   <attribute name="Submitter">
+    <value>Europe PubMed Central</value>
+   </attribute>
+  </attributes>
+  <section type="Study" id="S-EPMC1874622">
+   <attributes>
+    <attribute name="Title">
+     <value>Novel protein fold discovered in the PabI family of restriction enzymes.</value>
+    </attribute>
+    <attribute name="Abstract">
+     <value>Although structures of many DNA-binding proteins have been solved, they fall into a limited number of folds. Here, we describe an approach that led to the finding of a novel DNA-binding fold. Based on the behavior of Type II restriction-modification gene complexes as mobile elements, our earlier work identified a restriction enzyme, R.PabI, and its cognate modification enzyme in Pyrococcus abyssi through comparison of closely related genomes. While the modification methyltransferase was easily recognized, R.PabI was predicted to have a novel 3D structure. We expressed cytotoxic R.PabI in a wheat-germ-based cell-free translation system and determined its crystal structure. R.PabI turned out to adopt a novel protein fold. Homodimeric R.PabI has a curved anti-parallel beta-sheet that forms a &#39;half pipe&#39;. Mutational and in silico DNA-binding analyses have assigned it as the double-strand DNA-binding site. Unlike most restriction enzymes analyzed, R.PabI is able to cleave DNA in the absence of Mg(2+). These results demonstrate the value of genome comparison and the wheat-germ-based system in finding a novel DNA-binding motif in mobile DNases and, in general, a novel protein fold in horizontally transferred genes.</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">SPTR</valqual>
+     <value>Q9V2B6</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>2dvy</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">INTERPRO</valqual>
+     <value>IPR018576</value>
+    </attribute>
+   </attributes>
+   <subsections>
+    <section type="Author" id="a1">
+     <attributes>
+      <attribute name="Name">
+       <value>Miyazono K</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a2">
+     <attributes>
+      <attribute name="Name">
+       <value>Watanabe M</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a3">
+     <attributes>
+      <attribute name="Name">
+       <value>Kosinski J</value>
+      </attribute>
+      <attribute name="ORCID">
+       <value>0000-0002-3641-0322</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a4">
+     <attributes>
+      <attribute name="Name">
+       <value>Ishikawa K</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a5">
+     <attributes>
+      <attribute name="Name">
+       <value>Kamo M</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a6">
+     <attributes>
+      <attribute name="Name">
+       <value>Sawasaki T</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a7">
+     <attributes>
+      <attribute name="Name">
+       <value>Nagata K</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a8">
+     <attributes>
+      <attribute name="Name">
+       <value>Bujnicki JM</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a9">
+     <attributes>
+      <attribute name="Name">
+       <value>Endo Y</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a10">
+     <attributes>
+      <attribute name="Name">
+       <value>Tanokura M</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a11">
+     <attributes>
+      <attribute name="Name">
+       <value>Kobayashi I</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Publication" id="PMC1874622">
+     <attributes>
+      <attribute name="DOI">
+       <value>http://dx.doi.org/10.1093/nar/gkm091</value>
+      </attribute>
+      <attribute name="Journal">
+       <value>Nucleic acids research</value>
+      </attribute>
+      <attribute name="Volume">
+       <value>35</value>
+      </attribute>
+      <attribute name="Pages">
+       <value>1908-18</value>
+      </attribute>
+      <attribute name="Publication date">
+       <value>2007</value>
+      </attribute>
+     </attributes>
+     <files>
+      <file name="nar_gkm091_nar-02625-j-2006-File011.eps" access="S-EPMC1874622">
+       <attributes>
+        <attribute name="Type">
+         <value>application(ps)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm091_nar-02625-j-2006-File012.tif" access="S-EPMC1874622">
+       <attributes>
+        <attribute name="Type">
+         <value>image(tiff)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm091_index.html" access="S-EPMC1874622">
+       <attributes>
+        <attribute name="Type">
+         <value>text(html)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm091_nar-02625-j-2006-File002.doc" access="S-EPMC1874622">
+       <attributes>
+        <attribute name="Type">
+         <value>application(msword)</value>
+        </attribute>
+       </attributes>
+      </file>
+     </files>
+    </section>
+   </subsections>
+  </section>
+ </submission>
+ <submission id="SBM-EPMC1865054">
+  <attributes>
+   <attribute name="Title">
+    <value>Insights into Fanconi Anaemia from the structure of human FANCE.</value>
+   </attribute>
+   <attribute name="Submitter">
+    <value>Europe PubMed Central</value>
+   </attribute>
+  </attributes>
+  <section type="Study" id="S-EPMC1865054">
+   <attributes>
+    <attribute name="Title">
+     <value>Insights into Fanconi Anaemia from the structure of human FANCE.</value>
+    </attribute>
+    <attribute name="Abstract">
+     <value>Fanconi Anaemia (FA) is a cancer predisposition disorder characterized by spontaneous chromosome breakage and high cellular sensitivity to genotoxic agents. In response to DNA damage, a multi-subunit assembly of FA proteins, the FA core complex, monoubiquitinates the downstream FANCD2 protein. The FANCE protein plays an essential role in the FA process of DNA repair as the FANCD2-binding component of the FA core complex. Here we report a crystallographic and biological study of human FANCE. The first structure of a FA protein reveals the presence of a repeated helical motif that provides a template for the structural rationalization of other proteins defective in Fanconi Anaemia. The portion of FANCE defined by our crystallographic analysis is sufficient for interaction with FANCD2, yielding structural information into the mode of FANCD2 recruitment to the FA core complex. Disease-associated mutations disrupt the FANCE-FANCD2 interaction, providing structural insight into the molecular mechanisms of FA pathogenesis.</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Wellcome Trust, grant_id:071102</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Wellcome Trust, grant_id:</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">SPTR</valqual>
+     <value>Q9HB96</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">SPTR</valqual>
+     <value>Q9HB96</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>2ilr</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">INTERPRO</valqual>
+     <value>IPR021025</value>
+    </attribute>
+   </attributes>
+   <subsections>
+    <section type="Author" id="a1">
+     <attributes>
+      <attribute name="Name">
+       <value>Nookala RK</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a2">
+     <attributes>
+      <attribute name="Name">
+       <value>Hussain S</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a3">
+     <attributes>
+      <attribute name="Name">
+       <value>Pellegrini L</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Publication" id="PMC1865054">
+     <attributes>
+      <attribute name="DOI">
+       <value>http://dx.doi.org/10.1093/nar/gkm033</value>
+      </attribute>
+      <attribute name="Journal">
+       <value>Nucleic acids research</value>
+      </attribute>
+      <attribute name="Volume">
+       <value>35</value>
+      </attribute>
+      <attribute name="Pages">
+       <value>1638-48</value>
+      </attribute>
+      <attribute name="Publication date">
+       <value>2007</value>
+      </attribute>
+     </attributes>
+     <files>
+      <file name="nar_gkm033_index.html" access="S-EPMC1865054">
+       <attributes>
+        <attribute name="Type">
+         <value>text(html)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm033_1.pdf" access="S-EPMC1865054">
+       <attributes>
+        <attribute name="Type">
+         <value>application(pdf)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm033_nar-02518-f-2006-File009.jpg" access="S-EPMC1865054">
+       <attributes>
+        <attribute name="Type">
+         <value>image(jpeg)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm033_nar-02518-f-2006-File010.jpg" access="S-EPMC1865054">
+       <attributes>
+        <attribute name="Type">
+         <value>image(jpeg)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="nar_gkm033_nar-02518-f-2006-File011.doc" access="S-EPMC1865054">
+       <attributes>
+        <attribute name="Type">
+         <value>application(msword)</value>
+        </attribute>
+       </attributes>
+      </file>
+     </files>
+    </section>
+   </subsections>
+  </section>
+ </submission>
+ <submission id="SBM-EPMC1636649">
+  <attributes>
+   <attribute name="Title">
+    <value>Huntingtin gene evolution in Chordata and its peculiar features in the ascidian Ciona genus.</value>
+   </attribute>
+   <attribute name="Submitter">
+    <value>Europe PubMed Central</value>
+   </attribute>
+  </attributes>
+  <section type="Study" id="S-EPMC1636649">
+   <attributes>
+    <attribute name="Title">
+     <value>Huntingtin gene evolution in Chordata and its peculiar features in the ascidian Ciona genus.</value>
+    </attribute>
+    <attribute name="Abstract">
+     <value>BACKGROUND: To gain insight into the evolutionary features of the huntingtin (htt) gene in Chordata, we have sequenced and characterized the full-length htt mRNA in the ascidian Ciona intestinalis, a basal chordate emerging as new invertebrate model organism. Moreover, taking advantage of the availability of genomic and EST sequences, the htt gene structure of a number of chordate species, including the cogeneric ascidian Ciona savignyi, and the vertebrates Xenopus and Gallus was reconstructed. RESULTS: The C. intestinalis htt transcript exhibits some peculiar features, such as spliced leader trans-splicing in the 98 nt-long 5&#39; untranslated region (UTR), an alternative splicing in the coding region, eight alternative polyadenylation sites, and no similarities of both 5&#39; and 3&#39;UTRs compared to homologs of the cogeneric C. savignyi. The predicted protein is 2946 amino acids long, shorter than its vertebrate homologs, and lacks the polyQ and the polyP stretches found in the the N-terminal regions of mammalian homologs. The exon-intron organization of the htt gene is almost identical among vertebrates, and significantly conserved between Ciona and vertebrates, allowing us to hypothesize an ancestral chordate gene consisting of at least 40 coding exons. CONCLUSION: During chordate diversification, events of gain/loss, sliding, phase changes, and expansion of introns occurred in both vertebrate and ascidian lineages predominantly in the 5&#39;-half of the htt gene, where there is also evidence of lineage-specific evolutionary dynamics in vertebrates. On the contrary, the 3&#39;-half of the gene is highly conserved in all chordates at the level of both gene structure and protein sequence. Between the two Ciona species, a fast evolutionary rate and/or an early divergence time is suggested by the absence of significant similarity between UTRs, protein divergence comparable to that observed between mammals and fishes, and different distribution of repetitive elements.</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>AM162277</value>
+    </attribute>
+   </attributes>
+   <subsections>
+    <section type="Author" id="a1">
+     <attributes>
+      <attribute name="Name">
+       <value>Gissi C</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a2">
+     <attributes>
+      <attribute name="Name">
+       <value>Pesole G</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a3">
+     <attributes>
+      <attribute name="Name">
+       <value>Cattaneo E</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a4">
+     <attributes>
+      <attribute name="Name">
+       <value>Tartari M</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Publication" id="PMC1636649">
+     <attributes>
+      <attribute name="DOI">
+       <value>http://dx.doi.org/10.1186/1471-2164-7-288</value>
+      </attribute>
+      <attribute name="Journal">
+       <value>BMC genomics</value>
+      </attribute>
+      <attribute name="Volume">
+       <value>7</value>
+      </attribute>
+      <attribute name="Pages">
+       <value>288</value>
+      </attribute>
+      <attribute name="Publication date">
+       <value>2006</value>
+      </attribute>
+     </attributes>
+     <files>
+      <file name="1471-2164-7-288-S1.txt" access="S-EPMC1636649">
+       <attributes>
+        <attribute name="Type">
+         <value>text(plain)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="1471-2164-7-288-S2.xls" access="S-EPMC1636649">
+       <attributes>
+        <attribute name="Type">
+         <value>application(vnd.ms-excel)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="1471-2164-7-288-S3.doc" access="S-EPMC1636649">
+       <attributes>
+        <attribute name="Type">
+         <value>application(msword)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="1471-2164-7-288-S4.jpeg" access="S-EPMC1636649">
+       <attributes>
+        <attribute name="Type">
+         <value>image(jpeg)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="1471-2164-7-288-S5.doc" access="S-EPMC1636649">
+       <attributes>
+        <attribute name="Type">
+         <value>application(msword)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="1471-2164-7-288-S6.txt" access="S-EPMC1636649">
+       <attributes>
+        <attribute name="Type">
+         <value>text(plain)</value>
+        </attribute>
+       </attributes>
+      </file>
+     </files>
+    </section>
+   </subsections>
+  </section>
+ </submission>
+ <submission id="SBM-EPMC3351157">
+  <attributes>
+   <attribute name="Title">
+    <value>Sample richness and genetic diversity as drivers of chimera formation in nSSU metagenetic analyses.</value>
+   </attribute>
+   <attribute name="Submitter">
+    <value>Europe PubMed Central</value>
+   </attribute>
+  </attributes>
+  <section type="Study" id="S-EPMC3351157">
+   <attributes>
+    <attribute name="Title">
+     <value>Sample richness and genetic diversity as drivers of chimera formation in nSSU metagenetic analyses.</value>
+    </attribute>
+    <attribute name="Abstract">
+     <value>Eukaryotic diversity in environmental samples is often assessed via PCR-based amplification of nSSU genes. However, estimates of diversity derived from pyrosequencing environmental data sets are often inflated, mainly because of the formation of chimeric sequences during PCR amplification. Chimeras are hybrid products composed of distinct parental sequences that can lead to the misinterpretation of diversity estimates. We have analyzed the effect of sample richness, evenness and phylogenetic diversity on the formation of chimeras using a nSSU data set derived from 454 Roche pyrosequencing of replicated, large control pools of closely and distantly related nematode mock communities, of known intragenomic identity and richness. To further investigate how chimeric molecules are formed, the nSSU gene secondary structure was analyzed in several individuals. For the first time in eukaryotes, chimera formation proved to be higher in both richer and more genetically diverse samples, thus providing a novel perspective of chimera formation in pyrosequenced environmental data sets. Findings contribute to a better understanding of the nature and mechanisms involved in chimera formation during PCR amplification of environmentally derived DNA. Moreover, given the similarities between biodiversity analyses using amplicon sequencing and those used to assess genomic variation, our findings have potential broad application for identifying genetic variation in homologous loci or multigene families in general.</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Biotechnology and Biological Sciences Research Council, grant_id:</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968254</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968223</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968242</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968271</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968272</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968283</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968269</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968214</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968249</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">EMBL</valqual>
+     <value>JN968284</value>
+    </attribute>
+   </attributes>
+   <subsections>
+    <section type="Author" id="a0">
+     <attributes>
+      <attribute name="Name">
+       <value>Fonseca VG</value>
+      </attribute>
+      <attribute name="ORCID">
+       <value>0000-0002-5068-6253</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a1">
+     <attributes>
+      <attribute name="Name">
+       <value>Fonseca VG</value>
+      </attribute>
+      <attribute name="ORCID">
+       <value>0000-0003-1021-7003</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a2">
+     <attributes>
+      <attribute name="Name">
+       <value>Nichols B</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a3">
+     <attributes>
+      <attribute name="Name">
+       <value>Lallias D</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a4">
+     <attributes>
+      <attribute name="Name">
+       <value>Quince C</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a5">
+     <attributes>
+      <attribute name="Name">
+       <value>Carvalho GR</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a6">
+     <attributes>
+      <attribute name="Name">
+       <value>Power DM</value>
+      </attribute>
+      <attribute name="ORCID">
+       <value>0000-0003-1366-0246</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a7">
+     <attributes>
+      <attribute name="Name">
+       <value>Creer S</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Publication" id="PMC3351157">
+     <attributes>
+      <attribute name="DOI">
+       <value>http://dx.doi.org/10.1093/nar/gks002</value>
+      </attribute>
+      <attribute name="Journal">
+       <value>Nucleic acids research</value>
+      </attribute>
+      <attribute name="Volume">
+       <value>40</value>
+      </attribute>
+      <attribute name="Pages">
+       <value>e66</value>
+      </attribute>
+      <attribute name="Publication date">
+       <value>2012 May</value>
+      </attribute>
+     </attributes>
+     <files>
+      <file name="supp_gks002_nar-01829-met-g-2011-File009.fasta" access="S-EPMC3351157">
+       <attributes>
+        <attribute name="Type">
+         <value>text(plain)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_40_9_e66__index.html" access="S-EPMC3351157">
+       <attributes>
+        <attribute name="Type">
+         <value>text(html)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_gks002_nar-01829-met-g-2011-File006.doc" access="S-EPMC3351157">
+       <attributes>
+        <attribute name="Type">
+         <value>application(msword)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_gks002_nar-01829-met-g-2011-File007.jpg" access="S-EPMC3351157">
+       <attributes>
+        <attribute name="Type">
+         <value>image(jpeg)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_gks002_nar-01829-met-g-2011-File008.jpg" access="S-EPMC3351157">
+       <attributes>
+        <attribute name="Type">
+         <value>image(jpeg)</value>
+        </attribute>
+       </attributes>
+      </file>
+     </files>
+    </section>
+   </subsections>
+  </section>
+ </submission>
+ <submission id="SBM-EPMC4059138">
+  <attributes>
+   <attribute name="Title">
+    <value>Structural basis for multiple sugar recognition of Jacalin-related human ZG16p lectin.</value>
+   </attribute>
+   <attribute name="Submitter">
+    <value>Europe PubMed Central</value>
+   </attribute>
+  </attributes>
+  <section type="Study" id="S-EPMC4059138">
+   <attributes>
+    <attribute name="Title">
+     <value>Structural basis for multiple sugar recognition of Jacalin-related human ZG16p lectin.</value>
+    </attribute>
+    <attribute name="Abstract">
+     <value>ZG16p is a soluble mammalian lectin, the first to be described with a Jacalin-related ß-prism-fold. ZG16p has been reported to bind both to glycosaminoglycans and mannose. To determine the structural basis of the multiple sugar-binding properties, we conducted glycan microarray analyses of human ZG16p. We observed that ZG16p preferentially binds to a-mannose-terminating short glycans such as Ser/Thr-linked O-mannose, but not to high mannose-type N-glycans. Among sulfated glycosaminoglycan oligomers examined, chondroitin sulfate B and heparin oligosaccharides showed significant binding. Crystallographic studies of human ZG16p lectin in the presence of selected ligands revealed the mechanism of multiple sugar recognition. Mana1-3Man and Glcß1-3Glc bound in different orientations: the nonreducing end of the former and the reducing end of the latter fitted in the canonical shallow mannose binding pocket. Solution NMR analysis using (15)N-labeled ZG16p defined the heparin-binding region, which is on an adjacent flat surface of the protein. On-array competitive binding assays suggest that it is possible for ZG16p to bind simultaneously to both types of ligands. Recognition of a broad spectrum of ligands by ZG16p may account for the multiple functions of this lectin in the formation of zymogen granules via glycosaminoglycan binding, and in the recognition of pathogens in the digestive system through a-mannose-related recognition.</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Engineering and Physical Sciences Research Council, grant_id:EP/G037604/1</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Engineering and Physical Sciences Research Council, grant_id:GR/S79268/02</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Wellcome Trust, grant_id:WT093378MA</value>
+    </attribute>
+    <attribute name="Funding">
+     <value>Agency:Wellcome Trust, grant_id:WT099197MA</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">SPTR</valqual>
+     <value>O60844</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>3vzf</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>3vy7</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>3vze</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>3vy6</value>
+    </attribute>
+    <attribute name="Linked information">
+     <valqual name="type">MSD</valqual>
+     <value>3vzg</value>
+    </attribute>
+   </attributes>
+   <subsections>
+    <section type="Author" id="a1">
+     <attributes>
+      <attribute name="Name">
+       <value>Kanagawa M</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o1</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a2">
+     <attributes>
+      <attribute name="Name">
+       <value>Liu Y</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o2</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a3">
+     <attributes>
+      <attribute name="Name">
+       <value>Hanashima S</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o1</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a4">
+     <attributes>
+      <attribute name="Name">
+       <value>Ikeda A</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o1</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a5">
+     <attributes>
+      <attribute name="Name">
+       <value>Chai W</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o3</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a6">
+     <attributes>
+      <attribute name="Name">
+       <value>Nakano Y</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o4</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a7">
+     <attributes>
+      <attribute name="Name">
+       <value>Kojima-Aikawa K</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o4</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a8">
+     <attributes>
+      <attribute name="Name">
+       <value>Feizi T</value>
+      </attribute>
+      <attribute name="ORCID">
+       <value>0000-0001-6495-0329</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o3</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Author" id="a9">
+     <attributes>
+      <attribute name="Name">
+       <value>Yamaguchi Y</value>
+      </attribute>
+      <attribute name="affiliation">
+       <value>o5</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Organization" id="o5">
+     <attributes>
+      <attribute name="Name">
+       <value>From the Structural Glycobiology Team, Systems Glycobiology Research Group, RIKEN-Max Planck Joint Research Center, RIKEN Global Research Cluster, 2-1 Hirosawa, Wako, Saitama 351-0198, Japan, yyoshiki@riken.jp.</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Organization" id="o1">
+     <attributes>
+      <attribute name="Name">
+       <value>From the Structural Glycobiology Team, Systems Glycobiology Research Group, RIKEN-Max Planck Joint Research Center, RIKEN Global Research Cluster, 2-1 Hirosawa, Wako, Saitama 351-0198, Japan.</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Organization" id="o2">
+     <attributes>
+      <attribute name="Name">
+       <value>the Department of Medicine, Glycosciences Laboratory, Imperial College London, Burlington Danes Building, Du Cane Road, London W12 0NN, United Kingdom, yan.liu2@imperial.ac.uk.</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Organization" id="o3">
+     <attributes>
+      <attribute name="Name">
+       <value>the Department of Medicine, Glycosciences Laboratory, Imperial College London, Burlington Danes Building, Du Cane Road, London W12 0NN, United Kingdom.</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Organization" id="o4">
+     <attributes>
+      <attribute name="Name">
+       <value>the Graduate School of Humanities and Sciences, Ochanomizu University, 2-1-1 Otsuka, Bunkyo-ku, Tokyo 112-8610, Japan, and the The Glycoscience Institute, Ochanomizu University, 2-1-1 Otsuka, Bunkyo-ku, Tokyo 112-8610, Japan.</value>
+      </attribute>
+     </attributes>
+    </section>
+    <section type="Publication" id="PMC4059138">
+     <attributes>
+      <attribute name="DOI">
+       <value>http://dx.doi.org/10.1074/jbc.M113.539114</value>
+      </attribute>
+      <attribute name="Journal">
+       <value>The Journal of biological chemistry</value>
+      </attribute>
+      <attribute name="Volume">
+       <value>289</value>
+      </attribute>
+      <attribute name="Pages">
+       <value>16954-65</value>
+      </attribute>
+      <attribute name="Publication date">
+       <value>2014 Jun</value>
+      </attribute>
+     </attributes>
+     <files>
+      <file name="supp_M113.539114_jbc.M113.539114-2.docx" access="S-EPMC4059138">
+       <attributes>
+        <attribute name="Type">
+         <value>application(msword)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_289_24_16954__index.html" access="S-EPMC4059138">
+       <attributes>
+        <attribute name="Type">
+         <value>text(html)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_M113.539114_jbc.M113.539114-3.pdf" access="S-EPMC4059138">
+       <attributes>
+        <attribute name="Type">
+         <value>application(pdf)</value>
+        </attribute>
+       </attributes>
+      </file>
+      <file name="supp_M113.539114_jbc.M113.539114-1.pptx" access="S-EPMC4059138">
+       <attributes>
+        <attribute name="Type">
+         <value>application(vnd.ms-powerpoint)</value>
+        </attribute>
+       </attributes>
+      </file>
+     </files>
+    </section>
+   </subsections>
+  </section>
+ </submission>
+</submissions>

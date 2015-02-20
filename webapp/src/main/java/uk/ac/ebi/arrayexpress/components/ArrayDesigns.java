@@ -77,7 +77,7 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
 
         this.document = new FilePersistence<>(
                 new PersistableDocumentContainer("array_designs")
-                , new File(getPreferences().getString("ae.arrays.persistence-location"))
+                , new File(getPreferences().getString("bs.arrays.persistence-location"))
         );
 
         maps.registerMap(new MapEngine.SimpleValueMap(MAP_ARRAY_LEGACY_ID));

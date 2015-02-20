@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
 import uk.ac.ebi.arrayexpress.components.Autocompletion;
-import uk.ac.ebi.arrayexpress.components.Experiments;
+import uk.ac.ebi.arrayexpress.components.Studies;
 import uk.ac.ebi.arrayexpress.components.Ontologies;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 
@@ -75,13 +75,13 @@ public class LookupServlet extends ApplicationServlet {
 
         // Output goes to the response PrintWriter.
         try (PrintWriter out = response.getWriter()) {
-            Experiments experiments = (Experiments) getComponent("Experiments");
+            Studies studies = (Studies) getComponent("Studies");
             Autocompletion autocompletion = (Autocompletion) getComponent("Autocompletion");
             Ontologies ontologies = (Ontologies) getComponent("Ontologies");
-            if ("arrays".equals(type) && null != experiments) {
-                out.print(experiments.getArrays());
-            } else if ("species".equals(type) && null != experiments) {
-                out.print(experiments.getSpecies());
+            if ("arrays".equals(type) && null != studies) {
+//                out.print(studies.getArrays());
+            } else if ("species".equals(type) && null != studies) {
+//                out.print(studies.getSpecies());
             } else if ("expdesign".equals(type) && null != ontologies) {
                 out.print(ontologies.getAssayByMoleculeOptions());
             } else if ("exptech".equals(type) && null != ontologies) {

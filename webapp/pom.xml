@@ -33,9 +33,8 @@
         </interface.application.pref.feedback.recipients>
         <interface.application.pref.remind.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
 
-        <interface.application.pref.experiments.ae2.source.location>/ebi/microarray/home/arrayexpress/ae2_production/software/browse/</interface.application.pref.experiments.ae2.source.location>
-        <interface.application.pref.experiments.ae2.reload.schedule>0 35 6 * * ?</interface.application.pref.experiments.ae2.reload.schedule>
-        <interface.application.pref.experiments.ae2.export.location/>
+        <interface.application.pref.studies.source.location>/ebi/microarray/home/arrayexpress/ae2_production/software/browse/</interface.application.pref.studies.source.location>
+        <interface.application.pref.studies.reload.schedule>0 35 6 * * ?</interface.application.pref.studies.reload.schedule>
 
         <interface.application.pref.efo.update.schedule>0 0 1 ? * SUN</interface.application.pref.efo.update.schedule>
 
@@ -101,14 +100,13 @@
 </script>
 ]]>
                 </interface.application.google.analytics>
-                <interface.application.pref.restart.command>/net/isilonP/public/rw/webadmin/tomcat/bases/fg/tc-fg-arrayexpress/restart-nowait</interface.application.pref.restart.command>
+                <interface.application.pref.restart.command>/net/isilonP/public/rw/webadmin/tomcat/bases/fg/tc-fg-xxx/restart-nowait</interface.application.pref.restart.command>
             </properties>
         </profile>
         <profile>
             <id>london</id>
             <properties>
-                <interface.application.pref.experiments.ae2.source.location>/nfs/public/rw/fg/arrayexpress/xml/ae2/</interface.application.pref.experiments.ae2.source.location>
-                <interface.application.pref.experiments.ae2.export.location/>
+                <interface.application.pref.studies.source.location>/nfs/public/rw/fg/arrayexpress/xml/biostudies/</interface.application.pref.studies.source.location>
 
                 <interface.application.pref.files.root.location>/nfs/public/ro/fg/arrayexpress/ftp</interface.application.pref.files.root.location>
             </properties>

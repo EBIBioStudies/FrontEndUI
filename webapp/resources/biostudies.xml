@@ -13,7 +13,7 @@
         </reports>
         <restart>${interface.application.pref.restart.command}</restart>
     </app>
-    <ae>
+    <bs>
         <feedback>
             <recipients>${interface.application.pref.feedback.recipients}</recipients>
             <subject>BioStudies user feedback</subject>
@@ -24,19 +24,17 @@
             <subject>BioStudies account information</subject>
         </password-remind>
 
-        <experiments>
-            <ae2>
-                <source-location>${interface.application.pref.experiments.ae2.source.location}</source-location>
-                <reload>
-                    <atstart>false</atstart>
-                    <schedule>${interface.application.pref.experiments.ae2.reload.schedule}</schedule>
-                </reload>
-            </ae2>
+        <studies>
+            <source-location>${interface.application.pref.studies.source.location}</source-location>
+            <reload>
+                <atstart>false</atstart>
+                <schedule>${interface.application.pref.studies.reload.schedule}</schedule>
+            </reload>
 
-            <persistence-location>${sys:java.io.tmpdir}/bs-experiments.xml</persistence-location>
-        </experiments>
+            <persistence-location>${sys:java.io.tmpdir}/bs-studies.xml</persistence-location>
+        </studies>
 
-
+        <!--
         <arrays>
             <persistence-location>${sys:java.io.tmpdir}/bs-arrays.xml</persistence-location>
             <dropdown-html-location>${sys:java.io.tmpdir}/bs-arrays-dropdown-html.txt</dropdown-html-location>
@@ -57,7 +55,7 @@
         <news>
             <persistence-location>${sys:java.io.tmpdir}/bs-news.xml</persistence-location>
         </news>
-
+        -->
         <files>
             <root><location>${interface.application.pref.files.root.location}</location></root>
             <list-all-command>${interface.application.pref.files.list-all.command}</list-all-command>
@@ -69,11 +67,11 @@
                 <schedule>${interface.application.pref.files.check.schedule}</schedule>
             </check>
         </files>
-
+        <!--
         <species>
             <dropdown-html-location>${sys:java.io.tmpdir}/bs-species-dropdown-html.txt</dropdown-html-location>
         </species>
-
+        -->
         <efo>
             <location>${sys:java.io.tmpdir}/efo.owl</location>
             <source>/WEB-INF/classes/efo.owl</source>
@@ -88,7 +86,7 @@
                 <location>${sys:java.io.tmpdir}/bs-index/efo</location>
             </index>
         </efo>
-
+        <!--
         <index id="events" location="${sys:java.io.tmpdir}/bs-index"
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
             <document path="/events/event" defaultField="category">
@@ -96,13 +94,14 @@
                 <field name="success" title="" type="boolean" path="successful/text() = 'true'"/>
             </document>
         </index>
-        <index id="experiments" location="${sys:java.io.tmpdir}/bs-index"
+        -->
+        <index id="studies" location="${sys:java.io.tmpdir}/bs-index"
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
-            <document path="/experiments/experiment" defaultField="keywords">
+            <document path="/studies/study" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
-                <field name="similarto" title="by Relevance" type="string" path="similarto/@accession" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false"/>
+                <!--
                 <field name="organism" title="by Organism" type="string" path="organism" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="array" title="by Array" type="string" path="arraydesign/id | arraydesign/legacy_id | arraydesign/accession | arraydesign/name" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="protocol" title="by Protocol" type="string" path="protocol/id | protocol/accession" analyze="true" store="false" escape="false" expand="false"/>
@@ -113,35 +112,16 @@
                 <field name="sa" title="by Sample Attribute Value" type="string" path="sampleattribute/value" analyze="true" store="false" escape="true" expand="true"/>
                 <field name="pmid" title="by PubMed ID" type="string" path="bibliography/accession" analyze="false" store="false" escape="false" expand="false"/>
                 <field name="userid" type="string" path="user/@id" analyze="false" store="false" escape="false" expand="false"/>
-                <!-- boolean fields -->
-                <field name="gxa" title="only those present in Expression Atlas" type="boolean" path="@loadedinatlas = 'true'"/>
-                <field name="directsub" title="only ArrayExpress direct submissions" type="boolean" path="not(contains(accession, '-GEOD-'))"/>
-                <field name="private" type="boolean" path="not(user/@id = '1')"/>
-                <field name="raw" title="experiments with raw data available" type="boolean" path="(rawdatafiles/@available = 'true' or exists(seqdatauri))" />
-                <field name="processed" title="experiments with processed data available" type="boolean" path="processeddatafiles/@available = 'true'" />
-                <!-- multiple-source filters for curators -->
-                <field name="source" type="string" path="source/@id" analyze="false" store="false" escape="false" expand="false"/>
-                <field name="public" type="boolean" path="user/@id = '1'"/>
-                <field name="migrated" type="boolean" path="source/@migrated = 'true'"/>
-                <field name="identical" type="boolean" path="source/@identical = 'true'"/>
-                <field name="visible" type="boolean" path="source/@visible = 'true'"/>
-                <!-- numeric fields -->
                 <field name="assaycount" title="Number of Assays" type="integer" path="(if (assays castable as xs:integer) then assays else 0) cast as xs:integer" />
                 <field name="samplecount" title="Number of Samples" type="integer" path="(if (samples castable as xs:integer) then samples else 0) cast as xs:integer" />
                 <field name="efcount"  title="Number of Experimental Factors" type="integer" path="count(distinct-values(experimentalfactor/name, 'http://saxon.sf.net/collation?ignore-case=yes'))" />
                 <field name="sacount" title="Number of Sample Attributes" type="integer" path="count(distinct-values(sampleattribute/category, 'http://saxon.sf.net/collation?ignore-case=yes'))" />
                 <field name="miamescore" title="MIAME Score" type="integer" path="(if (miamescores/overallscore castable as xs:integer) then miamescores/overallscore else 0) cast as xs:integer" />
                 <field name="minseqescore" title="MINSEQE Score" type="integer" path="(if (minseqescores/overallscore castable as xs:integer) then minseqescores/overallscore else 0) cast as xs:integer" />
-                <!-- internal filters -->
-                <field name="seq-uri" type="boolean" path="exists(seqdatauri)"/>
-                <field name="array-score" type="boolean" path="(miamescores/reportersequencescore = '1')"/>
-                <field name="protocol-score" type="boolean" path="(miamescores/protocolscore = '1') or (minseqescores/protocolscore = '1')"/>
-                <field name="ef-score" type="boolean" path="(miamescores/factorvaluescore = '1') or (minseqescores/factorvaluescore = '1')"/>
-                <field name="processed-score" type="boolean" path="(miamescores/derivedbioassaydatascore = '1') or (minseqescores/derivedbioassaydatascore = '1')"/>
-                <field name="raw-score" type="boolean" path="(miamescores/measuredbioassaydatascore = '1')"/>
-                <field name="seq-score" type="boolean" path="(minseqescores/measuredbioassaydatascore = '1')"/>
+                -->
             </document>
         </index>
+        <!--
         <index id="arrays" location="${sys:java.io.tmpdir}/bs-index"
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/array_designs/array_design" defaultField="keywords">
@@ -152,7 +132,7 @@
                 <field name="organism" title="by Organism" type="string" path="organism" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="provider" title="by Provider" type="string" path="provider" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="userid" type="string" path="user/@id" analyze="false" store="false" escape="false" expand="false"/>
-                <!-- multiple-source filters for curators -->
+
                 <field name="source" type="string" path="@source" analyze="false" store="false" escape="false" expand="false"/>
                 <field name="public" type="boolean" path="user/@id = '1'"/>
                 <field name="migrated" type="boolean" path="@migrated = 'true'"/>
@@ -193,10 +173,11 @@
                 <field name="email" title="" type="string" path="email"  analyze="true" store="false" escape="false" expand="false"/>
                 <field name="admin" title="" type="boolean" path="is_privileged/text() = 'true'"/>
                 <field name="experiment" title="" type="string" path="ae:getMappedValue('experiments-for-user', id)" analyze="true" store="false" escape="false" expand="false"/>
-                <!-- multiple-source filters for curators -->
+
                 <field name="source" type="string" path="@source" analyze="false" store="false" escape="false" expand="false"/>
                 <field name="migrated" type="boolean" path="@migrated = 'true'"/>
             </document>
         </index>
-    </ae>
+        -->
+    </bs>
 </configuration>
