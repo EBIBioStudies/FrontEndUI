@@ -30,7 +30,7 @@
             <xsl:attribute name="updated" select="fn:current-dateTime()"/>
             <xsl:for-each select="$vUpdate/studies/study">
                 <xsl:element name="{name()}">
-                    <xsl:copy-of select="*"/>
+                    <xsl:copy-of select="@*|*"/>
                 </xsl:element>
             </xsl:for-each>
         </xsl:element>
