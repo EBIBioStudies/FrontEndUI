@@ -43,7 +43,8 @@
     </xsl:template>
 
     <xsl:template name="ae-content-section">
-        <xsl:variable name="vStudies" select="search:queryIndex('studies', 'visible:true public:true')"/>
+        <xsl:variable name="vStudies" select="search:queryIndex('studies', '')"/>
+        <!-- public:true -->
         <xsl:variable name="vTotal" select="fn:count($vStudies)"/>
         <xsl:variable name="vRetrieved" select="$vStudies[1]/../@updated"/>
         <!--
