@@ -595,9 +595,6 @@
                     </xsl:if>
                     <span><xsl:value-of select="$pTotal"/></span>
                     <xsl:value-of select="fn:concat(' ', $pName)"/>
-                    <xsl:if test="$pTotal != 1">
-                        <xsl:text>s</xsl:text>
-                    </xsl:if>
                 </div>
             </th>
         </tr>

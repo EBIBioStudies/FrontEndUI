@@ -80,11 +80,8 @@
                     </xsl:if>
                     <ul>
                         <li>
-                            <xsl:value-of select="$vTotal"/> stud
-                            <xsl:choose>
-                                <xsl:when test="fn:count($vStudies) > 1">ies</xsl:when>
-                                <xsl:otherwise>y</xsl:otherwise>
-                            </xsl:choose>
+                            <xsl:value-of
+                                    select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'studies' else 'study')"/>
                         </li>
                         <!--
                         <li><xsl:value-of select="ae:formatFileSize(fn:sum($vFiles/@size) cast as xs:integer)"/> of archived data</li>

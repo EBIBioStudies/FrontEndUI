@@ -158,7 +158,8 @@
                                     <thead>
                                         <xsl:call-template name="table-pager">
                                             <xsl:with-param name="pColumnsToSpan" select="5"/>
-                                            <xsl:with-param name="pName" select="'experiment'"/>
+                                            <xsl:with-param name="pName"
+                                                            select="if ($vTotal > 1) then 'studies' else 'study'"/>
                                             <xsl:with-param name="pTotal" select="$vTotal"/>
                                             <xsl:with-param name="pPage" select="$vPage"/>
                                             <xsl:with-param name="pPageSize" select="$vPageSize"/>
