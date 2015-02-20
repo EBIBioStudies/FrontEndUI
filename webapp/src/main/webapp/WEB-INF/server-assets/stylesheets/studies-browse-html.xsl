@@ -48,7 +48,7 @@
     <xsl:template match="/">
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
 
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pEBISearchWidget">
                 <xsl:if test="$vSearchMode and $vTotal > 0">
@@ -83,7 +83,7 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
+    <xsl:template name="bs-content-section">
         <xsl:variable name="vSortBy" select="if ($sortby) then $sortby else 'releasedate'"/>
         <xsl:variable name="vSortOrder" select="if ($sortorder) then $sortorder else 'descending'"/>
 

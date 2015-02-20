@@ -44,7 +44,7 @@
     <xsl:variable name="vQueryString" as="xs:string" select="if ($vExperimentMode) then fn:concat('?ref=', $vExperiment) else (if ($query-string) then fn:concat('?', $query-string) else '')"/>
 
     <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-experiments-templates.xsl"/>
+    <xsl:include href="bs-studies-templates.xsl"/>
     <xsl:include href="ae-sort-protocols.xsl"/>
 
     <xsl:template match="/">

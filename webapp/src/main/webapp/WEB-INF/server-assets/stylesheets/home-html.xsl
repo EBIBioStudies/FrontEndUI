@@ -29,7 +29,7 @@
     <xsl:include href="bs-date-functions.xsl"/>
 
     <xsl:template match="/">
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
@@ -42,7 +42,7 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
+    <xsl:template name="bs-content-section">
         <xsl:variable name="vStudies" select="search:queryIndex('studies', 'public:true')"/>
         <xsl:variable name="vTotal" select="fn:count($vStudies)"/>
         <xsl:variable name="vRetrieved" select="$vStudies[1]/../@updated"/>

@@ -32,23 +32,26 @@
     <xsl:variable name="vAccession" select="fn:upper-case($accession)"/>
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-experiments-templates.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
+    <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:template match="/">
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail">
                 <xsl:value-of select="$vAccession"/>
-                <xsl:text> &lt; Experiments</xsl:text>
+                <xsl:text> &lt; Studies</xsl:text>
             </xsl:with-param>
             <xsl:with-param name="pExtraCSS">
-                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/ae-experiment-detail-1.0.131218.css" type="text/css"/>
+                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-detail-1.0.150220.css"
+                      type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
-                <a href="{$context-path}/experiments/browse.html">Experiments</a> > <xsl:value-of select="$vAccession"/>
+                <a href="{$context-path}/studies/index.html">Studies</a>
+                >
+                <xsl:value-of select="$vAccession"/>
             </xsl:with-param>
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS"/>
@@ -56,14 +59,14 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
-        <xsl:variable name="vExperiment" select="search:queryIndex($queryid)[accession = $vAccession]"/>
+    <xsl:template name="bs-content-section">
+        <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
         <section>
             <div id="ae-content">
                 <xsl:choose>
-                    <xsl:when test="exists($vExperiment)">
-                        <xsl:call-template name="block-experiment">
-                            <xsl:with-param name="pExperiment" select="$vExperiment"/>
+                    <xsl:when test="exists($vStudy)">
+                        <xsl:call-template name="block-study">
+                            <xsl:with-param name="pStudy" select="$vStudy"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
@@ -74,35 +77,39 @@
         </section>
     </xsl:template>
 
-    <xsl:template name="block-experiment">
-        <xsl:param name="pExperiment"/>
+    <xsl:template name="block-study">
+        <xsl:param name="pStudy"/>
         <h4>
-            <xsl:if test="not($pExperiment/user/@id = '1')">
+            <!--
+            <xsl:if test="not($pStudy/user/@id = '1')">
                 <xsl:attribute name="class" select="'icon icon-functional'"/>
                 <xsl:attribute name="data-icon" select="'L'"/>
             </xsl:if>
-            <xsl:value-of select="$pExperiment/accession"/>
+            -->
+            <xsl:value-of select="$pStudy/accession"/>
             <xsl:text> - </xsl:text>
             <xsl:call-template name="highlight">
                 <xsl:with-param name="pQueryId" select="$queryid"/>
-                <xsl:with-param name="pText" select="fn:string-join($pExperiment/name, ', ')"/>
+                <xsl:with-param name="pText" select="fn:string-join($pStudy/title, ', ')"/>
                 <xsl:with-param name="pFieldName"/>
             </xsl:call-template>
         </h4>
-        <xsl:apply-templates select="$pExperiment"/>
+        <xsl:apply-templates select="$pStudy"/>
     </xsl:template>
 
-    <xsl:template match="experiment">
+    <xsl:template match="study">
+        <!--
         <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/>
+        -->
         <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
         <div id="ae-detail">
             <table cellpadding="0" cellspacing="0" border="0">
                 <xsl:call-template name="exp-status-section">
                     <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
-                    <xsl:with-param name="pIsPrivate" select="fn:not(user/@id = '1') and ($userid)"/>
+                    <xsl:with-param name="pIsPrivate" select="fn:false()"/>
                 </xsl:call-template>
-
+                <!--
                 <xsl:call-template name="exp-organism-section">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
                 </xsl:call-template>
@@ -144,7 +151,7 @@
 
                 <xsl:call-template name="exp-miame-section"/>
 
-                <xsl:if test="fn:not($userid)"> <!-- curator logged in -->
+                <xsl:if test="fn:not($userid)">
                     <xsl:call-template name="exp-experimental-factors-section">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                     </xsl:call-template>
@@ -167,6 +174,8 @@
                 <xsl:if test="fn:not($userid) or (fn:not(fn:not($userid)) and fn:not($userid = '1') and (user/@id = 1))">
                     <xsl:call-template name="exp-stats-section"/>
                 </xsl:if>
+                -->
+
             </table>
         </div>
     </xsl:template>

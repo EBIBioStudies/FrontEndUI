@@ -48,7 +48,7 @@
     <xsl:variable name="vBrowseMode" select="fn:not($accession)"/>
 
     <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-file-functions.xsl"/>
+    <xsl:include href="bs-file-functions.xsl"/>
     <xsl:include href="ae-date-functions.xsl"/>
     <xsl:include href="ae-highlight.xsl"/>
     <xsl:include href="ae-sort-files.xsl"/>

@@ -39,7 +39,7 @@
 
     <xsl:variable name="secure-host" select="if (fn:matches($host, '^http[:]//www(dev)?[.]ebi[.]ac[.]uk$')) then fn:replace($host, '^http[:]//', 'https://') else ''"/>
 
-    <xsl:template name="ae-page">
+    <xsl:template name="bs-page">
         <xsl:param name="pIsSearchVisible" as="xs:boolean"/>
         <xsl:param name="pSearchInputValue" as="xs:string"/>
         <xsl:param name="pExtraSearchFields"/>
@@ -327,7 +327,7 @@
                         <xsl:copy-of select="$pEBISearchWidget"/>
                     </xsl:if>
 
-                    <xsl:call-template name="ae-content-section"/>
+                    <xsl:call-template name="bs-content-section"/>
                     <!-- Suggested layout containers -->
                     <!--
                     <section>

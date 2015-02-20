@@ -25,9 +25,9 @@
     exclude-result-prefixes="xs fn ae search html"
     version="2.0">
 
-    <xsl:include href="ae-highlight.xsl"/>
-    <xsl:include href="ae-file-functions.xsl"/>
-    <xsl:include href="ae-date-functions.xsl"/>
+    <xsl:include href="bs-highlight.xsl"/>
+    <xsl:include href="bs-file-functions.xsl"/>
+    <xsl:include href="bs-date-functions.xsl"/>
 
     <xsl:template name="exp-organism-section">
         <xsl:param name="pQueryId"/>

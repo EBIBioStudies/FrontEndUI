@@ -38,7 +38,7 @@
         </xsl:choose>
     </xsl:variable>
     <xsl:template match="/">
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pSearchInputValue"/>
@@ -51,7 +51,7 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
+    <xsl:template name="bs-content-section">
         <section>
             <xsl:choose>
                 <xsl:when test="$error-code = '400'">
