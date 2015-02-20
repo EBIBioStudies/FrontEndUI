@@ -23,8 +23,7 @@
                 exclude-result-prefixes="fn html xs"
                 version="2.0">
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-sort-experiments.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
 
     <xsl:param name="error-code"/>
     <xsl:param name="error-request-uri"/>
