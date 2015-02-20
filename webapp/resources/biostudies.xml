@@ -101,6 +101,7 @@
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
                 <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false"/>
+                <field name="public" type="boolean" path="true()"/>
                 <!--
                 <field name="organism" title="by Organism" type="string" path="organism" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="array" title="by Array" type="string" path="arraydesign/id | arraydesign/legacy_id | arraydesign/accession | arraydesign/name" analyze="true" store="false" escape="false" expand="false"/>
