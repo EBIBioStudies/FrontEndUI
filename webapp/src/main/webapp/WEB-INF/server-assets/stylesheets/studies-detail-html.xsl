@@ -49,7 +49,7 @@
                       type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
-                <a href="{$context-path}/studies/index.html">Studies</a>
+                <a href="{$context-path}/studies/">Studies</a>
                 >
                 <xsl:value-of select="$vAccession"/>
             </xsl:with-param>
