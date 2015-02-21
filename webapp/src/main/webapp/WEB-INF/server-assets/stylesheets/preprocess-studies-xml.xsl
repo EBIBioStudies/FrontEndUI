@@ -16,6 +16,7 @@
  *
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:ae="http://www.ebi.ac.uk/arrayexpress/XSLT/Extension"
                 extension-element-prefixes="ae fn"
@@ -40,7 +41,7 @@
 
     <xsl:template match="submission/section[1]">
         <study files="{fn:count(descendant::file)}"
-               links="{fn:count(descendant::link|descendant::attribute[fn:lower-case(@name)='linked information'])}">
+               links="{fn:count(descendant::link)}">
             <accession><xsl:value-of select="@id"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:apply-templates select="attributes" mode="attributes"/>
@@ -91,6 +92,21 @@
         </title>
     </xsl:template>
 
+    <!--
+    <xsl:template match="attribute[fn:lower-case(@name)='linked information']" mode="attributes">
+        <link>
+            <xsl:attribute name="url">
+                <xsl:choose>
+                    <xsl:when test="valqual[@name='type']='MSD'">
+                        <xsl:text>https://www.ebi.ac.uk/pdbe-srv/view/entry/</xsl:text>
+                        <xsl:value-of select="value"/>
+                        <xsl:text>/summary</xsl:text>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:attribute>    
+        </link>
+    </xsl:template>
+    -->
     <xsl:template match="attribute" mode="attributes">
         <attribute name="{@name}">
             <xsl:apply-templates mode="attribute"/>
@@ -109,20 +125,6 @@
         </value>
     </xsl:template>
 
-    <xsl:template match="section[fn:lower-case(@type)='author']" mode="section">
-        <author>
-            <xsl:apply-templates select="attributes" mode="attributes"/>
-        </author>
-    </xsl:template>
-
-    <xsl:template match="section[fn:lower-case(@type)='publication']" mode="section">
-        <publication>
-            <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:apply-templates select="subsections" mode="section"/>
-            <xsl:apply-templates select="files" mode="files"/>
-        </publication>
-    </xsl:template>
-
     <xsl:template match="section" mode="section">
         <section type="{@type}" id="{@id}">
             <xsl:apply-templates select="attributes" mode="attributes"/>
@@ -136,4 +138,9 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>
+
+    <xsl:function name="ae:trimTrailingDot">
+        <xsl:param name="pString" as="xs:string"/>
+        <xsl:value-of select="$pString"/>
+    </xsl:function>
 </xsl:stylesheet>
