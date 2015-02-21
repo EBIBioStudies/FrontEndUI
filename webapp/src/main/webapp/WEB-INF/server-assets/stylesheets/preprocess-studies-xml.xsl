@@ -39,10 +39,13 @@
     </xsl:template>
 
     <xsl:template match="submission/section[1]">
-        <study files="{fn:count(descendant::file)}" links="{fn:count(descendant::link)}">
+        <study files="{fn:count(descendant::file)}"
+               links="{fn:count(descendant::link|descendant::attribute[fn:lower-case(@name)='linked information'])}">
             <accession><xsl:value-of select="@id"/></accession>
             <releasedate>2015-02-01</releasedate>
-            <xsl:apply-templates select="attributes"/>
+            <xsl:apply-templates select="attributes" mode="attributes"/>
+            <xsl:apply-templates select="subsections" mode="section"/>
+            <xsl:apply-templates select="files" mode="files"/>
             <!-- <xsl:apply-templates select="*" mode="copy" /> -->
         </study>
     </xsl:template>
@@ -64,21 +67,71 @@
         <xsl:param name="pInvalidDateTime"/>
         <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>
     </xsl:function>
-    
-    <xsl:template match="text( )|@*"/>
 
-    <xsl:template match="attribute[fn:lower-case(@name)='title']">
+    <xsl:template match="text()|@*"/>
+    <xsl:template match="text()|@*" mode="attributes"/>
+    <xsl:template match="text()|@*" mode="attribute"/>
+    <xsl:template match="text()|@*" mode="section"/>
+    <xsl:template match="text()|@*" mode="files"/>
+    <!--
+    <xsl:template match="attributes">
+        <xsl:for-each-group select="attribute" group-by="fn:lower-case(@name)">
+            <attribute name="{@name}">
+                <xsl:for-each select="current-group()">
+                    <xsl:copy-of select="*"/>
+                </xsl:for-each>
+            </attribute>
+        </xsl:for-each-group>
+    </xsl:template>
+    -->
+
+    <xsl:template match="attribute[fn:lower-case(@name)='title']" mode="attributes">
         <title><xsl:value-of select="value"/></title>    
     </xsl:template>
-    
-    <xsl:template match="attribute">
+
+    <xsl:template match="attribute" mode="attributes">
         <attribute name="{@name}">
-            <xsl:value-of select="value"/>
+            <xsl:apply-templates mode="attribute"/>
         </attribute>    
     </xsl:template>
-    
-    <xsl:template match="attribute[fn:lower-case(@name)='linked information']">
-        <link type="{valqual[@name='type']}"><xsl:value-of select="value"/></link>    
+
+    <xsl:template match="valqual" mode="attribute">
+        <xsl:element name="{@name}">
+            <xsl:value-of select="text()"/>
+        </xsl:element>
     </xsl:template>
-    
+
+    <xsl:template match="value" mode="attribute">
+        <value>
+            <xsl:value-of select="text()"/>
+        </value>
+    </xsl:template>
+
+    <xsl:template match="section[fn:lower-case(@type)='author']" mode="section">
+        <author>
+            <xsl:apply-templates select="attributes" mode="attributes"/>
+        </author>
+    </xsl:template>
+
+    <xsl:template match="section[fn:lower-case(@type)='publication']" mode="section">
+        <publication>
+            <xsl:apply-templates select="attributes" mode="attributes"/>
+            <xsl:apply-templates select="subsections" mode="section"/>
+            <xsl:apply-templates select="files" mode="files"/>
+        </publication>
+    </xsl:template>
+
+    <xsl:template match="section" mode="section">
+        <section type="{@type}" id="{@id}">
+            <xsl:apply-templates select="attributes" mode="attributes"/>
+            <xsl:apply-templates select="subsections" mode="section"/>
+            <xsl:apply-templates select="files" mode="files"/>
+        </section>
+    </xsl:template>
+
+    <xsl:template match="file" mode="files">
+        <file name="{@name}">
+            <xsl:apply-templates select="attributes" mode="attributes"/>
+        </file>
+    </xsl:template>
 </xsl:stylesheet>
