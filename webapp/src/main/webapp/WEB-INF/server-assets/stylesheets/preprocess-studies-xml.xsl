@@ -139,8 +139,10 @@
         </file>
     </xsl:template>
 
+    <!--
     <xsl:function name="ae:trimTrailingDot">
         <xsl:param name="pString" as="xs:string"/>
         <xsl:value-of select="$pString"/>
     </xsl:function>
+    -->
 </xsl:stylesheet>
