@@ -49,7 +49,7 @@
                     <xsl:with-param name="pTo" select="$pTo"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="$pSortBy='releasedate'">
+            <xsl:when test="$pSortBy='release_date'">
                 <xsl:apply-templates select="$pExperiments">
                     <!-- year -->
                     <xsl:sort select="substring-before(releasedate, '-')" order="{$pSortOrder}" data-type="number"/>

@@ -152,7 +152,7 @@
                                 <table class="persist-header" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
                                     <col class="col_title"/>
-                                    <col class="col_releasedate"/>
+                                    <col class="col_release_date"/>
                                     <col class="col_files"/>
                                     <col class="col_links"/>
                                     <thead>
@@ -181,7 +181,7 @@
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                            <th class="col_releasedate sortable">
+                                            <th class="col_release_date sortable">
                                                 <xsl:text>Released</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
                                                     <xsl:with-param name="pKind" select="'releasedate'"/>
@@ -211,7 +211,7 @@
                                 <table class="experiments" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
                                     <col class="col_title"/>
-                                    <col class="col_releasedate"/>
+                                    <col class="col_release_date"/>
                                     <col class="col_files"/>
                                     <col class="col_links"/>
                                     <tbody>
@@ -279,7 +279,7 @@
                         </xsl:call-template>
                     </div>
                 </td>
-                <td class="col_releasedate">
+                <td class="col_release_date">
                     <div>
                         <xsl:value-of select="ae:formatDateShort(releasedate)"/>
                         <!-- TODO: implement proper highlighting (and date search TBH)

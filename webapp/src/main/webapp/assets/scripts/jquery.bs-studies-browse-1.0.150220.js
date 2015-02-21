@@ -66,13 +66,13 @@
 
     $(function() {
         $("th.sortable").aeBrowseSorting({
-            defaultField: "releasedate"
+            defaultField: "release_date"
             , fields:
                 { accession: { title: "accession", sort : "ascending" }
                     , title: {title: "title", sort: "ascending"}
-                , releasedate: { title: "release date", sort: "descending" }
-                , files: { title: "number of files", sort: "descending" }
-                , links: { title: "number links", sort: "descending" }
+                    , release_date: {title: "release date", sort: "descending"}
+                    , files: {title: "number of files", sort: "descending"}
+                    , links: {title: "number of links", sort: "descending"}
             }
         });
 
