@@ -151,7 +151,7 @@
                             <div class="persist-area">
                                 <table class="persist-header" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
-                                    <col class="col_name"/>
+                                    <col class="col_title"/>
                                     <col class="col_releasedate"/>
                                     <col class="col_files"/>
                                     <col class="col_links"/>
@@ -173,7 +173,7 @@
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                            <th class="col_name sortable">
+                                            <th class="col_title sortable">
                                                 <xsl:text>Title</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
                                                     <xsl:with-param name="pKind" select="'name'"/>
@@ -210,7 +210,7 @@
                                 </table>
                                 <table class="experiments" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
-                                    <col class="col_name"/>
+                                    <col class="col_title"/>
                                     <col class="col_releasedate"/>
                                     <col class="col_files"/>
                                     <col class="col_links"/>
@@ -270,7 +270,7 @@
                         </a>
                     </div>
                 </td>
-                <td class="col_name">
+                <td class="col_title">
                     <div>
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$queryid"/>

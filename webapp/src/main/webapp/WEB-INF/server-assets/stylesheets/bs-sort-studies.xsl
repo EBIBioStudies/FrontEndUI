@@ -33,99 +33,17 @@
                     <xsl:with-param name="pTo" select="$pTo"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="$pSortBy='relevance'">               <!-- todo: set this as default ordering when $pSimAccession != 'empty' ; conflicting releasedate and relevance -->
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="similarto[@accession = $pSimAccession]/@distance" order="{$pSortOrder}" data-type="number"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='views'">
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="@views" order="{$pSortOrder}" data-type="number"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='downloads'">
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="@downloads" order="{$pSortOrder}" data-type="number"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='complete_downloads'">
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="@completedownloads" order="{$pSortOrder}" data-type="number"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
             <xsl:when test="$pSortBy='accession'">
                 <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
                     <xsl:with-param name="pFrom" select="$pFrom"/>
                     <xsl:with-param name="pTo" select="$pTo"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="$pSortBy='name'">
+            <xsl:when test="$pSortBy='title'">
                 <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="lower-case(name[1])" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='type'">
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="lower-case(experimenttype[1])" order="{$pSortOrder}"/>
-                    <xsl:sort select="lower-case(experimenttype[2])" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='assays'">
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="assays" order="{$pSortOrder}" data-type="number"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
+                    <xsl:sort select="lower-case(title[1])" order="{$pSortOrder}"/>
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
 
                     <xsl:with-param name="pFrom" select="$pFrom"/>
                     <xsl:with-param name="pTo" select="$pTo"/>
@@ -142,67 +60,25 @@
                     <xsl:sort select="substring-after(substring-after(releasedate, '-'), '-')" order="{$pSortOrder}"
                               data-type="number"/>
                     <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
 
                     <xsl:with-param name="pFrom" select="$pFrom"/>
                     <xsl:with-param name="pTo" select="$pTo"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="$pSortBy='organism'">
+            <xsl:when test="$pSortBy='files'">
                 <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="organism[1]" order="{$pSortOrder}"/>
-                    <xsl:sort select="organism[2]" order="{$pSortOrder}"/>
-                    <xsl:sort select="organism[3]" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
+                    <xsl:sort select="@files" order="{$pSortOrder}" data-type="number"/>
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
 
                     <xsl:with-param name="pFrom" select="$pFrom"/>
                     <xsl:with-param name="pTo" select="$pTo"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="$pSortBy='processed'">
+            <xsl:when test="$pSortBy='links'">
                 <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="string(processeddatafiles/@available)" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='raw'">
-                <xsl:apply-templates select="$pExperiments">
-                    <!-- sort by presence of seqdata -->
-                    <xsl:sort select="string(count(seqdatauri))" order="{$pSortOrder}" data-type="number"/>
-                    <!-- then by count of data files -->
-                    <xsl:sort select="string(rawdatafiles/@available)" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
-
-                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                    <xsl:with-param name="pTo" select="$pTo"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$pSortBy='atlas'">
-                <xsl:apply-templates select="$pExperiments">
-                    <xsl:sort select="@loadedinatlas" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
+                    <xsl:sort select="@links" order="{$pSortOrder}" data-type="number"/>
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
 
                     <xsl:with-param name="pFrom" select="$pFrom"/>
                     <xsl:with-param name="pTo" select="$pTo"/>
@@ -211,11 +87,7 @@
             <xsl:otherwise>
                 <xsl:apply-templates select="$pExperiments">
                     <xsl:sort select="*[name()=$pSortBy][1]" order="{$pSortOrder}"/>
-                    <!-- then sort by accession -->
-                    <xsl:sort select="substring(accession, 3, 4)" order="{$pSortOrder}"/>
-                    <!-- sort by experiment 4-letter code -->
-                    <xsl:sort select="substring(accession, 8)" order="{$pSortOrder}" data-type="number"/>
-                    <!-- sort by number -->
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
 
                     <xsl:with-param name="pFrom" select="$pFrom"/>
                     <xsl:with-param name="pTo" select="$pTo"/>
