@@ -3824,6 +3824,7 @@
     </meta>
     <projectTree name="xslt.xpr">
         <folder name="documents">
+            <file name="documents/sample-studies.xml"/>
             <file name="documents/sample-submissions.xml"/>
         </folder>
         <folder name="stylesheets">

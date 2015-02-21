@@ -86,7 +86,9 @@
     -->
 
     <xsl:template match="attribute[fn:lower-case(@name)='title']" mode="attributes">
-        <title><xsl:value-of select="value"/></title>    
+        <title>
+            <xsl:value-of select="ae:trimTrailingDot(value)"/>
+        </title>
     </xsl:template>
 
     <xsl:template match="attribute" mode="attributes">
