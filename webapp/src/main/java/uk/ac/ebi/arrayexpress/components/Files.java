@@ -18,8 +18,10 @@
 package uk.ac.ebi.arrayexpress.components;
 
 import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.value.BooleanValue;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -129,10 +131,8 @@ public class Files extends ApplicationComponent implements IDocumentSource {
 
         try {
             DocumentInfo doc = getDocument();
-            List<Object> documentNodes = saxon.evaluateXPath(doc, "/files/folder");
-
-            for (Object node : documentNodes) {
-
+            List<Item> documentNodes = saxon.evaluateXPath(doc, "/files/folder");
+            for (Item node : documentNodes) {
                 // get all the expressions taken care of
                 String accession = saxon.evaluateXPathSingleAsString((NodeInfo) node, "@accession");
                 String folderKind = saxon.evaluateXPathSingleAsString((NodeInfo) node, "@kind");
@@ -191,10 +191,10 @@ public class Files extends ApplicationComponent implements IDocumentSource {
         if (StringUtils.isNotBlank(name)) {
 
             try {
-                result = (Boolean) this.saxon.evaluateXPathSingle(
+                result = ((BooleanValue) this.saxon.evaluateXPathSingle(
                         getDocument()
                         , "exists(" + getFileLocatingXPQuery(accession, kind, name) + ")"
-                );
+                )).effectiveBooleanValue();
             } catch (XPathException x) {
                 logger.error("Caught an exception:", x);
             }

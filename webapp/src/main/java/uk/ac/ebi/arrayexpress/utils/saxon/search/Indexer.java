@@ -22,6 +22,8 @@ import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
+import net.sf.saxon.value.Int64Value;
+import net.sf.saxon.value.NumericValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -36,7 +38,6 @@ import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +66,8 @@ public class Indexer {
                 // get all the fields taken care of
                 for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
                     try {
-                        List<Object> values = saxon.evaluateXPath((NodeInfo) node, field.path);
-                        for (Object v : values) {
+                        List<Item> values = saxon.evaluateXPath((NodeInfo) node, field.path);
+                        for (Item v : values) {
                             if ("integer".equals(field.type)) {
                                 addIntIndexField(d, field.name, v);
                             } else if ("date".equals(field.type)) {
@@ -107,50 +108,36 @@ public class Indexer {
         return new IndexWriter(indexDirectory, config);
     }
 
-    private void addIndexField(Document document, String name, Object value, boolean shouldAnalyze, boolean shouldStore) {
-        String stringValue;
-        if (value instanceof String) {
-            stringValue = (String) value;
-        } else if (value instanceof NodeInfo) {
-            stringValue = ((NodeInfo) value).getStringValue();
-        } else {
-            stringValue = value.toString();
-            logger.warn("Not sure if I handle string value of [{}] for the field [{}] correctly, relying on Object.toString()", value.getClass().getName(), name);
-        }
-
+    private void addIndexField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore) {
+        String stringValue = value.getStringValue();
         document.add(new Field(name, stringValue, shouldStore ? Field.Store.YES : Field.Store.NO, shouldAnalyze ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED));
     }
 
-    private void addBooleanIndexField(Document document, String name, Object value) {
-        Boolean boolValue = null;
-        if (value instanceof Boolean) {
-            boolValue = (Boolean) value;
-        } else if (value instanceof BooleanValue) {
+    private void addBooleanIndexField(Document document, String name, Item value) {
+        Boolean boolValue;
+        if (value instanceof BooleanValue) {
             boolValue = ((BooleanValue) value).getBooleanValue();
-        } else if (value instanceof Item) {
-            String stringValue = ((Item) value).getStringValue();
-            boolValue = StringTools.stringToBoolean(stringValue);
         } else {
-            logger.error("Cannot convert value of type [{}] for the field [{}] to boolean", value.getClass(), name);
+            String stringValue = value.getStringValue();
+            boolValue = StringTools.stringToBoolean(stringValue);
         }
 
         document.add(new Field(name, null == boolValue ? "" : boolValue.toString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
     }
 
-    private void addIntIndexField(Document document, String name, Object value) {
+    private void addIntIndexField(Document document, String name, Item value) {
         Long longValue;
-        if (value instanceof BigInteger) {
-            longValue = ((BigInteger) value).longValue();
-        } else if (value instanceof NodeInfo) {
-            longValue = Long.parseLong(((NodeInfo) value).getStringValue());
-        } else {
-            longValue = Long.parseLong(value.toString());
-            logger.warn("Not sure if I handle long value of [{}] for the field [{}] correctly, relying on Object.toString()", value.getClass().getName(), name);
-        }
-        if (null != longValue) {
+        try {
+            if (value instanceof Int64Value) {
+                longValue = ((Int64Value) value).asBigInteger().longValue();
+            } else if (value instanceof NumericValue) {
+                longValue = ((NumericValue) value).longValue();
+            } else {
+                longValue = Long.parseLong(value.getStringValue());
+            }
             document.add(new NumericField(name).setLongValue(longValue));
-        } else {
-            logger.warn("Long value of the field [{}] was null", name);
+        } catch (XPathException x) {
+            logger.error("Unable to convert value [" + value.getStringValue() + "]", x);
         }
     }
 }

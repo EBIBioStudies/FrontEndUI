@@ -20,10 +20,7 @@ package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
-import net.sf.saxon.om.NodeInfo;
-import net.sf.saxon.om.Sequence;
-import net.sf.saxon.om.SequenceTool;
-import net.sf.saxon.om.StructuredQName;
+import net.sf.saxon.om.*;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.tree.iter.ListIterator;
 import net.sf.saxon.value.EmptySequence;
@@ -35,7 +32,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class QueryIndexFunction extends ExtensionFunctionDefinition {
-    private static final long serialVersionUID = -498498336861433019L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_SEARCH_EXT, "queryIndex");
@@ -71,7 +67,6 @@ public class QueryIndexFunction extends ExtensionFunctionDefinition {
     }
 
     private static class QueryIndexCall extends ExtensionFunctionCall {
-        private static final long serialVersionUID = -6204480413095253157L;
 
         private Controller searchController;
 
@@ -104,7 +99,7 @@ public class QueryIndexFunction extends ExtensionFunctionDefinition {
 
             }
             return null != nodes
-                    ? SequenceTool.toLazySequence(new ListIterator<>(nodes))
+                    ? SequenceTool.toLazySequence(new ListIterator(nodes))
                     : EmptySequence.getInstance();
         }
     }

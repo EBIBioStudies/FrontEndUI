@@ -31,7 +31,6 @@ import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.MapEngine;
 
 public class GetMappedValueFunction extends ExtensionFunctionDefinition {
-    private static final long serialVersionUID = 4695269638102509735L;
 
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "getMappedValue");
@@ -61,7 +60,6 @@ public class GetMappedValueFunction extends ExtensionFunctionDefinition {
     }
 
     private static class GetMappedValueCall extends ExtensionFunctionCall {
-        private static final long serialVersionUID = -1342342397189997194L;
 
         private MapEngine mapEngine = (MapEngine) Application.getAppComponent("MapEngine");
 
@@ -77,7 +75,7 @@ public class GetMappedValueFunction extends ExtensionFunctionDefinition {
             if (null == value) {
                 return EmptySequence.getInstance();
             } else {
-                JPConverter converter = JPConverter.allocate(value.getClass(), context.getConfiguration());
+                JPConverter converter = JPConverter.allocate(value.getClass(), null, context.getConfiguration());
                 return converter.convert(value, context);
             }
         }
