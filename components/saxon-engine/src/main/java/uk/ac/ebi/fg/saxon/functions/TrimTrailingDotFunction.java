@@ -15,7 +15,7 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+package uk.ac.ebi.fg.saxon.functions;
 
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
@@ -24,16 +24,13 @@ import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.SequenceTool;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.value.Int64Value;
-import net.sf.saxon.value.NumericValue;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 
-public class FormatFileSizeFunction extends ExtensionFunctionDefinition {
-    private static final long serialVersionUID = 7995886291705633633L;
+public class TrimTrailingDotFunction extends ExtensionFunctionDefinition {
 
     private static final StructuredQName qName =
-            new StructuredQName("", NamespaceConstant.AE_EXT, "formatFileSize");
+            new StructuredQName("", NamespaceConstant.AE_EXT, "trimTrailingDot");
 
     public StructuredQName getFunctionQName() {
         return qName;
@@ -48,38 +45,27 @@ public class FormatFileSizeFunction extends ExtensionFunctionDefinition {
     }
 
     public SequenceType[] getArgumentTypes() {
-        return new SequenceType[]{SequenceType.SINGLE_INTEGER};
+        return new SequenceType[]{SequenceType.OPTIONAL_STRING};
     }
 
     public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-        return SequenceType.SINGLE_STRING;
+        return SequenceType.OPTIONAL_STRING;
     }
 
     public ExtensionFunctionCall makeCallExpression() {
-        return new FormatFileSizeCall();
+        return new TrimTrailingDotCall();
     }
 
-    private static class FormatFileSizeCall extends ExtensionFunctionCall {
-        private static final long serialVersionUID = -8209172163832123502L;
+    private static class TrimTrailingDotCall extends ExtensionFunctionCall {
 
-        @SuppressWarnings("unchecked")
         public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
-            NumericValue sizeValue = (NumericValue) SequenceTool.asItem(arguments[0]);
-            Long size = (sizeValue instanceof Int64Value) ? ((Int64Value) sizeValue).asBigInteger().longValue() : sizeValue.longValue();
+            String str = SequenceTool.getStringValue(arguments[0]);
 
-            StringBuilder str = new StringBuilder();
-            if (922L > size) {
-                str.append(size).append(" B");
-            } else if (944128L > size) {
-                str.append(String.format("%.0f KB", (size / 1024.0)));
-            } else if (1073741824L > size) {
-                str.append(String.format("%.1f MB", (size / 1048576.0)));
-            } else if (1099511627776L > size) {
-                str.append(String.format("%.2f GB", (size / 1073741824.0)));
-            } else if (1125899906842624L > size) {
-                str.append(String.format("%.2f TB", (size / 1099511627776.0)));
+            if (str.endsWith(".")) {
+                str = str.substring(0, str.length() - 1);
             }
-            return StringValue.makeStringValue(str.toString());
+
+            return new StringValue(str);
         }
     }
 }

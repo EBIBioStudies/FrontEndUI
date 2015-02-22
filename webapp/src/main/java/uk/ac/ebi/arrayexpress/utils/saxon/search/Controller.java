@@ -26,12 +26,14 @@ import org.apache.lucene.search.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
+import uk.ac.ebi.fg.saxon.functions.search.IHighlighter;
+import uk.ac.ebi.fg.saxon.functions.search.IQuerier;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class Controller {
+public class Controller implements IQuerier, IHighlighter {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -160,6 +162,7 @@ public class Controller {
         return new Querier(getEnvironment(indexId)).query(this.queryConstructor.construct(getEnvironment(indexId), queryString));  // should use "queryIndex( Integer queryId )" instead
     }
 
+    @Override
     public String highlightQuery(Integer queryId, String fieldName, String text) {
         if (null == this.queryHighlighter) {
             // sort of lazy init if we forgot to specify more advanced highlighter

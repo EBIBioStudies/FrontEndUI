@@ -20,11 +20,9 @@
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:ae="http://www.ebi.ac.uk/arrayexpress/XSLT/Extension"
                 extension-element-prefixes="ae fn"
-                exclude-result-prefixes="ae fn"
+                exclude-result-prefixes="ae xs fn"
                 version="2.0">
     <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-
-    <xsl:include href="bs-parse-html-function.xsl"/>
 
     <xsl:template match="/submissions">
         <studies total="{fn:count(submission)}"> <!--  retrieved="{ae:fixRetrievedDateTimeFormat(@retrieved)}" -->
@@ -139,10 +137,8 @@
         </file>
     </xsl:template>
 
-    <!--
     <xsl:function name="ae:trimTrailingDot">
         <xsl:param name="pString" as="xs:string"/>
-        <xsl:value-of select="$pString"/>
+        <xsl:value-of select="fn:replace($pString, '[.]$', '')"/>
     </xsl:function>
-    -->
 </xsl:stylesheet>

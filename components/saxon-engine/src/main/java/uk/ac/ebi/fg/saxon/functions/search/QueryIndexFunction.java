@@ -15,7 +15,7 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
+package uk.ac.ebi.fg.saxon.functions.search;
 
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
@@ -25,10 +25,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.tree.iter.ListIterator;
 import net.sf.saxon.value.EmptySequence;
 import net.sf.saxon.value.SequenceType;
-import org.apache.lucene.queryParser.ParseException;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 
-import java.io.IOException;
 import java.util.List;
 
 public class QueryIndexFunction extends ExtensionFunctionDefinition {
@@ -36,10 +33,15 @@ public class QueryIndexFunction extends ExtensionFunctionDefinition {
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_SEARCH_EXT, "queryIndex");
 
-    private Controller searchController;
+    private final IQuerier querier;
 
-    public QueryIndexFunction(Controller controller) {
-        this.searchController = controller;
+    @SuppressWarnings("unused")
+    public QueryIndexFunction() {
+        this.querier = new DummyQuerier();
+    }
+
+    public QueryIndexFunction(IQuerier querier) {
+        this.querier = querier;
     }
 
     public StructuredQName getFunctionQName() {
@@ -63,15 +65,15 @@ public class QueryIndexFunction extends ExtensionFunctionDefinition {
     }
 
     public ExtensionFunctionCall makeCallExpression() {
-        return new QueryIndexCall(searchController);
+        return new QueryIndexCall(querier);
     }
 
     private static class QueryIndexCall extends ExtensionFunctionCall {
 
-        private Controller searchController;
+        private final IQuerier querier;
 
-        public QueryIndexCall(Controller searchController) {
-            this.searchController = searchController;
+        public QueryIndexCall(IQuerier querier) {
+            this.querier = querier;
         }
 
         public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
@@ -88,20 +90,28 @@ public class QueryIndexFunction extends ExtensionFunctionDefinition {
                         throw new XPathException("queryId [" + first + "] must be integer");
                     }
 
-                    nodes = searchController.queryIndex(intQueryId);
+                    nodes = querier.queryIndex(intQueryId);
                 } else {
-                    nodes = searchController.queryIndex(first, second);
+                    nodes = querier.queryIndex(first, second);
                 }
-            } catch (IOException x) {
-                throw new XPathException("Caught IOException while querying index", x);
-            } catch (ParseException x) {
-                throw new XPathException("Caught ParseException while querying index", x);
-
+            } catch (Exception x) {
+                throw new XPathException("Caught exception while querying index", x);
             }
             return null != nodes
                     ? SequenceTool.toLazySequence(new ListIterator(nodes))
                     : EmptySequence.getInstance();
         }
+    }
+
+    private static class DummyQuerier implements IQuerier {
+        public List<NodeInfo> queryIndex(Integer queryId) {
+            return null;
+        }
+
+        public List<NodeInfo> queryIndex(String indexId, String queryString) {
+            return null;
+        }
+
     }
 }
 

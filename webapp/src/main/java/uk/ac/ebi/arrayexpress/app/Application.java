@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.arrayexpress.app;
 
+import com.google.common.base.Strings;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -189,7 +190,7 @@ public abstract class Application {
 
     public void requestRestart() {
         String command = getPreferences().getString("app.restart");
-        if (StringTools.isNotEmpty(command)) {
+        if (!Strings.isNullOrEmpty(command)) {
             logger.info("Restart requested, performing [{}]", command);
             try {
                 executor.execute(command, true);

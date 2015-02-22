@@ -15,9 +15,8 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+package uk.ac.ebi.fg.saxon.functions;
 
-import net.sf.saxon.expr.JPConverter;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -25,59 +24,43 @@ import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.SequenceTool;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.value.EmptySequence;
+import net.sf.saxon.value.IntegerValue;
 import net.sf.saxon.value.SequenceType;
-import uk.ac.ebi.arrayexpress.app.Application;
-import uk.ac.ebi.arrayexpress.components.MapEngine;
 
-public class GetMappedValueFunction extends ExtensionFunctionDefinition {
+public class HTTPStatusFunction extends ExtensionFunctionDefinition {
 
     private static final StructuredQName qName =
-            new StructuredQName("", NamespaceConstant.AE_EXT, "getMappedValue");
+            new StructuredQName("", NamespaceConstant.AE_EXT, "httpStatus");
 
     public StructuredQName getFunctionQName() {
         return qName;
     }
 
     public int getMinimumNumberOfArguments() {
-        return 2;
+        return 1;
     }
 
     public int getMaximumNumberOfArguments() {
-        return 2;
+        return 1;
     }
 
     public SequenceType[] getArgumentTypes() {
-        return new SequenceType[]{SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING};
+        return new SequenceType[]{SequenceType.SINGLE_INTEGER};
     }
 
     public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-        return SequenceType.ANY_SEQUENCE;
+        return SequenceType.EMPTY_SEQUENCE;
     }
 
     public ExtensionFunctionCall makeCallExpression() {
-        return new GetMappedValueCall();
+        return new HTTPStatusCall();
     }
 
-    private static class GetMappedValueCall extends ExtensionFunctionCall {
-
-        private MapEngine mapEngine = (MapEngine) Application.getAppComponent("MapEngine");
-
+    private static class HTTPStatusCall extends ExtensionFunctionCall {
         public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
-            if (null == mapEngine) {
-                return EmptySequence.getInstance();
-            }
+            IntegerValue statusValue = (IntegerValue) SequenceTool.asItem(arguments[0]);
 
-            String mapName = SequenceTool.getStringValue(arguments[0]);
-            String mapKey = SequenceTool.getStringValue(arguments[1]);
-            Object value = mapEngine.getMappedValue(mapName, mapKey);
-
-            if (null == value) {
-                return EmptySequence.getInstance();
-            } else {
-                JPConverter converter = JPConverter.allocate(value.getClass(), null, context.getConfiguration());
-                return converter.convert(value, context);
-            }
+            throw new HTTPStatusException((int) statusValue.longValue());
         }
     }
 }

@@ -15,7 +15,7 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+package uk.ac.ebi.fg.saxon.functions;
 
 import net.sf.saxon.event.PipelineConfiguration;
 import net.sf.saxon.event.Receiver;
@@ -38,8 +38,6 @@ import java.io.StringWriter;
 import java.util.Properties;
 
 public class SerializeXMLFunction extends ExtensionFunctionDefinition {
-    private static final long serialVersionUID = 2833370612309346918L;
-
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_EXT, "serializeXml");
 
@@ -74,8 +72,6 @@ public class SerializeXMLFunction extends ExtensionFunctionDefinition {
     }
 
     private static class SerializeXMLCall extends ExtensionFunctionCall {
-        private static final long serialVersionUID = 4046135620725571811L;
-
         private int locationId;
 
         @Override

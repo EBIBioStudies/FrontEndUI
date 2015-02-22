@@ -38,8 +38,7 @@ import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.LRUMap;
 import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.*;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.saxon.ParseHTMLFunction;
+import uk.ac.ebi.fg.saxon.functions.*;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
@@ -85,10 +84,11 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
                         + "\"/>"
         );
 
-        registerExtensionFunction(new ParseHTMLFunction());
+        MapEngine mapEngine = (MapEngine) getComponent("MapEngine");
+
         registerExtensionFunction(new SerializeXMLFunction());
         registerExtensionFunction(new TabularDocumentFunction());
-        registerExtensionFunction(new GetMappedValueFunction());
+        registerExtensionFunction(new GetMappedValueFunction(mapEngine));
         registerExtensionFunction(new FormatFileSizeFunction());
         registerExtensionFunction(new TrimTrailingDotFunction());
         registerExtensionFunction(new HTMLDocumentFunction());

@@ -27,11 +27,6 @@ public class StringTools {
     }
 
     public final static String EOL = System.getProperty("line.separator");
-    public final static String EMPTY_STRING = "";
-
-    public static boolean isNotEmpty(String s) {
-        return null != s && !s.isEmpty();
-    }
 
     public static String listToString(List<String> l, String separator) {
         if (null == l) {
@@ -101,10 +96,6 @@ public class StringTools {
         w.close();
     }
 
-    public static String longDateTimeToXSDDateTime(long dateTime) {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date(dateTime));
-    }
-
     public static Date rfc822StringToDate(String rfc822) {
         Date date = null;
         try {
@@ -121,10 +112,6 @@ public class StringTools {
 
     public static String safeToString(Object obj, String nullObjString) {
         return (null == obj) ? nullObjString : obj.toString();
-    }
-
-    public static String nullToEmpty(String str) {
-        return (null == str) ? EMPTY_STRING : str;
     }
 
     public static Boolean stringToBoolean(String boolString) {
@@ -182,7 +169,7 @@ public class StringTools {
             return in;
         } else if (in >= 0x80 && in <= 0x9f) {
             return C1_CONTROL_TRANSCODE_MAP[in - 0x80];
-        } else if ((in >= 0xa0 && in <= 0xd7ff) || (in >= 0xe000 && in <= 0xfffd) || (in >= 0x10000 && in <= 0x10ffff)) {
+        } else if ((in >= 0xa0 && in <= 0xd7ff) || (in >= 0xe000 && in <= 0xfffd) || (in >= 0x10000)) {
             return in;
         } else if (in >= 0x80) {
             return ILLEGAL_CHAR_REPRESENATION;

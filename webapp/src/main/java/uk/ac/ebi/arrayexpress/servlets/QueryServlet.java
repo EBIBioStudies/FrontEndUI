@@ -27,7 +27,7 @@ import uk.ac.ebi.arrayexpress.utils.HttpServletRequestParameterMap;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.HTTPStatusException;
+import uk.ac.ebi.fg.saxon.functions.HTTPStatusException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

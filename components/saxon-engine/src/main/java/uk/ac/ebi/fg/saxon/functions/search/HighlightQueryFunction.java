@@ -15,8 +15,9 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
+package uk.ac.ebi.fg.saxon.functions.search;
 
+import com.google.common.base.Strings;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -26,19 +27,20 @@ import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 
 public class HighlightQueryFunction extends ExtensionFunctionDefinition {
-    private static final long serialVersionUID = 7070707985404434594L;
-
     private static final StructuredQName qName =
             new StructuredQName("", NamespaceConstant.AE_SEARCH_EXT, "highlightQuery");
 
-    private Controller searchController;
+    private final IHighlighter highlighter;
 
-    public HighlightQueryFunction(Controller controller) {
-        this.searchController = controller;
+    @SuppressWarnings("unused")
+    public HighlightQueryFunction() {
+        this.highlighter = new DummyHighlighter();
+    }
+
+    public HighlightQueryFunction(IHighlighter controller) {
+        this.highlighter = controller;
     }
 
     public StructuredQName getFunctionQName() {
@@ -62,16 +64,14 @@ public class HighlightQueryFunction extends ExtensionFunctionDefinition {
     }
 
     public ExtensionFunctionCall makeCallExpression() {
-        return new HighlightQueryCall(searchController);
+        return new HighlightQueryCall(highlighter);
     }
 
     private static class HighlightQueryCall extends ExtensionFunctionCall {
-        private static final long serialVersionUID = 2547530501711855449L;
+        private final IHighlighter highlighter;
 
-        private Controller searchController;
-
-        public HighlightQueryCall(Controller searchController) {
-            this.searchController = searchController;
+        public HighlightQueryCall(IHighlighter highlighter) {
+            this.highlighter = highlighter;
         }
 
         public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
@@ -86,13 +86,19 @@ public class HighlightQueryFunction extends ExtensionFunctionDefinition {
                 throw new XPathException("queryId [" + queryId + "] must be integer");
             }
 
-            String result = searchController.highlightQuery(
+            String result = highlighter.highlightQuery(
                     intQueryId,
-                    StringTools.nullToEmpty(fieldName),
-                    StringTools.nullToEmpty(text)
+                    Strings.nullToEmpty(fieldName),
+                    Strings.nullToEmpty(text)
             );
 
             return StringValue.makeStringValue(result);
+        }
+    }
+
+    private static class DummyHighlighter implements IHighlighter {
+        public String highlightQuery(Integer queryId, String fieldName, String text) {
+            return text;
         }
     }
 }

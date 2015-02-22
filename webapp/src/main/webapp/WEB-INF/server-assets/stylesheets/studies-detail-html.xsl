@@ -60,7 +60,10 @@
     </xsl:template>
 
     <xsl:template name="bs-content-section">
+        <!--
         <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
+        -->
+        <xsl:variable name="vStudy" select="/studies/study[1]"/>
         <section>
             <div id="ae-content">
                 <xsl:choose>
@@ -105,9 +108,13 @@
 
         <div id="ae-detail">
             <table cellpadding="0" cellspacing="0" border="0">
-                <xsl:call-template name="exp-status-section">
+                <xsl:call-template name="study-status-section">
                     <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
                     <xsl:with-param name="pIsPrivate" select="fn:false()"/>
+                </xsl:call-template>
+                <xsl:call-template name="study-attributes-section">
+                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                    <xsl:with-param name="pAttributes" select="attribute"/>
                 </xsl:call-template>
                 <!--
                 <xsl:call-template name="exp-organism-section">

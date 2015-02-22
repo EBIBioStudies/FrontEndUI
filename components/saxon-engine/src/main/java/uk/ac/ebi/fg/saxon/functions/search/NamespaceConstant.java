@@ -15,7 +15,7 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions.search;
+package uk.ac.ebi.fg.saxon.functions.search;
 
 public class NamespaceConstant {
     public static final String AE_SEARCH_EXT = "http://www.ebi.ac.uk/arrayexpress/XSLT/SearchExtension";

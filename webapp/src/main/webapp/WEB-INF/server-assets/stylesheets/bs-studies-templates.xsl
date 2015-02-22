@@ -29,8 +29,95 @@
     <xsl:include href="bs-file-functions.xsl"/>
     <xsl:include href="bs-date-functions.xsl"/>
 
-    <xsl:template name="exp-organism-section">
+    <xsl:template name="study-status-section">
+        <xsl:param name="pIsGoogleBot" as="xs:boolean"/>
+        <xsl:param name="pIsPrivate" as="xs:boolean"/>
+
+        <xsl:variable name="vDates" select="submissiondate | lastupdatedate | releasedate"/>
+        <xsl:variable name="vAccession" select="accession"/>
+        <xsl:choose>
+            <xsl:when test="$pIsGoogleBot">
+                <xsl:call-template name="section">
+                    <xsl:with-param name="pName" select="'Released on'"/>
+                    <xsl:with-param name="pContent" select="ae:formatDateGoogle(releasedate)"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="section">
+                    <xsl:with-param name="pName" select="'Status'"/>
+                    <xsl:with-param name="pContent">
+                        <xsl:for-each select="$vDates">
+                            <xsl:sort select="fn:translate(text(),'-','')" data-type="number"/>
+                            <xsl:sort select="fn:translate(fn:substring(fn:name(), 1, 1), 'slr', 'abc')"/>
+
+                            <xsl:variable name="vLabel">
+                                <xsl:if test="ae:isFutureDate(text())">will be</xsl:if>
+                                <xsl:choose>
+                                    <xsl:when test="fn:name() = 'submissiondate'">submitted</xsl:when>
+                                    <xsl:when test="fn:name() = 'lastupdatedate'">
+                                        <xsl:if test="not(ae:isFutureDate(text()))">last</xsl:if>
+                                        <xsl:text>updated</xsl:text>
+                                    </xsl:when>
+                                    <xsl:otherwise>released</xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:choose>
+                                <xsl:when test="fn:position() = 1">
+                                    <xsl:value-of select="fn:upper-case(fn:substring($vLabel, 1, 1))"/>
+                                    <xsl:value-of select="fn:substring($vLabel, 2)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>, </xsl:text>
+                                    <xsl:value-of select="$vLabel"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:text> </xsl:text>
+                            <xsl:value-of select="ae:formatDate(text())"/>
+                            <!--
+                            <xsl:if test="(fn:name() = 'releasedate') and $pIsPrivate"> (<a href="/fg/acext?acc={$vAccession}">change release date</a>&#160;<span class="new">new!</span>)</xsl:if>
+                            -->
+                        </xsl:for-each>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    <xsl:template name="study-attributes-section">
         <xsl:param name="pQueryId"/>
+        <xsl:param name="pAttributes"/>
+        <xsl:for-each-group select="$pAttributes" group-by="fn:lower-case(@name)">
+            <xsl:call-template name="section">
+                <xsl:with-param name="pName" select="fn:current-group()[1]/@name"/>
+                <xsl:with-param name="pContent">
+                    <xsl:choose>
+                        <xsl:when test="fn:current-grouping-key() = 'linked information'">
+                            <xsl:for-each-group select="fn:current-group()" group-by="type">
+                                <xsl:call-template name="highlight">
+                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pText"
+                                                    select="fn:concat(fn:current-grouping-key() ,': ', fn:string-join(fn:current-group()/value, ', '))"/>
+                                </xsl:call-template>
+                                <xsl:if test="fn:position() != fn:last()">
+                                    <br/>
+                                </xsl:if>
+                            </xsl:for-each-group>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:for-each select="fn:current-group()">
+                                <xsl:call-template name="highlight">
+                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pText" select="value"/>
+                                </xsl:call-template>
+                                <xsl:if test="fn:position() != fn:last()">
+                                    <br/>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:for-each-group>
+        <!--
         <xsl:if test="organism">
             <tr>
                 <td class="name"><div>Organism</div></td>
@@ -45,8 +132,9 @@
                 </td>
             </tr>
         </xsl:if>
+        -->
     </xsl:template>
-
+    <!--
     <xsl:template name="exp-description-section">
         <xsl:param name="pQueryId"/>
         <xsl:variable name="vDescription" select="description[string-length(text) > 0 and not(contains(text, '(Generated description)'))]"/>
@@ -64,7 +152,8 @@
             </tr>
         </xsl:if>
     </xsl:template>
-
+    -->
+    <!--
     <xsl:template name="exp-keywords-section">
         <xsl:param name="pQueryId"/>
         <xsl:variable name="vExpTypeAndDesign" select="experimenttype | experimentdesign"/>
@@ -89,7 +178,8 @@
             </tr>
         </xsl:if>
     </xsl:template>
-    
+    -->
+    <!--
     <xsl:template name="exp-contact-section">
         <xsl:param name="pQueryId"/>
 
@@ -160,7 +250,8 @@
             </tr>
         </xsl:if>
     </xsl:template>
-
+    -->
+    <!--
     <xsl:template name="exp-arrays-section">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pBasePath"/>
@@ -206,7 +297,8 @@
             </tr>
         </xsl:if>
     </xsl:template>
- 
+    -->
+    <!--
     <xsl:template name="exp-samples-section">
         <xsl:param name="pQueryString"/>
         <xsl:param name="pQueryId"/>
@@ -368,7 +460,8 @@
             </tr>
         </xsl:if>
     </xsl:template>
-
+    -->
+    <!--
     <xsl:template name="exp-files-section">
         <xsl:param name="pBasePath"/>
         <xsl:param name="pFiles"/>
@@ -377,7 +470,7 @@
             <tr>
                 <td class="name"><div>Files</div></td>
                 <td class="value">
-                    <xsl:if test="fn:exists($pFiles/file[@kind > ''])"> <!-- TODO: iterate over kinds dynamically -->
+                    <xsl:if test="fn:exists($pFiles/file[@kind > ''])">
                         <div>
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tbody>
@@ -414,7 +507,7 @@
             </tr>
         </xsl:if>
     </xsl:template>
-    
+    -->
     <xsl:template name="exp-links-section">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pBasePath"/>
@@ -438,66 +531,6 @@
                 </div>
             </td>
         </tr>
-    </xsl:template>
-
-    <xsl:template name="exp-status-section">
-        <xsl:param name="pIsGoogleBot" as="xs:boolean"/>
-        <xsl:param name="pIsPrivate" as="xs:boolean"/>
-
-        <xsl:variable name="vDates" select="submissiondate | lastupdatedate | releasedate"/>
-        <xsl:variable name="vAccession" select="accession"/>
-        <xsl:if test="$vDates">
-            <tr>
-                <xsl:choose>
-                <xsl:when test="$pIsGoogleBot">
-                    <td class="name">
-                        <div>Released on</div>
-                    </td>
-                    <td class="value">
-                        <div><xsl:value-of select="ae:formatDateGoogle(releasedate)"/></div>
-                    </td>
-                </xsl:when>
-                <xsl:otherwise>
-                        <td class="name">
-                            <div>Status</div>
-                        </td>
-                        <td class="value">
-                            <div>
-                                <xsl:for-each select="$vDates">
-                                    <xsl:sort select="fn:translate(text(),'-','')" data-type="number"/>
-                                    <xsl:sort select="fn:translate(fn:substring(fn:name(), 1, 1), 'slr', 'abc')"/>
-
-                                    <xsl:variable name="vLabel">
-                                        <xsl:if test="ae:isFutureDate(text())">will be </xsl:if>
-                                        <xsl:choose>
-                                            <xsl:when test="fn:name() = 'submissiondate'">submitted</xsl:when>
-                                            <xsl:when test="fn:name() = 'lastupdatedate'">
-                                                <xsl:if test="not(ae:isFutureDate(text()))">last </xsl:if>
-                                                <xsl:text>updated</xsl:text>
-                                            </xsl:when>
-                                            <xsl:otherwise>released</xsl:otherwise>
-                                        </xsl:choose>
-                                    </xsl:variable>
-                                    <xsl:choose>
-                                        <xsl:when test="fn:position() = 1">
-                                            <xsl:value-of select="fn:upper-case(fn:substring($vLabel, 1, 1))"/>
-                                            <xsl:value-of select="fn:substring($vLabel, 2)"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:text>, </xsl:text>
-                                            <xsl:value-of select="$vLabel"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                    <xsl:text> </xsl:text>
-                                    <xsl:value-of select="ae:formatDate(text())"/>
-                                    <xsl:if test="(fn:name() = 'releasedate') and $pIsPrivate"> (<a href="/fg/acext?acc={$vAccession}">change release date</a>&#160;<span class="new">new!</span>)</xsl:if>
-                                </xsl:for-each>
-                            </div>
-                        </td>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </tr>
-        </xsl:if>
     </xsl:template>
  
     <xsl:template name="exp-secondaryaccession">
@@ -712,7 +745,7 @@
             </div>
         </xsl:if>
     </xsl:template>
-    
+    <!--
     <xsl:template name="exp-score">
         <xsl:param name="pScores"/>
         <xsl:param name="pKind"/>
@@ -786,8 +819,8 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
-    
+    -->
+    <!--
     <xsl:template name="exp-data-files">
         <xsl:param name="pFiles"/>
         <xsl:param name="pBasePath"/>
@@ -860,7 +893,6 @@
             
         </xsl:if>
     </xsl:template>
-    
     <xsl:template name="exp-magetab-files-array">
         <xsl:param name="pBasePath"/>
         
@@ -887,7 +919,7 @@
             </tr>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template name="exp-image-files">
         <xsl:param name="pFiles"/>
         <xsl:param name="pBasePath"/>
@@ -984,8 +1016,8 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
-    <xsl:template name="detail-section">
+    -->
+    <xsl:template name="section">
         <xsl:param name="pName" as="xs:string"/>
         <xsl:param name="pContent"/>
         <xsl:if test="fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">

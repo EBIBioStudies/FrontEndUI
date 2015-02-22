@@ -31,6 +31,8 @@
 
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
+        <guice.version>3.0</guice.version>
+        <guava.version>18.0</guava.version>
 
         <!-- http://colorschemedesigner.com/csd-3.5/#3s61Ts4rGw0w0 -->
         <color.p1>#17668C</color.p1>
@@ -123,6 +125,7 @@
     <modules>
         <module>components/webapp-auth</module>
         <module>components/jobs-controller</module>
+        <module>components/saxon-engine</module>
         <module>webapp</module>
     </modules>
 
@@ -141,6 +144,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>biostudies-ui-jobs-controller</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biostudies-ui-saxon-engine</artifactId>
                 <version>1.0</version>
             </dependency>
             <dependency>
@@ -204,11 +212,6 @@
                 <version>9.6.0-4</version>
             </dependency>
             <dependency>
-                <groupId>org.ccil.cowan.tagsoup</groupId>
-                <artifactId>tagsoup</artifactId>
-                <version>1.2</version>
-            </dependency>
-            <dependency>
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>1.6</version>
@@ -251,12 +254,17 @@
             <dependency>
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
-                <version>3.0</version>
+                <version>${guice.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.inject.extensions</groupId>
                 <artifactId>guice-servlet</artifactId>
-                <version>3.0</version>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.netflix.governator</groupId>

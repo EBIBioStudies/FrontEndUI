@@ -15,8 +15,16 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+package uk.ac.ebi.fg.saxon.functions.search;
 
-public class NamespaceConstant {
-    public static final String AE_EXT = "http://www.ebi.ac.uk/arrayexpress/XSLT/Extension";
+import net.sf.saxon.om.NodeInfo;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
+
+public interface IQuerier {
+    List<NodeInfo> queryIndex(Integer queryId) throws IOException;
+
+    List<NodeInfo> queryIndex(String indexId, String queryString) throws ParseException, IOException;
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <studies total="5">
-    <study files="4" links="3">
+    <study files="4" links="0">
         <accession>S-EPMC1874622</accession>
         <releasedate>2015-02-01</releasedate>
-        <title>Novel protein fold discovered in the PabI family of restriction enzymes.</title>
+        <title>Novel protein fold discovered in the PabI family of restriction enzymes</title>
         <attribute name="Abstract">
             <value>Although structures of many DNA-binding proteins have been solved, they fall into a limited number of
                 folds. Here, we describe an approach that led to the finding of a novel DNA-binding fold. Based on the
@@ -32,65 +32,65 @@
             <type>INTERPRO</type>
             <value>IPR018576</value>
         </attribute>
-        <author>
+        <section type="Author" id="a1">
             <attribute name="Name">
                 <value>Miyazono K</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a2">
             <attribute name="Name">
                 <value>Watanabe M</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a3">
             <attribute name="Name">
                 <value>Kosinski J</value>
             </attribute>
             <attribute name="ORCID">
                 <value>0000-0002-3641-0322</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a4">
             <attribute name="Name">
                 <value>Ishikawa K</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a5">
             <attribute name="Name">
                 <value>Kamo M</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a6">
             <attribute name="Name">
                 <value>Sawasaki T</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a7">
             <attribute name="Name">
                 <value>Nagata K</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a8">
             <attribute name="Name">
                 <value>Bujnicki JM</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a9">
             <attribute name="Name">
                 <value>Endo Y</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a10">
             <attribute name="Name">
                 <value>Tanokura M</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a11">
             <attribute name="Name">
                 <value>Kobayashi I</value>
             </attribute>
-        </author>
-        <publication>
+        </section>
+        <section type="Publication" id="PMC1874622">
             <attribute name="DOI">
                 <value>http://dx.doi.org/10.1093/nar/gkm091</value>
             </attribute>
@@ -109,29 +109,29 @@
             <file name="nar_gkm091_nar-02625-j-2006-File011.eps">
                 <attribute name="Type">
                     <value>application(ps)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm091_nar-02625-j-2006-File012.tif">
                 <attribute name="Type">
                     <value>image(tiff)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm091_index.html">
                 <attribute name="Type">
                     <value>text(html)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm091_nar-02625-j-2006-File002.doc">
                 <attribute name="Type">
                     <value>application(msword)</value>
-                </attribute>
+            </attribute>
             </file>
-        </publication>
+        </section>
     </study>
-    <study files="5" links="4">
+    <study files="5" links="0">
         <accession>S-EPMC1865054</accession>
         <releasedate>2015-02-01</releasedate>
-        <title>Insights into Fanconi Anaemia from the structure of human FANCE.</title>
+        <title>Insights into Fanconi Anaemia from the structure of human FANCE</title>
         <attribute name="Abstract">
             <value>Fanconi Anaemia (FA) is a cancer predisposition disorder characterized by spontaneous chromosome
                 breakage and high cellular sensitivity to genotoxic agents. In response to DNA damage, a multi-subunit
@@ -168,22 +168,22 @@
             <type>INTERPRO</type>
             <value>IPR021025</value>
         </attribute>
-        <author>
+        <section type="Author" id="a1">
             <attribute name="Name">
                 <value>Nookala RK</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a2">
             <attribute name="Name">
                 <value>Hussain S</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a3">
             <attribute name="Name">
                 <value>Pellegrini L</value>
             </attribute>
-        </author>
-        <publication>
+        </section>
+        <section type="Publication" id="PMC1865054">
             <attribute name="DOI">
                 <value>http://dx.doi.org/10.1093/nar/gkm033</value>
             </attribute>
@@ -202,34 +202,34 @@
             <file name="nar_gkm033_index.html">
                 <attribute name="Type">
                     <value>text(html)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm033_1.pdf">
                 <attribute name="Type">
                     <value>application(pdf)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm033_nar-02518-f-2006-File009.jpg">
                 <attribute name="Type">
                     <value>image(jpeg)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm033_nar-02518-f-2006-File010.jpg">
                 <attribute name="Type">
                     <value>image(jpeg)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="nar_gkm033_nar-02518-f-2006-File011.doc">
                 <attribute name="Type">
                     <value>application(msword)</value>
-                </attribute>
+            </attribute>
             </file>
-        </publication>
+        </section>
     </study>
-    <study files="6" links="1">
+    <study files="6" links="0">
         <accession>S-EPMC1636649</accession>
         <releasedate>2015-02-01</releasedate>
-        <title>Huntingtin gene evolution in Chordata and its peculiar features in the ascidian Ciona genus.</title>
+        <title>Huntingtin gene evolution in Chordata and its peculiar features in the ascidian Ciona genus</title>
         <attribute name="Abstract">
             <value>BACKGROUND: To gain insight into the evolutionary features of the huntingtin (htt) gene in Chordata,
                 we have sequenced and characterized the full-length htt mRNA in the ascidian Ciona intestinalis, a basal
@@ -257,27 +257,27 @@
             <type>EMBL</type>
             <value>AM162277</value>
         </attribute>
-        <author>
+        <section type="Author" id="a1">
             <attribute name="Name">
                 <value>Gissi C</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a2">
             <attribute name="Name">
                 <value>Pesole G</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a3">
             <attribute name="Name">
                 <value>Cattaneo E</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a4">
             <attribute name="Name">
                 <value>Tartari M</value>
             </attribute>
-        </author>
-        <publication>
+        </section>
+        <section type="Publication" id="PMC1636649">
             <attribute name="DOI">
                 <value>http://dx.doi.org/10.1186/1471-2164-7-288</value>
             </attribute>
@@ -296,39 +296,39 @@
             <file name="1471-2164-7-288-S1.txt">
                 <attribute name="Type">
                     <value>text(plain)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="1471-2164-7-288-S2.xls">
                 <attribute name="Type">
                     <value>application(vnd.ms-excel)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="1471-2164-7-288-S3.doc">
                 <attribute name="Type">
                     <value>application(msword)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="1471-2164-7-288-S4.jpeg">
                 <attribute name="Type">
                     <value>image(jpeg)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="1471-2164-7-288-S5.doc">
                 <attribute name="Type">
                     <value>application(msword)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="1471-2164-7-288-S6.txt">
                 <attribute name="Type">
                     <value>text(plain)</value>
-                </attribute>
+            </attribute>
             </file>
-        </publication>
+        </section>
     </study>
-    <study files="5" links="10">
+    <study files="5" links="0">
         <accession>S-EPMC3351157</accession>
         <releasedate>2015-02-01</releasedate>
-        <title>Sample richness and genetic diversity as drivers of chimera formation in nSSU metagenetic analyses.
+        <title>Sample richness and genetic diversity as drivers of chimera formation in nSSU metagenetic analyses
         </title>
         <attribute name="Abstract">
             <value>Eukaryotic diversity in environmental samples is often assessed via PCR-based amplification of nSSU
@@ -391,56 +391,56 @@
             <type>EMBL</type>
             <value>JN968284</value>
         </attribute>
-        <author>
+        <section type="Author" id="a0">
             <attribute name="Name">
                 <value>Fonseca VG</value>
             </attribute>
             <attribute name="ORCID">
                 <value>0000-0002-5068-6253</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a1">
             <attribute name="Name">
                 <value>Fonseca VG</value>
             </attribute>
             <attribute name="ORCID">
                 <value>0000-0003-1021-7003</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a2">
             <attribute name="Name">
                 <value>Nichols B</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a3">
             <attribute name="Name">
                 <value>Lallias D</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a4">
             <attribute name="Name">
                 <value>Quince C</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a5">
             <attribute name="Name">
                 <value>Carvalho GR</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a6">
             <attribute name="Name">
                 <value>Power DM</value>
             </attribute>
             <attribute name="ORCID">
                 <value>0000-0003-1366-0246</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a7">
             <attribute name="Name">
                 <value>Creer S</value>
             </attribute>
-        </author>
-        <publication>
+        </section>
+        <section type="Publication" id="PMC3351157">
             <attribute name="DOI">
                 <value>http://dx.doi.org/10.1093/nar/gks002</value>
             </attribute>
@@ -459,34 +459,34 @@
             <file name="supp_gks002_nar-01829-met-g-2011-File009.fasta">
                 <attribute name="Type">
                     <value>text(plain)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_40_9_e66__index.html">
                 <attribute name="Type">
                     <value>text(html)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_gks002_nar-01829-met-g-2011-File006.doc">
                 <attribute name="Type">
                     <value>application(msword)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_gks002_nar-01829-met-g-2011-File007.jpg">
                 <attribute name="Type">
                     <value>image(jpeg)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_gks002_nar-01829-met-g-2011-File008.jpg">
                 <attribute name="Type">
                     <value>image(jpeg)</value>
-                </attribute>
+            </attribute>
             </file>
-        </publication>
+        </section>
     </study>
-    <study files="4" links="6">
+    <study files="4" links="0">
         <accession>S-EPMC4059138</accession>
         <releasedate>2015-02-01</releasedate>
-        <title>Structural basis for multiple sugar recognition of Jacalin-related human ZG16p lectin.</title>
+        <title>Structural basis for multiple sugar recognition of Jacalin-related human ZG16p lectin</title>
         <attribute name="Abstract">
             <value>ZG16p is a soluble mammalian lectin, the first to be described with a Jacalin-related ß-prism-fold.
                 ZG16p has been reported to bind both to glycosaminoglycans and mannose. To determine the structural
@@ -541,63 +541,63 @@
             <type>MSD</type>
             <value>3vzg</value>
         </attribute>
-        <author>
+        <section type="Author" id="a1">
             <attribute name="Name">
                 <value>Kanagawa M</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o1</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a2">
             <attribute name="Name">
                 <value>Liu Y</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o2</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a3">
             <attribute name="Name">
                 <value>Hanashima S</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o1</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a4">
             <attribute name="Name">
                 <value>Ikeda A</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o1</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a5">
             <attribute name="Name">
                 <value>Chai W</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o3</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a6">
             <attribute name="Name">
                 <value>Nakano Y</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o4</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a7">
             <attribute name="Name">
                 <value>Kojima-Aikawa K</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o4</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a8">
             <attribute name="Name">
                 <value>Feizi T</value>
             </attribute>
@@ -607,15 +607,15 @@
             <attribute name="affiliation">
                 <value>o3</value>
             </attribute>
-        </author>
-        <author>
+        </section>
+        <section type="Author" id="a9">
             <attribute name="Name">
                 <value>Yamaguchi Y</value>
             </attribute>
             <attribute name="affiliation">
                 <value>o5</value>
             </attribute>
-        </author>
+        </section>
         <section type="Organization" id="o5">
             <attribute name="Name">
                 <value>From the Structural Glycobiology Team, Systems Glycobiology Research Group, RIKEN-Max Planck
@@ -653,7 +653,7 @@
                 </value>
             </attribute>
         </section>
-        <publication>
+        <section type="Publication" id="PMC4059138">
             <attribute name="DOI">
                 <value>http://dx.doi.org/10.1074/jbc.M113.539114</value>
             </attribute>
@@ -672,23 +672,23 @@
             <file name="supp_M113.539114_jbc.M113.539114-2.docx">
                 <attribute name="Type">
                     <value>application(msword)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_289_24_16954__index.html">
                 <attribute name="Type">
                     <value>text(html)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_M113.539114_jbc.M113.539114-3.pdf">
                 <attribute name="Type">
                     <value>application(pdf)</value>
-                </attribute>
+            </attribute>
             </file>
             <file name="supp_M113.539114_jbc.M113.539114-1.pptx">
                 <attribute name="Type">
                     <value>application(vnd.ms-powerpoint)</value>
-                </attribute>
+            </attribute>
             </file>
-        </publication>
+        </section>
     </study>
 </studies>

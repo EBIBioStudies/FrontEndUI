@@ -19,8 +19,8 @@ package uk.ac.ebi.arrayexpress.components;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.search.HighlightQueryFunction;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.search.QueryIndexFunction;
+import uk.ac.ebi.fg.saxon.functions.search.HighlightQueryFunction;
+import uk.ac.ebi.fg.saxon.functions.search.QueryIndexFunction;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 import uk.ac.ebi.arrayexpress.utils.search.BatchQueryConstructor;
 

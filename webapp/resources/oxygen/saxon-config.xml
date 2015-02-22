@@ -1,0 +1,18 @@
+<configuration xmlns="http://saxon.sf.net/ns/configuration"
+               edition="PE">
+    <global
+            allowExternalFunctions="true"
+            />
+    <resources>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.TrimTrailingDotFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.GetMappedValueFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.FormatFileSizeFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.HTMLDocumentFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.HTTPStatusFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.SerializeXMLFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.TabularDocumentFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.search.QueryIndexFunction</extensionFunction>
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.search.HighlightQueryFunction</extensionFunction>
+
+    </resources>
+</configuration>

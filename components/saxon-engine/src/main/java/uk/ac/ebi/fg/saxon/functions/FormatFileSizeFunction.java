@@ -15,7 +15,7 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils.saxon.functions;
+package uk.ac.ebi.fg.saxon.functions;
 
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
@@ -24,15 +24,14 @@ import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.SequenceTool;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.value.IntegerValue;
+import net.sf.saxon.value.Int64Value;
+import net.sf.saxon.value.NumericValue;
 import net.sf.saxon.value.SequenceType;
+import net.sf.saxon.value.StringValue;
 
-public class HTTPStatusFunction extends ExtensionFunctionDefinition {
-
+public class FormatFileSizeFunction extends ExtensionFunctionDefinition {
     private static final StructuredQName qName =
-            new StructuredQName("", NamespaceConstant.AE_EXT, "httpStatus");
-
-    private static final long serialVersionUID = -4356084047364706861L;
+            new StructuredQName("", NamespaceConstant.AE_EXT, "formatFileSize");
 
     public StructuredQName getFunctionQName() {
         return qName;
@@ -51,20 +50,32 @@ public class HTTPStatusFunction extends ExtensionFunctionDefinition {
     }
 
     public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-        return SequenceType.EMPTY_SEQUENCE;
+        return SequenceType.SINGLE_STRING;
     }
 
     public ExtensionFunctionCall makeCallExpression() {
-        return new HTTPStatusCall();
+        return new FormatFileSizeCall();
     }
 
-    private static class HTTPStatusCall extends ExtensionFunctionCall {
-        private static final long serialVersionUID = -5713635829718999558L;
-
+    private static class FormatFileSizeCall extends ExtensionFunctionCall {
         public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
-            IntegerValue statusValue = (IntegerValue) SequenceTool.asItem(arguments[0]);
+            NumericValue sizeValue = (NumericValue) SequenceTool.asItem(arguments[0]);
+            Long size = (sizeValue instanceof Int64Value) ?
+                    ((Int64Value) sizeValue).asBigInteger().longValue() : sizeValue.longValue();
 
-            throw new HTTPStatusException((int) statusValue.longValue());
+            StringBuilder str = new StringBuilder();
+            if (922L > size) {
+                str.append(size).append(" B");
+            } else if (944128L > size) {
+                str.append(String.format("%.0f KB", (size / 1024.0)));
+            } else if (1073741824L > size) {
+                str.append(String.format("%.1f MB", (size / 1048576.0)));
+            } else if (1099511627776L > size) {
+                str.append(String.format("%.2f GB", (size / 1073741824.0)));
+            } else if (1125899906842624L > size) {
+                str.append(String.format("%.2f TB", (size / 1099511627776.0)));
+            }
+            return StringValue.makeStringValue(str.toString());
         }
     }
 }
