@@ -31,7 +31,6 @@
     <xsl:param name="sortorder"/>
 
     <xsl:param name="queryid"/>
-    <xsl:param name="keywords"/>
 
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-highlight.xsl"/>
@@ -59,7 +58,6 @@
                     </aside>
                 </xsl:if>
             </xsl:with-param>
-            <xsl:with-param name="pSearchInputValue" select="$keywords"/>
             <xsl:with-param name="pExtraSearchFields">
                 <!--
                 <input id="ls-organism" type="hidden" name="organism" value="{$organism}"/>

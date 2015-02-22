@@ -31,7 +31,6 @@
     <xsl:template match="/">
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
-            <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail"/>
             <xsl:with-param name="pExtraCSS"/>

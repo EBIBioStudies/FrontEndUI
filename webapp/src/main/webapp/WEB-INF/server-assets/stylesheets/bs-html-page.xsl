@@ -28,6 +28,7 @@
     <xsl:param name="context-path"/>
     <xsl:param name="original-request-uri"/>
     <xsl:param name="referer"/>
+    <xsl:param name="keywords"/>
     <xsl:param name="query-string"/>
     <xsl:param name="userid"/>
     <xsl:param name="username"/>
@@ -41,7 +42,6 @@
 
     <xsl:template name="bs-page">
         <xsl:param name="pIsSearchVisible" as="xs:boolean"/>
-        <xsl:param name="pSearchInputValue" as="xs:string"/>
         <xsl:param name="pExtraSearchFields"/>
         <xsl:param name="pTitleTrail" as="xs:string"/>
         <xsl:param name="pBreadcrumbTrail"/>
@@ -64,7 +64,6 @@
             </xsl:call-template>
             <xsl:call-template name="ae-page-body">
                 <xsl:with-param name="pIsSearchVisible" select="$pIsSearchVisible"/>
-                <xsl:with-param name="pSearchInputValue" select="$pSearchInputValue"/>
                 <xsl:with-param name="pExtraSearchFields" select="$pExtraSearchFields"/>
                 <xsl:with-param name="pBreadcrumbTrail" select="$pBreadcrumbTrail"/>
                 <xsl:with-param name="pEBISearchWidget" select="$pEBISearchWidget"/>
@@ -116,7 +115,6 @@
 
     <xsl:template name="ae-page-body">
         <xsl:param name="pIsSearchVisible"/>
-        <xsl:param name="pSearchInputValue"/>
         <xsl:param name="pExtraSearchFields"/>
         <xsl:param name="pBreadcrumbTrail"/>
         <xsl:param name="pEBISearchWidget"/>
@@ -179,8 +177,8 @@
                                         <div class="left">
                                             <label>
                                                 <input type="text" name="query" id="local-searchbox">
-                                                    <xsl:if test="$pSearchInputValue != ''">
-                                                        <xsl:attribute name="value" select="$pSearchInputValue"/>
+                                                    <xsl:if test="$keywords != ''">
+                                                        <xsl:attribute name="value" select="$keywords"/>
                                                     </xsl:if>
                                                 </input>
                                             </label>
@@ -389,10 +387,7 @@
 
             <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
             <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/foot.js"/>
-            <script type="text/javascript">
-                <xsl:text>var contextPath = "</xsl:text>
-                <xsl:value-of select="$context-path"/>
-                <xsl:text>";</xsl:text>
+            <script><![CDATA[var contextPath = "]]><xsl:value-of select="$context-path"/><![CDATA[";]]>
             </script>
             <script src="{$context-path}/assets/scripts/jquery-1.8.2.min.js"/>
             <script src="{$context-path}/assets/scripts/jquery.cookie-1.0.js"/>

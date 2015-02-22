@@ -1,5 +1,436 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <submissions>
+    <submission id="SBM-EPMC1189734">
+
+        <attributes>
+            <attribute name="Title">
+                <value>Genome-wide requirements for resistance to functionally distinct DNA-damaging agents.</value>
+            </attribute>
+            <attribute name="Submitter">
+                <value>Europe PubMed Central</value>
+            </attribute>
+        </attributes>
+
+        <section type="Study" id="S-EPMC1189734">
+
+            <attributes>
+                <attribute name="Title">
+                    <value>Genome-wide requirements for resistance to functionally distinct DNA-damaging agents.</value>
+                </attribute>
+                <attribute name="Abstract">
+                    <value>The mechanistic and therapeutic differences in the cellular response to DNA-damaging
+                        compounds are not completely understood, despite intense study. To expand our knowledge of DNA
+                        damage, we assayed the effects of 12 closely related DNA-damaging agents on the complete pool of
+                        approximately 4,700 barcoded homozygous deletion strains of Saccharomyces cerevisiae. In our
+                        protocol, deletion strains are pooled together and grown competitively in the presence of
+                        compound. Relative strain sensitivity is determined by hybridization of PCR-amplified barcodes
+                        to an oligonucleotide array carrying the barcode complements. These screens identified genes in
+                        well-characterized DNA-damage-response pathways as well as genes whose role in the DNA-damage
+                        response had not been previously established. High-throughput individual growth analysis was
+                        used to independently confirm microarray results. Each compound produced a unique genome-wide
+                        profile. Analysis of these data allowed us to determine the relative importance of DNA-repair
+                        modules for resistance to each of the 12 profiled compounds. Clustering the data for 12 distinct
+                        compounds uncovered both known and novel functional interactions that comprise the DNA-damage
+                        response and allowed us to define the genetic determinants required for repair of interstrand
+                        cross-links. Further genetic analysis allowed determination of epistasis for one of these
+                        functional groups.
+                    </value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P48581</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P10870</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P14284</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P40562</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P06777</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P39524</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P14737</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q08949</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q05549</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P31376</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P22134</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q12311</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q06417</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P36082</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P38220</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P53507</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q04772</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P32641</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P53890</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q12318</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P40465</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q02574</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P38957</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q06211</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P06778</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P38751</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P25454</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>Q04149</value>
+                </attribute>
+                <attribute name="Linked information">
+                    <valqual name="type">SPTR</valqual>
+                    <value>P36083</value>
+                </attribute>
+            </attributes>
+            <files>
+                <file name="pgen.0010024.sd001.xls" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(vnd.ms-excel)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd002.png" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>text(plain)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd003.zip" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(x-zip-compressed)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd004.zip" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(x-zip-compressed)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd007.doc" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(msword)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd008.doc" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(msword)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.st001.doc" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(msword)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.st002.xls" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(vnd.ms-excel)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.st003.doc" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(msword)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd005.txt" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>text(plain)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+                <file name="pgen.0010024.sd006.doc" access="S-EPMC1189734">
+                    <attributes>
+                        <attribute name="Type">
+                            <value>application(msword)</value>
+                        </attribute>
+                    </attributes>
+                </file>
+            </files>
+
+            <subsections>
+                <section type="Publication" id="PMC1189734">
+
+                    <attributes>
+                        <attribute name="DOI">
+                            <value>http://dx.doi.org/10.1371/journal.pgen.0010024</value>
+                        </attribute>
+                        <attribute name="Journal">
+                            <value>PLoS genetics</value>
+                        </attribute>
+                        <attribute name="Volume">
+                            <value>1</value>
+                        </attribute>
+                        <attribute name="Pages">
+                            <value>e24</value>
+                        </attribute>
+                        <attribute name="Publication date">
+                            <value>2005 Aug</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a1">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Lee W</value>
+                        </attribute>
+                        <attribute name="ORCID">
+                            <value>0000-0001-9582-4413</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o1</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a2">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>St Onge RP</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a3">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Proctor M</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o2</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a4">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Flaherty P</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o3</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a5">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Jordan MI</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o4</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a6">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Arkin AP</value>
+                        </attribute>
+                        <attribute name="ORCID">
+                            <value>0000-0002-4999-2931</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o5</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a7">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Davis RW</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o2</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a8">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Nislow C</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o2</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Author" id="a9">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Giaever G</value>
+                        </attribute>
+                        <attribute name="affiliation">
+                            <value>o2</value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Organization" id="o2">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Department of Biochemistry, Stanford University School of Medicine, Stanford Genome
+                                Technology Center, Palo Alto, California, United States of America
+                            </value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Organization" id="o1">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Department of Genetics, Stanford University School of Medicine, Stanford, California,
+                                United States of America
+                            </value>
+                        </attribute>
+                    </attributes>
+
+                </section>
+
+                <section type="Organization" id="o4">
+
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Division of Computer Science, Department of Statistics, University of California,
+                                Berkeley, California, United States of America
+                            </value>
+                        </attribute>
+                    </attributes>
+                </section>
+                <section type="Organization" id="o5">
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Howard Hughes Medical Institute, Department of Bioengineering, University of
+                                California, Berkeley, California, United States of America
+                            </value>
+                        </attribute>
+                    </attributes>
+                </section>
+                <section type="Organization" id="o3">
+                    <attributes>
+                        <attribute name="Name">
+                            <value>Physical Biosciences Division, Lawrence Berkeley National Laboratory, Berkeley,
+                                California, United States of America
+                            </value>
+                        </attribute>
+                    </attributes>
+                </section>
+            </subsections>
+        </section>
+    </submission>
  <submission id="SBM-EPMC1874622">
   <attributes>
    <attribute name="Title">

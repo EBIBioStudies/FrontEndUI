@@ -38,7 +38,6 @@
     <xsl:template match="/">
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
-            <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail">
                 <xsl:value-of select="$vAccession"/>
@@ -61,6 +60,7 @@
 
     <xsl:template name="bs-content-section">
         <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
+        <!-- search:queryIndex($queryid)[accession = $vAccession] -->
         <section>
             <div id="ae-content">
                 <xsl:choose>
@@ -105,81 +105,27 @@
 
         <div id="ae-detail">
             <table cellpadding="0" cellspacing="0" border="0">
-                <xsl:call-template name="study-status-section">
+                <xsl:call-template name="study-status">
                     <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
                     <xsl:with-param name="pIsPrivate" select="fn:false()"/>
                 </xsl:call-template>
-                <xsl:call-template name="study-attributes-section">
+                <xsl:call-template name="study-attributes">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pAttributes" select="attribute"/>
+                    <xsl:with-param name="pNodes" select="attribute"/>
                 </xsl:call-template>
-                <!--
-                <xsl:call-template name="exp-organism-section">
+                <xsl:call-template name="study-sections">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
+                    <xsl:with-param name="pTitle" select="title"/>
+                    <xsl:with-param name="pNodes" select="section"/>
                 </xsl:call-template>
-
-                <xsl:call-template name="exp-samples-section">
-                    <xsl:with-param name="pQueryString" select="$vQueryString"/>
+                <xsl:call-template name="study-files">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                    <xsl:with-param name="pFiles" select="$vFiles"/>
+                    <xsl:with-param name="pNodes" select="descendant::file"/>
                 </xsl:call-template>
-
-                <xsl:call-template name="exp-arrays-section">
+                <xsl:call-template name="study-links">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                    <xsl:with-param name="pAccession" select="$vAccession"/>
+                    <xsl:with-param name="pNodes" select="descendant::link"/>
                 </xsl:call-template>
-
-                <xsl:call-template name="exp-protocols-section">
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                </xsl:call-template>
-
-                <xsl:call-template name="exp-description-section">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                </xsl:call-template>
-
-                <xsl:call-template name="exp-keywords-section">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                </xsl:call-template>
-
-                <xsl:call-template name="exp-contact-section">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                </xsl:call-template>
-
-                <xsl:call-template name="exp-citation-section">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                </xsl:call-template>
-
-                <xsl:call-template name="exp-minseqe-section"/>
-
-                <xsl:call-template name="exp-miame-section"/>
-
-                <xsl:if test="fn:not($userid)">
-                    <xsl:call-template name="exp-experimental-factors-section">
-                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                    </xsl:call-template>
-
-                    <xsl:call-template name="exp-sample-attributes-section">
-                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                    </xsl:call-template>
-                </xsl:if>
-
-                <xsl:call-template name="exp-files-section">
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                    <xsl:with-param name="pFiles" select="$vFiles"/>
-                </xsl:call-template>
-
-                <xsl:call-template name="exp-links-section">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                </xsl:call-template>
-
-                <xsl:if test="fn:not($userid) or (fn:not(fn:not($userid)) and fn:not($userid = '1') and (user/@id = 1))">
-                    <xsl:call-template name="exp-stats-section"/>
-                </xsl:if>
-                -->
-
             </table>
         </div>
     </xsl:template>

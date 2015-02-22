@@ -41,15 +41,6 @@
 }
 
 
-#ae-detail table.min-score-tbl td i {
-    color: #FFC771;
-    padding: 0
-}
-
-#ae-detail span.new {
-    color: #FFC771
-}
-
 #ae-detail u {
     display: none;
 }
