@@ -60,10 +60,7 @@
     </xsl:template>
 
     <xsl:template name="bs-content-section">
-        <!--
         <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
-        -->
-        <xsl:variable name="vStudy" select="/studies/study[1]"/>
         <section>
             <div id="ae-content">
                 <xsl:choose>
