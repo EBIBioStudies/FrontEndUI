@@ -124,50 +124,70 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pTitle"/>
         <xsl:param name="pNodes"/>
-        <xsl:for-each select="$pNodes">
+        <xsl:variable name="vOrgs" select="$pNodes[fn:lower-case(@type)='organization']"/>
+        <xsl:for-each-group select="$pNodes" group-by="fn:lower-case(@type)">
             <xsl:choose>
-                <xsl:when test="fn:lower-case(@type)='publication'">
+                <xsl:when test="fn:current-grouping-key()='publication'">
                     <xsl:call-template name="section">
                         <xsl:with-param name="pName" select="@type"/>
                         <xsl:with-param name="pContent">
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                <xsl:with-param name="pText">
-                                    <xsl:value-of select="attribute[fn:lower-case(@name)='journal']"/>
-                                    <xsl:text> [</xsl:text>
-                                    <xsl:value-of select="attribute[fn:lower-case(@name)='publication date']"/>
-                                    <xsl:text>, </xsl:text>
-                                    <xsl:value-of select="attribute[fn:lower-case(@name)='volume']"/>
-                                    <xsl:text>:</xsl:text>
-                                    <xsl:value-of select="attribute[fn:lower-case(@name)='pages']"/>
-                                    <xsl:text>]</xsl:text>
-                                </xsl:with-param>
-                            </xsl:call-template>
-                            <br/>
-                            <a href="{attribute[fn:lower-case(@name)='doi']}" target="_blank">
+                            <xsl:for-each select="fn:current-group()">
                                 <xsl:call-template name="highlight">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                    <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='doi']"/>
+                                    <xsl:with-param name="pText">
+                                        <xsl:value-of select="attribute[fn:lower-case(@name)='journal']"/>
+                                        <xsl:text> [</xsl:text>
+                                        <xsl:value-of select="attribute[fn:lower-case(@name)='publication date']"/>
+                                        <xsl:text>, </xsl:text>
+                                        <xsl:value-of select="attribute[fn:lower-case(@name)='volume']"/>
+                                        <xsl:text>:</xsl:text>
+                                        <xsl:value-of select="attribute[fn:lower-case(@name)='pages']"/>
+                                        <xsl:text>]</xsl:text>
+                                    </xsl:with-param>
                                 </xsl:call-template>
-                            </a>
+                                <br/>
+                                <a href="{attribute[fn:lower-case(@name)='doi']}" target="_blank">
+                                    <xsl:call-template name="highlight">
+                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                        <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='doi']"/>
+                                    </xsl:call-template>
+                                </a>
+                            </xsl:for-each>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
-                <xsl:when test="fn:lower-case(@type)='author'">
+                <xsl:when test="fn:current-grouping-key()='author'">
                     <xsl:call-template name="section">
-                        <xsl:with-param name="pName" select="'Authors'"/>
+                        <xsl:with-param name="pName"
+                                        select="fn:concat('Author', (if (fn:count(fn:current-group())>1) then 's' else ''))"/>
                         <xsl:with-param name="pContent">
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                <xsl:with-param name="pText"
-                                                select="fn:string-join($pNodes[fn:lower-case(@type)='author']/attribute[fn:lower-case(@name)='name']/value, ', ')"/>
-                            </xsl:call-template>
+                            <xsl:for-each select="current-group()">
+                                <xsl:call-template name="highlight">
+                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pText"
+                                                    select="attribute[fn:lower-case(@name)='name']/value"/>
+                                </xsl:call-template>
+                                <xsl:variable name="vAffiliationId"
+                                              select="attribute[fn:lower-case(@name)='affiliation']/value"/>
+                                <xsl:variable name="vAffiliation" select="$vOrgs[@id=$vAffiliationId]"/>
+                                <xsl:if test="$vAffiliation">
+                                    <sup>
+                                        <abbr title="{$vAffiliation/attribute[fn:lower-case(@name)='name']/value}">
+                                            <xsl:value-of
+                                                    select="fn:count($vAffiliation/preceding-sibling::section[fn:lower-case(@type)='organization']) + 1"/>
+                                        </abbr>
+                                    </sup>
+                                </xsl:if>
+                                <xsl:if test="fn:position() != fn:last()">
+                                    <xsl:text>, </xsl:text>
+                                </xsl:if>
+                            </xsl:for-each>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:otherwise/>
             </xsl:choose>
-        </xsl:for-each>
+        </xsl:for-each-group>
     </xsl:template>
     <xsl:template name="study-files">
         <xsl:param name="pQueryId"/>
