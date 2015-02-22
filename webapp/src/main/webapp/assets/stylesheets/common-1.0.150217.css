@@ -122,6 +122,27 @@ ul#secondary-nav li.active > a {
     color: #94d7f6;
 }
 
+.hidden-values {
+    display: none;
+}
+
+a.show-more, a.show-less {
+    display: inline-block;
+    background-color: #243298;
+    color: #fff;
+    padding-left: 4px;
+    margin-left: 4px;
+    border-bottom: 0 none;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+a.show-more:hover {
+    background-color: #0C1663 !important;
+}
+
 #ae-login *
 , #ae-feedback * {
     box-sizing: border-box;

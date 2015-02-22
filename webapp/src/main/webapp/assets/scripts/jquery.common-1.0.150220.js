@@ -28,7 +28,7 @@
              */
             if (!!document.createElementNS &&
                 !!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect)
-                return
+                return;
 
             var check_svg = new RegExp("(.+)(\\.svg)");
             this.each(function (index, element) {
@@ -383,6 +383,7 @@
         $('.svg').aeSVGFallback();
 
         initPersistentHeaders();
+
         $("#ae-login").aeLoginForm({
             open: "a.login",
             close: "#ae-login-close",
@@ -417,6 +418,23 @@
         $data.find(".text-syn").attr("title", "This is synonym matched from Experimental Factor Ontology e.g. neoplasia for cancer");
         $data.find(".text-efo").attr("title", "This is matched child term from Experimental Factor Ontology e.g. brain and subparts of brain");
 
+        $data.find(".hidden-values").each(function () {
+            var span = $(this);
+            var showMore = $("<a class=show-more href=#>Show more (" + span.attr("size") + ")...</a>")
+                .click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $(this).hide().next().show();
+                });
+            var showLess = $("<a class=show-less href=#>Show less...</a>")
+                .click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    span.hide().prev().show();
+                });
+            span.before(showMore);
+            span.append(showLess);
+        });
     });
 
 })(window.jQuery);

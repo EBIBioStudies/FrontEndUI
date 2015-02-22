@@ -92,10 +92,12 @@
                     <xsl:choose>
                         <xsl:when test="fn:current-grouping-key() = 'linked information'">
                             <xsl:for-each-group select="fn:current-group()" group-by="type">
-                                <xsl:call-template name="highlight">
+                                <xsl:value-of select="type"/>
+                                <xsl:text>: </xsl:text>
+                                <xsl:call-template name="highlighted-list">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                    <xsl:with-param name="pText"
-                                                    select="fn:concat(fn:current-grouping-key() ,': ', fn:string-join(fn:current-group()/value, ', '))"/>
+                                    <xsl:with-param name="pList"
+                                                    select="fn:current-group()/value"/>
                                 </xsl:call-template>
                                 <xsl:if test="fn:position() != fn:last()">
                                     <br/>
@@ -1032,4 +1034,25 @@
         </xsl:if>
     </xsl:template>
 
+    <xsl:template name="highlighted-list">
+        <xsl:param name="pQueryId"/>
+        <xsl:param name="pList"/>
+        <xsl:variable name="vSize" select="fn:count($pList)"/>
+
+        <xsl:call-template name="highlight">
+            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+            <xsl:with-param name="pText"
+                            select="fn:string-join($pList[fn:position() = (1 to 20)], ', ')"/>
+        </xsl:call-template>
+        <xsl:if test="$vSize &gt; 20">
+            <span class="hidden-values" size="{$vSize}">
+                <xsl:text>, </xsl:text>
+                <xsl:call-template name="highlight">
+                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                    <xsl:with-param name="pText"
+                                    select="fn:string-join($pList[fn:position() = (21 to $vSize)], ', ')"/>
+                </xsl:call-template>
+            </span>
+        </xsl:if>
+    </xsl:template>
 </xsl:stylesheet>
