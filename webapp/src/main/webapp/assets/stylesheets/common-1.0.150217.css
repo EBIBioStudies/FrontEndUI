@@ -128,9 +128,9 @@ ul#secondary-nav li.active > a {
 
 a.show-more, a.show-less {
     display: inline-block;
-    background-color: #243298;
+    background-color: #7680CB;
     color: #fff;
-    padding-left: 4px;
+    padding: 0 4px;
     margin-left: 4px;
     border-bottom: 0 none;
     -moz-border-radius: 3px;
@@ -140,7 +140,7 @@ a.show-more, a.show-less {
 }
 
 a.show-more:hover {
-    background-color: #0C1663 !important;
+    background-color: #313872 !important;
 }
 
 #ae-login *

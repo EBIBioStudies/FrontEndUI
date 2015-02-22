@@ -420,13 +420,13 @@
 
         $data.find(".hidden-values").each(function () {
             var span = $(this);
-            var showMore = $("<a class=show-more href=#>Show more (" + span.attr("size") + ")...</a>")
+            var showMore = $("<a class=show-more href=#>show " + span.attr("size") + " more &gt;</a>")
                 .click(function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     $(this).hide().next().show();
                 });
-            var showLess = $("<a class=show-less href=#>Show less...</a>")
+            var showLess = $("<a class=show-less href=#>&lt; show less</a>")
                 .click(function (e) {
                     e.preventDefault();
                     e.stopPropagation();
