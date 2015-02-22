@@ -189,7 +189,7 @@
                         <resource>
                             <directory>${basedir}/src/main/webapp</directory>
                             <includes>
-                                <include>assets/stylesheets/ae-common*.css</include>
+                                <include>assets/stylesheets/common*.css</include>
                                 <include>assets/stylesheets/biostudies-colours.css</include>
                                 <include>WEB-INF/web.xml</include>
                                 <include>WEB-INF/urlrewrite.xml</include>
