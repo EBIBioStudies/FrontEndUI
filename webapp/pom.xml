@@ -35,7 +35,8 @@
 
         <interface.application.pref.studies.source.location>/nfs/public/rw/fg/biostudies/xml
         </interface.application.pref.studies.source.location>
-        <interface.application.pref.studies.reload.schedule>0 35 6 * * ?</interface.application.pref.studies.reload.schedule>
+        <interface.application.pref.studies.reload.schedule>0 0 6 * * ?
+        </interface.application.pref.studies.reload.schedule>
 
         <interface.application.pref.efo.update.schedule>0 0 1 ? * SUN</interface.application.pref.efo.update.schedule>
 
@@ -69,7 +70,8 @@
                 <interface.application.link.news_xml.url>ae-news.xml</interface.application.link.news_xml.url>
                 <interface.application.link.links_xml.url>ae-links.xml</interface.application.link.links_xml.url>
 
-                <interface.application.pref.experiments.ae2.reload.schedule>0 0/30 * * * ?</interface.application.pref.experiments.ae2.reload.schedule>
+                <interface.application.pref.studies.reload.schedule>0 0/30 * * * ?
+                </interface.application.pref.studies.reload.schedule>
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
 
                 <interface.application.pref.restart.command>
