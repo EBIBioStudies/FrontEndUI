@@ -252,25 +252,27 @@
                 </td>
                 <td class="col_author">
                     <div>
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText">
-                                <span>
-                                    <xsl:value-of select="author[1]"/>
-                                </span>
-                                <xsl:if test="author[2]">
-                                    <xsl:text>,</xsl:text>
-                                    <xsl:if test="author[2]/@index > 2">
-                                        <xsl:text>…</xsl:text>
-                                    </xsl:if>
-                                    <xsl:text> </xsl:text>
-                                    <span>
-                                        <xsl:value-of select="author[2]"/>
-                                    </span>
-                                </xsl:if>
-                            </xsl:with-param>
-                            <xsl:with-param name="pFieldName"/>
-                        </xsl:call-template>
+                        <span>
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$queryid"/>
+                                <xsl:with-param name="pText" select="author[1]"/>
+                                <xsl:with-param name="pFieldName"/>
+                            </xsl:call-template>
+                        </span>
+                        <xsl:if test="author[2]">
+                            <xsl:text>,</xsl:text>
+                            <xsl:if test="author[2]/@index > 2">
+                                <xsl:text>…</xsl:text>
+                            </xsl:if>
+                            <xsl:text> </xsl:text>
+                            <span>
+                                <xsl:call-template name="highlight">
+                                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                                    <xsl:with-param name="pText" select="author[2]"/>
+                                    <xsl:with-param name="pFieldName"/>
+                                </xsl:call-template>
+                            </span>
+                        </xsl:if>
                     </div>
                 </td>
                 <td class="col_release_date">
