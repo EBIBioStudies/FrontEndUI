@@ -200,7 +200,7 @@
                                         <sup>
                                             <xsl:value-of select="position()"/>
                                         </sup>
-                                        <xsl:text> </xsl:text>
+                                        <xsl:text>&#160;</xsl:text>
                                         <xsl:call-template name="highlight">
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                             <xsl:with-param name="pText"
