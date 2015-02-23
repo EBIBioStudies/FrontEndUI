@@ -145,10 +145,12 @@
                                     </xsl:with-param>
                                 </xsl:call-template>
                                 <xsl:text>&#160;(PMCID: </xsl:text>
-                                <xsl:call-template name="highlight">
-                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                    <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
-                                </xsl:call-template>
+                                <a href="http://europepmc.org/articles/{attribute[fn:lower-case(@name)='pmcid']}" target="_blank">
+                                    <xsl:call-template name="highlight">
+                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                        <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
+                                    </xsl:call-template>
+                                </a>
                                 <xsl:text>)</xsl:text>
                                 <br/>
                                 <a href="{attribute[fn:lower-case(@name)='doi']}" target="_blank">
