@@ -59,13 +59,11 @@
             </xsl:attribute>
             <section>
                 <h2>BioStudies – database of biological studies</h2>
-                <p class="intro justify">The goal of the BioStudies database is to provide light-weight means for
-                    capturing data from biological studies, especially for the cases where due to the pace of
-                    high-throughput technology development the generated data does not fit into any of the specialized
-                    EBI databases, or where established technologies are used in combination. The database will be able
-                    to accept a wide range of types of studies described via a simple format, and will not impose
-                    minimum requirements outside the respective community agreements. It will also enable manuscript
-                    authors to submit supplementary information and link to it from the publication.
+                <p class="intro justify">The BioStudies database holds descriptions of biological studies, links to data
+                    from these studies in other databases at EMBL-EBI or outside, as well as data that do not fit in the
+                    structured archives at EMBL-EBI. The database can accept a wide range of types of studies described
+                    via a simple format. It also enables manuscript authors to submit supplementary information and link
+                    to it from the publication.
                 </p>
             </section>
         </div>
