@@ -194,24 +194,24 @@
                                     <xsl:text>, </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
-                            <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
-                                <p class="orgs">
-                                    <xsl:for-each select="$vUniqueRefs/orgs/org">
+                            <p class="orgs">
+                                <xsl:for-each select="$vUniqueRefs/orgs/org">
+                                    <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
                                         <sup>
                                             <xsl:value-of select="position()"/>
                                         </sup>
                                         <xsl:text>&#160;</xsl:text>
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText"
-                                                            select="."/>
-                                        </xsl:call-template>
-                                        <xsl:if test="fn:position() != fn:last()">
-                                            <xsl:text>, </xsl:text>
-                                        </xsl:if>
-                                    </xsl:for-each>
-                                </p>
-                            </xsl:if>
+                                    </xsl:if>
+                                    <xsl:call-template name="highlight">
+                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                        <xsl:with-param name="pText"
+                                                        select="."/>
+                                    </xsl:call-template>
+                                    <xsl:if test="fn:position() != fn:last()">
+                                        <xsl:text>, </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </p>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
