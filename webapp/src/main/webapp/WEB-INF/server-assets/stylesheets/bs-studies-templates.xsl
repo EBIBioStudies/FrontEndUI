@@ -124,7 +124,6 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pTitle"/>
         <xsl:param name="pNodes"/>
-        <xsl:variable name="vOrgs" select="$pNodes[fn:lower-case(@type)='organization']"/>
         <xsl:for-each-group select="$pNodes" group-by="fn:lower-case(@type)">
             <xsl:choose>
                 <xsl:when test="fn:current-grouping-key()='publication'">
@@ -161,6 +160,22 @@
                         <xsl:with-param name="pName"
                                         select="fn:concat('Author', (if (fn:count(fn:current-group())>1) then 's' else ''))"/>
                         <xsl:with-param name="pContent">
+                            <xsl:variable name="vOrgRefs">
+                                <orgs>
+                                    <xsl:for-each
+                                            select="fn:current-group()/attribute[fn:lower-case(@name)='affiliation']/value">
+                                        <org id="{fn:current()}">
+                                            <xsl:value-of
+                                                    select="$pNodes[fn:lower-case(@type)='organization' and @id=fn:current()]/attribute[fn:lower-case(@name)='name']/value"/>
+                                        </org>
+                                    </xsl:for-each>
+                                </orgs>
+                            </xsl:variable>
+                            <xsl:variable name="vUniqueRefs">
+                                <orgs>
+                                    <xsl:copy-of select="$vOrgRefs/orgs/org[not(@id=preceding-sibling::org/@id)]"/>
+                                </orgs>
+                            </xsl:variable>
                             <xsl:for-each select="current-group()">
                                 <xsl:call-template name="highlight">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
@@ -169,19 +184,34 @@
                                 </xsl:call-template>
                                 <xsl:variable name="vAffiliationId"
                                               select="attribute[fn:lower-case(@name)='affiliation']/value"/>
-                                <xsl:variable name="vAffiliation" select="$vOrgs[@id=$vAffiliationId]"/>
-                                <xsl:if test="$vAffiliation">
+                                <xsl:variable name="vAffiliation" select="$vUniqueRefs/orgs/org[@id=$vAffiliationId]"/>
+                                <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1 and $vAffiliation">
                                     <sup>
-                                        <abbr title="{$vAffiliation/attribute[fn:lower-case(@name)='name']/value}">
-                                            <xsl:value-of
-                                                    select="fn:count($vAffiliation/preceding-sibling::section[fn:lower-case(@type)='organization']) + 1"/>
-                                        </abbr>
+                                        <xsl:value-of select="fn:count($vAffiliation/preceding-sibling::org) + 1"/>
                                     </sup>
                                 </xsl:if>
                                 <xsl:if test="fn:position() != fn:last()">
                                     <xsl:text>, </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
+                            <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
+                                <p class="orgs">
+                                    <xsl:for-each select="$vUniqueRefs/orgs/org">
+                                        <sup>
+                                            <xsl:value-of select="position()"/>
+                                        </sup>
+                                        <xsl:text> </xsl:text>
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pText"
+                                                            select="."/>
+                                        </xsl:call-template>
+                                        <xsl:if test="fn:position() != fn:last()">
+                                            <xsl:text>, </xsl:text>
+                                        </xsl:if>
+                                    </xsl:for-each>
+                                </p>
+                            </xsl:if>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>

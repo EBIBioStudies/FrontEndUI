@@ -771,6 +771,12 @@ p.justify {
     vertical-align: top
 }
 
+#ae-detail p.orgs {
+    font-size: 85%;
+    padding: 0;
+    margin: 5px 0 0;
+}
+
 /* help pages stuff */
 
 #ae-help table {
