@@ -125,6 +125,11 @@
 
     <xsl:template match="section" mode="section">
         <section type="{@type}" id="{@id}">
+            <xsl:if test="fn:lower-case(@type)='publication' and fn:lower-case(fn:substring(@id,1,3))='pmc'">
+                <attribute name="PMCID">
+                    <value><xsl:value-of select="fn:upper-case(@id)"/></value>
+                </attribute>
+            </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
             <xsl:apply-templates select="files" mode="files"/>
@@ -136,9 +141,4 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>
-
-    <xsl:function name="ae:trimTrailingDot">
-        <xsl:param name="pString" as="xs:string"/>
-        <xsl:value-of select="fn:replace($pString, '[.]$', '')"/>
-    </xsl:function>
 </xsl:stylesheet>

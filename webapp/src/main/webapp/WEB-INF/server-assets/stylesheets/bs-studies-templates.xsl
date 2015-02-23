@@ -144,6 +144,12 @@
                                         <xsl:text>]</xsl:text>
                                     </xsl:with-param>
                                 </xsl:call-template>
+                                <xsl:text>&#160;(PMCID: </xsl:text>
+                                <xsl:call-template name="highlight">
+                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
+                                </xsl:call-template>
+                                <xsl:text>)</xsl:text>
                                 <br/>
                                 <a href="{attribute[fn:lower-case(@name)='doi']}" target="_blank">
                                     <xsl:call-template name="highlight">
@@ -747,6 +753,7 @@
         </xsl:for-each>
     </xsl:template>
     -->
+    <!--
     <xsl:template match="bibliography">
         <xsl:param name="pQueryId"/>
         
@@ -869,6 +876,7 @@
             </div>
         </xsl:if>
     </xsl:template>
+    -->
     <!--
     <xsl:template name="exp-score">
         <xsl:param name="pScores"/>
