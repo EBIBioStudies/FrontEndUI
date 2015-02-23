@@ -498,7 +498,6 @@ p.justify {
     font-weight: normal;
     vertical-align: bottom;
     white-space: nowrap;
-    background-color: #eee;
     border-bottom: 2px solid ${color.p1};
 }
 
@@ -562,6 +561,14 @@ p.justify {
     float: right;
 }
 
+#ae-browse th {
+    background: #eee;
+}
+
+#ae-browse .floating-header th {
+    background: #fff;
+}
+
 #ae-browse .floating-header {
     position: fixed;
     z-index: 9999;
@@ -582,6 +589,12 @@ p.justify {
     -moz-border-radius-topright: 5px;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
+}
+
+#ae-browse .floating-header .col_pager {
+    border-right: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
 }
 
 #ae-browse .ae-stats {
