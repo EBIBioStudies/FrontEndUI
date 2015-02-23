@@ -42,6 +42,13 @@
                links="{fn:count(descendant::link)}">
             <accession><xsl:value-of select="@id"/></accession>
             <releasedate>2015-02-01</releasedate>
+            <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
+                <xsl:if test="fn:position() = 1 or fn:position() = fn:last()">
+                    <author index="{fn:position()}">
+                        <xsl:value-of select="attributes/attribute[fn:lower-case(@name)='name']/value"/>
+                    </author>
+                </xsl:if>
+            </xsl:for-each>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
             <xsl:apply-templates select="files" mode="files"/>
@@ -90,21 +97,6 @@
         </title>
     </xsl:template>
 
-    <!--
-    <xsl:template match="attribute[fn:lower-case(@name)='linked information']" mode="attributes">
-        <link>
-            <xsl:attribute name="url">
-                <xsl:choose>
-                    <xsl:when test="valqual[@name='type']='MSD'">
-                        <xsl:text>https://www.ebi.ac.uk/pdbe-srv/view/entry/</xsl:text>
-                        <xsl:value-of select="value"/>
-                        <xsl:text>/summary</xsl:text>
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:attribute>    
-        </link>
-    </xsl:template>
-    -->
     <xsl:template match="attribute" mode="attributes">
         <attribute name="{@name}">
             <xsl:apply-templates mode="attribute"/>
