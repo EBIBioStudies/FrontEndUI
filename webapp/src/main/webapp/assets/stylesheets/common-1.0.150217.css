@@ -770,12 +770,21 @@ p.justify {
     vertical-align: top
 }
 
+#ae-detail sup {
+    margin-left: 1px;
+}
+
 #ae-detail p.orgs {
     font-size: 85%;
     padding: 0;
     margin: 5px 0 0;
 }
 
+#ae-detail p.orgs sup {
+    margin-right: 1px;
+    font-size: 85%;
+    top: -0.4em;
+}
 /* help pages stuff */
 
 #ae-help table {

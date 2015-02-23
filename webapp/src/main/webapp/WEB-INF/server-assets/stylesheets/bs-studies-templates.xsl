@@ -208,7 +208,6 @@
                                         <sup>
                                             <xsl:value-of select="position()"/>
                                         </sup>
-                                        <xsl:text>&#160;</xsl:text>
                                     </xsl:if>
                                     <xsl:call-template name="highlight">
                                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
