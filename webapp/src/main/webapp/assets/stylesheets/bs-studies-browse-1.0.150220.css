@@ -29,6 +29,10 @@
     text-align: left;
 }
 
+#ae-browse .col_author span {
+    white-space: nowrap;
+}
+
 #ae-browse .col_release_date {
     width: 90px;
     text-align: left;

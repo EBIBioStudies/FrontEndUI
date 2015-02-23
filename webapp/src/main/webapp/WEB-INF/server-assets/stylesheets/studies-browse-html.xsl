@@ -255,18 +255,18 @@
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pText">
-                                <nowrap>
+                                <span>
                                     <xsl:value-of select="author[1]"/>
-                                </nowrap>
+                                </span>
                                 <xsl:if test="author[2]">
                                     <xsl:text>,</xsl:text>
                                     <xsl:if test="author[2]/@index > 2">
                                         <xsl:text>…</xsl:text>
                                     </xsl:if>
                                     <xsl:text> </xsl:text>
-                                    <nowrap>
+                                    <span>
                                         <xsl:value-of select="author[2]"/>
-                                    </nowrap>
+                                    </span>
                                 </xsl:if>
                             </xsl:with-param>
                             <xsl:with-param name="pFieldName"/>
