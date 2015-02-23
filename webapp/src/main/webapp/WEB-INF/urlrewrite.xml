@@ -112,6 +112,16 @@
         <from>^/acknowledgements[.]html?$</from>
         <to type="redirect" last="true">%{context-path}/about.html#acknowledgements</to>
     </rule>
+    <!-- submit pages -->
+    <rule>
+        <from>^/submit$</from>
+        <to type="redirect" last="true">%{context-path}/submit/</to>
+    </rule>
+    <rule>
+        <from>^/submit/.*$</from>
+        <set type="parameter" name="filename">submit.html</set>
+        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
+    </rule>
     <!-- help pages -->
     <rule>
         <from>^/help$</from>

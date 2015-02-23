@@ -215,11 +215,10 @@
                                     <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
                                     <a href="{$context-path}/studies/" title="Studies">Studies</a>
                                 </li>
-                                <!--
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/submit/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/submit/overview.html" title="Submit">Submit</a></li>
-                                -->
+                                    <a href="{$context-path}/submit/" title="Submit">Submit</a>
+                                </li>
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
                                     <a href="{$context-path}/help/index.html" title="Help">Help</a>
