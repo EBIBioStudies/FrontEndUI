@@ -70,6 +70,7 @@
             , fields:
                 { accession: { title: "accession", sort : "ascending" }
                     , title: {title: "title", sort: "ascending"}
+                    , author: {title: "first author", sort: "ascending"}
                     , release_date: {title: "release date", sort: "descending"}
                     , files: {title: "number of files", sort: "descending"}
                     , links: {title: "number of links", sort: "descending"}

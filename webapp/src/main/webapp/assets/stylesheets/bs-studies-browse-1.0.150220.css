@@ -15,31 +15,6 @@
  *
  */
 
-#ae-organism-label {
-    width: 25%
-}
-
-#ae-organism {
-    width: 25%
-}
-
-#ae-array-label {
-    width: 50%
-}
-
-#ae-array {
-    width: 50%
-}
-
-#ae-exptype-label {
-    width: 25%
-}
-
-#ae-expdesign,
-#ae-exptech {
-    width: 12.5%
-}
-
 #ae-browse .col_accession {
     width: 120px;
     text-align: left;
@@ -49,17 +24,22 @@
     text-align: left;
 }
 
+#ae-browse .col_author {
+    width: 160px;
+    text-align: left;
+}
+
 #ae-browse .col_release_date {
     width: 90px;
     text-align: left;
 }
 
 #ae-browse .col_files {
-    width: 90px;
+    width: 75px;
     text-align: right;
 }
 
 #ae-browse .col_links {
-    width: 90px;
+    width: 75px;
     text-align: right;
 }

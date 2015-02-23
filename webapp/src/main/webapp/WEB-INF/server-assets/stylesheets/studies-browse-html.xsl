@@ -108,54 +108,18 @@
                 <section class="grid_24 alpha omega">
                     <div id="ae-content">
                         <div id="ae-browse">
-                            <!--
-                            <div id="ae-filters">
-                                <form method="get" action="{$context-path}/experiments/browse.html">
-                                    <fieldset>
-                                        <legend>Filter experiments</legend>
-                                        <input id="ae-keywords" type="hidden" name="keywords" value="{$keywords}" maxlength="255"/>
-                                        <label id="ae-organism-label" for="ae-organism">By organism</label>
-                                        <label  id="ae-array-label" for="ae-array">By array</label>
-                                        <label  id="ae-exptype-label" for="ae-expdesign">By experiment type</label>
-                                        <select id="ae-organism" name="organism" disabled="on"><option value="">All organisms (loading options)</option></select>
-                                        <select id="ae-array" name="array" disabled="on"><option value="">All arrays (loading options)</option></select>
-                                        <select id="ae-expdesign" name="exptype[]" disabled="on"><option value="">All assays by molecule (loading options)</option></select>
-                                        <select id="ae-exptech" name="exptype[]" disabled="on"><option value="">All technologies (loading options)</option></select>
-                                        <div>
-                                            <xsl:if test="not($userid = '1')">
-                                                <div class="option">
-                                                    <input id="ae-private" name="private" type="checkbox" title="Select the 'My private data only' check box to query private data only.">
-                                                        <xsl:if test="$private = 'on'">
-                                                            <xsl:attribute name="checked"/>
-                                                        </xsl:if>
-                                                    </input>
-                                                    <label for="ae-private" title="Select the 'My private data only' check box to query private data only.">My private data only</label>
-                                                </div>
-                                            </xsl:if>
-                                            <div class="option">
-                                                <input id="ae-directsub" name="directsub" type="checkbox" title="By default all data from GEO and ArrayExpress are queried. Select the 'ArrayExpress data only' check box to query data submitted directly to ArrayExpress. If you want to query GEO data only include AND E-GEOD* in your query. E.g. cancer AND E-GEOD* will retrieve all GEO experiments with cancer annotations.">
-                                                    <xsl:if test="$directsub = 'on'">
-                                                        <xsl:attribute name="checked"/>
-                                                    </xsl:if>
-                                                </input>
-                                                <label for="ae-directsub" title="By default all data from GEO and ArrayExpress are queried. Select the 'ArrayExpress data only' check box to query data submitted directly to ArrayExpress. If you want to query GEO data only include AND E-GEOD* in your query. E.g. cancer AND E-GEOD* will retrieve all GEO experiments with cancer annotations.">ArrayExpress data only</label>
-                                            </div>
-                                            <div id="ae-submit-box"><input id="ae-query-submit" class="submit" type="submit" value="Filter"/></div>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                            -->
+
                             <div class="persist-area">
                                 <table class="persist-header" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
                                     <col class="col_title"/>
+                                    <col class="col_author"/>
                                     <col class="col_release_date"/>
                                     <col class="col_files"/>
                                     <col class="col_links"/>
                                     <thead>
                                         <xsl:call-template name="table-pager">
-                                            <xsl:with-param name="pColumnsToSpan" select="5"/>
+                                            <xsl:with-param name="pColumnsToSpan" select="6"/>
                                             <xsl:with-param name="pName"
                                                             select="if ($vTotal > 1) then 'studies' else 'study'"/>
                                             <xsl:with-param name="pTotal" select="$vTotal"/>
@@ -175,6 +139,14 @@
                                                 <xsl:text>Title</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
                                                     <xsl:with-param name="pKind" select="'name'"/>
+                                                    <xsl:with-param name="pSortBy" select="$vSortBy"/>
+                                                    <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
+                                                </xsl:call-template>
+                                            </th>
+                                            <th class="col_author sortable">
+                                                <xsl:text>Authors</xsl:text>
+                                                <xsl:call-template name="add-table-sort">
+                                                    <xsl:with-param name="pKind" select="'author'"/>
                                                     <xsl:with-param name="pSortBy" select="$vSortBy"/>
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
@@ -209,6 +181,7 @@
                                 <table class="experiments" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>
                                     <col class="col_title"/>
+                                    <col class="col_author"/>
                                     <col class="col_release_date"/>
                                     <col class="col_files"/>
                                     <col class="col_links"/>
@@ -221,7 +194,7 @@
                                             <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                         </xsl:call-template>
                                         <tr>
-                                            <td colspan="5" class="col_footer">&#160;
+                                            <td colspan="6" class="col_footer">&#160;
                                                 <!--
                                                 <a href="{$context-path}/ArrayExpress-Experiments.txt{$vQueryString}" class="icon icon-functional" data-icon="S">Export table in Tab-delimited format</a>
                                                 <a href="{$context-path}/xml/v2/experiments{$vQueryString}" class="icon  icon-functional" data-icon="S">Export matching metadata in XML format</a>
@@ -273,6 +246,29 @@
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
+                            <xsl:with-param name="pFieldName"/>
+                        </xsl:call-template>
+                    </div>
+                </td>
+                <td class="col_author">
+                    <div>
+                        <xsl:call-template name="highlight">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pText">
+                                <nowrap>
+                                    <xsl:value-of select="author[1]"/>
+                                </nowrap>
+                                <xsl:if test="author[2]">
+                                    <xsl:text>,</xsl:text>
+                                    <xsl:if test="author[2]/@index > 2">
+                                        <xsl:text>…</xsl:text>
+                                    </xsl:if>
+                                    <xsl:text> </xsl:text>
+                                    <nowrap>
+                                        <xsl:value-of select="author[2]"/>
+                                    </nowrap>
+                                </xsl:if>
+                            </xsl:with-param>
                             <xsl:with-param name="pFieldName"/>
                         </xsl:call-template>
                     </div>

@@ -49,6 +49,15 @@
                     <xsl:with-param name="pTo" select="$pTo"/>
                 </xsl:apply-templates>
             </xsl:when>
+            <xsl:when test="$pSortBy='author'">
+                <xsl:apply-templates select="$pExperiments">
+                    <xsl:sort select="lower-case(author[1])" order="{$pSortOrder}"/>
+                    <xsl:sort select="lower-case(accession)" order="{$pSortOrder}"/>
+
+                    <xsl:with-param name="pFrom" select="$pFrom"/>
+                    <xsl:with-param name="pTo" select="$pTo"/>
+                </xsl:apply-templates>
+            </xsl:when>
             <xsl:when test="$pSortBy='release_date'">
                 <xsl:apply-templates select="$pExperiments">
                     <!-- year -->
