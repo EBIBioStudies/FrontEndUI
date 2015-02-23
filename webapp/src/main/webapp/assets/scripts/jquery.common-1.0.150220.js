@@ -433,7 +433,9 @@
                     span.hide().prev().show();
                 });
             span.before(showMore);
+            showMore.before(" ");
             span.append(showLess);
+            showLess.before(" ");
         });
     });
 

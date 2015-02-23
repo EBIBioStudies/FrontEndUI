@@ -130,13 +130,12 @@ a.show-more, a.show-less {
     display: inline-block;
     color: ${color.c3};
     padding: 0;
-    margin-left: 10px;
 }
 
 a.show-more:hover,
 a.show-less:hover {
     padding: 0 4px;
-    margin-left: 6px;
+    margin-left: -4px;
     color: #fff;
     background-color: ${color.c3};
     -moz-border-radius: 3px;

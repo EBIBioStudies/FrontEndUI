@@ -48,7 +48,14 @@
                       type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
-                <a href="{$context-path}/studies/">Studies</a>
+                <xsl:choose>
+                    <xsl:when test="$keywords != ''">
+                        <a href="{$context-path}/studies/search.html?query={$keywords}">Studies matching "<xsl:value-of select="$keywords"/>"</a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="{$context-path}/studies/">Studies</a>
+                    </xsl:otherwise>
+                </xsl:choose>
                 >
                 <xsl:value-of select="$vAccession"/>
             </xsl:with-param>
