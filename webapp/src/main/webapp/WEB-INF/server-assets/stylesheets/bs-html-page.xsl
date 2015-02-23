@@ -185,7 +185,7 @@
                                             <!-- Include some example searchterms - keep them short and few! -->
                                             <span class="examples">Examples: <a
                                                     href="{$context-path}/search?query=cancer">cancer</a>,
-                                                <a href="{$context-path}/search?query=p53">p53</a>
+                                                <a href="{$context-path}/search?query=PMC516016">PMC516016</a>
                                             </span>
                                         </div>
                                         <div class="right">
