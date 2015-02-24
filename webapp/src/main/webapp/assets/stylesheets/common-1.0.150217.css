@@ -384,6 +384,10 @@ p.justify {
     text-align: justify;
 }
 
+.visible {
+    visibility: visible !important;
+}
+
 /*
 #ae-filters *
 , #ae-query * {

@@ -328,27 +328,30 @@
             var el             = $(this),
                 offset         = el.offset(),
                 scrollTop      = $(window).scrollTop(),
+                scrollLeft = $(window).scrollLeft(),
                 floatingHeader = $(".floating-header", this),
                 floatingPanel = $(".floating-panel"),
-                width          = floatingHeader.prev().width();
+                width = floatingHeader.prev().width(),
+                height = floatingHeader.height();
 
 
             if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
-                floatingHeader.css({
-                    "visibility": "visible",
-                    "width": width
-                });
-                floatingPanel.css({
-                    "visibility": "visible",
-                    "height": floatingHeader.height()
-                });
-            } else {
-                floatingPanel.css({
-                    "visibility": "hidden"
-                });
-                floatingHeader.css({
-                    "visibility": "hidden"
-                });
+                if (!floatingHeader.hasClass("visible")) {
+                    floatingHeader.addClass("visible").css({
+                        "width": width
+                    });
+                    floatingPanel.addClass("visible").css({
+                        "height": height
+                    });
+                }
+                if (floatingHeader.prop("ae_ScrollLeft") != scrollLeft) {
+                    floatingHeader.prop("ae_ScrollLeft", scrollLeft).css({
+                        "margin-left": "-" + scrollLeft + "px"
+                    });
+                }
+            } else if (floatingHeader.hasClass("visible")) {
+                floatingPanel.removeClass("visible");
+                floatingHeader.removeClass("visible");
             }
         });
     }
