@@ -102,6 +102,10 @@
         <to type="permanent-redirect" last="true">%{context-path}/studies/$1/files/$2/</to>
     </rule>
     -->
+    <rule>
+        <from>^/files/([^/]+)/([^/]+)$</from>
+        <to type="forward" last="true">/servlets/download/${upper:$1}/$2</to>
+    </rule>
     <!-- about page -->
     <rule>
         <from>^/about[.]html?$</from>

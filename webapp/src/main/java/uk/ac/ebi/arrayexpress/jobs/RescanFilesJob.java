@@ -31,6 +31,7 @@ import uk.ac.ebi.arrayexpress.utils.io.RemovingMultipleSpacesReader;
 import uk.ac.ebi.arrayexpress.utils.saxon.FlatFileXMLReader;
 
 import javax.xml.transform.sax.SAXSource;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -83,16 +84,16 @@ public class RescanFilesJob extends ApplicationJob {
 
             Map<String, String[]> transformParams = new HashMap<>();
             transformParams.put("rootFolder", new String[]{rootFolder});
-            /*
+            /**
             StringTools.stringToFile(
                     saxonEngine.serializeDocument(source)
                     , new File(
                         System.getProperty("java.io.tmpdir")
-                        , "ae-files-src.xml"
+             , "bs-files-src.xml"
                     )
                     , "UTF-8"
             );
-            */
+             **/
             DocumentInfo result = saxonEngine.transform(
                     source
                     , "preprocess-files-xml.xsl"

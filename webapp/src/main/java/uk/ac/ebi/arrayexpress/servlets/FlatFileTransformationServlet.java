@@ -87,7 +87,7 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
 
             String stylesheetName = stylesheet + "-" + outputType + ".xsl";
 
-            String flatFileLocation = files.getLocation(accession, null, fileName);
+            String flatFileLocation = files.getLocation(accession, fileName);
             SAXSource source = new SAXSource();
             File flatFile = null != flatFileLocation ? new File(files.getRootFolder(), flatFileLocation) : null;
 

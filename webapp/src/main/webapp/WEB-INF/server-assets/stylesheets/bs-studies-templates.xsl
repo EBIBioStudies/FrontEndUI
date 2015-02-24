@@ -229,14 +229,22 @@
     <xsl:template name="study-files">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
+        <xsl:param name="pFiles"/>
+        <xsl:param name="pBasePath"/>
         <xsl:call-template name="section">
             <xsl:with-param name="pName" select="'Files'"/>
             <xsl:with-param name="pContent">
                 <xsl:for-each select="$pNodes">
-                    <xsl:call-template name="highlight">
-                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        <xsl:with-param name="pText" select="@name"/>
-                    </xsl:call-template>
+                    <xsl:variable name="vName" select="@name"/>
+                    <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
+                    <xsl:if test="$vFile">
+                        <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pText" select="$vName"/>
+                            </xsl:call-template>
+                        </a>
+                    </xsl:if>
                     <xsl:if test="fn:position() != fn:last()">
                         <br/>
                     </xsl:if>

@@ -26,6 +26,8 @@
 
         <studies>
             <source-location>${interface.application.pref.studies.source.location}</source-location>
+            <files-location>${interface.application.pref.studies.files.location}</files-location>
+
             <reload>
                 <atstart>false</atstart>
                 <schedule>${interface.application.pref.studies.reload.schedule}</schedule>
@@ -57,8 +59,7 @@
         </news>
         -->
         <files>
-            <root><location>${interface.application.pref.files.root.location}</location></root>
-            <list-all-command>${interface.application.pref.files.list-all.command}</list-all-command>
+            <list-all-command>${interface.application.pref.studies.files.list-all}</list-all-command>
             <get-md5-base64-encoded-command>openssl md5 -binary ${arg.file} | openssl base64</get-md5-base64-encoded-command>
             <persistence-location>${sys:java.io.tmpdir}/bs-files.xml</persistence-location>
             <rescan><interval>${interface.application.pref.files.rescan.interval}</interval></rescan>
@@ -153,18 +154,21 @@
                 <field name="public" type="boolean" path="user/@id = '1'"/>
             </document>
         </index>
+        -->
         <index id="files" location="${sys:java.io.tmpdir}/bs-index"
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/files/folder/file" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//@*, ' ')" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="accession" title="by Accession" type="string" path="../@accession" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="name" title="by File Name" type="string" path="@name" analyze="true" store="false" escape="false" expand="false"/>
-                <field name="kind" title="by Kind" type="string" path="@kind" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="extension" title="by Extension" type="string" path="@extension" analyze="true" store="false" escape="false" expand="false"/>
+                <!--
                 <field name="visible" type="boolean" path="@hidden = 'false'"/>
                 <field name="userid" type="string" path="ae:getMappedValue('users-for-accession', ../@accession)" analyze="false" store="false" escape="false" expand="false"/>
+                -->
             </document>
         </index>
+        <!--
         <index id="users" location="${sys:java.io.tmpdir}/bs-index"
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer">
             <document path="/users/user" defaultField="keywords">

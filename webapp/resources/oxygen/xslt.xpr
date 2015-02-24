@@ -397,11 +397,13 @@
     </meta>
     <projectTree name="xslt.xpr">
         <folder name="documents">
+            <file name="documents/sample-files-not-processed.xml"/>
             <file name="documents/sample-studies.xml"/>
             <file name="documents/sample-submissions.xml"/>
         </folder>
         <folder name="stylesheets">
             <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/bs-studies-templates.xsl"/>
+            <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-files-xml.xsl"/>
             <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/preprocess-studies-xml.xsl"/>
             <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/studies-browse-html.xsl"/>
             <file name="../../src/main/webapp/WEB-INF/server-assets/stylesheets/studies-detail-html.xsl"/>

@@ -48,7 +48,7 @@ public class BSInterfaceApplication extends Application implements ServletContex
         addComponent(new Studies());
 //        addComponent(new ArrayDesigns());
 //        addComponent(new Protocols());
-//        addComponent(new Files());
+        addComponent(new Files());
         addComponent(new JobsController());
         addComponent(new Ontologies());
     }

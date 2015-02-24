@@ -63,6 +63,7 @@ public class ControlServlet extends ApplicationServlet {
                             || "reload-efo".equals(command)
                             || "update-efo".equals(command)
                             || "check-files".equals(command)
+                            || "rescan-files".equals(command)
                             || "check-experiments".equals(command)
                             || "reload-atlas-info".equals(command)
                     ) {

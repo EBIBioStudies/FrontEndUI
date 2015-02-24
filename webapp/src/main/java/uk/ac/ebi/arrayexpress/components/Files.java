@@ -40,10 +40,7 @@ public class Files extends ApplicationComponent implements IDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final String MAP_FOLDER = "ftp-folder";
-    private final String MAP_RAW_FILES = "raw-files";
-    private final String MAP_PROCESSED_FILES = "processed-files";
-    private final String MAP_FILES_TOTAL = "files-total";
+    private final String MAP_FOLDER = "accession-folder";
 
     private String rootFolder;
     private FilePersistence<PersistableDocumentContainer> document;
@@ -70,9 +67,6 @@ public class Files extends ApplicationComponent implements IDocumentSource {
         );
 
         maps.registerMap(new MapEngine.SimpleValueMap(MAP_FOLDER));
-        maps.registerMap(new MapEngine.SimpleValueMap(MAP_RAW_FILES));
-        maps.registerMap(new MapEngine.SimpleValueMap(MAP_PROCESSED_FILES));
-        maps.registerMap(new MapEngine.SimpleValueMap(MAP_FILES_TOTAL));
 
         updateIndex();
         updateAccelerators();
@@ -125,9 +119,6 @@ public class Files extends ApplicationComponent implements IDocumentSource {
         this.logger.debug("Updating maps for files");
 
         maps.clearMap(MAP_FOLDER);
-        maps.clearMap(MAP_RAW_FILES);
-        maps.clearMap(MAP_PROCESSED_FILES);
-        maps.clearMap(MAP_FILES_TOTAL);
 
         try {
             DocumentInfo doc = getDocument();
@@ -135,14 +126,7 @@ public class Files extends ApplicationComponent implements IDocumentSource {
             for (Item node : documentNodes) {
                 // get all the expressions taken care of
                 String accession = saxon.evaluateXPathSingleAsString((NodeInfo) node, "@accession");
-                String folderKind = saxon.evaluateXPathSingleAsString((NodeInfo) node, "@kind");
                 maps.setMappedValue(MAP_FOLDER, accession, node);
-                //todo: remove redundancy here
-                if ("experiment".equals(folderKind)) {
-                    maps.setMappedValue(MAP_RAW_FILES, accession, saxon.evaluateXPathSingle((NodeInfo) node, "count(file[@kind = 'raw'])"));
-                    maps.setMappedValue(MAP_PROCESSED_FILES, accession, saxon.evaluateXPathSingle((NodeInfo) node, "count(file[@kind = 'processed'])"));
-                    maps.setMappedValue(MAP_FILES_TOTAL, accession, saxon.evaluateXPathSingle((NodeInfo) node, "sum(file/@size)"));
-                }
             }
             this.logger.debug("Maps updated");
         } catch (XPathException x) {
@@ -164,7 +148,7 @@ public class Files extends ApplicationComponent implements IDocumentSource {
 
     public synchronized String getRootFolder() {
         if (null == this.rootFolder) {
-            this.rootFolder = getPreferences().getString("bs.files.root.location");
+            this.rootFolder = getPreferences().getString("bs.studies.files-location");
         }
         return this.rootFolder;
     }
@@ -173,19 +157,16 @@ public class Files extends ApplicationComponent implements IDocumentSource {
         return this.lastReloadMessage;
     }
 
-    private String getFileLocatingXPQuery(String accession, String kind, String name) {
+    private String getFileLocatingXPQuery(String accession, String name) {
         accession = StringEscapeUtils.escapeXml(accession);
-        kind = StringEscapeUtils.escapeXml(kind);
         name = StringEscapeUtils.escapeXml(name);
         return "/files/folder" +
                 (StringUtils.isNotBlank(accession) ? "[@accession = '" + accession + "']" : "") +
-                "/file[@name = '" + name + "'" +
-                (StringUtils.isNotBlank(kind) ? " and @kind = '" + kind + "'" : "") +
-                "]";
+                "/file[@name = '" + name + "']";
     }
 
     // returns true is file is registered in the registry
-    public boolean doesExist(String accession, String kind, String name) throws IOException {
+    public boolean doesExist(String accession, String name) throws IOException {
         boolean result = false;
 
         if (StringUtils.isNotBlank(name)) {
@@ -193,7 +174,7 @@ public class Files extends ApplicationComponent implements IDocumentSource {
             try {
                 result = ((BooleanValue) this.saxon.evaluateXPathSingle(
                         getDocument()
-                        , "exists(" + getFileLocatingXPQuery(accession, kind, name) + ")"
+                        , "exists(" + getFileLocatingXPQuery(accession, name) + ")"
                 )).effectiveBooleanValue();
             } catch (XPathException x) {
                 logger.error("Caught an exception:", x);
@@ -203,12 +184,12 @@ public class Files extends ApplicationComponent implements IDocumentSource {
     }
 
     // returns absolute file location (if file exists, null otherwise) in local filesystem
-    public String getLocation(String accession, String kind, String name) throws IOException {
+    public String getLocation(String accession, String name) throws IOException {
         String location = null;
 
         if (StringUtils.isNotBlank(name)) {
             try {
-                String fileXPQuery = getFileLocatingXPQuery(accession, kind, name);
+                String fileXPQuery = getFileLocatingXPQuery(accession, name);
                 String xPathQuery = "concat(" + fileXPQuery + "/../@location, '/', " + fileXPQuery + "/@location)";
                 location = this.saxon.evaluateXPathSingleAsString(
                         getDocument()

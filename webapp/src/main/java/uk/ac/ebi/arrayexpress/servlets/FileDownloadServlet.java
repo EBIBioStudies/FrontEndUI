@@ -89,35 +89,28 @@ public class FileDownloadServlet extends BaseDownloadServlet {
             , List<String> userIDs
     ) throws DownloadServletException {
         String accession = "";
-        String kind = "";
         String name = "";
         IDownloadFile file;
 
         try {
             String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
-            if (null != requestArgs) {
-                if (1 == requestArgs.length) { // name only passed
-                    name = requestArgs[0];
-                } else if (2 == requestArgs.length) { // accession/name passed
-                    accession = requestArgs[0];
-                    name = requestArgs[1];
-                } else { // all params passed: accession/kind/name
-                    accession = requestArgs[0];
-                    kind = requestArgs[1];
-                    name = requestArgs[2];
-                }
+            if (1 == requestArgs.length) { // name only passed
+                name = requestArgs[0];
+            } else if (2 == requestArgs.length) { // accession/name passed
+                accession = requestArgs[0];
+                name = requestArgs[1];
             }
-            logger.info("Requested download of [" + name + "], kind [" + kind + "], accession [" + accession + "]");
+            logger.info("Requested download of [" + name + "], accession [" + accession + "]");
             Files files = (Files) getComponent("Files");
             Users users = (Users) getComponent("Users");
 
 
-            if (!files.doesExist(accession, kind, name)) {
+            if (!files.doesExist(accession, name)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 throw new DownloadServletException(
-                        "File [" + name + "], kind [" + kind + "], accession [" + accession + "] is not in files.xml");
+                        "File [" + name + "], accession [" + accession + "] is not in files.xml");
             } else {
-                String location = files.getLocation(accession, kind, name);
+                String location = files.getLocation(accession, name);
 
                 if (!"".equals(location) && "".equals(accession)) {
                     // attempt to resolve accession for file by its location

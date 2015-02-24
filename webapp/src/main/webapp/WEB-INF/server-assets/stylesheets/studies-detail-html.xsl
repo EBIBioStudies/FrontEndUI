@@ -107,9 +107,7 @@
     </xsl:template>
 
     <xsl:template match="study">
-        <!--
-        <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/>
-        -->
+        <xsl:variable name="vFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
         <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
         <div id="ae-detail">
@@ -130,6 +128,8 @@
                 <xsl:call-template name="study-files">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
                     <xsl:with-param name="pNodes" select="descendant::file"/>
+                    <xsl:with-param name="pFiles" select="$vFiles"/>
+                    <xsl:with-param name="pBasePath" select="$context-path"/>
                 </xsl:call-template>
                 <xsl:call-template name="study-links">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
