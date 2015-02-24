@@ -69,7 +69,7 @@
         <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
         <!-- search:queryIndex($queryid)[accession = $vAccession] -->
         <section>
-            <div id="ae-content">
+            <div id="ae-content" class="persist-area">
                 <xsl:choose>
                     <xsl:when test="exists($vStudy)">
                         <xsl:call-template name="block-study">
@@ -86,21 +86,23 @@
 
     <xsl:template name="block-study">
         <xsl:param name="pStudy"/>
-        <h4>
-            <!--
-            <xsl:if test="not($pStudy/user/@id = '1')">
-                <xsl:attribute name="class" select="'icon icon-functional'"/>
-                <xsl:attribute name="data-icon" select="'L'"/>
-            </xsl:if>
-            -->
-            <xsl:value-of select="$pStudy/accession"/>
-            <xsl:text> - </xsl:text>
-            <xsl:call-template name="highlight">
-                <xsl:with-param name="pQueryId" select="$queryid"/>
-                <xsl:with-param name="pText" select="fn:string-join($pStudy/title, ', ')"/>
-                <xsl:with-param name="pFieldName"/>
-            </xsl:call-template>
-        </h4>
+        <div class="persist-header">
+            <h4>
+                <!--
+                <xsl:if test="not($pStudy/user/@id = '1')">
+                    <xsl:attribute name="class" select="'icon icon-functional'"/>
+                    <xsl:attribute name="data-icon" select="'L'"/>
+                </xsl:if>
+                -->
+                <xsl:value-of select="$pStudy/accession"/>
+                <xsl:text> - </xsl:text>
+                <xsl:call-template name="highlight">
+                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                    <xsl:with-param name="pText" select="fn:string-join($pStudy/title, ', ')"/>
+                    <xsl:with-param name="pFieldName"/>
+                </xsl:call-template>
+            </h4>
+        </div>
         <xsl:apply-templates select="$pStudy"/>
     </xsl:template>
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="15.2">
+<project version="16.1">
     <meta>
         <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
-            <serialized version="15.2" xml:space="preserve">
-                <map>
+            <serialized version="16.1" xml:space="preserve">
+                <serializableOrderedMap>
                     <entry>
                         <String>enable.project.master.files.support</String>
                         <Boolean>true</Boolean>
@@ -49,11 +49,14 @@
                         <scenario-array>
                             <scenario>
                                 <field name="advancedOptionsMap">
-                                    <map>
+                                    <serializableOrderedMap>
                                         <entry>
                                             <String>Saxon-PE</String>
                                             <xsltSaxonBAdvancedOptions>
                                                 <field name="allowCallsOnExtensionFunctions">
+                                                    <Boolean>true</Boolean>
+                                                </field>
+                                                <field name="registerSaxonCEExtensions">
                                                     <Boolean>true</Boolean>
                                                 </field>
                                                 <field name="showVersionWarnings">
@@ -100,7 +103,7 @@
                                                 </field>
                                             </xsltSaxonBAdvancedOptions>
                                         </entry>
-                                    </map>
+                                    </serializableOrderedMap>
                                 </field>
                                 <field name="name">
                                     <String>stuides-with-saxon-extensions</String>
@@ -142,6 +145,9 @@
                                     <Boolean>false</Boolean>
                                 </field>
                                 <field name="outputFile">
+                                    <null/>
+                                </field>
+                                <field name="outputResource">
                                     <null/>
                                 </field>
                                 <field name="openOtherLocationInBrowser">
@@ -249,6 +255,9 @@
                                 <field name="outputFile">
                                     <null/>
                                 </field>
+                                <field name="outputResource">
+                                    <null/>
+                                </field>
                                 <field name="openOtherLocationInBrowser">
                                     <Boolean>false</Boolean>
                                 </field>
@@ -332,6 +341,9 @@
                                 <field name="outputFile">
                                     <null/>
                                 </field>
+                                <field name="outputResource">
+                                    <null/>
+                                </field>
                                 <field name="openOtherLocationInBrowser">
                                     <Boolean>false</Boolean>
                                 </field>
@@ -379,7 +391,7 @@
                         <String>validation.scenarios</String>
                         <validationScenario-array/>
                     </entry>
-                </map>
+                </serializableOrderedMap>
             </serialized>
         </options>
     </meta>

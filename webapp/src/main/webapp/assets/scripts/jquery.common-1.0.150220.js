@@ -332,16 +332,16 @@
                 floatingHeader = $(".floating-header", this),
                 floatingPanel = $(".floating-panel"),
                 width = floatingHeader.prev().width(),
-                height = floatingHeader.height();
+                height = floatingHeader.prev().height();
 
 
             if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
                 if (!floatingHeader.hasClass("visible")) {
                     floatingHeader.addClass("visible").css({
-                        "width": width
+                        "width": width + "px"
                     });
                     floatingPanel.addClass("visible").css({
-                        "height": height
+                        "height": height + "px"
                     });
                 }
                 if (floatingHeader.prop("ae_ScrollLeft") != scrollLeft) {
