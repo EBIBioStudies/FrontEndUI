@@ -20,8 +20,6 @@ package uk.ac.ebi.arrayexpress.servlets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
-import uk.ac.ebi.arrayexpress.components.Users;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,7 +100,7 @@ public class FileDownloadServlet extends BaseDownloadServlet {
             }
             logger.info("Requested download of [" + name + "], accession [" + accession + "]");
             Files files = (Files) getComponent("Files");
-            Users users = (Users) getComponent("Users");
+//            Users users = (Users) getComponent("Users");
 
 
             if (!files.doesExist(accession, name)) {
@@ -112,10 +110,10 @@ public class FileDownloadServlet extends BaseDownloadServlet {
             } else {
                 String location = files.getLocation(accession, name);
 
-                if (!"".equals(location) && "".equals(accession)) {
-                    // attempt to resolve accession for file by its location
-                    accession = location.replaceFirst("^.+/([AE]-\\w{4}-\\d+)/.+$", "$1");
-                }
+//                if (!"".equals(location) && "".equals(accession)) {
+//                    // attempt to resolve accession for file by its location
+//                    accession = location.replaceFirst("^.+/([AE]-\\w{4}-\\d+)/.+$", "$1");
+//                }
 
                 // finally if there is no accession or location determined at the stage - panic
                 if ("".equals(location) || "".equals(accession)) {
@@ -128,16 +126,16 @@ public class FileDownloadServlet extends BaseDownloadServlet {
                                     + "] were not determined");
                 }
 
-                if (null != userIDs && 0 != userIDs.size() && !users.isAccessible(accession, userIDs)) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                    throw new DownloadServletException(
-                            "Data from ["
-                                    + accession
-                                    + "] is not accessible for the user with id(s) ["
-                                    + StringTools.arrayToString(userIDs.toArray(new String[userIDs.size()]), ", ")
-                                    + "]"
-                    );
-                }
+//                if (null != userIDs && 0 != userIDs.size() && !users.isAccessible(accession, userIDs)) {
+//                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+//                    throw new DownloadServletException(
+//                            "Data from ["
+//                                    + accession
+//                                    + "] is not accessible for the user with id(s) ["
+//                                    + StringTools.arrayToString(userIDs.toArray(new String[userIDs.size()]), ", ")
+//                                    + "]"
+//                    );
+//                }
 
                 logger.debug("Will be serving file [{}]", location);
                 file = new RegularDownloadFile(new File(files.getRootFolder(), location));

@@ -132,7 +132,8 @@
                                 group="{ae:getGroup(.)}"
                                 access="{ae:getAccess(.)}"
                                 size="{ae:getSize(.)}"
-                                lastmodified="{ae:getModifyDate(.)}"/>
+                                lastmodified="{ae:getModifyDate(.)}"
+                                location="{$vLocation}/{ae:getName(.)}"/>
                         </xsl:for-each>
                     </folder>
                 </xsl:if>    
