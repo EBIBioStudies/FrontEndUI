@@ -329,6 +329,7 @@
                 offset         = el.offset(),
                 scrollTop      = $(window).scrollTop(),
                 floatingHeader = $(".floating-header", this),
+                floatingPanel = $(".floating-panel"),
                 width          = floatingHeader.prev().width();
 
 
@@ -337,7 +338,14 @@
                     "visibility": "visible",
                     "width": width
                 });
+                floatingPanel.css({
+                    "visibility": "visible",
+                    "height": floatingHeader.height()
+                });
             } else {
+                floatingPanel.css({
+                    "visibility": "hidden"
+                });
                 floatingHeader.css({
                     "visibility": "hidden"
                 });
@@ -365,12 +373,12 @@
     {
         var clonedHeaderRow;
 
+        $("body").append("<div class=\"floating-panel\"></div>");
         $(".persist-area").each(function() {
             clonedHeaderRow = $(".persist-header", this);
             clonedHeaderRow
                 .before(clonedHeaderRow.clone())
                 .addClass("floating-header");
-
         });
 
         $(window)

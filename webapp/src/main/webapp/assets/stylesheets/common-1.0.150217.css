@@ -567,12 +567,24 @@ p.justify {
 
 #ae-browse .floating-header th {
     background: #fff;
+    border-bottom: 0 none;
 }
 
 #ae-browse .floating-header {
     position: fixed;
     z-index: 9999;
     top: 0;
+    visibility: hidden;
+}
+
+.floating-panel {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 2px solid ${color.p1};
     box-shadow: 0 3px 5px #ccc;
     -moz-box-shadow: 0 3px 5px #ccc;
     -webkit-box-shadow: 0 3px 5px #ccc;
@@ -670,7 +682,7 @@ p.justify {
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-bottom-left-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
-    background-color: #EEE;
+    background-color: #eee;
 }
 
 #ae-browse .col_footer a {
