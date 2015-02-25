@@ -363,10 +363,9 @@
                 width          = floatingHeader.prev().width();
 
 
-            if ("visible" == floatingHeader.css("visibility")) {
+            if (floatingHeader.hasClass("visible")) {
                 floatingHeader.css({
-                    "visibility": "visible",
-                    "width": width
+                    "width": width + "px"
                 });
             }
         });
