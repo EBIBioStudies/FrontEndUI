@@ -39,9 +39,16 @@
 
     <xsl:template match="submission/section[1]">
         <xsl:variable name="vFiles" select="ae:getMappedValue('accession-folder', @id)"/>
-
-        <study files="{fn:count($vFiles/file)}"
-               links="{fn:count(descendant::link)}">
+        <xsl:variable name="vFileCount">
+            <xsl:for-each select="descendant::file">
+                <xsl:variable name="vName" select="@name"/>
+                <xsl:if test="$vFiles/file[@name=$vName]">
+                    <xxx/>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <study files="{fn:count(descendant::file)}"
+               links="{fn:count($vFileCount)}">
             <accession><xsl:value-of select="@id"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
