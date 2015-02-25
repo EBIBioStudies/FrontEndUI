@@ -92,10 +92,11 @@
                     <xsl:choose>
                         <xsl:when test="fn:current-grouping-key() = 'linked information'">
                             <xsl:for-each-group select="fn:current-group()" group-by="type">
-                                <xsl:value-of select="type"/>
+                                <xsl:value-of select="ae:getTitleFor(type)"/>
                                 <xsl:text>: </xsl:text>
                                 <xsl:call-template name="highlighted-list">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pType" select="type"/>
                                     <xsl:with-param name="pList"
                                                     select="fn:current-group()/value"/>
                                 </xsl:call-template>
@@ -1176,22 +1177,122 @@
     <xsl:template name="highlighted-list">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pList"/>
+        <xsl:param name="pType"/>
+
         <xsl:variable name="vSize" select="fn:count($pList)"/>
 
-        <xsl:call-template name="highlight">
-            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-            <xsl:with-param name="pText"
-                            select="fn:string-join($pList[fn:position() = (1 to 20)], ', ')"/>
-        </xsl:call-template>
+        <xsl:for-each select="$pList[fn:position() = (1 to 20)]">
+            <xsl:call-template name="highlight-reference">
+                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                <xsl:with-param name="pText"
+                                select="text()"/>
+                <xsl:with-param name="pType" select="$pType"/>
+            </xsl:call-template>
+            <xsl:if test="fn:position() != fn:last()">
+                <xsl:text>, </xsl:text>
+            </xsl:if>
+        </xsl:for-each>
         <xsl:if test="$vSize &gt; 20">
             <span class="hidden-values" size="{$vSize}">
                 <xsl:text>, </xsl:text>
-                <xsl:call-template name="highlight">
-                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                    <xsl:with-param name="pText"
-                                    select="fn:string-join($pList[fn:position() = (21 to $vSize)], ', ')"/>
-                </xsl:call-template>
+                <xsl:for-each select="$pList[fn:position() = (21 to $vSize)]">
+                    <xsl:call-template name="highlight-reference">
+                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                        <xsl:with-param name="pText"
+                                        select="text()"/>
+                        <xsl:with-param name="pType" select="$pType"/>
+                    </xsl:call-template>
+                    <xsl:if test="fn:position() != fn:last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </xsl:for-each>
             </span>
         </xsl:if>
     </xsl:template>
+    
+    <xsl:template name="highlight-reference">
+        <xsl:param name="pQueryId"/>
+        <xsl:param name="pText"/>
+        <xsl:param name="pType"/>
+        <xsl:variable name="vUrl" select="ae:getUrlFor($pType, $pText)"/>
+        <xsl:choose>
+            <xsl:when test="$vUrl != ''">
+                <a href="{$vUrl}" target="_blank">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                        <xsl:with-param name="pText"
+                                        select="text()"/>
+                    </xsl:call-template>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="highlight">
+                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                    <xsl:with-param name="pText"
+                                    select="text()"/>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:function name="ae:getTitleFor">
+        <xsl:param name="pType"/>
+        <xsl:choose>
+            <xsl:when test="fn:lower-case($pType) = 'sptr'">
+                <xsl:value-of select="'UniProt'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'embl'">
+                <xsl:value-of select="'ENA'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'interpro'">
+                <xsl:value-of select="'InterPro'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'msd'">
+                <xsl:value-of select="'PDBe'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'intact'">
+                <xsl:value-of select="'IntAct'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'chebi'">
+                <xsl:value-of select="'ChEBI'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'arxpr'">
+                <xsl:value-of select="'ArrayExpress'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'omim'">
+                <xsl:value-of select="'OMIM'"/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:function>
+
+    <xsl:function name="ae:getUrlFor">
+        <xsl:param name="pType"/>
+        <xsl:param name="pId"/>
+        <xsl:choose>
+            <xsl:when test="fn:lower-case($pType) = 'sptr'">
+                <xsl:value-of select="fn:concat('http://www.uniprot.org/uniprot/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'embl'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ena/data/view/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'interpro'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/interpro/entry/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'msd'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/pdbe-srv/view/entry/', $pId, '/summary')"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'intact'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/intact/pages/details/details.xhtml?experimentAc=', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'chebi'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/chebi/searchId.do?chebiId=', fn:replace($pId, '[:]', '%3A'))"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'arxpr'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'omim'">
+                <xsl:value-of select="fn:concat('http://omim.org/entry/', $pId)"/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>
