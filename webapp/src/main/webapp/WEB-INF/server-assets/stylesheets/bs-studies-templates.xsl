@@ -1205,6 +1205,7 @@
                         <xsl:text>, </xsl:text>
                     </xsl:if>
                 </xsl:for-each>
+                <xsl:text> </xsl:text>
             </span>
         </xsl:if>
     </xsl:template>
