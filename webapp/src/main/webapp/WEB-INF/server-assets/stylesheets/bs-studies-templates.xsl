@@ -1188,13 +1188,12 @@
                                 select="text()"/>
                 <xsl:with-param name="pType" select="$pType"/>
             </xsl:call-template>
-            <xsl:if test="fn:position() != fn:last()">
+            <xsl:if test="fn:position() != fn:last() or $vSize &gt; 20">
                 <xsl:text>, </xsl:text>
             </xsl:if>
         </xsl:for-each>
         <xsl:if test="$vSize &gt; 20">
             <span class="hidden-values" size="{$vSize}">
-                <xsl:text>, </xsl:text>
                 <xsl:for-each select="$pList[fn:position() = (21 to $vSize)]">
                     <xsl:call-template name="highlight-reference">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>

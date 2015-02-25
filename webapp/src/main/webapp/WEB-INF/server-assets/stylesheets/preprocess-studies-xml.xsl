@@ -28,7 +28,7 @@
         <studies total="{fn:count(submission)}"> <!--  retrieved="{ae:fixRetrievedDateTimeFormat(@retrieved)}" -->
 
             <xsl:apply-templates select="submission">
-                <!--
+                <!-- remains here until when we get release info in the source
                 <xsl:sort select="substring-before(releasedate, '-')" order="descending" data-type="number"/>
                 <xsl:sort select="substring-before(substring-after(releasedate, '-'), '-')" order="descending" data-type="number"/>
                 <xsl:sort select="substring-after(substring-after(releasedate, '-'), '-')" order="descending"  data-type="number"/>
@@ -38,18 +38,18 @@
     </xsl:template>
 
     <xsl:template match="submission/section[1]">
-        <xsl:variable name="vFiles" select="ae:getMappedValue('accession-folder', @id)"/>
-        <xsl:variable name="vFileCount">
-            <x>
+        <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', @id)"/>
+        <xsl:variable name="vFiles">
+            <files>
                 <xsl:for-each select="descendant::file">
                     <xsl:variable name="vName" select="@name"/>
-                    <xsl:if test="$vFiles/file[@name=$vName]">
-                        <xxx/>
+                    <xsl:if test="$vPhysicalFiles/file[@name=$vName]">
+                        <xsl:copy-of select="."/>
                     </xsl:if>
                 </xsl:for-each>
-            </x>
+            </files>
         </xsl:variable>
-        <study files="{fn:count($vFileCount/x/xxx)}"
+        <study files="{fn:count($vFiles/files/file)}"
                links="{fn:count(descendant::link)}">
             <accession><xsl:value-of select="@id"/></accession>
             <releasedate>2015-02-01</releasedate>
@@ -62,8 +62,7 @@
             </xsl:for-each>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
-            <xsl:apply-templates select="files" mode="files"/>
-            <!-- <xsl:apply-templates select="*" mode="copy" /> -->
+            <xsl:apply-templates select="$vFiles/files" mode="files"/>
         </study>
     </xsl:template>
 
@@ -80,27 +79,11 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:function name="ae:fixRetrievedDateTimeFormat">
-        <xsl:param name="pInvalidDateTime"/>
-        <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>
-    </xsl:function>
-
     <xsl:template match="text()|@*"/>
     <xsl:template match="text()|@*" mode="attributes"/>
     <xsl:template match="text()|@*" mode="attribute"/>
     <xsl:template match="text()|@*" mode="section"/>
     <xsl:template match="text()|@*" mode="files"/>
-    <!--
-    <xsl:template match="attributes">
-        <xsl:for-each-group select="attribute" group-by="fn:lower-case(@name)">
-            <attribute name="{@name}">
-                <xsl:for-each select="current-group()">
-                    <xsl:copy-of select="*"/>
-                </xsl:for-each>
-            </attribute>
-        </xsl:for-each-group>
-    </xsl:template>
-    -->
 
     <xsl:template match="attribute[fn:lower-case(@name)='title']" mode="attributes">
         <title>
@@ -144,4 +127,10 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>
+
+    <xsl:function name="ae:fixRetrievedDateTimeFormat">
+        <xsl:param name="pInvalidDateTime"/>
+        <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

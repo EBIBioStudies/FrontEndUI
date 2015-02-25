@@ -127,7 +127,6 @@ ul#secondary-nav li.active > a {
 }
 
 a.show-more, a.show-less {
-    display: inline-block;
     color: ${color.c3};
     padding: 0;
 }
