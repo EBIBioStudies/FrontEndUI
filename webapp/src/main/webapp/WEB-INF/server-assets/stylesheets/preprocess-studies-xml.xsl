@@ -47,8 +47,8 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
-        <study files="{fn:count(descendant::file)}"
-               links="{fn:count($vFileCount)}">
+        <study files="{fn:count($vFileCount)}"
+               links="{fn:count(descendant::link}">
             <accession><xsl:value-of select="@id"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
