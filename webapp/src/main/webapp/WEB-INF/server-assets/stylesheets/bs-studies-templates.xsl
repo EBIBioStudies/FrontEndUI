@@ -1238,17 +1238,38 @@
     <xsl:function name="ae:getTitleFor">
         <xsl:param name="pType"/>
         <xsl:choose>
-            <xsl:when test="fn:lower-case($pType) = 'sptr'">
+            <xsl:when test="fn:lower-case($pType) = 'sprot'">
                 <xsl:value-of select="'UniProt'"/>
             </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'embl'">
+            <xsl:when test="fn:lower-case($pType) = 'gen'">
                 <xsl:value-of select="'ENA'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'arrayexpress'">
+                <xsl:value-of select="'ArrayExpress'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'refsnp'">
+                <xsl:value-of select="'dbSNP'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'pdb'">
+                <xsl:value-of select="'PDBe'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'pfam'">
+                <xsl:value-of select="'Pfam'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'omim'">
+                <xsl:value-of select="'OMIM'"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'interpro'">
                 <xsl:value-of select="'InterPro'"/>
             </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'msd'">
-                <xsl:value-of select="'PDBe'"/>
+            <xsl:when test="fn:lower-case($pType) = 'refseq'">
+                <xsl:value-of select="'Nucleotide'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'ensembl'">
+                <xsl:value-of select="'ENSEMBL'"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'doi'">
+                <xsl:value-of select="'DOI'"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'intact'">
                 <xsl:value-of select="'IntAct'"/>
@@ -1256,12 +1277,9 @@
             <xsl:when test="fn:lower-case($pType) = 'chebi'">
                 <xsl:value-of select="'ChEBI'"/>
             </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'arxpr'">
-                <xsl:value-of select="'ArrayExpress'"/>
-            </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'omim'">
-                <xsl:value-of select="'OMIM'"/>
-            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$pType"/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
 
@@ -1269,29 +1287,41 @@
         <xsl:param name="pType"/>
         <xsl:param name="pId"/>
         <xsl:choose>
-            <xsl:when test="fn:lower-case($pType) = 'sptr'">
+            <xsl:when test="fn:lower-case($pType) = 'sprot'">
                 <xsl:value-of select="fn:concat('http://www.uniprot.org/uniprot/', $pId)"/>
             </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'embl'">
+            <xsl:when test="fn:lower-case($pType) = 'gen'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ena/data/view/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'arrayexpress'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'refsnp'">
+                <xsl:value-of select="fn:concat('http://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?rs=', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'pdb'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/pdbe-srv/view/entry/', $pId, '/summary')"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'pfam'">
+                <xsl:value-of select="fn:concat('http://pfam.xfam.org/family/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'omim'">
+                <xsl:value-of select="fn:concat('http://omim.org/entry/', $pId)"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'interpro'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/interpro/entry/', $pId)"/>
             </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'msd'">
-                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/pdbe-srv/view/entry/', $pId, '/summary')"/>
+            <xsl:when test="fn:lower-case($pType) = 'refseq'">
+                <xsl:value-of select="fn:concat('http://www.ncbi.nlm.nih.gov/nuccore/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'doi'">
+                <xsl:value-of select="fn:concat('http://dx.doi.org/', $pId)"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'intact'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/intact/pages/details/details.xhtml?experimentAc=', $pId)"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'chebi'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/chebi/searchId.do?chebiId=', fn:replace($pId, '[:]', '%3A'))"/>
-            </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'arxpr'">
-                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
-            </xsl:when>
-            <xsl:when test="fn:lower-case($pType) = 'omim'">
-                <xsl:value-of select="fn:concat('http://omim.org/entry/', $pId)"/>
             </xsl:when>
         </xsl:choose>
     </xsl:function>
