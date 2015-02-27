@@ -1266,7 +1266,7 @@
                 <xsl:value-of select="'Nucleotide'"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'ensembl'">
-                <xsl:value-of select="'ENSEMBL'"/>
+                <xsl:value-of select="'Ensembl'"/>
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'doi'">
                 <xsl:value-of select="'DOI'"/>
