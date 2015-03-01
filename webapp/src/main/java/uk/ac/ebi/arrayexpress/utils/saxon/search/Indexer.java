@@ -108,6 +108,7 @@ public class Indexer {
     private void addIndexField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore) {
         String stringValue = value.getStringValue();
         FieldType fieldType = new FieldType();
+        fieldType.setIndexed(true);
         fieldType.setTokenized(shouldAnalyze);
         fieldType.setStored(shouldStore);
         document.add(new Field(name, stringValue, fieldType));
