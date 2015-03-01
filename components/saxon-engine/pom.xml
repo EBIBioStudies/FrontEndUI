@@ -31,7 +31,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
+            <artifactId>lucene-queryparser</artifactId>
         </dependency>
         <dependency>
             <groupId>net.sf.saxon</groupId>

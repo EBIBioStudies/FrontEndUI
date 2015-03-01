@@ -25,9 +25,7 @@ import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.NumericField;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
@@ -43,7 +41,6 @@ import java.util.List;
 
 
 public class Indexer {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IndexEnvironment env;
@@ -102,7 +99,7 @@ public class Indexer {
 
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31, analyzer);
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
         return new IndexWriter(indexDirectory, config);
@@ -110,7 +107,10 @@ public class Indexer {
 
     private void addIndexField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore) {
         String stringValue = value.getStringValue();
-        document.add(new Field(name, stringValue, shouldStore ? Field.Store.YES : Field.Store.NO, shouldAnalyze ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED));
+        FieldType fieldType = new FieldType();
+        fieldType.setTokenized(shouldAnalyze);
+        fieldType.setStored(shouldStore);
+        document.add(new Field(name, stringValue, fieldType));
     }
 
     private void addBooleanIndexField(Document document, String name, Item value) {
@@ -122,7 +122,7 @@ public class Indexer {
             boolValue = StringTools.stringToBoolean(stringValue);
         }
 
-        document.add(new Field(name, null == boolValue ? "" : boolValue.toString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+        document.add(new StringField(name, null == boolValue ? "" : boolValue.toString(), Field.Store.NO));
     }
 
     private void addIntIndexField(Document document, String name, Item value) {
@@ -135,7 +135,7 @@ public class Indexer {
             } else {
                 longValue = Long.parseLong(value.getStringValue());
             }
-            document.add(new NumericField(name).setLongValue(longValue));
+            document.add(new LongField(name, longValue, Field.Store.NO));
         } catch (XPathException x) {
             logger.error("Unable to convert value [" + value.getStringValue() + "]", x);
         }

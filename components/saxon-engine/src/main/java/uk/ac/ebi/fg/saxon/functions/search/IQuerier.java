@@ -18,7 +18,7 @@
 package uk.ac.ebi.fg.saxon.functions.search;
 
 import net.sf.saxon.om.NodeInfo;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 
 import java.io.IOException;
 import java.util.List;

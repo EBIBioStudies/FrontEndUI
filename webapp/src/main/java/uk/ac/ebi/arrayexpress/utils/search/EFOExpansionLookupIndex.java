@@ -21,10 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -39,7 +36,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private FSDirectory indexDirectory;
@@ -201,9 +197,10 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     public EFOExpansionTerms getExpansionTerms(Query origQuery) throws IOException {
         EFOExpansionTerms expansion = new EFOExpansionTerms();
 
-        if (IndexReader.indexExists(getIndexDirectory())) {
+        if (DirectoryReader.indexExists(getIndexDirectory())) {
 
-            try (IndexReader reader = IndexReader.open(getIndexDirectory()); IndexSearcher searcher = new IndexSearcher(reader)) {
+            try (IndexReader reader = IndexReader.open(getIndexDirectory())) {
+                IndexSearcher searcher = new IndexSearcher(reader);
 
                 Query q = overrideQueryField(origQuery, "term");
 
@@ -232,9 +229,10 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     public Set<String> getReverseExpansion(String text) throws IOException {
         Set<String> reverseExpansion = new HashSet<>();
 
-        if (null != text && IndexReader.indexExists(getIndexDirectory())) {
+        if (null != text && DirectoryReader.indexExists(getIndexDirectory())) {
 
-            try (IndexReader reader = IndexReader.open(getIndexDirectory()); IndexSearcher searcher = new IndexSearcher(reader)) {
+            try (IndexReader reader = IndexReader.open(getIndexDirectory())) {
+                IndexSearcher searcher = new IndexSearcher(reader);
 
                 // step 1: split terms
                 String[] terms = text.split("\\s+");
@@ -278,7 +276,7 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     }
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_36, analyzer);
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         return new IndexWriter(indexDirectory, config);
     }

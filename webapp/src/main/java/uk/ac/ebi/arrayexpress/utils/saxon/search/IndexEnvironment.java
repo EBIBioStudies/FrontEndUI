@@ -20,7 +20,7 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
 import net.sf.saxon.om.NodeInfo;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 public class IndexEnvironment {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     // source index configuration (will be eventually removed)

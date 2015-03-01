@@ -20,7 +20,7 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.NodeInfo;
 import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.slf4j.Logger;
@@ -34,7 +34,6 @@ import java.net.URL;
 import java.util.*;
 
 public class Controller implements IQuerier, IHighlighter {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Configuration config;

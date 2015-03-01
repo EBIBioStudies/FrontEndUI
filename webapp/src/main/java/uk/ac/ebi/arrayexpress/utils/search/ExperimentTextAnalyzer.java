@@ -18,36 +18,33 @@
 package uk.ac.ebi.arrayexpress.utils.search;
 
 import org.apache.lucene.analysis.*;
+import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
+import org.apache.lucene.analysis.util.CharTokenizer;
+import org.apache.lucene.util.Version;
 
-import java.io.IOException;
 import java.io.Reader;
 
 public final class ExperimentTextAnalyzer extends Analyzer {
+    @Override
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        Tokenizer source = new ExperimentTextTokenizer(reader);
+        TokenStream filter = new ASCIIFoldingFilter(source);
+        return new TokenStreamComponents(source, filter);
+    }
+
     private static class ExperimentTextTokenizer extends CharTokenizer {
         public ExperimentTextTokenizer(Reader in) {
-            super(in);
+            super(Version.LUCENE_40, in);
         }
 
-        protected boolean isTokenChar(char c) {
+        @Override
+        protected boolean isTokenChar(int c) {
             return Character.isLetter(c) | Character.isDigit(c) | ('-' == c);
         }
 
-        protected char normalize(char c) {
+        @Override
+        protected int normalize(int c) {
             return Character.toLowerCase(c);
         }
-    }
-
-    public TokenStream tokenStream(String fieldName, Reader reader) {
-        return new ASCIIFoldingFilter(new ExperimentTextTokenizer(reader));
-    }
-
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
-        Tokenizer tokenizer = (Tokenizer) getPreviousTokenStream();
-        if (tokenizer == null) {
-            tokenizer = new ExperimentTextTokenizer(reader);
-            setPreviousTokenStream(tokenizer);
-        } else
-            tokenizer.reset(reader);
-        return new ASCIIFoldingFilter(tokenizer);
     }
 }
