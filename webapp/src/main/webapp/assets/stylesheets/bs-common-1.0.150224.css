@@ -371,8 +371,12 @@ p.intro {
     font-size: 108%;
 }
 
-p.justify {
+p.justify, td.justify {
     text-align: justify;
+}
+
+p.left, td.left {
+    text-align: left;
 }
 
 .visible {
@@ -649,7 +653,6 @@ p.justify {
 }
 
 #ae-detail td.value {
-    text-align: justify;
     vertical-align: top;
     padding: 7px 10px;
 }
