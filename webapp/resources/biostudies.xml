@@ -103,6 +103,8 @@
                 <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false"/>
                 <field name="public" type="boolean" path="true()"/>
+                <field name="files"  title="Number of Files" type="integer" path="@files"/>
+                <field name="links" title="Number of Links" type="integer" path="@links"/>
                 <!--
                 <field name="organism" title="by Organism" type="string" path="organism" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="array" title="by Array" type="string" path="arraydesign/id | arraydesign/legacy_id | arraydesign/accession | arraydesign/name" analyze="true" store="false" escape="false" expand="false"/>
