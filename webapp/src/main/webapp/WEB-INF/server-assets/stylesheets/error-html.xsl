@@ -56,7 +56,7 @@
                 <xsl:when test="$error-code = '400'">
                     <xsl:call-template name="block-warning">
                         <xsl:with-param name="pTitle">We’re sorry that we cannot process your request</xsl:with-param>
-                        <xsl:with-param name="pMessage">There was a query syntax error in <span class="alert"><xsl:value-of select="$error-message"/></span>. Please try a different query or check our <a href="{$context-path}/help/how_to_search.html">query syntax help</a>.</xsl:with-param>
+                        <xsl:with-param name="pMessage">There was a query syntax error in <span class="alert"><xsl:value-of select="$error-message"/></span>. Please try a different query or check our <a href="{$context-path}/help/index.html">query syntax help</a>.</xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:when test="$error-code = '403'">

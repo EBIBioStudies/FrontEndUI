@@ -232,7 +232,6 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
 
     public Item evaluateXPathSingle(NodeInfo node, String xpath) throws XPathException {
         XPathExpression xpe = getXPathExpression(xpath);
-
         return xpe.evaluateSingle(xpe.createDynamicContext(node));
     }
 
