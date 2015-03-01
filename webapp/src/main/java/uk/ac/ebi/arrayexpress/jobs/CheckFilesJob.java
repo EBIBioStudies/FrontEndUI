@@ -37,7 +37,7 @@ public class CheckFilesJob extends ApplicationJob {
         Files files = (Files) getComponent("Files");
         SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
 
-        Map<String, String[]> transformParams = new HashMap<String, String[]>();
+        Map<String, String[]> transformParams = new HashMap<>();
         transformParams.put("rescanMessage", new String[]{files.getLastReloadMessage()});
 
         String report = saxon.transformToString(files.getDocument(), "check-files-plain.xsl", transformParams);

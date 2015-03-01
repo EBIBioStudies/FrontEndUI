@@ -54,7 +54,7 @@ public class LookupServlet extends ApplicationServlet {
 
         String efoId = null != request.getParameter("efoid") ? request.getParameter("efoid") : "";
         // todo: remove this hack at all
-        efoId = efoId.replaceFirst("^http\\://wwwdev\\.ebi\\.ac\\.uk/", "http://www.ebi.ac.uk/");
+        efoId = efoId.replaceFirst("^http://wwwdev\\.ebi\\.ac\\.uk/", "http://www.ebi.ac.uk/");
 
         if (null != requestArgs) {
             if (!requestArgs[0].equals("")) {

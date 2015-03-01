@@ -31,7 +31,6 @@ import uk.ac.ebi.arrayexpress.utils.io.RemovingMultipleSpacesReader;
 import uk.ac.ebi.arrayexpress.utils.saxon.FlatFileXMLReader;
 
 import javax.xml.transform.sax.SAXSource;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;

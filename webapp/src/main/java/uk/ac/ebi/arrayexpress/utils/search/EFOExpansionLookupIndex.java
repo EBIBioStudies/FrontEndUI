@@ -21,11 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.efo.EFONode;
@@ -283,15 +283,11 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
 
     private void addIndexField(Document document, String name, String value, boolean shouldAnalyze, boolean shouldStore) {
         value = value.replaceAll("[^\\d\\w-]", " ").toLowerCase();
-        document.add(
-                new Field(
-                        name
-                        , value
-                        , shouldStore ? Field.Store.YES : Field.Store.NO
-                        , shouldAnalyze ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED
-                        , Field.TermVector.NO
-                )
-        );
+        FieldType fieldType = new FieldType();
+        fieldType.setIndexOptions(IndexOptions.DOCS);
+        fieldType.setTokenized(shouldAnalyze);
+        fieldType.setStored(shouldStore);
+        document.add(new Field(name, value, fieldType));
     }
 
     private Query overrideQueryField(Query origQuery, String fieldName) {

@@ -130,7 +130,7 @@ public final class EFOQueryExpander implements IQueryExpander {
             } else if (query instanceof FuzzyQuery) {
                 field = ((FuzzyQuery) query).getTerm().field();
             } else {
-                Set<Term> terms = new HashSet<Term>();
+                Set<Term> terms = new HashSet<>();
                 query.extractTerms(terms);
                 if (terms.size() > 1 && !(query instanceof PhraseQuery)) {
                     logger.warn("More than one term found for query [{}]", query.toString());
@@ -185,7 +185,7 @@ public final class EFOQueryExpander implements IQueryExpander {
         } else if (query instanceof TermQuery) {
             return ((TermQuery) query).getTerm();
         } else {
-            Set<Term> terms = new HashSet<Term>();
+            Set<Term> terms = new HashSet<>();
             query.extractTerms(terms);
 
             return terms.iterator().next();

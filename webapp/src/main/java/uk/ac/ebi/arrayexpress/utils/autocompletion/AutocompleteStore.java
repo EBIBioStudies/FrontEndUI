@@ -60,7 +60,7 @@ public class AutocompleteStore {
 
     public AutocompleteStore() {
         this.trie = new SetTrie(new AutocompleteComparator());
-        this.objects = new HashMap<String, AutocompleteData>();
+        this.objects = new HashMap<>();
     }
 
     public void clear() {
@@ -76,8 +76,8 @@ public class AutocompleteStore {
     }
 
     public List<AutocompleteData> findCompletions(String prefix, String fieldName, Integer limit) {
-        List<AutocompleteData> comps = new ArrayList<AutocompleteData>();
-        if ("".equals(fieldName) || -1 == " assaycount samplecount rawcount processedcount efcount sacount miamescore ".indexOf(" " + fieldName + " ")) {
+        List<AutocompleteData> comps = new ArrayList<>();
+        if ("".equals(fieldName) || !" assaycount samplecount rawcount processedcount efcount sacount miamescore ".contains(" " + fieldName + " ")) {
             List<String> matches = trie.findCompletions(prefix);
 
             for (String key : matches) {
@@ -91,7 +91,7 @@ public class AutocompleteStore {
                     }
                 } else {
                     if ((AutocompleteData.DATA_TEXT.equals(data.getDataType()) && fieldName.equals(data.getData()))
-                            || (-1 != "sa efv exptype".indexOf(fieldName) && AutocompleteData.DATA_EFO_NODE.equals(data.getDataType()))) {
+                            || (" sa efv exptype ".contains(" " + fieldName + " ") && AutocompleteData.DATA_EFO_NODE.equals(data.getDataType()))) {
                         shouldAdd = true;
                     }
                 }

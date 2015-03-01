@@ -20,9 +20,6 @@ package uk.ac.ebi.arrayexpress.utils.search;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.CharTokenizer;
-import org.apache.lucene.util.Version;
-
-import java.io.Reader;
 
 public final class AccessionAnalyzer extends Analyzer {
     @Override

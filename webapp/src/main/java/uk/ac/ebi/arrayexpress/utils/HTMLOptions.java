@@ -45,7 +45,7 @@ public class HTMLOptions {
     private Set<Option> options;
 
     public HTMLOptions() {
-        this.options = new LinkedHashSet<Option>();
+        this.options = new LinkedHashSet<>();
     }
 
     public void clearOptions() {

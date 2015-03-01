@@ -23,7 +23,7 @@ import java.io.IOException;
 public class AccessLoggingSuppressFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        request.setAttribute("health", Boolean.valueOf(true));
+        request.setAttribute("health", true);
         chain.doFilter(request, response);
     }
 

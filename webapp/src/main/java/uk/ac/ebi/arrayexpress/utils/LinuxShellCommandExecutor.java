@@ -38,7 +38,7 @@ public class LinuxShellCommandExecutor {
     }
 
     public boolean execute(String command, boolean waitForResult) throws IOException, InterruptedException {
-        List<String> commandParams = new ArrayList<String>();
+        List<String> commandParams = new ArrayList<>();
         commandParams.add("/bin/sh");
         commandParams.add("-c");
         commandParams.add(command);

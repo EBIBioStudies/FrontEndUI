@@ -140,7 +140,7 @@ public class StringTools {
             }
             out.append(in.substring(currentIndex, entityStart));
             entityEnd = in.indexOf(";", entityStart);
-            if (-1 != entityEnd && in.substring(entityStart + 2, entityEnd).matches("^\\d{1,}$")) {
+            if (-1 != entityEnd && in.substring(entityStart + 2, entityEnd).matches("^\\d+$")) {
                 // good stuff, we found decimal entity
                 out.append((char) Integer.parseInt(in.substring(entityStart + 2, entityEnd)));
                 currentIndex = entityEnd + 1;

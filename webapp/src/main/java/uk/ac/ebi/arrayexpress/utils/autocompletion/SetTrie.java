@@ -23,11 +23,11 @@ public class SetTrie {
     private TreeSet<String> lines;
 
     public SetTrie() {
-        lines = new TreeSet<String>();
+        lines = new TreeSet<>();
     }
 
     public SetTrie(Comparator<? super String> comp) {
-        lines = new TreeSet<String>(comp);
+        lines = new TreeSet<>(comp);
     }
 
     public void clear() {
@@ -58,7 +58,7 @@ public class SetTrie {
     }
 
     public synchronized List<String> findCompletions(String prefix) {
-        List<String> completions = new ArrayList<String>();
+        List<String> completions = new ArrayList<>();
         Set<String> tailSet;
 
         synchronized (this) {
