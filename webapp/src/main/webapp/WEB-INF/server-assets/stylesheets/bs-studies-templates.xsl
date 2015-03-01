@@ -438,7 +438,7 @@
                     <div><xsl:value-of select="$pName"/></div>
                 </td>
                 <td>
-                    <xsl:attribute name="class" select="fn:string-join((('value'),$pClass), ',')"/>
+                    <xsl:attribute name="class" select="fn:string-join((('value'),$pClass), ' ')"/>
                     <xsl:copy-of select="$pContent"/>
                 </td>
             </tr>
