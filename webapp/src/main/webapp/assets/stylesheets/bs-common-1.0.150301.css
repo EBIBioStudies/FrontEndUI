@@ -51,6 +51,7 @@
 a span.link-doc,
 a span.link-pdf,
 a span.link-txt {
+    padding: 0;
     background: 0 none;
 }
 
