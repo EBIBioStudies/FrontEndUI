@@ -97,7 +97,7 @@
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/biostudies-colours.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/font-awesome.css" type="text/css"/>
-            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-common-1.0.150224.css" type="text/css"/>
+            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-common-1.0.150301.css" type="text/css"/>
             <xsl:copy-of select="$pExtraCode"/>
             <!-- end CSS-->
 

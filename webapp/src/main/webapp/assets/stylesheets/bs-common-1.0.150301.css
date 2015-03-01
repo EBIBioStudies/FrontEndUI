@@ -48,6 +48,12 @@
     vertical-align: middle
 }
 
+a span.link-doc,
+a span.link-pdf,
+a span.link-txt {
+    background: 0 none;
+}
+
 .container_24 {
     min-width: 984px
 }
