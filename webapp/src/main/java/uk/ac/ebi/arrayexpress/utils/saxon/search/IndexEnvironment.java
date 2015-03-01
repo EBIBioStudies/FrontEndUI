@@ -94,7 +94,7 @@ public class IndexEnvironment {
             this.indexId = this.indexConfig.getString("[@id]");
 
             String indexBaseLocation = this.indexConfig.getString("[@location]");
-            this.indexDirectory = FSDirectory.open(new File(indexBaseLocation, this.indexId));
+            this.indexDirectory = FSDirectory.open(new File(indexBaseLocation, this.indexId).toPath());
 
             String indexAnalyzer = this.indexConfig.getString("[@defaultAnalyzer]");
             Analyzer a = (Analyzer) Class.forName(indexAnalyzer).newInstance();

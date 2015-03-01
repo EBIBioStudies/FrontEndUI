@@ -34,7 +34,7 @@
         <guice.version>3.0</guice.version>
         <guava.version>18.0</guava.version>
         <saxon.version>9.6.0-4</saxon.version>
-        <lucene.version>4.0.0</lucene.version>
+        <lucene.version>5.0.0</lucene.version>
 
         <!-- http://colorschemedesigner.com/csd-3.5/#3s61Ts4rGw0w0 -->
         <color.p1>#17668C</color.p1>

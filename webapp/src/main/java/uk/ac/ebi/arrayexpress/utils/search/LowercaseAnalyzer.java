@@ -20,23 +20,16 @@ package uk.ac.ebi.arrayexpress.utils.search;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.LetterTokenizer;
-import org.apache.lucene.util.Version;
-
-import java.io.Reader;
 
 public final class LowercaseAnalyzer extends Analyzer {
     @Override
-    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-        Tokenizer source = new LowercaseTokenizer(reader);
+    protected TokenStreamComponents createComponents(String fieldName) {
+        Tokenizer source = new LowercaseTokenizer();
         //TokenStream filter = new ASCIIFoldingFilter(source);
         return new TokenStreamComponents(source);
     }
 
     private static class LowercaseTokenizer extends LetterTokenizer {
-        public LowercaseTokenizer(Reader in) {
-            super(Version.LUCENE_40, in);
-        }
-
         @Override
         protected boolean isTokenChar(int c) {
             return true;

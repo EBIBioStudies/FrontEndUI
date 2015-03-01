@@ -18,11 +18,7 @@
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.MultiFields;
-import org.apache.lucene.index.Terms;
-import org.apache.lucene.index.TermsEnum;
+import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
@@ -48,7 +44,7 @@ public class Querier {
     public List<String> getTerms(String fieldName, int minFreq) throws IOException {
         List<String> termsList = new ArrayList<>();
 
-        try (IndexReader reader = IndexReader.open(this.env.indexDirectory)) {
+        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             Terms terms = MultiFields.getTerms(reader, fieldName);
             if (null != terms) {
                 TermsEnum iterator = terms.iterator(null);
@@ -64,7 +60,7 @@ public class Querier {
     }
 
     public void dumpTerms(String fieldName) throws IOException {
-        try (IndexReader reader = IndexReader.open(this.env.indexDirectory)) {
+        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             Terms terms = MultiFields.getTerms(reader, fieldName);
             if (null != terms) {
                 File f = new File(System.getProperty("java.io.tmpdir"), fieldName + "_terms.txt");
@@ -82,7 +78,7 @@ public class Querier {
     }
 
     public Integer getDocCount(Query query) throws IOException {
-        try (IndexReader reader = IndexReader.open(this.env.indexDirectory)) {
+        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             IndexSearcher searcher = new IndexSearcher(reader);
 
             // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
@@ -96,7 +92,7 @@ public class Querier {
     public List<NodeInfo> query(Query query) throws IOException {
         List<NodeInfo> result;
 
-        try (IndexReader reader = IndexReader.open(this.env.indexDirectory)) {
+        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             IndexSearcher searcher = new IndexSearcher(reader);
             // empty query returns everything
             if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
@@ -121,7 +117,7 @@ public class Querier {
     public List<NodeInfo> query(QueryInfo queryInfo) throws IOException {
         List<NodeInfo> result;
 
-        try (IndexReader reader = IndexReader.open(this.env.indexDirectory)) {
+        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             IndexSearcher searcher = new IndexSearcher(reader);
 
             // empty query returns everything

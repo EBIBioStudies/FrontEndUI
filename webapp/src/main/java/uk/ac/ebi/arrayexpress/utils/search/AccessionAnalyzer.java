@@ -26,17 +26,13 @@ import java.io.Reader;
 
 public final class AccessionAnalyzer extends Analyzer {
     @Override
-    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-        Tokenizer source = new AccessionTokenizer(reader);
+    protected TokenStreamComponents createComponents(String fieldName) {
+        Tokenizer source = new AccessionTokenizer();
         //TokenStream filter = new ASCIIFoldingFilter(source);
         return new TokenStreamComponents(source);
     }
 
     private static class AccessionTokenizer extends CharTokenizer {
-        public AccessionTokenizer(Reader in) {
-            super(Version.LUCENE_40, in);
-        }
-
         @Override
         protected boolean isTokenChar(int c) {
             return Character.isLetter(c) | Character.isDigit(c) | ('-' == c);

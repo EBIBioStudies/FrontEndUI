@@ -20,23 +20,16 @@ package uk.ac.ebi.arrayexpress.utils.search;
 import org.apache.lucene.analysis.*;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.util.CharTokenizer;
-import org.apache.lucene.util.Version;
-
-import java.io.Reader;
 
 public class AttributeFieldAnalyzer extends Analyzer {
     @Override
-    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-        Tokenizer source = new AttributeFieldTokenizer(reader);
+    protected TokenStreamComponents createComponents(String fieldName) {
+        Tokenizer source = new AttributeFieldTokenizer();
         TokenStream filter = new ASCIIFoldingFilter(source);
         return new TokenStreamComponents(source, filter);
     }
 
     private static class AttributeFieldTokenizer extends CharTokenizer {
-        public AttributeFieldTokenizer(Reader in) {
-            super(Version.LUCENE_40, in);
-        }
-
         @Override
         protected boolean isTokenChar(int c) {
             return !Character.isWhitespace(c) && !(',' == c || ';' == c || '(' == c || ')' == c);

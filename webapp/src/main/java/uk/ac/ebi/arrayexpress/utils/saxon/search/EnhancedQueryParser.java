@@ -25,13 +25,12 @@ import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.util.Version;
 
 public class EnhancedQueryParser extends QueryParser {
     private IndexEnvironment env;
 
     public EnhancedQueryParser(IndexEnvironment env, String f, Analyzer a) {
-        super(Version.LUCENE_40, f, a);
+        super(f, a);
         this.env = env;
         this.setAllowLeadingWildcard(true);
     }

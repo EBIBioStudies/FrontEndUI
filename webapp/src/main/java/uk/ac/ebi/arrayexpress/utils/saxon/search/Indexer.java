@@ -26,6 +26,7 @@ import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
@@ -99,7 +100,7 @@ public class Indexer {
 
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
         return new IndexWriter(indexDirectory, config);
@@ -108,7 +109,7 @@ public class Indexer {
     private void addIndexField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore) {
         String stringValue = value.getStringValue();
         FieldType fieldType = new FieldType();
-        fieldType.setIndexed(true);
+        fieldType.setIndexOptions(IndexOptions.DOCS);
         fieldType.setTokenized(shouldAnalyze);
         fieldType.setStored(shouldStore);
         document.add(new Field(name, stringValue, fieldType));

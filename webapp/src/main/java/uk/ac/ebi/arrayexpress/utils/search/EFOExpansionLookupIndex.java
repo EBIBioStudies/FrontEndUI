@@ -49,7 +49,7 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
 
     public EFOExpansionLookupIndex(String indexLocation, Set<String> stopWords) throws IOException {
         this.stopWords = stopWords;
-        this.indexDirectory = FSDirectory.open(new File(indexLocation));
+        this.indexDirectory = FSDirectory.open(new File(indexLocation).toPath());
     }
 
     private IEFO getEfo() {
@@ -199,7 +199,7 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
 
         if (DirectoryReader.indexExists(getIndexDirectory())) {
 
-            try (IndexReader reader = IndexReader.open(getIndexDirectory())) {
+            try (IndexReader reader = DirectoryReader.open(getIndexDirectory())) {
                 IndexSearcher searcher = new IndexSearcher(reader);
 
                 Query q = overrideQueryField(origQuery, "term");
@@ -231,7 +231,7 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
 
         if (null != text && DirectoryReader.indexExists(getIndexDirectory())) {
 
-            try (IndexReader reader = IndexReader.open(getIndexDirectory())) {
+            try (IndexReader reader = DirectoryReader.open(getIndexDirectory())) {
                 IndexSearcher searcher = new IndexSearcher(reader);
 
                 // step 1: split terms
@@ -276,7 +276,7 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     }
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         return new IndexWriter(indexDirectory, config);
     }
