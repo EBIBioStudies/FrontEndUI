@@ -42,9 +42,12 @@
             <xsl:with-param name="pTitleTrail">
                 <xsl:value-of select="$vAccession"/>
                 <xsl:text> &lt; Studies</xsl:text>
+                <xsl:if test="$keywords != ''">
+                    <xsl:text> matching "</xsl:text><xsl:value-of select="$keywords"/><xsl:text>"</xsl:text>
+                </xsl:if>
             </xsl:with-param>
             <xsl:with-param name="pExtraCSS">
-                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-detail-1.0.150220.css"
+                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-detail-1.0.150301.css"
                       type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
