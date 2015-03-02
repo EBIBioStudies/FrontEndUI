@@ -76,7 +76,7 @@ public class IndexEnvironment {
     public Map<String, FieldInfo> fields;
 
     // document info
-    public int documentHashCode;
+    public String documentHashCode;
     public List<NodeInfo> documentNodes;
 
     public IndexEnvironment(HierarchicalConfiguration indexConfig) {
@@ -84,7 +84,7 @@ public class IndexEnvironment {
         populateIndexConfiguration();
     }
 
-    public void putDocumentInfo(int documentHashCode, List<NodeInfo> documentNodes) {
+    public void setDocumentInfo(String documentHashCode, List<NodeInfo> documentNodes) {
         this.documentHashCode = documentHashCode;
         this.documentNodes = documentNodes;
     }

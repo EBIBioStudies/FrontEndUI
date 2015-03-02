@@ -17,7 +17,6 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon;
 
-import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.NumericValue;
@@ -27,20 +26,17 @@ import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.persistence.Persistable;
 
-// TODO - check XML version on persistence events
-
 public class PersistableDocumentContainer extends DocumentContainer implements Persistable {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private String rootElement;
+    private final String rootElement;
 
     public PersistableDocumentContainer(String rootElement) {
         this.rootElement = rootElement;
         createDocument();
     }
 
-    public PersistableDocumentContainer(String rootElement, DocumentInfo doc) {
+    public PersistableDocumentContainer(String rootElement, Document doc) {
         this.rootElement = rootElement;
         if (null == doc) {
             createDocument();
@@ -51,16 +47,19 @@ public class PersistableDocumentContainer extends DocumentContainer implements P
 
     public String toPersistence() {
         try {
-            return ((SaxonEngine) Application.getAppComponent("SaxonEngine")).serializeDocument(getDocument());
-        } catch (Exception x) {
-            logger.debug("Caught an exception:", x);
+            return ((SaxonEngine)Application.getAppComponent("SaxonEngine")).serializeDocument(
+                    getDocument().getRootNode()
+            );
+        } catch (Exception x)
+        {
+            logger.debug( "Caught an exception:", x );
         }
         return null;
     }
 
     public void fromPersistence(String str) {
         try {
-            setDocument(((SaxonEngine) Application.getAppComponent("SaxonEngine")).buildDocument(str));
+            setDocument(build(str));
         } catch (Exception x) {
             setDocument(null);
         }
@@ -70,14 +69,16 @@ public class PersistableDocumentContainer extends DocumentContainer implements P
         }
     }
 
-    public boolean isEmpty() {
-        if (null == getDocument())
+    public boolean isEmpty()
+    {
+        if (null == getDocument()) {
             return true;
+        }
 
         Long total = null;
         try {
-            SaxonEngine saxon = (SaxonEngine) Application.getAppComponent("SaxonEngine");
-            Item item = saxon.evaluateXPathSingle(getDocument(), "count(/" + this.rootElement + "/*)");
+            SaxonEngine saxon = (SaxonEngine)Application.getAppComponent("SaxonEngine");
+            Item item = saxon.evaluateXPathSingle(getDocument().getRootNode(), "count(/" + this.rootElement + "/*)");
             total = ((NumericValue) item).longValue();
         } catch (XPathException x) {
             logger.debug("Caught an exception:", x);
@@ -86,9 +87,10 @@ public class PersistableDocumentContainer extends DocumentContainer implements P
         return (null == total || 0 == total);
     }
 
-    private void createDocument() {
+    private void createDocument()
+    {
         try {
-            setDocument(((SaxonEngine) Application.getAppComponent("SaxonEngine")).buildDocument("<?xml version=\"1.0\"?><" + this.rootElement + "/>"));
+            setDocument(build("<?xml version=\"1.0\"?><" + this.rootElement + "/>"));
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
         }
@@ -97,5 +99,9 @@ public class PersistableDocumentContainer extends DocumentContainer implements P
             logger.error("The document WAS NOT created, expect problems down the road");
         }
 
+    }
+
+    private Document build(String str) throws XPathException {
+        return ((SaxonEngine)Application.getAppComponent("SaxonEngine")).buildDocument(str);
     }
 }

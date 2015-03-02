@@ -17,7 +17,6 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
-import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
@@ -26,10 +25,9 @@ import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.IndexOptions;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.IndexOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
@@ -41,57 +39,72 @@ import java.util.List;
 
 
 public class Indexer {
+    protected final static String DOCID_FIELD = "docId";
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private IndexEnvironment env;
-    private SaxonEngine saxon;
+    private final IndexEnvironment env;
+    private final SaxonEngine saxon;
 
     public Indexer(IndexEnvironment env, SaxonEngine saxon) {
         this.env = env;
         this.saxon = saxon;
     }
 
-    public List<NodeInfo> index(DocumentInfo document) throws IndexerException, InterruptedException {
-        try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
+    public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
+        try {
+            if (getDocumentHash().equals(document.getHash())) {
+                logger.debug("Existing index found, no need to refresh");
+                List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
+                List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
 
-            List documentNodes = saxon.evaluateXPath(document, this.env.indexDocumentPath);
-            List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
+                for (Object node : documentNodes) {
+                    indexedNodes.add((NodeInfo) node);
+                }
+                return indexedNodes;
+            }
+            try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
+                setDocumentHash(document.getHash());
 
-            for (Object node : documentNodes) {
-                Document d = new Document();
+                List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
+                List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
 
-                // get all the fields taken care of
-                for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
-                    try {
-                        List<Item> values = saxon.evaluateXPath((NodeInfo) node, field.path);
-                        for (Item v : values) {
-                            if ("integer".equals(field.type)) {
-                                addIntIndexField(d, field.name, v);
-                            } else if ("date".equals(field.type)) {
-                                // todo: addDateIndexField(d, field.name, v);
-                                logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
-                            } else if ("boolean".equals(field.type)) {
-                                addBooleanIndexField(d, field.name, v);
-                            } else {
-                                addIndexField(d, field.name, v, field.shouldAnalyze, field.shouldStore);
+                for (Object node : documentNodes) {
+                    Document d = new Document();
+
+                    // get all the fields taken care of
+                    for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
+                        try {
+                            List<Item> values = saxon.evaluateXPath((NodeInfo) node, field.path);
+                            for (Item v : values) {
+                                if ("integer".equals(field.type)) {
+                                    addLongField(d, field.name, v);
+                                } else if ("date".equals(field.type)) {
+                                    // todo: addDateIndexField(d, field.name, v);
+                                    logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
+                                } else if ("boolean".equals(field.type)) {
+                                    addBooleanIndexField(d, field.name, v);
+                                } else {
+                                    addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore);
+                                }
+                                Thread.sleep(0);
                             }
-                            Thread.sleep(0);
+                        } catch (XPathException x) {
+                            String expression = ((NodeInfo) node).getStringValue();
+                            logger.error("Caught an exception while indexing expression [" + field.path + "] for document [" + expression.substring(0, expression.length() > 20 ? 20 : expression.length()) + "...]", x);
+                            throw x;
                         }
-                    } catch (XPathException x) {
-                        String expression = ((NodeInfo) node).getStringValue();
-                        logger.error("Caught an exception while indexing expression [" + field.path + "] for document [" + expression.substring(0, expression.length() > 20 ? 20 : expression.length()) + "...]", x);
-                        throw x;
                     }
+                    addDocIdField(d, indexedNodes.size());
+                    w.addDocument(d);
+                    // append node to the list
+                    indexedNodes.add((NodeInfo) node);
                 }
 
-                w.addDocument(d);
-                // append node to the list
-                indexedNodes.add((NodeInfo) node);
+                w.commit();
+
+                return indexedNodes;
             }
-
-            w.commit();
-
-            return indexedNodes;
         } catch (IOException | XPathException x) {
             throw new IndexerException(x);
         }
@@ -105,7 +118,7 @@ public class Indexer {
         return new IndexWriter(indexDirectory, config);
     }
 
-    private void addIndexField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore) {
+    private void addStringField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore) {
         String stringValue = value.getStringValue();
         FieldType fieldType = new FieldType();
         fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
@@ -126,7 +139,7 @@ public class Indexer {
         document.add(new StringField(name, null == boolValue ? "" : boolValue.toString(), Field.Store.NO));
     }
 
-    private void addIntIndexField(Document document, String name, Item value) {
+    private void addLongField(Document document, String name, Item value) {
         Long longValue;
         try {
             if (value instanceof Int64Value) {
@@ -140,5 +153,33 @@ public class Indexer {
         } catch (XPathException x) {
             logger.error("Unable to convert value [" + value.getStringValue() + "]", x);
         }
+    }
+
+    private void addDocIdField(Document document, int docId) {
+        document.add(new NumericDocValuesField(DOCID_FIELD, docId));
+    }
+
+    private void setDocumentHash(String hash) throws IOException {
+        Directory dir = this.env.indexDirectory;
+        for (String f : dir.listAll()) {
+            if (f.endsWith(".hash")) {
+                dir.deleteFile(f);
+            }
+        }
+        try (IndexOutput o = dir.createOutput(hash + ".hash", null)) {
+            o.close();
+        }
+    }
+
+    private String getDocumentHash() throws IOException {
+        Directory dir = this.env.indexDirectory;
+        if (DirectoryReader.indexExists(dir)) {
+            for (String f : dir.listAll()) {
+                if (f.endsWith(".hash")) {
+                    return f.substring(0, f.indexOf(".hash"));
+                }
+            }
+        }
+        return "";
     }
 }

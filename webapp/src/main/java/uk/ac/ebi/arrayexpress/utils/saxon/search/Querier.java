@@ -90,54 +90,36 @@ public class Querier {
     }
 
     public List<NodeInfo> query(Query query) throws IOException {
-        List<NodeInfo> result;
-
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
+            LeafReader leafReader = SlowCompositeReaderWrapper.wrap(reader);
             IndexSearcher searcher = new IndexSearcher(reader);
             // empty query returns everything
             if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
                 logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
                 return this.env.documentNodes;
             }
-
-            // to show _all_ available nodes
-            // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
-            TopDocs hits = searcher.search(query, this.env.documentNodes.size() + 1);
-            logger.info("Search of index [" + this.env.indexId + "] with query [{}] returned [{}] hits", query.toString(), hits.totalHits);
-
-            result = new ArrayList<>(hits.totalHits);
+            logger.info("Search of index [{}] with query [{}] started", env.indexId, query.toString());
+            TopDocs hits = searcher.search(
+                    new ConstantScoreQuery(query),
+                    this.env.documentNodes.size() + 1
+            );
+            logger.info("Search reported [{}] matches", hits.totalHits);
+            final List<NodeInfo> matchingNodes = new ArrayList<>(hits.totalHits);
+            final NumericDocValues ids = leafReader.getNumericDocValues(Indexer.DOCID_FIELD);
             for (ScoreDoc d : hits.scoreDocs) {
-                result.add(this.env.documentNodes.get(d.doc));
+                matchingNodes.add(
+                        this.env.documentNodes.get(
+                                (int)ids.get(d.doc)
+                        )
+                );
             }
-        }
+            logger.info("Search completed", matchingNodes.size());
 
-        return result;
+            return matchingNodes;
+        }
     }
 
     public List<NodeInfo> query(QueryInfo queryInfo) throws IOException {
-        List<NodeInfo> result;
-
-        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
-            IndexSearcher searcher = new IndexSearcher(reader);
-
-            // empty query returns everything
-            if (queryInfo.getQuery() instanceof BooleanQuery && ((BooleanQuery) queryInfo.getQuery()).clauses().isEmpty()) {
-                logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
-                return this.env.documentNodes;
-            }
-
-            // to show _all_ available nodes
-            // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
-            TopDocs hits = searcher.search(queryInfo.getQuery(), this.env.documentNodes.size() + 1);
-            logger.info("Search of index [" + this.env.indexId + "] with query [{}] returned [{}] hits", queryInfo.getQuery().toString(), hits.totalHits);
-
-            result = new ArrayList<>(hits.totalHits);
-            for (ScoreDoc d : hits.scoreDocs) {                       // are in descending order
-                result.add(this.env.documentNodes.get(d.doc));
-                //queryInfo.putScore(this.env.documentNodes.get(d.doc), d.score);  lucene score is not needed
-            }
-        }
-
-        return result;
+        return query(queryInfo.getQuery());
     }
 }

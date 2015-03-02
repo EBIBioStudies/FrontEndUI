@@ -17,22 +17,17 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
-import uk.ac.ebi.arrayexpress.utils.saxon.DocumentUpdater;
-import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
-import uk.ac.ebi.arrayexpress.utils.saxon.PersistableDocumentContainer;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
+import uk.ac.ebi.arrayexpress.utils.saxon.*;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
 
 import java.io.File;
 import java.io.IOException;
 
 public class Studies extends ApplicationComponent implements IDocumentSource {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 //    public final static String MAP_STUDIES_VIEWS = "studies-views";
@@ -109,13 +104,13 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException {
+    public synchronized Document getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
-    // implementation of IDocumentSource.setDocument(DocumentInfo)
+    // implementation of IDocumentSource.setDocument(Document)
     @Override
-    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
+    public synchronized void setDocument(Document doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer("studies", doc));
             updateIndex();
@@ -136,7 +131,7 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
     public void update(String xmlString) throws IOException, InterruptedException {
 //        boolean success = false;
         try {
-            DocumentInfo updateDoc = this.saxon.transform(
+            Document updateDoc = this.saxon.transform(
                     xmlString
                     , "preprocess-studies-xml.xsl"
                     , null

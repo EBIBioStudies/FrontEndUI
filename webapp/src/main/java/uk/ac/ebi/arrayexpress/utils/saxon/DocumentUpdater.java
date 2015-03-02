@@ -24,11 +24,11 @@ import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import java.io.IOException;
 
 public class DocumentUpdater implements IDocumentSource {
-    private IDocumentSource source;
-    private SaxonEngine saxon;
-    private DocumentInfo update;
+    private final IDocumentSource source;
+    private final SaxonEngine saxon;
+    private final Document update;
 
-    public DocumentUpdater(IDocumentSource source, DocumentInfo update) {
+    public DocumentUpdater(IDocumentSource source, Document update) {
         this.source = source;
         this.saxon = (SaxonEngine) Application.getAppComponent("SaxonEngine");
         this.update = update;
@@ -42,13 +42,13 @@ public class DocumentUpdater implements IDocumentSource {
 
     // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException {
+    public synchronized Document getDocument() throws IOException {
         return this.update;
     }
 
     // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument(DocumentInfo doc) throws IOException {
+    public synchronized void setDocument(Document doc) throws IOException {
         // nothing
     }
 

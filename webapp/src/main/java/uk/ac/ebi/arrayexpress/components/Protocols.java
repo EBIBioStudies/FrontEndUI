@@ -17,22 +17,17 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
-import uk.ac.ebi.arrayexpress.utils.saxon.DocumentUpdater;
-import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
-import uk.ac.ebi.arrayexpress.utils.saxon.PersistableDocumentContainer;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
+import uk.ac.ebi.arrayexpress.utils.saxon.*;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
 
 import java.io.File;
 import java.io.IOException;
 
 public class Protocols extends ApplicationComponent implements IDocumentSource {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private FilePersistence<PersistableDocumentContainer> document;
@@ -82,12 +77,12 @@ public class Protocols extends ApplicationComponent implements IDocumentSource {
     }
 
     // implementation of IDocumentSource.getDocument()
-    public synchronized DocumentInfo getDocument() throws IOException {
+    public synchronized Document getDocument() throws IOException {
         return this.document.getObject().getDocument();
     }
 
-    // implementation of IDocumentSource.setDocument(DocumentInfo)
-    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
+    // implementation of IDocumentSource.setDocument(Document)
+    public synchronized void setDocument(Document doc) throws IOException, InterruptedException {
         if (null != doc) {
             this.document.setObject(new PersistableDocumentContainer("protocols", doc));
             updateIndex();
@@ -98,7 +93,7 @@ public class Protocols extends ApplicationComponent implements IDocumentSource {
 
     public void update(String xmlString, ProtocolsSource source) throws IOException, InterruptedException {
         try {
-            DocumentInfo updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
+            Document updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
             if (null != updateDoc) {
                 new DocumentUpdater(this, updateDoc).update();
             }

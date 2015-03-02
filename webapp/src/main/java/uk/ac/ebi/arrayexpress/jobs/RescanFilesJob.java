@@ -28,6 +28,7 @@ import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.io.FilteringIllegalHTMLCharactersReader;
 import uk.ac.ebi.arrayexpress.utils.io.RemovingMultipleSpacesReader;
+import uk.ac.ebi.arrayexpress.utils.saxon.Document;
 import uk.ac.ebi.arrayexpress.utils.saxon.FlatFileXMLReader;
 
 import javax.xml.transform.sax.SAXSource;
@@ -93,7 +94,7 @@ public class RescanFilesJob extends ApplicationJob {
                     , "UTF-8"
             );
              **/
-            DocumentInfo result = saxonEngine.transform(
+            Document result = saxonEngine.transform(
                     source
                     , "preprocess-files-xml.xsl"
                     , transformParams
