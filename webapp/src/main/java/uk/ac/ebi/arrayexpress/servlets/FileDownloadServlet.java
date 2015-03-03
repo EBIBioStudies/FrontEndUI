@@ -99,7 +99,7 @@ public class FileDownloadServlet extends BaseDownloadServlet {
                 name = requestArgs[1];
             }
             logger.info("Requested download of [" + name + "], accession [" + accession + "]");
-            Files files = (Files) getComponent("Files");
+            Files files = getComponent(Files.class);
 //            Users users = (Users) getComponent("Users");
 
 

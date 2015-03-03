@@ -84,10 +84,10 @@ abstract public class ApplicationJob implements InterruptableJob {
     }
 
     protected JobsController getController() {
-        return (JobsController) getComponent("JobsController");
+        return getComponent(JobsController.class);
     }
 
-    protected ApplicationComponent getComponent(String name) {
-        return getApplication().getComponent(name);
+    protected <T extends ApplicationComponent> T getComponent(Class<T> clazz) {
+        return getApplication().getComponent(clazz);
     }
 }

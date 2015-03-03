@@ -127,8 +127,8 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
         String fileName = requestArgs[2];
 
         logger.info("Requested download of [{}] from archive [{}],  accession [" + accession + "]", fileName, archName);
-        Files files = (Files) getComponent("Files");
-        Users users = (Users) getComponent("Users");
+        Files files = getComponent(Files.class);
+        Users users = getComponent(Users.class);
 
         try {
 

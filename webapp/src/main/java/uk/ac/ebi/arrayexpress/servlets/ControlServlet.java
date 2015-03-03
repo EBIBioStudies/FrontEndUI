@@ -66,7 +66,7 @@ public class ControlServlet extends ApplicationServlet {
                             || "check-experiments".equals(command)
                             || "reload-atlas-info".equals(command)
                     ) {
-                ((JobsController) getComponent("JobsController")).executeJob(command);
+                getComponent(JobsController.class).executeJob(command);
 //            } else if ("reload-ae1-xml".equals(command)) {
 //                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
 //            } else if ("rescan-files".equals(command)) {

@@ -66,7 +66,7 @@ public class AuthServlet extends ApplicationServlet {
         String accession = request.getParameter("a");
         String userAgent = request.getHeader("User-Agent");
 
-        Users users = ((Users) getComponent("Users"));
+        Users users = getComponent(Users.class);
         String token = "";
         boolean isLoginSuccessful = false;
         if (null != email) {

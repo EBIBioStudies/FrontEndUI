@@ -17,45 +17,44 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon;
 
-import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.om.NodeInfo;
 import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 
 import java.io.IOException;
 
-public class DocumentUpdater implements IDocumentSource {
-    private final IDocumentSource source;
+public class DocumentUpdater implements XMLDocumentSource {
+    private final XMLDocumentSource source;
     private final SaxonEngine saxon;
-    private final Document update;
+    private final NodeInfo update;
 
-    public DocumentUpdater(IDocumentSource source, Document update) {
+    public DocumentUpdater(XMLDocumentSource source, NodeInfo update) {
         this.source = source;
-        this.saxon = (SaxonEngine) Application.getAppComponent("SaxonEngine");
+        this.saxon = Application.getAppComponent(SaxonEngine.class);
         this.update = update;
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI() {
-        return "update-" + source.getDocumentURI();
+    public String getURI() {
+        return "update-" + source.getURI();
     }
 
-    // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized Document getDocument() throws IOException {
+    public synchronized NodeInfo getRootNode() throws IOException {
         return this.update;
     }
 
-    // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument(Document doc) throws IOException {
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException {
         // nothing
     }
 
     public void update() throws SaxonException, IOException, InterruptedException {
         synchronized (getClass()) {
             saxon.registerDocumentSource(this);
-            source.setDocument(saxon.transform(source.getDocument(), getDocumentURI().replace(".xml", "-xml.xsl"), null));
+            source.setRootNode(
+                    saxon.transform(source.getRootNode(), getURI().replace(".xml", "-xml.xsl"), null)
+            );
             saxon.unregisterDocumentSource(this);
         }
     }

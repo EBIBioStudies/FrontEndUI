@@ -75,9 +75,9 @@ public class LookupServlet extends ApplicationServlet {
 
         // Output goes to the response PrintWriter.
         try (PrintWriter out = response.getWriter()) {
-            Studies studies = (Studies) getComponent("Studies");
-            Autocompletion autocompletion = (Autocompletion) getComponent("Autocompletion");
-            Ontologies ontologies = (Ontologies) getComponent("Ontologies");
+            Studies studies = getComponent(Studies.class);
+            Autocompletion autocompletion = getComponent(Autocompletion.class);
+            Ontologies ontologies = getComponent(Ontologies.class);
             if ("arrays".equals(type) && null != studies) {
 //                out.print(studies.getArrays());
             } else if ("species".equals(type) && null != studies) {

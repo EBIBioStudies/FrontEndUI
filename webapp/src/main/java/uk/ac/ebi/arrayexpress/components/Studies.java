@@ -17,17 +17,16 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
+import net.sf.saxon.om.NodeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Studies extends ApplicationComponent implements IDocumentSource {
+public class Studies extends ApplicationComponent implements XMLDocumentSource {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 //    public final static String MAP_STUDIES_VIEWS = "studies-views";
@@ -36,11 +35,11 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
 //    public final static String MAP_STUDIES = "studies";
 //    public final static String MAP_STUDIES_FOR_USER = "studies-for-user";
 
-    private FilePersistence<PersistableDocumentContainer> document;
+    private Document document;
 //    private FilePersistence<PersistableString> species;
 //    private FilePersistence<PersistableString> arrays;
 
-    private MapEngine maps;
+//    private MapEngine maps;
     private SaxonEngine saxon;
     private SearchEngine search;
 //    private Users users;
@@ -49,22 +48,18 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
 
     public final String INDEX_ID = "studies";
 
-    public Studies() {
-    }
-
     @Override
     public void initialize() throws Exception {
-        this.maps = (MapEngine) getComponent("MapEngine");
-        this.saxon = (SaxonEngine) getComponent("SaxonEngine");
-        this.search = (SearchEngine) getComponent("SearchEngine");
+//        this.maps = getComponent(MapEngine.class);
+        this.saxon = getComponent(SaxonEngine.class);
+        this.search = getComponent(SearchEngine.class);
 //        this.users = (Users) getComponent("Users");
 //        this.events = (Events) getComponent("Events");
-        this.autocompletion = (Autocompletion) getComponent("Autocompletion");
+        this.autocompletion = getComponent(Autocompletion.class);
 
-        this.document = new FilePersistence<>(
-                new PersistableDocumentContainer("studies")
-                , new File(getPreferences().getString("bs.studies.persistence-location"))
-        );
+        this.document = new StoredDocument(
+                new File(getPreferences().getString("bs.studies.persistence-location")),
+                "studies");
 
 //        this.species = new FilePersistence<>(
 //                new PersistableString()
@@ -96,23 +91,21 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
     public void terminate() throws Exception {
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI() {
+    public String getURI() {
         return "studies.xml";
     }
 
-    // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized Document getDocument() throws IOException {
-        return this.document.getObject().getDocument();
+    public synchronized NodeInfo getRootNode() throws IOException {
+        return document.getRootNode();
     }
 
-    // implementation of IDocumentSource.setDocument(Document)
     @Override
-    public synchronized void setDocument(Document doc) throws IOException, InterruptedException {
-        if (null != doc) {
-            this.document.setObject(new PersistableDocumentContainer("studies", doc));
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
+        if (null != rootNode) {
+            document = new StoredDocument(rootNode,
+                    new File(getPreferences().getString("bs.studies.persistence-location")));
             updateIndex();
 //            updateMaps();
         } else {
@@ -131,13 +124,13 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
     public void update(String xmlString) throws IOException, InterruptedException {
 //        boolean success = false;
         try {
-            Document updateDoc = this.saxon.transform(
+            NodeInfo updateXml = this.saxon.transform(
                     xmlString
                     , "preprocess-studies-xml.xsl"
                     , null
             );
-            if (null != updateDoc) {
-                new DocumentUpdater(this, updateDoc).update();
+            if (null != updateXml) {
+                new DocumentUpdater(this, updateXml).update();
 //                buildSpeciesArrays();
 //                success = true;
             }
@@ -149,12 +142,11 @@ public class Studies extends ApplicationComponent implements IDocumentSource {
         }
     }
 
-    private void updateIndex() throws IOException, InterruptedException {
-        Thread.sleep(0);
+    private void updateIndex() throws IOException {
         try {
-            this.search.getController().index(INDEX_ID, this.getDocument());
+            this.search.getController().index(INDEX_ID, document);
             this.autocompletion.rebuild();
-        } catch (IndexerException x) {
+        } catch (Exception x) {
             throw new RuntimeException(x);
         }
     }

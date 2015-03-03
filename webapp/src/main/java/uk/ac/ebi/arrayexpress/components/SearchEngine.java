@@ -32,7 +32,7 @@ public class SearchEngine extends ApplicationComponent {
 
     @Override
     public void initialize() throws Exception {
-        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
+        SaxonEngine saxon = getComponent(SaxonEngine.class);
 
         this.controller = new Controller((HierarchicalConfiguration) getPreferences().getConfSubset("bs"));
         getController().setQueryConstructor(new BatchQueryConstructor());

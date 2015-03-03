@@ -26,6 +26,7 @@ import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -56,9 +57,9 @@ public class ReloadStudiesJob extends ApplicationJob {
 
     private String getXmlFromFile(File xmlFile) throws IOException {
         logger.info("Getting XML from file [{}]", xmlFile);
-        String xml = StringTools.fileToString(
+        String xml = com.google.common.io.Files.toString(
                 xmlFile
-                , "UTF-8"
+                , Charset.forName("UTF-8")
         );
         xml = xml.replaceAll("&amp;#(\\d+);", "&#$1;");
         xml = StringTools.unescapeXMLDecimalEntities(xml);
@@ -69,12 +70,12 @@ public class ReloadStudiesJob extends ApplicationJob {
 
     private void loadMapFromFile(String mapName, File mapFile) throws IOException {
         if (null != mapFile && mapFile.exists()) {
-            ((MapEngine) getComponent("MapEngine")).loadMap(mapName, mapFile);
+            getComponent(MapEngine.class).loadMap(mapName, mapFile);
         }
     }
 
     private void clearMap(String mapName) {
-        ((MapEngine) getComponent("MapEngine")).clearMap(mapName);
+        getComponent(MapEngine.class).clearMap(mapName);
     }
 
 //    private void updateNews(File xmlFile) throws IOException, InterruptedException {
@@ -108,13 +109,13 @@ public class ReloadStudiesJob extends ApplicationJob {
             if (isNotBlank(xml)) {
                 // export to temp directory anyway (only if debug is enabled)
                 if (logger.isDebugEnabled()) {
-                    StringTools.stringToFile(
+                    com.google.common.io.Files.write(
                             xml
                             , new File(
                                     System.getProperty("java.io.tmpdir")
                                     , "src-studies.xml"
                             )
-                            , "UTF-8"
+                            , Charset.forName("UTF-8")
                     );
                 }
 
@@ -143,9 +144,7 @@ public class ReloadStudiesJob extends ApplicationJob {
 //                        , new File(file.getParentFile(), "experiments-complete-downloads.txt")
 //                );
 
-                ((Studies) getComponent("Studies")).update(
-                        xml
-                );
+                getComponent(Studies.class).update(xml);
 
 //                clearMap(Studies.MAP_EXPERIMENTS_IN_ATLAS);
 //                clearMap(Studies.MAP_STUDIES_VIEWS);

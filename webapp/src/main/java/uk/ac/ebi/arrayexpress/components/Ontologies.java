@@ -86,11 +86,11 @@ public class Ontologies extends ApplicationComponent {
 
     @Override
     public void initialize() throws Exception {
-        this.search = (SearchEngine) getComponent("SearchEngine");
-        this.autocompletion = (Autocompletion) getComponent("Autocompletion");
+        this.search = getComponent(SearchEngine.class);
+        this.autocompletion = getComponent(Autocompletion.class);
         initLookupIndex();
         //initLookBackIndex();
-        ((JobsController) getComponent("JobsController")).scheduleJobNow("reload-efo");
+        getComponent(JobsController.class).scheduleJobNow("reload-efo");
 
         this.assayByMolecule = new EFOSubclassesOptions("All assays by molecule");
         this.assayByInstrument = new EFOSubclassesOptions("All technologies");

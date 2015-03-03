@@ -41,8 +41,8 @@ public class Autocompletion extends ApplicationComponent {
     public void initialize() throws Exception {
         this.autocompleteStore = new AutocompleteStore();
 
-        this.studies = (Studies) getComponent("Studies");
-        this.search = (SearchEngine) getComponent("SearchEngine");
+        this.studies = getComponent(Studies.class);
+        this.search = getComponent(SearchEngine.class);
     }
 
     @Override

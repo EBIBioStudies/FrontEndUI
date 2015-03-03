@@ -17,7 +17,8 @@
 
 package uk.ac.ebi.arrayexpress.jobs;
 
-import net.sf.saxon.om.DocumentInfo;
+import com.google.common.io.CharStreams;
+import net.sf.saxon.om.NodeInfo;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +26,8 @@ import org.xml.sax.InputSource;
 import uk.ac.ebi.arrayexpress.app.ApplicationJob;
 import uk.ac.ebi.arrayexpress.components.Files;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.io.FilteringIllegalHTMLCharactersReader;
 import uk.ac.ebi.arrayexpress.utils.io.RemovingMultipleSpacesReader;
-import uk.ac.ebi.arrayexpress.utils.saxon.Document;
 import uk.ac.ebi.arrayexpress.utils.saxon.FlatFileXMLReader;
 
 import javax.xml.transform.sax.SAXSource;
@@ -44,8 +43,8 @@ public class RescanFilesJob extends ApplicationJob {
 
     @Override
     public void doExecute(JobExecutionContext jec) throws Exception {
-        Files files = (Files) getComponent("Files");
-        SaxonEngine saxonEngine = (SaxonEngine) getComponent("SaxonEngine");
+        Files files = getComponent(Files.class);
+        SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
 
         String rootFolder = files.getRootFolder();
         if (null != rootFolder) {
@@ -94,17 +93,17 @@ public class RescanFilesJob extends ApplicationJob {
                     , "UTF-8"
             );
              **/
-            Document result = saxonEngine.transform(
+            NodeInfo result = saxonEngine.transform(
                     source
                     , "preprocess-files-xml.xsl"
                     , transformParams
             );
 
-            String errorString = StringTools.streamToString(stdErr, "US-ASCII");
+            String errorString = CharStreams.toString(new InputStreamReader(stdErr, "UTF-8"));
             int returnCode = process.waitFor();
 
             if (0 == returnCode) {
-                ((Files) getComponent("Files")).reload(result, errorString);
+                getComponent(Files.class).reload(result, errorString);
                 this.logger.info("Rescan of downloadable files completed");
             } else {
                 this.logger.error("Rescan returned exit code [{}], update not performed", returnCode);

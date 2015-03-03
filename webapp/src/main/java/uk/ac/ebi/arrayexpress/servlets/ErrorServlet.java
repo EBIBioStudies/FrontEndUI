@@ -17,12 +17,12 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
+import net.sf.saxon.om.NodeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.HttpServletRequestParameterMap;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.Document;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -60,8 +60,8 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
             params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
             params.put("username", authUserName);
 
-            SaxonEngine saxonEngine = (SaxonEngine) getComponent("SaxonEngine");
-            Document source = saxonEngine.getAppDocument();
+            SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
+            NodeInfo source = saxonEngine.getAppDocument().getRootNode();
 
             if (!saxonEngine.transform(source, stylesheetName, params, new StreamResult(out))) {                     // where to dump resulting text
                 throw new Exception("Transformation returned an error");

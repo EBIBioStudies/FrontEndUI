@@ -83,8 +83,8 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
         PrintWriter out = null;
 
         try {
-            SaxonEngine saxonEngine = (SaxonEngine) getComponent("SaxonEngine");
-            Files files = (Files) getComponent("Files");
+            SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
+            Files files = getComponent(Files.class);
 
             String stylesheetName = stylesheet + "-" + outputType + ".xsl";
 

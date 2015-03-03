@@ -17,22 +17,19 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
-import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.om.NodeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
 
 import java.io.File;
 import java.io.IOException;
 
-public class News extends ApplicationComponent implements IDocumentSource {
-    // logging machinery
+public class News extends ApplicationComponent implements XMLDocumentSource {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private FilePersistence<PersistableDocumentContainer> document;
+    private StoredDocument document;
     private SaxonEngine saxon;
 
     public final String DOCUMENT_ID = "news";
@@ -42,11 +39,11 @@ public class News extends ApplicationComponent implements IDocumentSource {
 
     @Override
     public void initialize() throws Exception {
-        this.saxon = (SaxonEngine) getComponent("SaxonEngine");
+        this.saxon = getComponent(SaxonEngine.class);
 
-        this.document = new FilePersistence<>(
-                new PersistableDocumentContainer(DOCUMENT_ID)
-                , new File(getPreferences().getString("bs.news.persistence-location"))
+        this.document = new StoredDocument(
+                new File(getPreferences().getString("bs.news.persistence-location")),
+                "news"
         );
 
         this.saxon.registerDocumentSource(this);
@@ -56,23 +53,21 @@ public class News extends ApplicationComponent implements IDocumentSource {
     public void terminate() throws Exception {
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI() {
+    public String getURI() {
         return DOCUMENT_ID + ".xml";
     }
 
-    // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized Document getDocument() throws IOException {
-        return this.document.getObject().getDocument();
+    public synchronized NodeInfo getRootNode() throws IOException {
+        return this.document.getRootNode();
     }
 
-    // implementation of IDocumentSource.setDocument(Document)
     @Override
-    public synchronized void setDocument(Document doc) throws IOException, InterruptedException {
-        if (null != doc) {
-            this.document.setObject(new PersistableDocumentContainer(DOCUMENT_ID, doc));
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
+        if (null != rootNode) {
+           document = new StoredDocument(rootNode,
+                   new File(getPreferences().getString("bs.news.persistence-location")));
         } else {
             this.logger.error("News NOT updated, NULL document passed");
         }
@@ -80,11 +75,11 @@ public class News extends ApplicationComponent implements IDocumentSource {
 
     public void update(String xmlString) throws IOException, InterruptedException {
         try {
-            Document updateDoc = this.saxon.buildDocument(xmlString);
-            if (null != updateDoc) {
-                new DocumentUpdater(this, updateDoc).update();
+            NodeInfo update = this.saxon.buildDocument(xmlString);
+            if (null != update) {
+                new DocumentUpdater(this, update).update();
             }
-        } catch (XPathException | SaxonException x) {
+        } catch (SaxonException x) {
             throw new RuntimeException(x);
         }
     }

@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationJob;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
+import uk.ac.ebi.arrayexpress.components.Studies;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
 
 public class CheckExperimentsJob extends ApplicationJob {
     @SuppressWarnings("unused")
@@ -31,10 +31,10 @@ public class CheckExperimentsJob extends ApplicationJob {
 
     @Override
     public void doExecute(JobExecutionContext jec) throws Exception {
-        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
+        SaxonEngine saxon = getComponent(SaxonEngine.class);
 
         String report = saxon.transformToString(
-                ((IDocumentSource) getComponent("Studies")).getDocument()
+                getComponent(Studies.class).getRootNode()
                 , "check-experiments-plain.xsl"
                 , null);
 

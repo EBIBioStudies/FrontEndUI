@@ -17,14 +17,12 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
 
 import java.io.File;
@@ -33,13 +31,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ArrayDesigns extends ApplicationComponent implements IDocumentSource {
+public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String MAP_ARRAY_LEGACY_ID = "array-legacy-ids";
 
-    private FilePersistence<PersistableDocumentContainer> document;
+    private StoredDocument document;
 
     private MapEngine maps;
     private SaxonEngine saxon;
@@ -62,19 +60,16 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
         }
     }
 
-    public ArrayDesigns() {
-    }
-
     @Override
     public void initialize() throws Exception {
-        this.maps = (MapEngine) getComponent("MapEngine");
-        this.saxon = (SaxonEngine) getComponent("SaxonEngine");
-        this.search = (SearchEngine) getComponent("SearchEngine");
-        this.users = (Users) getComponent("Users");
+        this.maps = getComponent(MapEngine.class);
+        this.saxon = getComponent(SaxonEngine.class);
+        this.search = getComponent(SearchEngine.class);
+        this.users = getComponent(Users.class);
 
-        this.document = new FilePersistence<>(
-                new PersistableDocumentContainer("array_designs")
-                , new File(getPreferences().getString("bs.arrays.persistence-location"))
+        this.document = new StoredDocument(
+                new File(getPreferences().getString("bs.arrays.persistence-location")),
+                "array_designs"
         );
 
         maps.registerMap(new MapEngine.SimpleValueMap(MAP_ARRAY_LEGACY_ID));
@@ -89,20 +84,18 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
     public void terminate() throws Exception {
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
-    public String getDocumentURI() {
+    public String getURI() {
         return "arrays.xml";
     }
 
-    // implementation of IDocumentSource.getDocument()
-    public synchronized Document getDocument() throws IOException {
-        return this.document.getObject().getDocument();
+    public synchronized NodeInfo getRootNode() throws IOException {
+        return this.document.getRootNode();
     }
 
-    // implementation of IDocumentSource.setDocument(Document)
-    public synchronized void setDocument(Document doc) throws IOException {
-        if (null != doc) {
-            this.document.setObject(new PersistableDocumentContainer("array_designs", doc));
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
+        if (null != rootNode) {
+            document = new StoredDocument(rootNode,
+                    new File(getPreferences().getString("bs.arrays.persistence-location")));
             updateIndex();
             updateMaps();
         } else {
@@ -112,9 +105,9 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
 
     public void update(String xmlString, ArrayDesignSource source) throws IOException, InterruptedException {
         try {
-            Document updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
-            if (null != updateDoc) {
-                new DocumentUpdater(this, updateDoc).update();
+            NodeInfo update = this.saxon.transform(xmlString, source.getStylesheetName(), null);
+            if (null != update) {
+                new DocumentUpdater(this, update).update();
             }
         } catch (SaxonException x) {
             throw new RuntimeException(x);
@@ -123,9 +116,9 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
 
     private void updateIndex() {
         try {
-            this.search.getController().index(INDEX_ID, this.getDocument());
+            this.search.getController().index(INDEX_ID, document);
         } catch (Exception x) {
-            this.logger.error("Caught an exception:", x);
+            throw new RuntimeException(x);
         }
     }
 
@@ -136,7 +129,7 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
         users.clearUserMap(INDEX_ID);
 
         try {
-            List<Item> documentNodes = saxon.evaluateXPath(getDocument().getRootNode(),
+            List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(),
                     "/array_designs/array_design[@visible = 'true']");
             for (Item node : documentNodes) {
                 try {

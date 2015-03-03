@@ -17,6 +17,8 @@
 
 package uk.ac.ebi.arrayexpress.utils;
 
+import com.google.common.io.CharStreams;
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,48 +54,9 @@ public class StringTools {
         return result.toString();
     }
 
-    public static String streamToString(InputStream is, String encoding) throws IOException {
-        if (is != null) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, encoding));
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append(EOL);
-                }
-            } finally {
-                is.close();
-            }
-            return sb.toString();
-        } else {
-            return "";
-        }
-    }
-
     public static Set<String> streamToStringSet(InputStream is, String encoding) throws IOException {
-        String[] lines = streamToString(is, encoding).split(EOL);
+        String[] lines = CharStreams.toString(new InputStreamReader(is, encoding)).split(EOL);
         return new HashSet<>(Arrays.asList(lines));
-    }
-
-    public static String fileToString(File f, String encoding) throws IOException {
-        if (f.exists()) {
-            InputStream is = new FileInputStream(f);
-            return streamToString(is, encoding);
-        } else {
-            throw new FileNotFoundException("File [" + f.getName() + "] not found");
-        }
-    }
-
-    public static void stringToFile(String string, File file, String encoding) throws IOException {
-        BufferedWriter w = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(file)
-                        , encoding
-                )
-        );
-
-        w.write(string);
-        w.close();
     }
 
     public static Date rfc822StringToDate(String rfc822) {

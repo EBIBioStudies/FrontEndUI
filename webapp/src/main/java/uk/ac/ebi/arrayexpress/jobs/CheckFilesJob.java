@@ -34,13 +34,14 @@ public class CheckFilesJob extends ApplicationJob {
 
     @Override
     public void doExecute(JobExecutionContext jec) throws Exception {
-        Files files = (Files) getComponent("Files");
-        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
+        Files files = getComponent(Files.class);
+        SaxonEngine saxon = getComponent(SaxonEngine.class);
 
         Map<String, String[]> transformParams = new HashMap<>();
         transformParams.put("rescanMessage", new String[]{files.getLastReloadMessage()});
 
-        String report = saxon.transformToString(files.getDocument(), "check-files-plain.xsl", transformParams);
+        String report = saxon.transformToString(files.getRootNode(),
+                "check-files-plain.xsl", transformParams);
 
         getApplication().sendEmail(
                 null
