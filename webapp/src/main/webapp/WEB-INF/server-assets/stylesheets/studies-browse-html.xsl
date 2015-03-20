@@ -70,7 +70,8 @@
             <xsl:with-param name="pExtraCSS">
                 <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-studies-browse-1.0.150220.css" type="text/css"/>
             </xsl:with-param>
-            <xsl:with-param name="pBreadcrumbTrail"><xsl:if test="$vTotal > 0"><xsl:value-of select="$vTitle"/></xsl:if></xsl:with-param>
+            <xsl:with-param name="pBreadcrumbTrail"/>
+            <!-- <xsl:if test="$vTotal > 0"><xsl:value-of select="$vTitle"/></xsl:if></xsl:with-param> -->
             <xsl:with-param name="pExtraJS">
                 <script src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js" type="text/javascript"/>
                 <script src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js" type="text/javascript"/>
@@ -289,16 +290,22 @@
                 </td>
                 <td class="col_files">
                     <div>
-                        <xsl:if test="@files != '0'">
-                            <xsl:value-of select="@files"/>
-                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="@files != '0'">
+                                <xsl:value-of select="@files"/>
+                            </xsl:when>
+                            <xsl:otherwise>&#8729;</xsl:otherwise>
+                        </xsl:choose>
                     </div>
                 </td>
                 <td class="col_links">
                     <div>
-                        <xsl:if test="@links != '0'">
-                            <xsl:value-of select="@links"/>
-                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="@links != '0'">
+                                <xsl:value-of select="@links"/>
+                            </xsl:when>
+                            <xsl:otherwise>&#8729;</xsl:otherwise>
+                        </xsl:choose>
                     </div>
                 </td>
             </tr>
