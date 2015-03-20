@@ -106,10 +106,25 @@
 
         <xsl:choose>
             <xsl:when test="$vTotal&gt;0">
+                <section class="grid_18 alpha search-title">
+                    <xsl:if test="$vSearchMode">
+                        <h2>
+                            <xsl:text>BioStudies results for </xsl:text>
+                            <span class="ae_keywords"><xsl:value-of select="$keywords"/></span>
+                        </h2>
+                    </xsl:if>
+                    <xsl:text>&#160;</xsl:text>
+                </section>
+                <xsl:if test="$vSearchMode">
+                    <aside class="grid_6 omega shortcuts expander" id="search-extras">
+                        <div id="ebi_search_results">
+                            <h3 class="slideToggle icon icon-functional" data-icon="u">Show more data from EMBL-EBI<i class="fa fa-spinner fa-pulse"/></h3>
+                        </div>
+                    </aside>
+                </xsl:if>
                 <section class="grid_24 alpha omega">
                     <div id="ae-content">
                         <div id="ae-browse">
-
                             <div class="persist-area">
                                 <table class="persist-header" border="0" cellpadding="0" cellspacing="0">
                                     <col class="col_accession"/>

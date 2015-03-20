@@ -397,6 +397,26 @@ p.center {
     text-align: center;
 }
 
+.search-title {
+    text-align: left;
+}
+
+.search-title h2,
+.search-title h3,
+.search-title h4,
+.search-title h5 {
+    color: ${color.p1};
+}
+
+.search-title span.ae_keywords,
+.search-title span.ae_value {
+    background: #eee;
+    padding: 3px 4px 0 4px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
 .visible {
     visibility: visible !important;
 }
