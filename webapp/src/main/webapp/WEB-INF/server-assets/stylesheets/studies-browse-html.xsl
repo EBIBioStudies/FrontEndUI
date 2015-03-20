@@ -289,12 +289,16 @@
                 </td>
                 <td class="col_files">
                     <div>
-                        <xsl:value-of select="@files"/>    
+                        <xsl:if test="@files != '0'">
+                            <xsl:value-of select="@files"/>
+                        </xsl:if>
                     </div>
                 </td>
                 <td class="col_links">
                     <div>
-                        <xsl:value-of select="@links"/>   
+                        <xsl:if test="@links != '0'">
+                            <xsl:value-of select="@links"/>
+                        </xsl:if>
                     </div>
                 </td>
             </tr>
@@ -372,7 +376,7 @@
     <xsl:template name="browse-no-results">
 
         <section class="grid_18 alpha">
-            <h2 class="alert">We’re sorry that we couldn’t find any matching experiments</h2>
+            <h2 class="alert">We’re sorry that we couldn’t find any matching studies</h2>
             <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
             <!-- TODO:
             <h3>Did you mean...</h3>
