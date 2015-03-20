@@ -122,7 +122,7 @@
                         </div>
                     </aside>
                 </xsl:if>
-                <section class="grid_24 alpha omega">
+                <section class="grid_24 alpha omega browser">
                     <div id="ae-content">
                         <div id="ae-browse">
                             <div class="persist-area">

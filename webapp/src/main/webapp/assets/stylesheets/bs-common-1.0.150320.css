@@ -421,6 +421,10 @@ p.center {
     visibility: visible !important;
 }
 
+.browser {
+    margin-top: -18px;
+}
+
 .floating-header {
     position: fixed;
     z-index: 9999;
