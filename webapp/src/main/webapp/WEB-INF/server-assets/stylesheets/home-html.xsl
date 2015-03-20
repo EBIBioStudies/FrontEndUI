@@ -50,42 +50,40 @@
         <xsl:variable name="vNews" select="doc('news.xml')"/>
         -->
 
-        <div>
-            <xsl:attribute name="class">alpha
+        <section>
+            <xsl:attribute name="class">alpha intro
                 <xsl:choose>
                     <xsl:when test="$vTotal > 0">grid_18</xsl:when>
                     <xsl:otherwise>grid_24 omega</xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <section>
-                <h2>BioStudies – database of biological studies</h2>
-                <p class="intro justify">The BioStudies database holds descriptions of biological studies, links to data
-                    from these studies in other databases at EMBL-EBI or outside, as well as data that do not fit in the
-                    structured archives at EMBL-EBI. The database can accept a wide range of types of studies described
-                    via a simple format. It also enables manuscript authors to submit supplementary information and link
-                    to it from the publication.
-                </p>
-            </section>
-        </div>
+            <h2>BioStudies – database of biological studies</h2>
+            <p class="justify">The BioStudies database holds descriptions of biological studies, links to data
+                from these studies in other databases at EMBL-EBI or outside, as well as data that do not fit in the
+                structured archives at EMBL-EBI. The database can accept a wide range of types of studies described
+                via a simple format. It also enables manuscript authors to submit supplementary information and link
+                to it from the publication.</p>
+            <p class="browse-link"><a href="{$context-path}/studies/" title="Browse BioStudies">Browse BioStudies</a></p>
+        </section>
 
         <xsl:if test="$vTotal > 0">
-            <div class="grid_6 omega">
-                <section>
-                    <h3 class="icon icon-generic" data-icon="g">Statistics</h3>
+            <aside class="grid_6 omega">
+                    <!-- <h3 class="icon icon-generic" data-icon="g">Statistics</h3> -->
                     <xsl:if test="fn:string-length($vRetrieved) > 1">
                         <h5>Updated <xsl:value-of select="ae:formatDateTime2($vRetrieved)"/></h5>
                     </xsl:if>
                     <ul>
                         <li>
-                            <xsl:value-of
-                                    select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'studies' else 'study')"/>
+                            <a href="{$context-path}/studies/" title="Browse BioStudies">
+                                <xsl:value-of
+                                        select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'studies' else 'study')"/>
+                            </a>
                         </li>
                         <!--
                         <li><xsl:value-of select="ae:formatFileSize(fn:sum($vFiles/@size) cast as xs:integer)"/> of archived data</li>
                         -->
                     </ul>
-                </section>
-            </div>
+            </aside>
         </xsl:if>
         <!--
         <div class="grid_24 alpha">

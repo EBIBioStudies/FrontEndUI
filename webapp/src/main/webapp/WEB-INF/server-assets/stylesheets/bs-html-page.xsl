@@ -97,7 +97,7 @@
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/biostudies-colours.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/font-awesome.css" type="text/css"/>
-            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-common-1.0.150301.css" type="text/css"/>
+            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-common-1.0.150320.css" type="text/css"/>
             <xsl:copy-of select="$pExtraCode"/>
             <!-- end CSS-->
 
@@ -213,15 +213,15 @@
                                 </li>
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/studies/" title="Studies">Studies</a>
+                                    <a href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
                                 </li>
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/submit/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/submit/" title="Submit">Submit</a>
+                                    <a href="{$context-path}/submit/" title="Submit a study">Submit a study</a>
                                 </li>
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/help/index.html" title="Help">Help</a>
+                                    <a href="{$context-path}/help/index.html" title="BioStudies Help">Help</a>
                                 </li>
                                 <li class="last">
                                     <xsl:if test="$relative-uri = '/about.html'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
@@ -255,6 +255,41 @@
                 </header>
 
                 <div id="content" role="main" class="grid_24 clearfix">
+                    <!-- If you require a breadcrumb trail, its root should be your service.
+     	                 You don't need a breadcrumb trail on the homepage of your service... -->
+                    <xsl:if test="$pBreadcrumbTrail != ''">
+                        <section>
+                            <xsl:if test="$pEBISearchWidget">
+                                <xsl:attribute name="class" select="'grid_18 alpha'"/>
+                            </xsl:if>
+                            <nav id="breadcrumb">
+                                <p>
+                                    <a href="{$context-path}/">BioStudies</a>
+                                    &gt;
+                                    <xsl:copy-of select="$pBreadcrumbTrail"/>
+                                </p>
+                            </nav>
+                        </section>
+                        <xsl:copy-of select="$pEBISearchWidget"/>
+                    </xsl:if>
+
+                    <xsl:call-template name="bs-content-section"/>
+                    <section id="ae-feedback" style="display:none">
+                        <h3>Have your say<a id="ae-feedback-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
+                        <form method="post" action="#" onsubmit="return false">
+                            <fieldset>
+                                <label for="ae-feedback-message">We value your feedback. Please leave your comment below.</label>
+                                <textarea id="ae-feedback-message" name="m"/>
+                            </fieldset>
+                            <fieldset>
+                                <label for="ae-email-field">Optionally please enter your email address if you wish to get a response.<br/>We will never share this address with anyone else.</label>
+                                <input id="ae-email-field" name="e" maxlength="50"/>
+                            </fieldset>
+                            <input type="hidden" name="p" value="{$host}{$context-path}{$relative-uri}{if ($query-string) then fn:concat('?', $query-string) else ''}"/>
+                            <input type="hidden" name="r" value="{$host}{$context-path}{$relative-referer}"/>
+                            <input class="submit" type="submit" value="Send"/>
+                        </form>
+                    </section>
                     <!--
                     <section id="ae-login" style="display:none">
                         <h3>ArrayExpress submitter/reviewer login<a id="ae-login-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
@@ -290,54 +325,6 @@
                         </form>
                     </section>
                     -->
-                    <section id="ae-feedback" style="display:none">
-                        <h3>Have your say<a id="ae-feedback-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
-                        <form method="post" action="#" onsubmit="return false">
-                            <fieldset>
-                                <label for="ae-feedback-message">We value your feedback. Please leave your comment below.</label>
-                                <textarea id="ae-feedback-message" name="m"/>
-                            </fieldset>
-                            <fieldset>
-                                <label for="ae-email-field">Optionally please enter your email address if you wish to get a response.<br/>We will never share this address with anyone else.</label>
-                                <input id="ae-email-field" name="e" maxlength="50"/>
-                            </fieldset>
-                            <input type="hidden" name="p" value="{$host}{$context-path}{$relative-uri}{if ($query-string) then fn:concat('?', $query-string) else ''}"/>
-                            <input type="hidden" name="r" value="{$host}{$context-path}{$relative-referer}"/>
-                            <input class="submit" type="submit" value="Send"/>
-                        </form>
-                    </section>
-                    <!-- If you require a breadcrumb trail, its root should be your service.
-     	                 You don't need a breadcrumb trail on the homepage of your service... -->
-                    <xsl:if test="$pBreadcrumbTrail != ''">
-                        <section>
-                            <xsl:if test="$pEBISearchWidget">
-                                <xsl:attribute name="class" select="'grid_18 alpha'"/>
-                            </xsl:if>
-                            <nav id="breadcrumb">
-                                <p>
-                                    <a href="{$context-path}/">BioStudies</a>
-                                    &gt;
-                                    <xsl:copy-of select="$pBreadcrumbTrail"/>
-                                </p>
-                            </nav>
-                        </section>
-                        <xsl:copy-of select="$pEBISearchWidget"/>
-                    </xsl:if>
-
-                    <xsl:call-template name="bs-content-section"/>
-                    <!-- Suggested layout containers -->
-                    <!--
-                    <section>
-                        <h2>[Page title]</h2>
-                        <p>Your content</p>
-                    </section>
-
-                    <section>
-                        <h3>[Another title]</h3>
-                        <p>More content in a full-width container.</p>
-                    </section>
-                    -->
-                    <!-- End suggested layout containers -->
                 </div>
                 <footer>
                     <!-- Optional local footer (insert citation / project-specific copyright / etc here -->
@@ -391,7 +378,7 @@
             <script src="{$context-path}/assets/scripts/jquery-1.8.2.min.js"/>
             <script src="{$context-path}/assets/scripts/jquery.cookie-1.0.js"/>
             <script src="{$context-path}/assets/scripts/jquery.caret-range-1.0.js"/>
-            <script src="{$context-path}/assets/scripts/jquery.autocomplete-1.1.0.130305.js"/>
+            <script src="{$context-path}/assets/scripts/jquery.autocomplete-1.1.0.150319.js"/>
             <script src="{$context-path}/assets/scripts/jquery.common-1.0.150220.js"/>
             <xsl:copy-of select="$pExtraCode"/>
             ${interface.application.google.analytics}

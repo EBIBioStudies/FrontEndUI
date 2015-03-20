@@ -374,8 +374,15 @@ a.show-less:hover {
     margin: 10px 0
 }
 
-p.intro {
+.intro {
     font-size: 108%;
+    text-align: center;
+}
+
+p.browse-link {
+    font-size:123.1%;
+    margin-top: -20px;
+    padding: 5px;
 }
 
 p.justify, td.justify {
@@ -384,6 +391,10 @@ p.justify, td.justify {
 
 p.left, td.left {
     text-align: left;
+}
+
+p.center {
+    text-align: center;
 }
 
 .visible {
