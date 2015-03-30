@@ -24,7 +24,7 @@
                 version="2.0">
     <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
-    <xsl:template match="/submissions">
+    <xsl:template match="/pmdocument/submissions">
         <studies total="{fn:count(submission)}"> <!--  retrieved="{ae:fixRetrievedDateTimeFormat(@retrieved)}" -->
 
             <xsl:apply-templates select="submission">
@@ -51,12 +51,12 @@
         </xsl:variable>
         <study files="{fn:count($vFiles/files/file)}"
                links="{fn:count(descendant::link)}">
-            <accession><xsl:value-of select="@id"/></accession>
+            <accession><xsl:value-of select="fn:replace(@id, '^!', '')"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
                 <xsl:if test="fn:position() = 1 or fn:position() = fn:last()">
                     <author index="{fn:position()}">
-                        <xsl:value-of select="attributes/attribute[fn:lower-case(@name)='name']/value"/>
+                        <xsl:value-of select="attributes/attribute[fn:lower-case(name)='name']/value"/>
                     </author>
                 </xsl:if>
             </xsl:for-each>
@@ -85,14 +85,14 @@
     <xsl:template match="text()|@*" mode="section"/>
     <xsl:template match="text()|@*" mode="files"/>
 
-    <xsl:template match="attribute[fn:lower-case(@name)='title']" mode="attributes">
+    <xsl:template match="attribute[fn:lower-case(name)='title']" mode="attributes">
         <title>
-            <xsl:value-of select="ae:trimTrailingDot(value)"/>
+            <xsl:value-of select="fn:replace(value, '.\s*$', '')"/>
         </title>
     </xsl:template>
 
     <xsl:template match="attribute" mode="attributes">
-        <attribute name="{@name}">
+        <attribute name="{name}">
             <xsl:apply-templates mode="attribute"/>
         </attribute>    
     </xsl:template>
