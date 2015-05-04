@@ -87,7 +87,7 @@
 
     <xsl:template match="attribute[fn:lower-case(name)='title']" mode="attributes">
         <title>
-            <xsl:value-of select="fn:replace(value, '.\s*$', '')"/>
+            <xsl:value-of select="fn:replace(value, '[.]\s*$', '')"/>
         </title>
     </xsl:template>
 

@@ -39,7 +39,11 @@
             <xsl:when test="$pIsGoogleBot">
                 <xsl:call-template name="section">
                     <xsl:with-param name="pName" select="'Released on'"/>
-                    <xsl:with-param name="pContent" select="ae:formatDateGoogle(releasedate)"/>
+                    <xsl:with-param name="pContent">
+                        <releasedate>
+                            <xsl:value-of select="(ae:formatDateGoogle(releasedate))"/>
+                        </releasedate>
+                    </xsl:with-param>
                     <xsl:with-param name="pClass" select="('left')"/>
                 </xsl:call-template>
             </xsl:when>
