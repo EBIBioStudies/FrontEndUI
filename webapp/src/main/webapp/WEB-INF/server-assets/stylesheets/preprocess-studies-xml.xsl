@@ -38,7 +38,7 @@
     </xsl:template>
 
     <xsl:template match="submission/section[1]">
-        <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', @id)"/>
+        <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', @acc)"/>
         <xsl:variable name="vFiles">
             <files>
                 <xsl:for-each select="descendant::file">
@@ -51,7 +51,7 @@
         </xsl:variable>
         <study files="{fn:count($vFiles/files/file)}"
                links="{fn:count(descendant::link)}">
-            <accession><xsl:value-of select="fn:replace(@id, '^!', '')"/></accession>
+            <accession><xsl:value-of select="fn:replace(@acc, '^!', '')"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
                 <xsl:if test="fn:position() = 1 or fn:position() = fn:last()">
@@ -110,10 +110,10 @@
     </xsl:template>
 
     <xsl:template match="section" mode="section">
-        <section type="{@type}" id="{@id}">
-            <xsl:if test="fn:lower-case(@type)='publication' and fn:lower-case(fn:substring(@id,1,3))='pmc'">
+        <section type="{@type}" id="{@id}" acc="{@acc}">
+            <xsl:if test="fn:lower-case(@type)='publication' and fn:lower-case(fn:substring(@acc,1,3))='pmc'">
                 <attribute name="PMCID">
-                    <value><xsl:value-of select="fn:upper-case(@id)"/></value>
+                    <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
                 </attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
