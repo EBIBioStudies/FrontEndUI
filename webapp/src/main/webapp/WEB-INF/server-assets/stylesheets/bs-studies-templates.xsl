@@ -161,13 +161,6 @@
                                     </xsl:call-template>
                                 </a>
                                 <xsl:text>)</xsl:text>
-                                <br/>
-                                <a href="{attribute[fn:lower-case(@name)='doi']}" target="_blank">
-                                    <xsl:call-template name="highlight">
-                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                        <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='doi']"/>
-                                    </xsl:call-template>
-                                </a>
                             </xsl:for-each>
                         </xsl:with-param>
                         <xsl:with-param name="pClass" select="('left')"/>
@@ -184,14 +177,14 @@
                                             select="fn:current-group()/attribute[fn:lower-case(@name)='affiliation']/value">
                                         <org id="{fn:current()}">
                                             <xsl:value-of
-                                                    select="$pNodes[fn:lower-case(@type)='organization' and @id=fn:current()]/attribute[fn:lower-case(@name)='name']/value"/>
+                                                    select="$pNodes[fn:lower-case(@type)='organization' and @acc=fn:current()]/attribute[fn:lower-case(@name)='name']/value"/>
                                         </org>
                                     </xsl:for-each>
                                 </orgs>
                             </xsl:variable>
                             <xsl:variable name="vUniqueRefs">
                                 <orgs>
-                                    <xsl:copy-of select="$vOrgRefs/orgs/org[not(@id=preceding-sibling::org/@id)]"/>
+                                    <xsl:copy-of select="$vOrgRefs/orgs/org[not(@acc=preceding-sibling::org/@acc)]"/>
                                 </orgs>
                             </xsl:variable>
                             <xsl:for-each select="current-group()">
@@ -202,7 +195,7 @@
                                 </xsl:call-template>
                                 <xsl:variable name="vAffiliationId"
                                               select="attribute[fn:lower-case(@name)='affiliation']/value"/>
-                                <xsl:variable name="vAffiliation" select="$vUniqueRefs/orgs/org[@id=$vAffiliationId]"/>
+                                <xsl:variable name="vAffiliation" select="$vUniqueRefs/orgs/org[@acc=$vAffiliationId]"/>
                                 <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1 and $vAffiliation">
                                     <sup>
                                         <xsl:value-of select="fn:count($vAffiliation/preceding-sibling::org) + 1"/>

@@ -273,7 +273,7 @@
                                                     <Boolean>true</Boolean>
                                                 </field>
                                                 <field name="configSystemID">
-                                                    <String>file:/Volumes/Workspace/Users/kolais/Projects/biostudies-ui/webapp/resources/oxygen/saxon-config.xml</String>
+                                                    <String>${pdu}/saxon-config.xml</String>
                                                 </field>
                                                 <field name="initializer">
                                                     <String></String>
@@ -304,7 +304,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Volumes/Workspace/Users/kolais/Projects/biostudies-ui/webapp/resources/oxygen/documents/sample-submissions.xml</String>
+                                    <String>${pdu}/documents/sample-submissions.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>
@@ -362,7 +362,7 @@
                                 </field>
                                 <field name="extensionURLs">
                                     <String-array>
-                                        <String>file:/Volumes/Workspace/Applications/oxygen17/lib/biostudies-ui-saxon-engine-1.0.jar</String>
+                                        <String>${oxygenHome}/lib/biostudies-ui-saxon-engine-1.0.jar</String>
                                     </String-array>
                                 </field>
                             </scenario>

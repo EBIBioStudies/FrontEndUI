@@ -60,7 +60,7 @@ public class News extends ApplicationComponent implements XMLDocumentSource {
 
     @Override
     public synchronized NodeInfo getRootNode() throws IOException {
-        return this.document.getRootNode();
+        return document.getRootNode();
     }
 
     @Override

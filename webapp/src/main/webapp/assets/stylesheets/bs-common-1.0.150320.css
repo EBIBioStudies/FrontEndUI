@@ -541,7 +541,7 @@ p.center {
 }
 
 #ae-browse .floating-header .col_pager {
-    border-right: 0;
+    border-radius: 0;
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
 }

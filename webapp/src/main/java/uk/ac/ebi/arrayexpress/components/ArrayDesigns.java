@@ -89,7 +89,7 @@ public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSou
     }
 
     public synchronized NodeInfo getRootNode() throws IOException {
-        return this.document.getRootNode();
+        return document.getRootNode();
     }
 
     public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
@@ -129,7 +129,7 @@ public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSou
         users.clearUserMap(INDEX_ID);
 
         try {
-            List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(),
+            List<Item> documentNodes = saxon.evaluateXPath(getRootNode(),
                     "/array_designs/array_design[@visible = 'true']");
             for (Item node : documentNodes) {
                 try {

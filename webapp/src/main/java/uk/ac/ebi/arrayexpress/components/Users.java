@@ -98,7 +98,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
 
     @Override
     public synchronized NodeInfo getRootNode() throws IOException {
-        return this.document.getRootNode();
+        return document.getRootNode();
     }
 
     @Override
@@ -168,7 +168,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
         name = StringEscapeUtils.escapeXml(name);
         try {
             return ((BooleanValue) saxon.evaluateXPathSingle(
-                    document.getRootNode()
+                    getRootNode()
                     , "(/users/user[name = '" + name + "']/is_privileged = true())"
             )).effectiveBooleanValue();
         } catch (XPathException x) {
@@ -180,7 +180,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
         id = StringEscapeUtils.escapeXml(id);
         try {
             return ((BooleanValue) saxon.evaluateXPathSingle(
-                    document.getRootNode()
+                    getRootNode()
                     , "(/users/user[id = '" + id + "']/is_privileged = true())"
             )).effectiveBooleanValue();
         } catch (XPathException x) {
@@ -192,7 +192,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
         name = StringEscapeUtils.escapeXml(name);
         try {
             List idNodes = this.saxon.evaluateXPath(
-                    document.getRootNode()
+                    getRootNode()
                     , "/users/user[name = '" + name + "']/id"
             );
 
@@ -211,7 +211,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
         name = StringEscapeUtils.escapeXml(name);
         try {
             List passwordNodes = this.saxon.evaluateXPath(
-                    document.getRootNode()
+                    getRootNode()
                     , "/users/user[name = '" + name + "']/password"
             );
 
@@ -262,7 +262,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
                 String ids = StringTools.arrayToString(uids.toArray(new String[uids.size()]), ",");
 
                 users = this.saxon.evaluateXPath(
-                        document.getRootNode()
+                        getRootNode()
                         , "/users/user[(name|email = '" + nameOrEmail + "') and id = (" + ids + ")]"
                 );
             }

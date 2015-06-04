@@ -70,7 +70,6 @@
 
     <xsl:template name="bs-content-section">
         <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
-        <!-- search:queryIndex($queryid)[accession = $vAccession] -->
         <section>
             <div id="ae-content" class="persist-area">
                 <xsl:choose>

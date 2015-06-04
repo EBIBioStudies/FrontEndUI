@@ -81,7 +81,7 @@ public class Files extends ApplicationComponent implements XMLDocumentSource {
 
     @Override
     public synchronized NodeInfo getRootNode() throws IOException {
-        return this.document.getRootNode();
+        return document.getRootNode();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Files extends ApplicationComponent implements XMLDocumentSource {
         maps.clearMap(MAP_FOLDER);
 
         try {
-            List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(), "/files/folder");
+            List<Item> documentNodes = saxon.evaluateXPath(getRootNode(), "/files/folder");
             for (Item node : documentNodes) {
                 // get all the expressions taken care of
                 String accession = saxon.evaluateXPathSingleAsString((NodeInfo) node, "@accession");
@@ -167,7 +167,7 @@ public class Files extends ApplicationComponent implements XMLDocumentSource {
 
             try {
                 result = ((BooleanValue) this.saxon.evaluateXPathSingle(
-                        document.getRootNode()
+                        getRootNode()
                         , "exists(" + getFileLocatingXPQuery(accession, name) + ")"
                 )).effectiveBooleanValue();
             } catch (XPathException x) {
@@ -186,7 +186,7 @@ public class Files extends ApplicationComponent implements XMLDocumentSource {
                 String fileXPQuery = getFileLocatingXPQuery(accession, name);
                 String xPathQuery = "concat(" + fileXPQuery + "/../@location, '/', " + fileXPQuery + "/@location)";
                 location = this.saxon.evaluateXPathSingleAsString(
-                        document.getRootNode()
+                        getRootNode()
                         , xPathQuery
                 );
             } catch (XPathException x) {
