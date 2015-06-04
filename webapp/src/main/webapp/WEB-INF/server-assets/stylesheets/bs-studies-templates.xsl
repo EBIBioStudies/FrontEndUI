@@ -175,7 +175,7 @@
                                 <orgs>
                                     <xsl:for-each
                                             select="fn:current-group()/attribute[fn:lower-case(@name)='affiliation']/value">
-                                        <org id="{fn:current()}">
+                                        <org acc="{fn:current()}">
                                             <xsl:value-of
                                                     select="$pNodes[fn:lower-case(@type)='organization' and @acc=fn:current()]/attribute[fn:lower-case(@name)='name']/value"/>
                                         </org>
