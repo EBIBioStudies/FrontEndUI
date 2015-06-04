@@ -63,6 +63,7 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
             <xsl:apply-templates select="$vFiles/files" mode="files"/>
+            <xsl:apply-templates select="links" mode="links"/>
         </study>
     </xsl:template>
 
@@ -84,6 +85,7 @@
     <xsl:template match="text()|@*" mode="attribute"/>
     <xsl:template match="text()|@*" mode="section"/>
     <xsl:template match="text()|@*" mode="files"/>
+    <xsl:template match="text()|@*" mode="links"/>
 
     <xsl:template match="attribute[fn:lower-case(name)='title']" mode="attributes">
         <title>
@@ -128,6 +130,12 @@
         </file>
     </xsl:template>
 
+    <xsl:template match="link" mode="links">
+        <link url="{url}">
+            <xsl:apply-templates select="attributes" mode="attributes"/>
+        </link>
+    </xsl:template>
+    
     <xsl:function name="ae:fixRetrievedDateTimeFormat">
         <xsl:param name="pInvalidDateTime"/>
         <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>

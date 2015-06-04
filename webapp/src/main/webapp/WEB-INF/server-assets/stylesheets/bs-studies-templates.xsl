@@ -88,47 +88,29 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+    
     <xsl:template name="study-attributes">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:for-each-group select="$pNodes" group-by="fn:lower-case(@name)">
-            <xsl:variable name="vIsLinkedInfo" select="fn:current-grouping-key() = 'linked information'"/>
             <xsl:call-template name="section">
                 <xsl:with-param name="pName" select="fn:current-group()[1]/@name"/>
                 <xsl:with-param name="pContent">
-                    <xsl:choose>
-                        <xsl:when test="$vIsLinkedInfo">
-                            <xsl:for-each-group select="fn:current-group()" group-by="type">
-                                <xsl:value-of select="ae:getTitleFor(type)"/>
-                                <xsl:text>: </xsl:text>
-                                <xsl:call-template name="highlighted-list">
-                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                    <xsl:with-param name="pType" select="type"/>
-                                    <xsl:with-param name="pList"
-                                                    select="fn:current-group()/value"/>
-                                </xsl:call-template>
-                                <xsl:if test="fn:position() != fn:last()">
-                                    <br/>
-                                </xsl:if>
-                            </xsl:for-each-group>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:for-each select="fn:current-group()">
-                                <xsl:call-template name="highlight">
-                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                    <xsl:with-param name="pText" select="value"/>
-                                </xsl:call-template>
-                                <xsl:if test="fn:position() != fn:last()">
-                                    <br/>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:for-each select="fn:current-group()">
+                        <xsl:call-template name="highlight">
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                            <xsl:with-param name="pText" select="value"/>
+                        </xsl:call-template>
+                        <xsl:if test="fn:position() != fn:last()">
+                            <br/>
+                        </xsl:if>
+                    </xsl:for-each>
                 </xsl:with-param>
-                <xsl:with-param name="pClass" select="if ($vIsLinkedInfo) then ('left') else ('justify')"/>
+                <xsl:with-param name="pClass" select="'justify'"/>
             </xsl:call-template>
         </xsl:for-each-group>
     </xsl:template>
+    
     <xsl:template name="study-sections">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pTitle"/>
@@ -230,6 +212,7 @@
             </xsl:choose>
         </xsl:for-each-group>
     </xsl:template>
+    
     <xsl:template name="study-files">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
@@ -257,173 +240,47 @@
             <xsl:with-param name="pClass" select="('left')"/>
         </xsl:call-template>
     </xsl:template>
+    
     <xsl:template name="study-links">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:call-template name="section">
             <xsl:with-param name="pName" select="'Links'"/>
             <xsl:with-param name="pContent">
-                <xsl:for-each select="$pNodes">
-                    <a href="{@url}" target="_blank">
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                            <xsl:with-param name="pText" select="@url"/>
-                        </xsl:call-template>
-                    </a>
-                    <xsl:if test="fn:position() != fn:last()">
-                        <br/>
-                    </xsl:if>
-                </xsl:for-each>
+                <xsl:for-each-group select="$pNodes" group-by="if (attribute[fn:lower-case(@name)='type']) then attribute[fn:lower-case(@name)='type']/value else ''">
+                    <xsl:choose>
+                        <xsl:when test="fn:current-grouping-key() = ''">
+                            <xsl:for-each select="fn:current-group()">
+                                <a href="{@url}" target="_blank">
+                                    <xsl:call-template name="highlight">
+                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                        <xsl:with-param name="pText" select="if (attribute[fn:lower-case(@name)='description']) then attribute[fn:lower-case(@name)='description']/value else @url"/>
+                                    </xsl:call-template>
+                                </a>
+                                <xsl:if test="fn:position() != fn:last()">
+                                    <br/>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="ae:getTitleFor(fn:current-grouping-key())"/>
+                            <xsl:text>: </xsl:text>
+                            <xsl:call-template name="highlighted-list">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pType" select="fn:current-grouping-key()"/>
+                                <xsl:with-param name="pList"
+                                    select="fn:current-group()/@url"/>
+                            </xsl:call-template>
+                            <xsl:if test="fn:position() != fn:last()">
+                                <br/>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each-group>
             </xsl:with-param>
             <xsl:with-param name="pClass" select="('left')"/>
         </xsl:call-template>
     </xsl:template>
-    <!--
-    <xsl:template name="exp-samples-section">
-        <xsl:param name="pQueryString"/>
-        <xsl:param name="pQueryId"/>
-        <xsl:param name="pBasePath"/>
-        <xsl:param name="pFiles"/>
-
-        <xsl:if test="$pFiles/file[@extension = 'txt' and@kind = 'sdrf']">
-            <tr>
-                <td class="name"><div>Samples (<xsl:value-of select="samples"/>)</div></td>
-                <td class="value">
-                    <div>
-                        <a class="samples" href="{$pBasePath}/experiments/{accession}/samples/{$pQueryString}">
-                            <span class="sample-view"><xsl:text>Click for detailed sample information and links to data</xsl:text></span>
-                            <br/>
-                            <xsl:variable name="vPossibleMatches">
-                                <xsl:for-each select="experimentalfactor/name">
-                                    <match text="{fn:lower-case(.)}">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="."/>
-                                            <xsl:with-param name="pFieldName" select="'ef'"/>
-                                        </xsl:call-template>
-                                    </match>
-                                </xsl:for-each>
-                                <xsl:for-each select="experimentalfactor/value">
-                                    <match text="{fn:lower-case(.)}">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="."/>
-                                            <xsl:with-param name="pFieldName" select="'efv'"/>
-                                        </xsl:call-template>
-                                    </match>
-                                </xsl:for-each>
-                                <xsl:for-each select="sampleattribute/category | sampleattribute/value">
-                                    <match text="{fn:lower-case(.)}">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="."/>
-                                            <xsl:with-param name="pFieldName" select="'sa'"/>
-                                        </xsl:call-template>
-                                    </match>
-                                </xsl:for-each>
-                            </xsl:variable>
-                            <xsl:variable name="vMatches" select="$vPossibleMatches/match[span]"/>
-                            <xsl:if test="$vMatches">
-                                <em><xsl:text>&#160;&#x2514;&#x2500;&#160;found inside: </xsl:text></em>
-                                <xsl:for-each-group select="$vMatches[fn:position() &lt;= 20]" group-by="@text">
-                                    <xsl:sort select="@text" order="ascending"/>
-                                    
-                                    <xsl:copy-of select="fn:current-group()[1]/node()"/>
-                                    <xsl:if test="fn:position() != fn:last()">
-                                        <xsl:text>, </xsl:text>
-                                    </xsl:if>
-                                </xsl:for-each-group>
-                                <xsl:if test="fn:count($vMatches) > 20">
-                                    <xsl:text>, ...</xsl:text>
-                                </xsl:if>
-                            </xsl:if>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </xsl:if>
-    </xsl:template>
-
-    <xsl:template name="exp-experimental-factors-section">
-        <xsl:param name="pQueryId"/>
-
-        <xsl:if test="experimentalfactor/name">
-            <tr>
-                <td class="name"><div>Experimental factors</div></td>
-                <td class="value"><div>
-                    <table cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                            <tr>
-                                <th class="name">Factor name</th>
-                                <th class="value">Factor values</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <xsl:for-each select="experimentalfactor">
-                                <tr>
-                                    <td class="name">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="name"/>
-                                            <xsl:with-param name="pFieldName" select="'ef'"/>
-                                        </xsl:call-template>
-                                    </td>
-                                    <td class="value">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="string-join(value, ', ')"/>
-                                            <xsl:with-param name="pFieldName" select="'efv'"/>
-                                        </xsl:call-template>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                        </tbody>
-                    </table></div>
-                </td>
-            </tr>
-        </xsl:if>
-    </xsl:template>
-
-    <xsl:template name="exp-sample-attributes-section">
-        <xsl:param name="pQueryId"/>
-
-        <xsl:if test="sampleattribute/category">
-            <tr>
-                <td class="name"><div>Sample attributes</div></td>
-                <td class="value"><div>
-                    <table cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                            <tr>
-                                <th class="name">Attribute name</th>
-                                <th class="value">Attribute values</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <xsl:for-each select="sampleattribute">
-                                <tr>
-                                    <td class="name">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="category"/>
-                                            <xsl:with-param name="pFieldName"/>
-                                        </xsl:call-template>
-                                    </td>
-                                    <td class="value">
-                                        <xsl:call-template name="highlight">
-                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                            <xsl:with-param name="pText" select="string-join(value, ', ')"/>
-                                            <xsl:with-param name="pFieldName" select="'sa'"/>
-                                        </xsl:call-template>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                        </tbody>
-                    </table></div>
-                </td>
-            </tr>
-        </xsl:if>
-    </xsl:template>
-    -->
 
     <xsl:template name="section">
         <xsl:param name="pName"/>
@@ -448,12 +305,11 @@
         <xsl:param name="pType"/>
 
         <xsl:variable name="vSize" select="fn:count($pList)"/>
-
         <xsl:for-each select="$pList[fn:position() = (1 to 20)]">
             <xsl:call-template name="highlight-reference">
                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
                 <xsl:with-param name="pText"
-                                select="text()"/>
+                                select="."/>
                 <xsl:with-param name="pType" select="$pType"/>
             </xsl:call-template>
             <xsl:if test="fn:position() != fn:last() or $vSize &gt; 20">
@@ -466,7 +322,7 @@
                     <xsl:call-template name="highlight-reference">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
                         <xsl:with-param name="pText"
-                                        select="text()"/>
+                                        select="."/>
                         <xsl:with-param name="pType" select="$pType"/>
                     </xsl:call-template>
                     <xsl:if test="fn:position() != fn:last()">
@@ -489,7 +345,7 @@
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
                         <xsl:with-param name="pText"
-                                        select="text()"/>
+                                        select="$pText"/>
                     </xsl:call-template>
                 </a>
             </xsl:when>
@@ -497,7 +353,7 @@
                 <xsl:call-template name="highlight">
                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
                     <xsl:with-param name="pText"
-                                    select="text()"/>
+                                    select="$pText"/>
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
