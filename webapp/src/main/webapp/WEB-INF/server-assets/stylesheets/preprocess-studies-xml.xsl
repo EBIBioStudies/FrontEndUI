@@ -38,12 +38,13 @@
     </xsl:template>
 
     <xsl:template match="submission/section[1]">
-        <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', @acc)"/>
+        <xsl:variable name="vAccession" select="../@acc"/>
+        <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
         <xsl:variable name="vFiles">
             <files>
                 <xsl:for-each select="descendant::file">
-                    <xsl:variable name="vName" select="@name"/>
-                    <xsl:if test="$vPhysicalFiles/file[@name=$vName]">
+                    <xsl:variable name="vName" select="fn:replace(@path, '.+/([^/]+)$', '$1')"/>
+                    <xsl:if test="true() or $vPhysicalFiles/file[@name=$vName]">
                         <xsl:copy-of select="."/>
                     </xsl:if>
                 </xsl:for-each>
@@ -51,7 +52,7 @@
         </xsl:variable>
         <study files="{fn:count($vFiles/files/file)}"
                links="{fn:count(descendant::link)}">
-            <accession><xsl:value-of select="fn:replace(@acc, '^!', '')"/></accession>
+            <accession><xsl:value-of select="$vAccession"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
                 <xsl:if test="fn:position() = 1 or fn:position() = fn:last()">
@@ -125,7 +126,7 @@
     </xsl:template>
 
     <xsl:template match="file" mode="files">
-        <file name="{@name}">
+        <file path="{path}">
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>
@@ -135,7 +136,7 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </link>
     </xsl:template>
-    
+   
     <xsl:function name="ae:fixRetrievedDateTimeFormat">
         <xsl:param name="pInvalidDateTime"/>
         <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>
