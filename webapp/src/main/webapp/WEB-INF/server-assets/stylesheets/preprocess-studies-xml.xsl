@@ -43,8 +43,8 @@
         <xsl:variable name="vFiles">
             <files>
                 <xsl:for-each select="descendant::file">
-                    <xsl:variable name="vName" select="fn:replace(@path, '.+/([^/]+)$', '$1')"/>
-                    <xsl:if test="true() or $vPhysicalFiles/file[@name=$vName]">
+                    <xsl:variable name="vName" select="fn:replace(path, '.+/([^/]+)$', '$1')"/>
+                    <xsl:if test="$vPhysicalFiles/file[@name=$vName]">
                         <xsl:copy-of select="."/>
                     </xsl:if>
                 </xsl:for-each>
@@ -126,7 +126,7 @@
     </xsl:template>
 
     <xsl:template match="file" mode="files">
-        <file path="{path}">
+        <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}">
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>
