@@ -48,47 +48,13 @@
                 </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:call-template name="section">
-                    <xsl:with-param name="pName" select="'Status'"/>
-                    <xsl:with-param name="pContent">
-                        <xsl:for-each select="$vDates">
-                            <xsl:sort select="fn:translate(text(),'-','')" data-type="number"/>
-                            <xsl:sort select="fn:translate(fn:substring(fn:name(), 1, 1), 'slr', 'abc')"/>
-
-                            <xsl:variable name="vLabel">
-                                <xsl:if test="ae:isFutureDate(text())">will be</xsl:if>
-                                <xsl:choose>
-                                    <xsl:when test="fn:name() = 'submissiondate'">submitted</xsl:when>
-                                    <xsl:when test="fn:name() = 'lastupdatedate'">
-                                        <xsl:if test="not(ae:isFutureDate(text()))">last</xsl:if>
-                                        <xsl:text>updated</xsl:text>
-                                    </xsl:when>
-                                    <xsl:otherwise>released</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:variable>
-                            <xsl:choose>
-                                <xsl:when test="fn:position() = 1">
-                                    <xsl:value-of select="fn:upper-case(fn:substring($vLabel, 1, 1))"/>
-                                    <xsl:value-of select="fn:substring($vLabel, 2)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text>, </xsl:text>
-                                    <xsl:value-of select="$vLabel"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                            <xsl:text> </xsl:text>
-                            <xsl:value-of select="ae:formatDate(text())"/>
-                            <!--
-                            <xsl:if test="(fn:name() = 'releasedate') and $pIsPrivate"> (<a href="/fg/acext?acc={$vAccession}">change release date</a>&#160;<span class="new">new!</span>)</xsl:if>
-                            -->
-                        </xsl:for-each>
-                    </xsl:with-param>
-                    <xsl:with-param name="pClass" select="('left')"/>
-                </xsl:call-template>
+                <div>
+                <xsl:text>Released </xsl:text><xsl:value-of select="ae:formatDate(./releasedate)"/>
+                </div>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="study-attributes">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
@@ -110,7 +76,7 @@
             </xsl:call-template>
         </xsl:for-each-group>
     </xsl:template>
-    
+
     <xsl:template name="study-sections">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pTitle"/>
@@ -212,42 +178,48 @@
             </xsl:choose>
         </xsl:for-each-group>
     </xsl:template>
-    
+
     <xsl:template name="study-files">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:param name="pFiles"/>
         <xsl:param name="pBasePath"/>
         <xsl:call-template name="section">
-            <xsl:with-param name="pName" select="'Files'"/>
+            <xsl:with-param name="pTitleClass" select="'ae-detail-files-title'"/>
+            <xsl:with-param name="pName" select="'Download data files'"/>
             <xsl:with-param name="pContent">
-                <xsl:for-each select="$pNodes">
-                    <xsl:variable name="vName" select="@name"/>
-                    <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
-                    <xsl:if test="$vFile">
-                        <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                <xsl:with-param name="pText" select="$vName"/>
-                            </xsl:call-template>
-                        </a>
-                    </xsl:if>
-                    <xsl:if test="fn:position() != fn:last()">
-                        <br/>
-                    </xsl:if>
-                </xsl:for-each>
+                <ul class="ae-detail-list">
+                    <xsl:for-each select="$pNodes">
+                        <xsl:variable name="vName" select="@name"/>
+                        <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
+                        <xsl:if test="$vFile">
+                            <li>
+                                <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
+                                    <xsl:call-template name="highlight">
+                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                        <xsl:with-param name="pText" select="$vName"/>
+                                    </xsl:call-template>
+                                </a>
+                            </li>
+                        </xsl:if>
+                    </xsl:for-each>
+                </ul>
+                <br/>
             </xsl:with-param>
-            <xsl:with-param name="pClass" select="('left')"/>
         </xsl:call-template>
     </xsl:template>
-    
+
     <xsl:template name="study-links">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:call-template name="section">
-            <xsl:with-param name="pName" select="'Links'"/>
+            <xsl:with-param name="pName" select="'Linked information'"/>
+            <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+            <xsl:with-param name="pClass" select="('left')"/>
             <xsl:with-param name="pContent">
+                <ul class="ae-detail-list">
                 <xsl:for-each-group select="$pNodes" group-by="if (attribute[fn:lower-case(@name)='type']) then attribute[fn:lower-case(@name)='type']/value else ''">
+                    <li>
                     <xsl:choose>
                         <xsl:when test="fn:current-grouping-key() = ''">
                             <xsl:for-each select="fn:current-group()">
@@ -257,9 +229,7 @@
                                         <xsl:with-param name="pText" select="if (attribute[fn:lower-case(@name)='description']) then attribute[fn:lower-case(@name)='description']/value else @url"/>
                                     </xsl:call-template>
                                 </a>
-                                <xsl:if test="fn:position() != fn:last()">
-                                    <br/>
-                                </xsl:if>
+                                <br/>
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:otherwise>
@@ -268,17 +238,15 @@
                             <xsl:call-template name="highlighted-list">
                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                 <xsl:with-param name="pType" select="fn:current-grouping-key()"/>
-                                <xsl:with-param name="pList"
-                                    select="fn:current-group()/@url"/>
+                                <xsl:with-param name="pList" select="fn:current-group()/@url"/>
                             </xsl:call-template>
-                            <xsl:if test="fn:position() != fn:last()">
-                                <br/>
-                            </xsl:if>
+                            <br/>
                         </xsl:otherwise>
                     </xsl:choose>
+                    </li>
                 </xsl:for-each-group>
+                </ul>
             </xsl:with-param>
-            <xsl:with-param name="pClass" select="('left')"/>
         </xsl:call-template>
     </xsl:template>
 
@@ -286,16 +254,18 @@
         <xsl:param name="pName"/>
         <xsl:param name="pContent"/>
         <xsl:param name="pClass" as="xs:string*"/>
+        <xsl:param name="pTitleClass" as="xs:string*"/>
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
-            <tr>
-                <td class="name">
-                    <div><xsl:value-of select="$pName"/></div>
-                </td>
-                <td>
-                    <xsl:attribute name="class" select="fn:string-join((('value'),$pClass), ' ')"/>
-                    <xsl:copy-of select="$pContent"/>
-                </td>
-            </tr>
+            <div class="ae-detail-name">
+                <xsl:if test="fn:exists($pTitleClass)">
+                    <xsl:attribute name="class" select="fn:string-join((('value'),$pTitleClass), ' ')"/>
+                </xsl:if>
+                <xsl:value-of select="$pName"/>
+            </div>
+            <div>
+                <xsl:attribute name="class" select="fn:string-join((('value'),$pClass), ' ')"/>
+                <xsl:copy-of select="$pContent"/>
+            </div>
         </xsl:if>
     </xsl:template>
 
@@ -333,7 +303,7 @@
             </span>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template name="highlight-reference">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pText"/>

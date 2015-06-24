@@ -113,8 +113,8 @@
         <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
         <div id="ae-detail">
-            <table cellpadding="0" cellspacing="0" border="0">
-                <xsl:call-template name="study-status">
+            <div id="ae-detail-left-column">
+                 <xsl:call-template name="study-status">
                     <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
                     <xsl:with-param name="pIsPrivate" select="fn:false()"/>
                 </xsl:call-template>
@@ -127,17 +127,26 @@
                     <xsl:with-param name="pTitle" select="title"/>
                     <xsl:with-param name="pNodes" select="section"/>
                 </xsl:call-template>
-                <xsl:call-template name="study-files">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pNodes" select="descendant::file"/>
-                    <xsl:with-param name="pFiles" select="$vFiles"/>
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                </xsl:call-template>
-                <xsl:call-template name="study-links">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pNodes" select="descendant::link"/>
-                </xsl:call-template>
-            </table>
+            </div>
+            <div id="ae-detail-right-column">
+                <xsl:choose>
+                    <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0">
+                        <xsl:value-of select="'No data'"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:call-template name="study-files">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select="descendant::file"/>
+                            <xsl:with-param name="pFiles" select="$vFiles"/>
+                            <xsl:with-param name="pBasePath" select="$context-path"/>
+                        </xsl:call-template>
+                        <xsl:call-template name="study-links">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select="descendant::link"/>
+                        </xsl:call-template>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </div>
         </div>
     </xsl:template>
 
