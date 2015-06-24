@@ -67,9 +67,7 @@
                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                             <xsl:with-param name="pText" select="value"/>
                         </xsl:call-template>
-                        <xsl:if test="fn:position() != fn:last()">
-                            <br/>
-                        </xsl:if>
+                        <xsl:if test="fn:position() != fn:last()">, </xsl:if>
                     </xsl:for-each>
                 </xsl:with-param>
                 <xsl:with-param name="pClass" select="'justify'"/>

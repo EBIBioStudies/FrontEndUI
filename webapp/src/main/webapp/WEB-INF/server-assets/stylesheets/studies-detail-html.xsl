@@ -147,6 +147,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </div>
+            <div class="clearboth"></div>
         </div>
     </xsl:template>
 

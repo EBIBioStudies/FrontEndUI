@@ -94,8 +94,7 @@
 
 .ae-detail-name {
     font-size: 120%;
-    font-size: 120%;
-    margin:1.5em 0px .5em 0px;
+    margin: 20px 0px 5px 0px;
 }
 
 #ae-detail-release-date {
@@ -106,4 +105,8 @@
 #ae-detail-title {
     padding: 0.5em 0 0.5em 0  !important;
     
+}
+
+.clearboth {
+    clear:both;
 }
