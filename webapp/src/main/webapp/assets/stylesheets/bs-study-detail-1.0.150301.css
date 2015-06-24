@@ -97,3 +97,13 @@
     font-size: 120%;
     margin:1.5em 0px .5em 0px;
 }
+
+#ae-detail-release-date {
+    color: #999;
+    padding-left: 1em;
+}
+
+#ae-detail-title {
+    padding: 0.5em 0 0.5em 0  !important;
+    
+}

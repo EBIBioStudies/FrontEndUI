@@ -88,44 +88,35 @@
 
     <xsl:template name="block-study">
         <xsl:param name="pStudy"/>
-        <div class="persist-header">
-            <h4>
-                <!--
-                <xsl:if test="not($pStudy/user/@id = '1')">
-                    <xsl:attribute name="class" select="'icon icon-functional'"/>
-                    <xsl:attribute name="data-icon" select="'L'"/>
-                </xsl:if>
-                -->
-                <xsl:value-of select="$pStudy/accession"/>
-                <xsl:text> - </xsl:text>
-                <xsl:call-template name="highlight">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pText" select="fn:string-join($pStudy/title, ', ')"/>
-                    <xsl:with-param name="pFieldName"/>
-                </xsl:call-template>
-            </h4>
-        </div>
         <xsl:apply-templates select="$pStudy"/>
     </xsl:template>
 
     <xsl:template match="study">
         <xsl:variable name="vFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
         <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
-
+        <xsl:call-template name="study-status">
+            <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
+            <xsl:with-param name="pIsPrivate" select="fn:false()"/>
+        </xsl:call-template>
         <div id="ae-detail">
             <div id="ae-detail-left-column">
-                 <xsl:call-template name="study-status">
-                    <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
-                    <xsl:with-param name="pIsPrivate" select="fn:false()"/>
+                <div class="persist-header">
+                    <h4 id="ae-detail-title">
+                        <xsl:call-template name="highlight">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
+                            <xsl:with-param name="pFieldName"/>
+                        </xsl:call-template>
+                    </h4>
+                </div>
+                <xsl:call-template name="study-authors">
+                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                    <xsl:with-param name="pTitle" select="title"/>
+                    <xsl:with-param name="pNodes" select="section"/>
                 </xsl:call-template>
                 <xsl:call-template name="study-attributes">
                     <xsl:with-param name="pQueryId" select="$queryid"/>
                     <xsl:with-param name="pNodes" select="attribute"/>
-                </xsl:call-template>
-                <xsl:call-template name="study-sections">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pTitle" select="title"/>
-                    <xsl:with-param name="pNodes" select="section"/>
                 </xsl:call-template>
             </div>
             <div id="ae-detail-right-column">
