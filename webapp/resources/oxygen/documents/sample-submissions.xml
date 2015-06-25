@@ -780,5 +780,5565 @@
 
 
   </submission>
+<submission acc="S-EPMC3315455" id="115" access="Public">
+
+   <attributes>
+    <attribute>
+     <name>DataSource</name>
+     <value>Europe PMC</value>
+    </attribute>
+   </attributes>
+
+   <section id="2161" type="Study">
+
+    <attributes>
+     <attribute>
+      <name>Title</name>
+      <value>Genome-wide association and functional follow-up reveals new loci for kidney function.</value>
+     </attribute>
+     <attribute>
+      <name>Abstract</name>
+      <value>Chronic kidney disease (CKD) is an important public health problem with a genetic component. We performed genome-wide association studies in up to 130,600 European ancestry participants overall, and stratified for key CKD risk factors. We uncovered 6 new loci in association with estimated glomerular filtration rate (eGFR), the primary clinical measure of CKD, in or near MPPED2, DDX1, SLC47A1, CDK12, CASP9, and INO80. Morpholino knockdown of mpped2 and casp9 in zebrafish embryos revealed podocyte and tubular abnormalities with altered dextran clearance, suggesting a role for these genes in renal function. By providing new insights into genes that regulate renal function, these results could further our understanding of the pathogenesis of CKD.</value>
+     </attribute>
+    </attributes>
+    <subsections>
+     <section id="2162" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Wellcome Trust</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>085475/08/Z</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2163" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Wellcome Trust</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>085475/B/08/Z</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2164" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDDK NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>1 R01 DK075787-01A1</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2165" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIA NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>1R01AG032098-01A1</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2166" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>European Commission FP7</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>201413</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2167" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>European Commission FP7</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>205419</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2168" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>European Commission FP7</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>212111</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2169" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>European Commission FP7</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>245536</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2170" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDDK NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>5R01DK06833603</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2171" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDDK NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>5R01DK07568102</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2172" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>5R01HL08770002</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2173" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>5R01HL08770003</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2174" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>5R01HL08821502</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2175" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>CA 047988</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2176" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Chief Scientist Office</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>CZB/4/710</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2177" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDDK NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>DK063491</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2178" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDDK NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>DK66574</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2179" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268200625226C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2180" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268200782096C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2181" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100005C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2182" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100006C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2183" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100007C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2184" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100008C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2185" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100009C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2186" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100010C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2187" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100011C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2188" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>PHS HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HHSN268201100012C</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2189" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HL 043851</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2190" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>HL69757</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2191" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCRR NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>K12RR023250</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2192" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCRR NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>M01 RR 16500</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2193" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCRR NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>M01RR00425</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2194" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Medical Research Council</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>MC_PC_U127561128</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2195" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Medical Research Council</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>MC_U127561128</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2196" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01 HC-15103</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2197" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01 HC-55222</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2198" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIA NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-AG-1-2100</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2199" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-25195</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2200" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-35129</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2201" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-45133</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2202" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-75150</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2203" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85079</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2204" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85080</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2205" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85081</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2206" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85082</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2207" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85083</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2208" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85084</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2209" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85085</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2210" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01-HC-85086</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2211" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIA NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01AG62101</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2212" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIA NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01AG62103</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2213" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIA NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N01AG62106</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2214" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>N02-HL-6-4278</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2215" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>P01CA055075</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2216" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>P01CA087969</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2217" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIA NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01 AG18728</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2218" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01 HL-87660</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2219" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01 HL087652</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2220" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01 HL088119</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2221" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDDK NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01DK058845</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2222" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01HL086694</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2223" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01HL087641</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2224" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>R01HL59367</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2225" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>T32 HL007575</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2226" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIGMS NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01 GM074518-04</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2227" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01 HL072515-06</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2228" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01 HL080295</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2229" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHLBI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01 HL084756</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2230" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDCR NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01DE018903</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2231" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NIDCR NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01DE018993</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2232" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004399</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2233" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004402</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2234" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004415</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2235" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004422</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2236" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004423</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2237" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004436</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2238" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004438</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2239" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004446</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2240" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004726</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2241" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004728</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2242" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004729</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2243" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004735</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2244" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG004738</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2245" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NHGRI NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>U01HG04424</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2246" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>NCRR NIH HHS</value>
+       </attribute>
+       <attribute>
+        <name>grant_id</name>
+        <value>UL1RR025005</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2247" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Chief Scientist Office</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2248" type="Funding">
+
+      <attributes>
+       <attribute>
+        <name>Agency</name>
+        <value>Medical Research Council</value>
+       </attribute>
+      </attributes>
+      <files>
+       <file>
+        <path>pgen.1002584.s004.pdf</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(pdf)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s001.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s002.pdf</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(pdf)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s003.pdf</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(pdf)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s005.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s006.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s007.pdf</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(pdf)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s008.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s009.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s010.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s011.tif</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>image(tiff)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s012.xlsx</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(vnd.ms-excel)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s013.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s014.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s015.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s016.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s017.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s018.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s019.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s020.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s021.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s022.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s026.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s023.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s024.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s025.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s027.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s028.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s029.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s030.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s031.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s032.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s033.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s034.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+       <file>
+        <path>pgen.1002584.s035.doc</path>
+        <attributes>
+         <attribute>
+          <name>Type</name>
+          <value>application(msword)</value>
+         </attribute>
+        </attributes>
+       </file>
+      </files>
+
+      <links>
+       <table>
+        <link>
+         <url>rs10068737</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+        <link>
+         <url>rs10490130</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+        <link>
+         <url>rs11078903</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+        <link>
+         <url>rs12278026</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+        <link>
+         <url>rs2928148</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+        <link>
+         <url>rs3925584</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+        <link>
+         <url>rs500456</url>
+         <attributes>
+          <attribute>
+           <name>Type</name>
+           <value>refsnp</value>
+          </attribute>
+         </attributes>
+        </link>
+       </table>
+      </links>
+
+
+     </section>
+
+     <section id="2249" type="Publication" acc="PMC3315455">
+
+      <attributes>
+       <attribute>
+        <name>Journal</name>
+        <value>PLoS genetics</value>
+       </attribute>
+       <attribute>
+        <name>Volume</name>
+        <value>8(3)</value>
+       </attribute>
+       <attribute>
+        <name>Pages</name>
+        <value>e1002584</value>
+       </attribute>
+       <attribute>
+        <name>Publication date</name>
+        <value>2012</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2250" type="Author" acc="a1">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Pattaro C</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o1</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2251" type="Author" acc="a2">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kottgen A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o2</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2252" type="Author" acc="a3">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Teumer A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o3</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2253" type="Author" acc="a4">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Garnaas M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o4</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2254" type="Author" acc="a5">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Boger CA</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o5</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2255" type="Author" acc="a6">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Fuchsberger C</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o6</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2256" type="Author" acc="a7">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Olden M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o7</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2257" type="Author" acc="a8">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Chen MH</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o8</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2258" type="Author" acc="a9">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Tin A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o9</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2259" type="Author" acc="a10">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Taliun D</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o10</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2260" type="Author" acc="a11">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Li M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o9</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2261" type="Author" acc="a12">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gao X</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o11</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2262" type="Author" acc="a13">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gorski M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o12</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2263" type="Author" acc="a14">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Yang Q</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o8</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2264" type="Author" acc="a15">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Hundertmark C</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o2</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2265" type="Author" acc="a16">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Foster MC</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o13</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2266" type="Author" acc="a17">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>O&#39;Seaghdha CM</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o14</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2267" type="Author" acc="a18">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Glazer N</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o15</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2268" type="Author" acc="a19">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Isaacs A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o16</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2269" type="Author" acc="a20">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Liu CT</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o8</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2270" type="Author" acc="a21">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Smith AV</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0003-1942-5845</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o17</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2271" type="Author" acc="a22">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>O&#39;Connell JR</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o18</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2272" type="Author" acc="a23">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Struchalin M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o19</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2273" type="Author" acc="a24">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Tanaka T</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o20</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2274" type="Author" acc="a25">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Li G</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o21</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2275" type="Author" acc="a26">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Johnson AD</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o13</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2276" type="Author" acc="a27">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gierman HJ</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o22</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2277" type="Author" acc="a28">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Feitosa M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o11</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2278" type="Author" acc="a29">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Hwang SJ</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o13</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2279" type="Author" acc="a30">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Atkinson EJ</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o23</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2280" type="Author" acc="a31">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Lohman K</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o24</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2281" type="Author" acc="a32">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Cornelis MC</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o25</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2282" type="Author" acc="a33">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Johansson A</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0002-2915-4498</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o26</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2283" type="Author" acc="a34">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Tonjes A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o27</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2284" type="Author" acc="a35">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Dehghan A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o28</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2285" type="Author" acc="a36">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Chouraki V</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0002-4698-1794</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o29</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2286" type="Author" acc="a37">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Holliday EG</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o30</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2287" type="Author" acc="a38">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Sorice R</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o31</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2288" type="Author" acc="a39">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kutalik Z</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o32</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2289" type="Author" acc="a40">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Lehtimaki T</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o33</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2290" type="Author" acc="a41">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Esko T</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0003-1982-6569</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o34</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2291" type="Author" acc="a42">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Deshmukh H</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o35</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2292" type="Author" acc="a43">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ulivi S</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o36</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2293" type="Author" acc="a44">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Chu AY</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o37</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2294" type="Author" acc="a45">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Murgia F</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o38</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2295" type="Author" acc="a46">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Trompet S</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o39</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2296" type="Author" acc="a47">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Imboden M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o40</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2297" type="Author" acc="a48">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kollerits B</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o41</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2298" type="Author" acc="a49">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Pistis G</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o42</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2299" type="Author" acc="a50">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>CARDIoGRAM Consortium</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2300" type="Author" acc="a51">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>ICBP Consortium</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2301" type="Author" acc="a52">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>CARe Consortium</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2302" type="Author" acc="a53">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wellcome Trust Case Control Consortium 2 (WTCCC2)</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2303" type="Author" acc="a54">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Harris TB</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o43</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2304" type="Author" acc="a55">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Launer LJ</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o43</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2305" type="Author" acc="a56">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Aspelund T</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o17</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2306" type="Author" acc="a57">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Eiriksdottir G</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o44</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2307" type="Author" acc="a58">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Mitchell BD</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o18</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2308" type="Author" acc="a59">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Boerwinkle E</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o45</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2309" type="Author" acc="a60">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Schmidt H</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o46</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2310" type="Author" acc="a61">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Cavalieri M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o47</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2311" type="Author" acc="a62">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Rao M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o48</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2312" type="Author" acc="a63">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Hu FB</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o25</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2313" type="Author" acc="a64">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Demirkan A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o49</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2314" type="Author" acc="a65">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Oostra BA</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o49</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2315" type="Author" acc="a66">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>de Andrade M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o23</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2316" type="Author" acc="a67">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Turner ST</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o50</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2317" type="Author" acc="a68">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ding J</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o51</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2318" type="Author" acc="a69">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Andrews JS</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o52</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2319" type="Author" acc="a70">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Freedman BI</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o53</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2320" type="Author" acc="a71">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Koenig W</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o54</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2321" type="Author" acc="a72">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Illig T</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o55</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2322" type="Author" acc="a73">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Doring A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o55</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2323" type="Author" acc="a74">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wichmann HE</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o56</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2324" type="Author" acc="a75">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kolcic I</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o57</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2325" type="Author" acc="a76">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Zemunik T</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o57</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2326" type="Author" acc="a77">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Boban M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o57</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2327" type="Author" acc="a78">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Minelli C</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o10</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2328" type="Author" acc="a79">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wheeler HE</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o58</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2329" type="Author" acc="a80">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Igl W</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o26</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2330" type="Author" acc="a81">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Zaboli G</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o26</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2331" type="Author" acc="a82">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wild SH</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o59</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2332" type="Author" acc="a83">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wright AF</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o60</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2333" type="Author" acc="a84">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Campbell H</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o59</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2334" type="Author" acc="a85">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ellinghaus D</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o61</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2335" type="Author" acc="a86">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Nothlings U</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o62</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2336" type="Author" acc="a87">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Jacobs G</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o62</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2337" type="Author" acc="a88">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Biffar R</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o63</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2338" type="Author" acc="a89">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Endlich K</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o64</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2339" type="Author" acc="a90">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ernst F</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o3</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2340" type="Author" acc="a91">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Homuth G</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o3</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2341" type="Author" acc="a92">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kroemer HK</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o65</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2342" type="Author" acc="a93">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Nauck M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o66</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2343" type="Author" acc="a94">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Stracke S</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o67</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2344" type="Author" acc="a95">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Volker U</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o3</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2345" type="Author" acc="a96">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Volzke H</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o68</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2346" type="Author" acc="a97">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kovacs P</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o69</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2347" type="Author" acc="a98">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Stumvoll M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o27</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2348" type="Author" acc="a99">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Magi R</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o70</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2349" type="Author" acc="a100">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Hofman A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o28</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2350" type="Author" acc="a101">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Uitterlinden AG</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o71</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2351" type="Author" acc="a102">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Rivadeneira F</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o71</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2352" type="Author" acc="a103">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Aulchenko YS</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0002-7899-1575</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o28</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2353" type="Author" acc="a104">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Polasek O</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o72</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2354" type="Author" acc="a105">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Hastie N</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o60</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2355" type="Author" acc="a106">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Vitart V</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o60</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2356" type="Author" acc="a107">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Helmer C</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o73</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2357" type="Author" acc="a108">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wang JJ</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o74</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2358" type="Author" acc="a109">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ruggiero D</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o31</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2359" type="Author" acc="a110">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Bergmann S</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o32</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2360" type="Author" acc="a111">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kahonen M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o75</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2361" type="Author" acc="a112">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Viikari J</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o76</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2362" type="Author" acc="a113">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Nikopensius T</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o34</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2363" type="Author" acc="a114">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Province M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o11</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2364" type="Author" acc="a115">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ketkar S</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o11</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2365" type="Author" acc="a116">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Colhoun H</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o35</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2366" type="Author" acc="a117">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Doney A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o77</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2367" type="Author" acc="a118">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Robino A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o78</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2368" type="Author" acc="a119">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Giulianini F</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o37</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2369" type="Author" acc="a120">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kramer BK</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o79</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2370" type="Author" acc="a121">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Portas L</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o38</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2371" type="Author" acc="a122">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ford I</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o80</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2372" type="Author" acc="a123">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Buckley BM</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o81</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2373" type="Author" acc="a124">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Adam M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o40</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2374" type="Author" acc="a125">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Thun GA</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o40</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2375" type="Author" acc="a126">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Paulweber B</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o82</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2376" type="Author" acc="a127">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Haun M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o41</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2377" type="Author" acc="a128">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Sala C</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o42</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2378" type="Author" acc="a129">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Metzger M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o83</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2379" type="Author" acc="a130">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Mitchell P</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o84</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2380" type="Author" acc="a131">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ciullo M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o31</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2381" type="Author" acc="a132">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kim SK</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o85</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2382" type="Author" acc="a133">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Vollenweider P</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o86</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2383" type="Author" acc="a134">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Raitakari O</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o87</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2384" type="Author" acc="a135">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Metspalu A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o34</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2385" type="Author" acc="a136">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Palmer C</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0002-6415-6560</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o88</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2386" type="Author" acc="a137">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gasparini P</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o78</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2387" type="Author" acc="a138">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Pirastu M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o38</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2388" type="Author" acc="a139">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Jukema JW</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o89</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2389" type="Author" acc="a140">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Probst-Hensch NM</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o40</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2390" type="Author" acc="a141">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kronenberg F</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0003-2229-1120</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o41</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2391" type="Author" acc="a142">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Toniolo D</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o42</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2392" type="Author" acc="a143">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gudnason V</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o17</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2393" type="Author" acc="a144">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Shuldiner AR</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o90</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2394" type="Author" acc="a145">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Coresh J</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o91</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2395" type="Author" acc="a146">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Schmidt R</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o47</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2396" type="Author" acc="a147">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ferrucci L</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o20</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2397" type="Author" acc="a148">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Siscovick DS</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o21</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2398" type="Author" acc="a149">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>van Duijn CM</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o49</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2399" type="Author" acc="a150">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Borecki I</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o11</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2400" type="Author" acc="a151">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kardia SL</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o92</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2401" type="Author" acc="a152">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Liu Y</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o24</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2402" type="Author" acc="a153">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Curhan GC</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o93</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2403" type="Author" acc="a154">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Rudan I</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o59</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2404" type="Author" acc="a155">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gyllensten U</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o26</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2405" type="Author" acc="a156">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wilson JF</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o59</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2406" type="Author" acc="a157">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Franke A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o61</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2407" type="Author" acc="a158">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Pramstaller PP</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o10</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2408" type="Author" acc="a159">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Rettig R</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o94</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2409" type="Author" acc="a160">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Prokopenko I</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0003-1624-7457</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0003-1624-7457</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o70</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2410" type="Author" acc="a161">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Witteman JC</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o28</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2411" type="Author" acc="a162">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Hayward C</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0002-9405-9550</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o60</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2412" type="Author" acc="a163">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Ridker P</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o95</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2413" type="Author" acc="a164">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Parsa A</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o96</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2414" type="Author" acc="a165">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Bochud M</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o97</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2415" type="Author" acc="a166">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Heid IM</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o12</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2416" type="Author" acc="a167">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Goessling W</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o98</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2417" type="Author" acc="a168">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Chasman DI</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o95</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2418" type="Author" acc="a169">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kao WH</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o91</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2419" type="Author" acc="a170">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Fox CS</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o99</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2420" type="Author" acc="a171">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Olson J</value>
+       </attribute>
+       <attribute reference="true">
+        <name>affiliation</name>
+        <value>o100</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2421" type="Author" acc="a172">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kronmal R</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2422" type="Author" acc="a173">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Robbins J</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2423" type="Author" acc="a174">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Chaves PH</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2424" type="Author" acc="a175">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Burke G</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2425" type="Author" acc="a176">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Kuller LH</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2426" type="Author" acc="a177">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Tracy R</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2427" type="Author" acc="a178">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Gottdiener J</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2428" type="Author" acc="a179">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Prineas R</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2429" type="Author" acc="a180">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Becker JT</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2430" type="Author" acc="a181">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Enright P</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2431" type="Author" acc="a182">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Klein R</value>
+       </attribute>
+       <attribute>
+        <name>ORCID</name>
+        <value>0000-0002-4428-6237</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2432" type="Author" acc="a183">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>O&#39;Leary DH</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2433" type="Organization" acc="o54">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Abteilung Innere II, Universitätsklinikum Ulm, Ulm, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2434" type="Organization" acc="o46">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Austrian Stroke Prevention Study, Institute of Molecular Biology and Biochemistry and Department of Neurology, Medical University Graz, Graz, Austria</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2435" type="Organization" acc="o47">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Austrian Stroke Prevention Study, University Clinic of Neurology, Department of Special Neurology, Medical University Graz, Graz, Austria</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2436" type="Organization" acc="o88">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Biomedical Research Institute, Ninewells Hospital and Medical School, University of Dundee, Dundee, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2437" type="Organization" acc="o93">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Brigham and Women&#39;s Hospital and Channing Laboratory, Harvard Medical School, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2438" type="Organization" acc="o37">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Brigham and Women&#39;s Hospital, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2439" type="Organization" acc="o59">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Center for Population Health Sciences, University of Edinburgh Medical School, Edinburgh, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2440" type="Organization" acc="o6">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Center for Statistical Genetics, Department of Biostatistics, University of Michigan, Ann Arbor, Michigan, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2441" type="Organization" acc="o74">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Centre for Eye Research Australia (CERA), University of Melbourne, Melbourne, Australia</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2442" type="Organization" acc="o30">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Centre for Information-based Medicine, Hunter Medical Research Institute, Newcastle, Australia</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2443" type="Organization" acc="o16">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Centre for Medical Systems Biology, Leiden, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2444" type="Organization" acc="o84">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Centre for Vision Research, Westmead Millennium Institute, Westmead Hospital, University of Sydney, Sydney, Australia</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2445" type="Organization" acc="o67">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Clinic for Internal Medicine A, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2446" type="Organization" acc="o63">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Clinic for Prosthodontic Dentistry, Gerostomatology, and Material Science, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2447" type="Organization" acc="o20">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Clinical Research Branch, National Institute of Aging, Baltimore, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2448" type="Organization" acc="o72">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Croatian Centre for Global Health, Faculty of Medicine, University of Split, Split, Croatia</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2449" type="Organization" acc="o57">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Croatian Centre for Global Health, University of Split Medical School, Split, Croatia</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2450" type="Organization" acc="o52">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Biostatistical Sciences, Public Health Sciences, Wake Forest School of Medicine, Winston-Salem, North Carolina, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2451" type="Organization" acc="o8">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Biostatistics, Boston University School of Public Health, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2452" type="Organization" acc="o39">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Cardiology, Leiden University Medical Center, Leiden, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2453" type="Organization" acc="o33">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Clinical Chemistry, University of Tampere and Tampere University Hospital, Centre for Laboratory Medicine Tampere Finn-Medi 2, Tampere, Finland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2454" type="Organization" acc="o75">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Clinical Physiology, University of Tampere and Tampere University Hospital, Tampere, Finland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2455" type="Organization" acc="o22">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Developmental Biology, Stanford University, Stanford, California, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2456" type="Organization" acc="o19">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Epidemiology and Biostatistics and Department of Forensic Molecular Biology, Erasmus University Medical Centre, Rotterdam, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2457" type="Organization" acc="o24">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Epidemiology and Prevention, Public Health Sciences, Wake Forest School of Medicine, Winston-Salem, North Carolina, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2458" type="Organization" acc="o7">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Epidemiology and Preventive Medicine, Regensburg University Medical Center, Regensburg, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2459" type="Organization" acc="o28">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Epidemiology, Erasmus University Medical Center, Rotterdam, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2460" type="Organization" acc="o9">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Baltimore, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2461" type="Organization" acc="o92">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Epidemiology, School of Public Health, University of Michigan, Ann Arbor, Michigan, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2462" type="Organization" acc="o85">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Genetics, Stanford University, Stanford, California, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2463" type="Organization" acc="o5">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Internal Medicine II, University Medical Center Regensburg, Regensburg, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2464" type="Organization" acc="o86">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Internal Medicine, Centre Hospitalier Universitaire Vaudois, Lausanne, Switzerland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2465" type="Organization" acc="o50">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Internal Medicine, Division of Nephrology and Hypertension, Mayo Clinic, Rochester, Minnesota, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2466" type="Organization" acc="o71">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Internal Medicine, Erasmus University Medical Center, Rotterdam, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2467" type="Organization" acc="o53">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Internal Medicine, Wake Forest School of Medicine, Winston-Salem, North Carolina, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2468" type="Organization" acc="o51">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Internal Medicine/Geriatrics, Wake Forest School of Medicine, Winston-Salem, North Carolina, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2469" type="Organization" acc="o58">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Medicine, University of Chicago, Chicago, Illinois, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2470" type="Organization" acc="o69">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Medicine, University of Leipzig, Leipzig, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2471" type="Organization" acc="o18">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Medicine, University of Maryland Medical School, Baltimore, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2472" type="Organization" acc="o76">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Medicine, University of Turku and Turku University Hospital, Turku, Finland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2473" type="Organization" acc="o25">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Nutrition, Harvard School of Public Health, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2474" type="Organization" acc="o81">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Department of Pharmacology and Therapeutics, University College Cork, Cork, Ireland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2475" type="Organization" acc="o23">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Biomedical Statistics and Informatics, Mayo Clinic, Rochester, Minnesota, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2476" type="Organization" acc="o99">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Endocrinology, Brigham and Women&#39;s Hospital and Harvard Medical School, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2477" type="Organization" acc="o41">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Genetic Epidemiology, Innsbruck Medical University, Innsbruck, Austria</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2478" type="Organization" acc="o42">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Genetics and Cell Biology, San Raffaele Scientific Institute, Milano, Italy</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2479" type="Organization" acc="o4">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Genetics, Department of Medicine, Brigham and Women&#39;s Hospital, Harvard Medical School, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2480" type="Organization" acc="o14">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Nephrology, Brigham and Women&#39;s Hospital and Harvard Medical School, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2481" type="Organization" acc="o96">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Nephrology, University of Maryland Medical School, Baltimore, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2482" type="Organization" acc="o48">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Nephrology/Tufts Evidence Practice Center, Tufts University School of Medicine, Tufts Medical Center, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2483" type="Organization" acc="o11">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Division of Statistical Genomics, Washington University School of Medicine, St. Louis, Missouri, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2484" type="Organization" acc="o89">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Durrer Center for Cardiogenetic Research, Amsterdam, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2485" type="Organization" acc="o34">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Estonian Biocenter and Institute of Molecular and Cell Biology, University of Tartu, Tartu, Estonia</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2486" type="Organization" acc="o82">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>First Department of Internal Medicine, Paracelsus Medical University, Salzburg, Austria</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2487" type="Organization" acc="o49">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Genetic Epidemiology Unit, Department of Epidemiology, Erasmus University Medical Center, Rotterdam, The Netherlands</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2488" type="Organization" acc="o26">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Genetics and Pathology, Rudbeck Laboratory, Uppsala University, Uppsala, Sweden</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2489" type="Organization" acc="o100">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Georgia Institute of Technology, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2490" type="Organization" acc="o90">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Geriatric Research and Education Clinical Center, Veterans Administration Medical Center, Baltimore, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2491" type="Organization" acc="o95">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Harvard Medical School, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2492" type="Organization" acc="o98">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Harvard Stem Cell Institute, Harvard University, Cambridge, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2493" type="Organization" acc="o45">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Human Genetics Center, University of Texas Health Science Center, Houston, Texas, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2494" type="Organization" acc="o27">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>IFB Adiposity Diseases, University of Leipzig, Leipzig, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2495" type="Organization" acc="o44">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Icelandic Heart Association, Research Institute, Kopavogur, Iceland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2496" type="Organization" acc="o29">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Inserm UMR744, Institut Pasteur, Lille, France</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2497" type="Organization" acc="o83">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Inserm UMRS 1018, CESP Team 10, Université Paris Sud, Villejuif, France</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2498" type="Organization" acc="o68">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute for Community Medicine, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2499" type="Organization" acc="o36">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute for Maternal and Child Health – IRCCS “Burlo Garofolo”, Trieste, Italy</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2500" type="Organization" acc="o78">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute for Maternal and Child Health, IRCCS “Burlo Garofolo,” University of Trieste, Trieste, Italy</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2501" type="Organization" acc="o64">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Anatomy and Cell Biology, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2502" type="Organization" acc="o66">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Clinical Chemistry and Laboratory Medicine, Ernst-Moritz-Arndt-University Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2503" type="Organization" acc="o61">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Clinical Molecular Biology, Christian-Albrechts University, Kiel, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2504" type="Organization" acc="o12">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Epidemiology I, Helmholtz Zentrum München, German Research Center for Environmental Health, Neuherberg, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2505" type="Organization" acc="o55">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Epidemiology II, Helmholtz Zentrum München, German Research Center for Environmental Health, Neuherberg, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2506" type="Organization" acc="o10">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Genetic Medicine, European Academy of Bozen/Bolzano (EURAC) and Affiliated Institute of the University of Lübeck, Bolzano, Italy</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2507" type="Organization" acc="o1">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Genetic Medicine, European Academy of Bozen/Bolzano (EURAC) and Affiliated Institute of the University of Lübeck, Bolzano, Italy.</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2508" type="Organization" acc="o31">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Genetics and Biophysics “Adriano-Buzzati Traverso”–CNR, Napoli, Italy</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2509" type="Organization" acc="o65">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Pharmacology, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2510" type="Organization" acc="o94">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Physiology, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2511" type="Organization" acc="o38">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Institute of Population Genetics – CNR, Sassari, Italy</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2512" type="Organization" acc="o3">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Interfaculty Institute for Genetics and Functional Genomics, University of Greifswald, Greifswald, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2513" type="Organization" acc="o56">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Klinikum Grosshadern, Neuherberg, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2514" type="Organization" acc="o43">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Laboratory of Epidemiology, Demography, and Biometry, NIA, Bethesda, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2515" type="Organization" acc="o60">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>MRC Human Genetics Unit, Institute of Genetics and Molecular Medicine, Western General Hospital, Edinburgh, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2516" type="Organization" acc="o77">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>NHS Tayside, Wellcome Trust Centre for Molecular Medicine, Clinical Research Centre, Ninewells Hospital, University of Dundee, Dundee, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2517" type="Organization" acc="o13">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>National Heart, Lung, and Blood Institute&#39;s Framingham Heart Study and the Center for Population Studies, Framingham, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2518" type="Organization" acc="o2">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Renal Division, Freiburg University Clinic, Freiburg, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2519" type="Organization" acc="o87">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Research Centre of Applied and Preventive Cardiovascular Medicine, Department of Clinical Physiology, Turku University Hospital, University of Turku, Turku, Finland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2520" type="Organization" acc="o80">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Robertson Centre for Biostatistics, University of Glasgow, Glasgow, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2521" type="Organization" acc="o15">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Section of Preventive Medicine and Epidemiology, Department of Medicine, Boston University School of Medicine, Boston, Massachusetts, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2522" type="Organization" acc="o32">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Swiss Institute of Bioinformatics, Lausanne, Switzerland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2523" type="Organization" acc="o40">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Unit of Chronic Disease Epidemiology, Swiss Tropical and Public Health Institute, Basel, Switzerland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2524" type="Organization" acc="o97">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>University Institute of Social and Preventive Medicine, Centre Hospitalier Universitaire Vaudois and University of Lausanne, Epalinges, Switzerland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2525" type="Organization" acc="o79">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>University Medical Centre Mannheim, 5th Department of Medicine, Mannheim, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2526" type="Organization" acc="o17">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>University of Iceland, Reykjavik, Iceland</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2527" type="Organization" acc="o21">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>University of Washington, Seattle, Washington, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2528" type="Organization" acc="o73">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Université Bordeaux Victor Segalen, Bordeaux, France</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2529" type="Organization" acc="o91">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Welch Center for Prevention, Epidemiology, and Clinical Research, Baltimore, Maryland, United States of America</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2530" type="Organization" acc="o70">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wellcome Trust Centre for Human Genetics and Oxford Centre for Diabetes, Endocrinology, and Metabolism, University of Oxford, Oxford, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2531" type="Organization" acc="o35">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>Wellcome Trust Centre for Molecular Medicine, Clinical Research Centre, Ninewells Hospital, University of Dundee, Dundee, United Kingdom</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+     <section id="2532" type="Organization" acc="o62">
+
+      <attributes>
+       <attribute>
+        <name>Name</name>
+        <value>popgen Biobank, University Hospital Schleswig-Holstein, Kiel, Germany</value>
+       </attribute>
+      </attributes>
+
+     </section>
+
+    </subsections>
+
+   </section>
+
+
+  </submission>
+  
  </submissions>
 </pmdocument>
