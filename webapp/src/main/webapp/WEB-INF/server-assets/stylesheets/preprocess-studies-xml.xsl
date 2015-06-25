@@ -113,7 +113,10 @@
     </xsl:template>
 
     <xsl:template match="section" mode="section">
-        <section type="{@type}" id="{@id}" acc="{@acc}">
+        <section type="{@type}" id="{@id}">
+            <xsl:if test="fn:exists(@acc)">
+                <xsl:attribute name="acc" select="@acc"/>
+            </xsl:if>
             <xsl:if test="fn:lower-case(@type)='publication' and fn:lower-case(fn:substring(@acc,1,3))='pmc'">
                 <attribute name="PMCID">
                     <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
