@@ -193,8 +193,9 @@
             <xsl:with-param name="pTitleClass" select="'ae-detail-files-title'"/>
             <xsl:with-param name="pName" select="'Download data files'"/>
             <xsl:with-param name="pContent">
+                <xsl:variable name="vSize" select="fn:count($pNodes)"/>
                 <ul class="ae-detail-list">
-                    <xsl:for-each select="$pNodes">
+                    <xsl:for-each select="$pNodes[fn:position() = (1 to 20)]">
                         <xsl:variable name="vName" select="@name"/>
                         <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
                         <xsl:if test="$vFile">
@@ -208,6 +209,24 @@
                             </li>
                         </xsl:if>
                     </xsl:for-each>
+                    <xsl:if test="$vSize &gt; 20">
+                        <div class="hidden-values" size="{$vSize}">
+                            <xsl:for-each select="$pNodes[fn:position() = (21 to $vSize)]">
+                                <xsl:variable name="vName" select="@name"/>
+                                <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
+                                <xsl:if test="$vFile">
+                                    <li>
+                                        <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
+                                            <xsl:call-template name="highlight">
+                                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                                <xsl:with-param name="pText" select="$vName"/>
+                                            </xsl:call-template>
+                                        </a>
+                                    </li>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </div>
+                    </xsl:if>
                 </ul>
                 <br/>
             </xsl:with-param>
