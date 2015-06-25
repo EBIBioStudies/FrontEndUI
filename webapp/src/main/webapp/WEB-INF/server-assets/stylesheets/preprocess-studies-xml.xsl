@@ -64,7 +64,7 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
             <xsl:apply-templates select="$vFiles/files" mode="files"/>
-            <xsl:apply-templates select="links" mode="links"/>
+            <xsl:apply-templates select="descendant::links" mode="links"/>
         </study>
     </xsl:template>
 
@@ -97,7 +97,7 @@
     <xsl:template match="attribute" mode="attributes">
         <attribute name="{name}">
             <xsl:apply-templates mode="attribute"/>
-        </attribute>    
+        </attribute>
     </xsl:template>
 
     <xsl:template match="valqual" mode="attribute">
@@ -136,10 +136,10 @@
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </link>
     </xsl:template>
-   
+
     <xsl:function name="ae:fixRetrievedDateTimeFormat">
         <xsl:param name="pInvalidDateTime"/>
         <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>
     </xsl:function>
-    
+
 </xsl:stylesheet>
