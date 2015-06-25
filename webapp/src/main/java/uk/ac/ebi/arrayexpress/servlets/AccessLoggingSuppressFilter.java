@@ -27,7 +27,7 @@ public class AccessLoggingSuppressFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        request.setAttribute("health", Boolean.valueOf(true));
+        request.setAttribute("health", true);
         chain.doFilter(request, response);
     }
 

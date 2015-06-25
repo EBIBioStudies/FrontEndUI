@@ -19,8 +19,8 @@ package uk.ac.ebi.arrayexpress.components;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.search.HighlightQueryFunction;
-import uk.ac.ebi.arrayexpress.utils.saxon.functions.search.QueryIndexFunction;
+import uk.ac.ebi.fg.saxon.functions.search.HighlightQueryFunction;
+import uk.ac.ebi.fg.saxon.functions.search.QueryIndexFunction;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 import uk.ac.ebi.arrayexpress.utils.search.BatchQueryConstructor;
 
@@ -32,9 +32,9 @@ public class SearchEngine extends ApplicationComponent {
 
     @Override
     public void initialize() throws Exception {
-        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
+        SaxonEngine saxon = getComponent(SaxonEngine.class);
 
-        this.controller = new Controller((HierarchicalConfiguration) getPreferences().getConfSubset("ae"));
+        this.controller = new Controller((HierarchicalConfiguration) getPreferences().getConfSubset("bs"));
         getController().setQueryConstructor(new BatchQueryConstructor());
         getController().setXPathEngine(saxon);
         if (null != saxon) {

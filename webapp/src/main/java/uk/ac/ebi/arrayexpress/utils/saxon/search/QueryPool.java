@@ -17,7 +17,7 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 import uk.ac.ebi.arrayexpress.utils.LRUMap;
 
 import java.io.IOException;
@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class QueryPool {
-    // logging machinery
     //private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final static int MAX_NUMBER_OF_QUERIES = 100;

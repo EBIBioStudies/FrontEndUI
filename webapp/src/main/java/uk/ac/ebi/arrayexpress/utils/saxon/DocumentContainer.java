@@ -17,23 +17,22 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon;
 
-import net.sf.saxon.om.DocumentInfo;
-
-public class DocumentContainer {
-    private DocumentInfo document = null;
+public class DocumentContainer
+{
+    private Document document = null;
 
     public DocumentContainer() {
     }
 
-    public DocumentContainer(DocumentInfo doc) {
+    public DocumentContainer(Document doc) {
         setDocument(doc);
     }
 
-    public DocumentInfo getDocument() {
+    public Document getDocument() {
         return this.document;
     }
 
-    public void setDocument(DocumentInfo doc) {
+    public void setDocument(Document doc) {
         this.document = doc;
     }
 }

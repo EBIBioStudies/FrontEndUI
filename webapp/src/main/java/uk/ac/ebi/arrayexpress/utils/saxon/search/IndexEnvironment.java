@@ -20,7 +20,7 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
 import net.sf.saxon.om.NodeInfo;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 public class IndexEnvironment {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     // source index configuration (will be eventually removed)
@@ -77,7 +76,7 @@ public class IndexEnvironment {
     public Map<String, FieldInfo> fields;
 
     // document info
-    public int documentHashCode;
+    public String documentHashCode;
     public List<NodeInfo> documentNodes;
 
     public IndexEnvironment(HierarchicalConfiguration indexConfig) {
@@ -85,7 +84,7 @@ public class IndexEnvironment {
         populateIndexConfiguration();
     }
 
-    public void putDocumentInfo(int documentHashCode, List<NodeInfo> documentNodes) {
+    public void setDocumentInfo(String documentHashCode, List<NodeInfo> documentNodes) {
         this.documentHashCode = documentHashCode;
         this.documentNodes = documentNodes;
     }
@@ -95,7 +94,7 @@ public class IndexEnvironment {
             this.indexId = this.indexConfig.getString("[@id]");
 
             String indexBaseLocation = this.indexConfig.getString("[@location]");
-            this.indexDirectory = FSDirectory.open(new File(indexBaseLocation, this.indexId));
+            this.indexDirectory = FSDirectory.open(new File(indexBaseLocation, this.indexId).toPath());
 
             String indexAnalyzer = this.indexConfig.getString("[@defaultAnalyzer]");
             Analyzer a = (Analyzer) Class.forName(indexAnalyzer).newInstance();

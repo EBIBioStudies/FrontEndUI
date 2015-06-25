@@ -21,14 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.document.FieldType;
+import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.efo.EFONode;
@@ -39,7 +36,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private FSDirectory indexDirectory;
@@ -53,7 +49,7 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
 
     public EFOExpansionLookupIndex(String indexLocation, Set<String> stopWords) throws IOException {
         this.stopWords = stopWords;
-        this.indexDirectory = FSDirectory.open(new File(indexLocation));
+        this.indexDirectory = FSDirectory.open(new File(indexLocation).toPath());
     }
 
     private IEFO getEfo() {
@@ -201,9 +197,10 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     public EFOExpansionTerms getExpansionTerms(Query origQuery) throws IOException {
         EFOExpansionTerms expansion = new EFOExpansionTerms();
 
-        if (IndexReader.indexExists(getIndexDirectory())) {
+        if (DirectoryReader.indexExists(getIndexDirectory())) {
 
-            try (IndexReader reader = IndexReader.open(getIndexDirectory()); IndexSearcher searcher = new IndexSearcher(reader)) {
+            try (IndexReader reader = DirectoryReader.open(getIndexDirectory())) {
+                IndexSearcher searcher = new IndexSearcher(reader);
 
                 Query q = overrideQueryField(origQuery, "term");
 
@@ -232,9 +229,10 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     public Set<String> getReverseExpansion(String text) throws IOException {
         Set<String> reverseExpansion = new HashSet<>();
 
-        if (null != text && IndexReader.indexExists(getIndexDirectory())) {
+        if (null != text && DirectoryReader.indexExists(getIndexDirectory())) {
 
-            try (IndexReader reader = IndexReader.open(getIndexDirectory()); IndexSearcher searcher = new IndexSearcher(reader)) {
+            try (IndexReader reader = DirectoryReader.open(getIndexDirectory())) {
+                IndexSearcher searcher = new IndexSearcher(reader);
 
                 // step 1: split terms
                 String[] terms = text.split("\\s+");
@@ -278,22 +276,18 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
     }
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_36, analyzer);
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         return new IndexWriter(indexDirectory, config);
     }
 
     private void addIndexField(Document document, String name, String value, boolean shouldAnalyze, boolean shouldStore) {
         value = value.replaceAll("[^\\d\\w-]", " ").toLowerCase();
-        document.add(
-                new Field(
-                        name
-                        , value
-                        , shouldStore ? Field.Store.YES : Field.Store.NO
-                        , shouldAnalyze ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED
-                        , Field.TermVector.NO
-                )
-        );
+        FieldType fieldType = new FieldType();
+        fieldType.setIndexOptions(IndexOptions.DOCS);
+        fieldType.setTokenized(shouldAnalyze);
+        fieldType.setStored(shouldStore);
+        document.add(new Field(name, value, fieldType));
     }
 
     private Query overrideQueryField(Query origQuery, String fieldName) {

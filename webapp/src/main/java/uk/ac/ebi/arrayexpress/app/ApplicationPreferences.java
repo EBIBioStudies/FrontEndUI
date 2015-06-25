@@ -61,9 +61,7 @@ public class ApplicationPreferences {
         Integer value = null;
         try {
             value = prefs.getInt(key);
-        } catch (ConversionException x) {
-            logger.error(x.getMessage());
-        } catch (NoSuchElementException x) {
+        } catch (ConversionException | NoSuchElementException x) {
             logger.error(x.getMessage());
         } catch (Exception x) {
             logger.error("Caught an exception:", x);

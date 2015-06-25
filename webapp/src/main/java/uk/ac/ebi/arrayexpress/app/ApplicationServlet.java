@@ -33,8 +33,8 @@ public abstract class ApplicationServlet extends HttpServlet {
         return Application.getInstance();
     }
 
-    public ApplicationComponent getComponent(String name) {
-        return getApplication().getComponent(name);
+    public <T extends ApplicationComponent> T getComponent(Class<T> clazz) {
+        return getApplication().getComponent(clazz);
     }
 
     public ApplicationPreferences getPreferences() {

@@ -23,7 +23,7 @@
                 exclude-result-prefixes="xs fn ae"
                 version="2.0">
 
-    <xsl:output method="xml" version="1.0" encoding="UTF8" indent="no"/>
+    <xsl:output method="xml" version="1.0" encoding="UTF8" indent="yes"/>
 
     <xsl:param name="rootFolder"/>
     
@@ -78,67 +78,11 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-    
-    <xsl:function name="ae:getFileKind" as="xs:string">
-        <xsl:param name="pRow"/>
-        <xsl:variable name="vPath" select="$pRow/col[8]"/>
-        <xsl:choose>
-            <xsl:when test="fn:matches($vPath, '^.+/[aAeE]-\w{4}-\d+/[^/]+/.*$')">
-                <xsl:value-of select="fn:replace($vPath, '^.+/[aAeE]-\w{4}-\d+/([^/]+)/.*$', '$1')"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="fn:matches($vPath, '[.]processed[.](\d+[.])?(zip|tgz|tar[.]gz)$')">
-                        <xsl:text>processed</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]raw[.](\d+[.])?(zip|tgz|tar[.]gz)$')">
-                        <xsl:text>raw</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]cel[.](\d+[.])?(zip|tgz|tar[.]gz)$')">
-                        <xsl:text>cel</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]mageml[.](zip|tgz|tar[.]gz)$')">
-                        <xsl:text>mageml</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]adf[.](txt|xls)$')">
-                        <xsl:text>adf</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]idf[.](txt|xls)$')">
-                        <xsl:text>idf</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]sdrf[.](txt|xls)$')">
-                        <xsl:text>sdrf</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]2columns[.](txt|xls)$')">
-                        <xsl:text>twocolumns</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]biosamples[.](map|png|svg)$')">
-                        <xsl:text>biosamples</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches(fn:lower-case($vPath), '[.]eset[.]r$')">
-                        <xsl:text>r-object</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="fn:matches($vPath, '[.]bam([.][^.]+)?$')">
-                        <xsl:text>bam</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
 
-    <xsl:function name="ae:isFileHidden" as="xs:boolean">
-        <xsl:param name="pRow"/>
-        <xsl:variable name="vPath" select="$pRow/col[8]"/>
-        <xsl:value-of select="fn:matches($vPath, '[.]bam[.](bai|prop)?$')"/>
-    </xsl:function>
-
-    <xsl:function name="ae:getAccessionFolder" as="xs:string">
+    <xsl:function name="ae:getFolder" as="xs:string">
         <xsl:param name="pRow"/>
 
-        <xsl:value-of select="fn:replace($pRow/col[8], '^(.+/[aAeE]-\w{4}-\d+)/.*$', '$1')"/>
+        <xsl:value-of select="fn:replace($pRow/col[8], fn:concat('^(', $vRoot, '/[^/]+)/.*$'), '$1')"/>
     </xsl:function>
 
     <xsl:function name="ae:getLocation" as="xs:string">
@@ -147,32 +91,17 @@
         <xsl:value-of select="$pRow/col[8]"/>
     </xsl:function>
 
+    <!--
     <xsl:function name="ae:getSubLocation" as="xs:string">
         <xsl:param name="pRow"/>
 
         <xsl:value-of select="fn:replace($pRow/col[8], '^.+/[aAeE]-\w{4}-\d+/(.*)$', '$1')"/>
     </xsl:function>
-
-
-    <xsl:function name="ae:getFolderKind" as="xs:string">
-        <xsl:param name="pPath"/>
-        <xsl:choose>
-            <xsl:when test="fn:contains($pPath, '/array/')">
-                <xsl:value-of select="'array'"/>
-            </xsl:when>
-            <xsl:when test="fn:contains($pPath, '/experiment/')">
-                <xsl:value-of select="'experiment'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
-    
+    -->
     <xsl:function name="ae:getAccession" as="xs:string">
         <xsl:param name="pPath"/>
-        
-        <xsl:value-of select="fn:replace($pPath, '^.+/([aAeE]-\w{4}-\d+).*$', '$1')"/>
+
+        <xsl:value-of select="fn:replace($pPath, '^.*/([^/]+)$', '$1')"/>
     </xsl:function>
 
     <xsl:function name="ae:getRelativePath" as="xs:string">
@@ -183,32 +112,28 @@
     <xsl:template match="table">
         <files root="{$vRoot}">
             <xsl:attribute name="updated" select="fn:current-dateTime()"/>
-            <xsl:for-each-group select="row" group-by="ae:getAccessionFolder(.)">
+            <xsl:for-each-group select="row" group-by="ae:getFolder(.)">
                 <xsl:variable name="vFolder" select="fn:current-group()[col[8] = fn:current-grouping-key()]"/>
                 <xsl:if test="$vFolder">
-                    <xsl:variable name="vAccession" select="ae:getAccession(fn:current-grouping-key())"/>
+                    <xsl:variable name="vLocation" select="ae:getRelativePath(current-grouping-key())"/>
+                    <xsl:variable name="vAccession" select="ae:getAccession($vLocation)"/>
                     <folder
                         location="{ae:getRelativePath(current-grouping-key())}"
-                        kind="{ae:getFolderKind(current-grouping-key())}"
                         accession="{$vAccession}"
                         owner="{ae:getOwner($vFolder)}"
                         group="{ae:getGroup($vFolder)}"
                         access="{ae:getAccess($vFolder)}"
                         lastmodified="{ae:getModifyDate($vFolder)}">
                         <xsl:for-each select="fn:current-group()[not(ae:isFolder(.))]">
-                            <xsl:variable name="vFileKind" select="ae:getFileKind(.)"/>
                             <file
-                                location="{ae:getSubLocation(.)}"
                                 name="{ae:getName(.)}"
                                 extension="{ae:getExtension(.)}"
-                                kind="{$vFileKind}"
                                 owner="{ae:getOwner(.)}"
                                 group="{ae:getGroup(.)}"
                                 access="{ae:getAccess(.)}"
                                 size="{ae:getSize(.)}"
                                 lastmodified="{ae:getModifyDate(.)}"
-                                hidden="{ae:isFileHidden(.)}">
-                            </file>
+                                location="{ae:getName(.)}"/>
                         </xsl:for-each>
                     </folder>
                 </xsl:if>    

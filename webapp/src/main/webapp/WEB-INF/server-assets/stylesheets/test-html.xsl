@@ -25,14 +25,11 @@
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-date-functions.xsl"/>
-    <xsl:include href="ae-sort-experiments.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
 
     <xsl:template match="/">
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
-            <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail"/>
             <xsl:with-param name="pExtraCSS"/>
@@ -43,7 +40,7 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
+    <xsl:template name="bs-content-section">
         <div>
         </div>
     </xsl:template>

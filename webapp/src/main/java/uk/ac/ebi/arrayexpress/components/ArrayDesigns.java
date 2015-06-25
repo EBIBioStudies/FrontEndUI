@@ -17,18 +17,13 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
-import uk.ac.ebi.arrayexpress.utils.saxon.DocumentUpdater;
-import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
-import uk.ac.ebi.arrayexpress.utils.saxon.PersistableDocumentContainer;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
+import uk.ac.ebi.arrayexpress.utils.saxon.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,13 +31,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ArrayDesigns extends ApplicationComponent implements IDocumentSource {
+public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String MAP_ARRAY_LEGACY_ID = "array-legacy-ids";
 
-    private FilePersistence<PersistableDocumentContainer> document;
+    private StoredDocument document;
 
     private MapEngine maps;
     private SaxonEngine saxon;
@@ -65,19 +60,16 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
         }
     }
 
-    public ArrayDesigns() {
-    }
-
     @Override
     public void initialize() throws Exception {
-        this.maps = (MapEngine) getComponent("MapEngine");
-        this.saxon = (SaxonEngine) getComponent("SaxonEngine");
-        this.search = (SearchEngine) getComponent("SearchEngine");
-        this.users = (Users) getComponent("Users");
+        this.maps = getComponent(MapEngine.class);
+        this.saxon = getComponent(SaxonEngine.class);
+        this.search = getComponent(SearchEngine.class);
+        this.users = getComponent(Users.class);
 
-        this.document = new FilePersistence<>(
-                new PersistableDocumentContainer("array_designs")
-                , new File(getPreferences().getString("ae.arrays.persistence-location"))
+        this.document = new StoredDocument(
+                new File(getPreferences().getString("bs.arrays.persistence-location")),
+                "array_designs"
         );
 
         maps.registerMap(new MapEngine.SimpleValueMap(MAP_ARRAY_LEGACY_ID));
@@ -92,20 +84,18 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
     public void terminate() throws Exception {
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
-    public String getDocumentURI() {
+    public String getURI() {
         return "arrays.xml";
     }
 
-    // implementation of IDocumentSource.getDocument()
-    public synchronized DocumentInfo getDocument() throws IOException {
-        return this.document.getObject().getDocument();
+    public synchronized NodeInfo getRootNode() throws IOException {
+        return document.getRootNode();
     }
 
-    // implementation of IDocumentSource.setDocument(DocumentInfo)
-    public synchronized void setDocument(DocumentInfo doc) throws IOException {
-        if (null != doc) {
-            this.document.setObject(new PersistableDocumentContainer("array_designs", doc));
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
+        if (null != rootNode) {
+            document = new StoredDocument(rootNode,
+                    new File(getPreferences().getString("bs.arrays.persistence-location")));
             updateIndex();
             updateMaps();
         } else {
@@ -115,9 +105,9 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
 
     public void update(String xmlString, ArrayDesignSource source) throws IOException, InterruptedException {
         try {
-            DocumentInfo updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
-            if (null != updateDoc) {
-                new DocumentUpdater(this, updateDoc).update();
+            NodeInfo update = this.saxon.transform(xmlString, source.getStylesheetName(), null);
+            if (null != update) {
+                new DocumentUpdater(this, update).update();
             }
         } catch (SaxonException x) {
             throw new RuntimeException(x);
@@ -126,9 +116,9 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
 
     private void updateIndex() {
         try {
-            this.search.getController().index(INDEX_ID, this.getDocument());
+            this.search.getController().index(INDEX_ID, document);
         } catch (Exception x) {
-            this.logger.error("Caught an exception:", x);
+            throw new RuntimeException(x);
         }
     }
 
@@ -139,9 +129,9 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
         users.clearUserMap(INDEX_ID);
 
         try {
-            List<Object> documentNodes = saxon.evaluateXPath(getDocument(), "/array_designs/array_design[@visible = 'true']");
-            for (Object node : documentNodes) {
-
+            List<Item> documentNodes = saxon.evaluateXPath(getRootNode(),
+                    "/array_designs/array_design[@visible = 'true']");
+            for (Item node : documentNodes) {
                 try {
                     NodeInfo array = (NodeInfo) node;
 
@@ -151,11 +141,11 @@ public class ArrayDesigns extends ApplicationComponent implements IDocumentSourc
                     if (null != legacyId) {
                         maps.setMappedValue(MAP_ARRAY_LEGACY_ID, accession, legacyId);
                     }
-                    List<Object> userIds = saxon.evaluateXPath(array, "user/@id");
+                    List<Item> userIds = saxon.evaluateXPath(array, "user/@id");
                     if (null != userIds && userIds.size() > 0) {
                         Set<String> stringSet = new HashSet<>(userIds.size());
-                        for (Object userId : userIds) {
-                            stringSet.add(((Item) userId).getStringValue());
+                        for (Item userId : userIds) {
+                            stringSet.add(userId.getStringValue());
                         }
                         users.setUserMapping(INDEX_ID, accession, stringSet);
                     }

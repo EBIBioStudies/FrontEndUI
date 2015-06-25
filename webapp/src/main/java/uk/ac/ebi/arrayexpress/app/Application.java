@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.arrayexpress.app;
 
+import com.google.common.base.Strings;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class Application {
-    // logging machinery
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     private final ApplicationPreferences prefs;
@@ -58,19 +58,21 @@ public abstract class Application {
 
     public abstract URL getResource(String path) throws MalformedURLException;
 
-    public void addComponent(ApplicationComponent component) {
-        if (components.containsKey(component.getName())) {
-            logger.error("The component [{}] has already been added to the application", component.getName());
+    public <T extends ApplicationComponent> void addComponent(T component) {
+        String className = component.getClass().getSimpleName();
+        if (components.containsKey(className)) {
+            logger.error("The component [{}] has already been added to the application", className);
         } else {
-            components.put(component.getName(), component);
+            components.put(className, component);
         }
     }
 
-    public ApplicationComponent getComponent(String name) {
-        if (components.containsKey(name))
-            return components.get(name);
-        else
-            return null;
+    public <T extends ApplicationComponent> T getComponent(Class<T> clazz) {
+        ApplicationComponent component = components.get(clazz.getSimpleName());
+        if (component.getClass().isAssignableFrom(clazz)) {
+            return (T)component;
+        }
+        return null;
     }
 
     public ApplicationPreferences getPreferences() {
@@ -88,17 +90,18 @@ public abstract class Application {
         executor = new LinuxShellCommandExecutor();
 
         for (ApplicationComponent c : components.values()) {
-            logger.info("Initializing component [{}]", c.getName());
+            String componentName = c.getClass().getSimpleName();
+            logger.info("Initializing component [{}]", componentName);
             try {
                 c.initialize();
             } catch (RuntimeException x) {
-                logger.error("[SEVERE] Caught a runtime exception while initializing [" + c.getName() + "]:", x);
-                handleException("[SEVERE] Caught a runtime exception while initializing [" + c.getName() + "]", x);
+                logger.error("[SEVERE] Caught a runtime exception while initializing [" + componentName + "]:", x);
+                handleException("[SEVERE] Caught a runtime exception while initializing [" + componentName + "]", x);
             } catch (Error x) {
-                logger.error("[SEVERE] Caught an error while initializing [" + c.getName() + "]:", x);
-                handleException("[SEVERE] Caught an error while initializing [" + c.getName() + "]", x);
+                logger.error("[SEVERE] Caught an error while initializing [" + componentName + "]:", x);
+                handleException("[SEVERE] Caught an error while initializing [" + componentName + "]", x);
             } catch (Exception x) {
-                logger.error("Caught an exception while initializing [" + c.getName() + "]:", x);
+                logger.error("Caught an exception while initializing [" + componentName + "]:", x);
             }
         }
     }
@@ -109,11 +112,12 @@ public abstract class Application {
 
         for (int i = compArray.length - 1; i >= 0; --i) {
             ApplicationComponent c = compArray[i];
-            logger.info("Terminating component [{}]", c.getName());
+            String componentName = c.getClass().getSimpleName();
+            logger.info("Terminating component [{}]", componentName);
             try {
                 c.terminate();
             } catch (Throwable x) {
-                logger.error("Caught an exception while terminating [" + c.getName() + "]:", x);
+                logger.error("Caught an exception while terminating [" + componentName + "]:", x);
             }
         }
         // release references to application components
@@ -189,7 +193,7 @@ public abstract class Application {
 
     public void requestRestart() {
         String command = getPreferences().getString("app.restart");
-        if (StringTools.isNotEmpty(command)) {
+        if (!Strings.isNullOrEmpty(command)) {
             logger.info("Restart requested, performing [{}]", command);
             try {
                 executor.execute(command, true);
@@ -214,7 +218,7 @@ public abstract class Application {
         return appInstance;
     }
 
-    public static ApplicationComponent getAppComponent(String name) {
-        return getInstance().getComponent(name);
+    public static <T extends ApplicationComponent> T getAppComponent(Class<T> clazz) {
+        return getInstance().getComponent(clazz);
     }
 }

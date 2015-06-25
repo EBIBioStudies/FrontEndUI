@@ -30,7 +30,7 @@ import java.util.Set;
 public class Autocompletion extends ApplicationComponent {
     private AutocompleteStore autocompleteStore;
 
-    private Experiments experiments;
+    private Studies studies;
     private SearchEngine search;
     private IEFO efo;
 
@@ -41,8 +41,8 @@ public class Autocompletion extends ApplicationComponent {
     public void initialize() throws Exception {
         this.autocompleteStore = new AutocompleteStore();
 
-        this.experiments = (Experiments) getComponent("Experiments");
-        this.search = (SearchEngine) getComponent("SearchEngine");
+        this.studies = getComponent(Studies.class);
+        this.search = getComponent(SearchEngine.class);
     }
 
     @Override
@@ -108,9 +108,9 @@ public class Autocompletion extends ApplicationComponent {
         getStore().clear();
 
         // adding field terms (for all non-numerical fields) and names (if there is a description)
-        Set<String> fields = search.getController().getFieldNames(experiments.INDEX_ID);
+        Set<String> fields = search.getController().getFieldNames(studies.INDEX_ID);
         for (String field : fields) {
-            String fieldTitle = search.getController().getFieldTitle(experiments.INDEX_ID, field);
+            String fieldTitle = search.getController().getFieldTitle(studies.INDEX_ID, field);
             if (null != fieldTitle && fieldTitle.length() > 0) {
                 getStore().addData(
                         new AutocompleteData(
@@ -120,9 +120,9 @@ public class Autocompletion extends ApplicationComponent {
                         )
                 );
             }
-            String fieldType = search.getController().getFieldType(experiments.INDEX_ID, field);
+            String fieldType = search.getController().getFieldType(studies.INDEX_ID, field);
             if (null != fieldType && !"integer".equals(fieldType)) {
-                for (String term : search.getController().getTerms(experiments.INDEX_ID, field, "keywords".equals(field) ? 10 : 1)) {
+                for (String term : search.getController().getTerms(studies.INDEX_ID, field, "keywords".equals(field) ? 10 : 1)) {
                     getStore().addData(
                             new AutocompleteData(
                                     term

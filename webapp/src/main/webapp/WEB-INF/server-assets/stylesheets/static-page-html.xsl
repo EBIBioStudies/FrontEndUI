@@ -29,14 +29,13 @@
     <xsl:variable name="vContent" select="ae:htmlDocument(fn:concat('/WEB-INF/server-assets/pages/', $filename))"/>
     <xsl:variable name="vSubFolder" select="if (fn:contains($filename, '/')) then fn:concat(fn:substring-before($filename, '/'), '/') else ''"/>
 
-    <xsl:include href="ae-html-page.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
 
     <xsl:template match="/">
         <xsl:choose>
             <xsl:when test="exists($vContent/html:html)">
-                <xsl:call-template name="ae-page">
+                <xsl:call-template name="bs-page">
                     <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
-                    <xsl:with-param name="pSearchInputValue"/>
                     <xsl:with-param name="pExtraSearchFields"/>
                     <xsl:with-param name="pTitleTrail" select="fn:substring-before($vContent//html:title, '&lt; ArrayExpress')"/>
                     <xsl:with-param name="pBreadcrumbTrail"/>
@@ -53,7 +52,7 @@
 
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
+    <xsl:template name="bs-content-section">
         <xsl:apply-templates select="$vContent//html:div[@id='content']/*" mode="html"/>
     </xsl:template>
 

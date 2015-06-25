@@ -18,39 +18,26 @@
 package uk.ac.ebi.arrayexpress.utils.search;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.LetterTokenizer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
-
-import java.io.IOException;
-import java.io.Reader;
+import org.apache.lucene.analysis.core.LetterTokenizer;
 
 public final class LowercaseAnalyzer extends Analyzer {
+    @Override
+    protected TokenStreamComponents createComponents(String fieldName) {
+        Tokenizer source = new LowercaseTokenizer();
+        //TokenStream filter = new ASCIIFoldingFilter(source);
+        return new TokenStreamComponents(source);
+    }
+
     private static class LowercaseTokenizer extends LetterTokenizer {
-        public LowercaseTokenizer(Reader in) {
-            super(in);
-        }
-
-        protected char normalize(char c) {
-            return Character.toLowerCase(c);
-        }
-
-        protected boolean isTokenChar(char c) {
+        @Override
+        protected boolean isTokenChar(int c) {
             return true;
         }
-    }
 
-    public TokenStream tokenStream(String fieldName, Reader reader) {
-        return new LowercaseTokenizer(reader);
-    }
-
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
-        Tokenizer tokenizer = (Tokenizer) getPreviousTokenStream();
-        if (tokenizer == null) {
-            tokenizer = new LowercaseTokenizer(reader);
-            setPreviousTokenStream(tokenizer);
-        } else
-            tokenizer.reset(reader);
-        return tokenizer;
+        @Override
+        protected int normalize(int c) {
+            return Character.toLowerCase(c);
+        }
     }
 }

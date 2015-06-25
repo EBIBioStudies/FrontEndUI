@@ -23,8 +23,7 @@
                 exclude-result-prefixes="fn html xs"
                 version="2.0">
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-sort-experiments.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
 
     <xsl:param name="error-code"/>
     <xsl:param name="error-request-uri"/>
@@ -39,10 +38,9 @@
         </xsl:choose>
     </xsl:variable>
     <xsl:template match="/">
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pEBISearchWidget"/>
-            <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail" select="$vErrorTitle"/>
             <xsl:with-param name="pExtraCSS"/>
@@ -52,13 +50,13 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
+    <xsl:template name="bs-content-section">
         <section>
             <xsl:choose>
                 <xsl:when test="$error-code = '400'">
                     <xsl:call-template name="block-warning">
                         <xsl:with-param name="pTitle">We’re sorry that we cannot process your request</xsl:with-param>
-                        <xsl:with-param name="pMessage">There was a query syntax error in <span class="alert"><xsl:value-of select="$error-message"/></span>. Please try a different query or check our <a href="{$context-path}/help/how_to_search.html">query syntax help</a>.</xsl:with-param>
+                        <xsl:with-param name="pMessage">There was a query syntax error in <span class="alert"><xsl:value-of select="$error-message"/></span>. Please try a different query or check our <a href="{$context-path}/help/index.html">query syntax help</a>.</xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:when test="$error-code = '403'">

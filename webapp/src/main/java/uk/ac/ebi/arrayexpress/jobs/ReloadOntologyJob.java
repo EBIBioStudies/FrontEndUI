@@ -17,16 +17,19 @@
 
 package uk.ac.ebi.arrayexpress.jobs;
 
+import com.google.common.io.CharStreams;
+import com.google.common.io.Files;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationJob;
 import uk.ac.ebi.arrayexpress.components.Ontologies;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 public class ReloadOntologyJob extends ApplicationJob {
     // logging machinery
@@ -35,19 +38,20 @@ public class ReloadOntologyJob extends ApplicationJob {
     @Override
     public void doExecute(JobExecutionContext jec) throws Exception {
         // check if efo.owl is in temp folder; if it's not there, copy from source
-        String efoLocation = getPreferences().getString("ae.efo.location");
+        String efoLocation = getPreferences().getString("bs.efo.location");
         File efoFile = new File(efoLocation);
         if (!efoFile.exists()) {
-            String efoBuiltinSource = getPreferences().getString("ae.efo.source");
+            String efoBuiltinSource = getPreferences().getString("bs.efo.source");
             try (InputStream is = getApplication().getResource(efoBuiltinSource).openStream()) {
-                StringTools.stringToFile(StringTools.streamToString(is, "UTF-8"), efoFile, "UTF-8");
+                Files.write(CharStreams.toString(new InputStreamReader(is, "UTF-8")),
+                        efoFile, Charset.forName("UTF-8"));
             }
         }
 
         logger.info("Loading EFO ontology from [{}]", efoFile.getPath());
 
         try (InputStream is = new FileInputStream(efoFile)) {
-            ((Ontologies) getComponent("Ontologies")).update(is);
+            getComponent(Ontologies.class).update(is);
             logger.info("EFO loading completed");
         }
     }

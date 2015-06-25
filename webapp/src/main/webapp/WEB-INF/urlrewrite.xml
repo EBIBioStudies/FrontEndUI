@@ -35,7 +35,7 @@
     </rule>
     <rule>
         <from>^/search/?$</from>
-        <to type="redirect" last="true">%{context-path}/studies/index.html</to>
+        <to type="redirect" last="true">%{context-path}/studies/</to>
     </rule>
 
     <!-- studies browser/search -->
@@ -45,11 +45,15 @@
         <to type="redirect" last="true">%{context-path}/studies/search.html?%{query-string}</to>
     </rule>
     <rule>
-        <from>^/studies/?$</from>
-        <to type="redirect" last="true">%{context-path}/studies/index.html</to>
+        <from>^/studies$</from>
+        <to type="redirect" last="true">%{context-path}/studies/</to>
     </rule>
     <rule>
         <from>^/studies/index[.]html?$</from>
+        <to type="redirect" last="true">%{context-path}/studies/</to>
+    </rule>
+    <rule>
+        <from>^/studies/$</from>
         <to type="forward" last="true">/servlets/query/studies/browse/html</to>
     </rule>
     <rule>
@@ -65,6 +69,7 @@
     </rule>
 
     <!-- study files -->
+    <!--
     <rule>
         <from>^/studies/([^/]+)/files/$</from>
         <set type="parameter" name="accession">$1</set>
@@ -96,7 +101,11 @@
         <from>^/studies/([^/]+)/files/([^/.]+)/index[.]html?$</from>
         <to type="permanent-redirect" last="true">%{context-path}/studies/$1/files/$2/</to>
     </rule>
-
+    -->
+    <rule>
+        <from>^/files/([^/]+)/([^/]+)$</from>
+        <to type="forward" last="true">/servlets/download/${upper:$1}/$2</to>
+    </rule>
     <!-- about page -->
     <rule>
         <from>^/about[.]html?$</from>
@@ -107,10 +116,25 @@
         <from>^/acknowledgements[.]html?$</from>
         <to type="redirect" last="true">%{context-path}/about.html#acknowledgements</to>
     </rule>
+    <!-- submit pages -->
+    <rule>
+        <from>^/submit$</from>
+        <to type="redirect" last="true">%{context-path}/submit/</to>
+    </rule>
+    <rule>
+        <from>^/submit/.*$</from>
+        <set type="parameter" name="filename">submit.html</set>
+        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
+    </rule>
     <!-- help pages -->
     <rule>
-        <from>^/help/?$</from>
-        <to type="redirect" last="true">%{context-path}/help/index.html</to>
+        <from>^/help$</from>
+        <to type="redirect" last="true">%{context-path}/help/</to>
+    </rule>
+    <rule>
+        <from>^/help/$</from>
+        <set type="parameter" name="filename">help/index.html</set>
+        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
     </rule>
     <rule>
         <from>^/help/(.+)[.]html?$</from>

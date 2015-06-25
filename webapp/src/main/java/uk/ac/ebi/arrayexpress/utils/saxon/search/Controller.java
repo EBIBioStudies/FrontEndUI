@@ -17,22 +17,23 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
-import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.NodeInfo;
 import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
+import uk.ac.ebi.arrayexpress.utils.saxon.Document;
+import uk.ac.ebi.fg.saxon.functions.search.IHighlighter;
+import uk.ac.ebi.fg.saxon.functions.search.IQuerier;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class Controller {
-    // logging machinery
+public class Controller implements IQuerier, IHighlighter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Configuration config;
@@ -85,10 +86,10 @@ public class Controller {
         return this.environment.get(indexId);
     }
 
-    public void index(String indexId, DocumentInfo document) throws IndexerException, InterruptedException {
+    public void index(String indexId, Document document) throws IndexerException, InterruptedException {
         this.logger.info("Started indexing for index id [{}]", indexId);
-        getEnvironment(indexId).putDocumentInfo(
-                document.hashCode()
+        getEnvironment(indexId).setDocumentInfo(
+                document.getHash()
                 , new Indexer(getEnvironment(indexId), saxon).index(document)
         );
         this.logger.info("Indexing for index id [{}] completed", indexId);
@@ -160,6 +161,7 @@ public class Controller {
         return new Querier(getEnvironment(indexId)).query(this.queryConstructor.construct(getEnvironment(indexId), queryString));  // should use "queryIndex( Integer queryId )" instead
     }
 
+    @Override
     public String highlightQuery(Integer queryId, String fieldName, String text) {
         if (null == this.queryHighlighter) {
             // sort of lazy init if we forgot to specify more advanced highlighter

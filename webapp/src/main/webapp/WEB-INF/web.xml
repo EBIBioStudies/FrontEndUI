@@ -2,43 +2,11 @@
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>${project.name} v${project.version}.${buildNumber}</display-name>
-
-    <context-param>
-        <param-name>governator.bootstrap.class</param-name>
-        <param-value>uk.ac.ebi.fg.biostudies.ui.AppConfiguration</param-value>
-    </context-param>
-    <filter>
-        <filter-name>urlRewriteFilter</filter-name>
-        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-        <init-param>
-            <param-name>confPath</param-name>
-            <param-value>/WEB-INF/urlrewrite.xml</param-value>
-        </init-param>
-        <init-param>
-            <param-name>confReloadCheckInterval</param-name>
-            <param-value>-1</param-value>
-        </init-param>
-        <init-param>
-            <param-name>logLevel</param-name>
-            <param-value>slf4j</param-value>
-        </init-param>
-    </filter>
-    <filter>
-        <filter-name>guiceFilter</filter-name>
-        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>urlRewriteFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>guiceFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <listener>
-        <listener-class>com.netflix.governator.guice.servlet.GovernatorServletContextListener</listener-class>
-    </listener>
-    <!--
+    <servlet>
+        <description>Application Status Servlet</description>
+        <servlet-name>StatusServlet</servlet-name>
+        <servlet-class>uk.ac.ebi.arrayexpress.servlets.StatusServlet</servlet-class>
+    </servlet>
     <servlet>
         <description>Error Pages Servlet</description>
         <servlet-name>ErrorServlet</servlet-name>
@@ -89,6 +57,10 @@
         <servlet-name>LookupServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.LookupServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>StatusServlet</servlet-name>
+        <url-pattern>/servlets/status</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ErrorServlet</servlet-name>
         <url-pattern>/servlets/error/*</url-pattern>
@@ -159,13 +131,8 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <listener>
-        <description>The class implementing the "ServletContextListener" interface and thus receiving the
-            "contextInitialized" and "contextDestroyed" messages indicating that the application
-            is being de/initialized.
-        </description>
-        <listener-class>uk.ac.ebi.arrayexpress.AEInterfaceApplication</listener-class>
+        <listener-class>uk.ac.ebi.arrayexpress.BSInterfaceApplication</listener-class>
     </listener>
-    -->
     <!--
     <security-constraint>
         <web-resource-collection>

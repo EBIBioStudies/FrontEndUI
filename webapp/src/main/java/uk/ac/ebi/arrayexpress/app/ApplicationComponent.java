@@ -18,22 +18,12 @@
 package uk.ac.ebi.arrayexpress.app;
 
 abstract public class ApplicationComponent {
-    private String componentName;
-
-    public ApplicationComponent() {
-        componentName = getClass().getName().replaceFirst("^.+\\.", "");
-    }
-
-    public String getName() {
-        return componentName;
-    }
-
     public Application getApplication() {
         return Application.getInstance();
     }
 
-    public ApplicationComponent getComponent(String name) {
-        return Application.getInstance().getComponent(name);
+    public <T extends ApplicationComponent> T getComponent(Class<T> clazz) {
+        return Application.getInstance().getComponent(clazz);
     }
 
     public ApplicationPreferences getPreferences() {

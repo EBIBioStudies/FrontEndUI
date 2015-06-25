@@ -23,7 +23,7 @@
                 version="2.0">
     <xsl:output method="xml" encoding="UTF-8" indent="no"/>
 
-    <xsl:include href="ae-parse-html-function.xsl"/>
+    <xsl:include href="bs-parse-html-function.xsl"/>
 
     <xsl:template match="/array_designs">
         <array_designs>

@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.fg.saxon.functions.IMapper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapEngine extends ApplicationComponent {
+public class MapEngine extends ApplicationComponent implements IMapper {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

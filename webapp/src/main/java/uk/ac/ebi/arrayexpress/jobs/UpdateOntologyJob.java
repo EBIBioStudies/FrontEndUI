@@ -17,6 +17,8 @@
 
 package uk.ac.ebi.arrayexpress.jobs;
 
+import com.google.common.io.CharStreams;
+import com.google.common.io.Files;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,9 @@ import uk.ac.ebi.arrayexpress.utils.efo.EFOLoader;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.Charset;
 
 public class UpdateOntologyJob extends ApplicationJob {
     // logging machinery
@@ -37,11 +41,11 @@ public class UpdateOntologyJob extends ApplicationJob {
     public void doExecute(JobExecutionContext jec) throws Exception {
         // check the version of EFO from update location; if newer, copy it
         // over to our location and launch a reload process
-        String efoLocation = getPreferences().getString("ae.efo.update.source");
+        String efoLocation = getPreferences().getString("bs.efo.update.source");
         URI efoURI = new URI(efoLocation);
         logger.info("Checking EFO ontology version from [{}]", efoURI.toString());
         String version = EFOLoader.getOWLVersion(efoURI);
-        String loadedVersion = ((Ontologies) getComponent("Ontologies")).getEfo().getVersionInfo();
+        String loadedVersion = getComponent(Ontologies.class).getEfo().getVersionInfo();
         if (null != version
                 && !version.equals(loadedVersion)
                 && isVersionNewer(version, loadedVersion)
@@ -50,8 +54,9 @@ public class UpdateOntologyJob extends ApplicationJob {
             // we have newer version, let's fetch it and copy it over to our working location
             logger.info("Updating EFO with version [{}]", version);
             try (InputStream is = efoURI.toURL().openStream()) {
-                File efoFile = new File(getPreferences().getString("ae.efo.location"));
-                StringTools.stringToFile(StringTools.streamToString(is, "UTF-8"), efoFile, "UTF-8");
+                File efoFile = new File(getPreferences().getString("bs.efo.location"));
+                Files.write(CharStreams.toString(new InputStreamReader(is, "UTF-8")),
+                        efoFile, Charset.forName("UTF-8"));
                 getApplication().sendEmail(
                         null
                         , null

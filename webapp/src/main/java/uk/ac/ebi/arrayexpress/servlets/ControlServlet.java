@@ -21,7 +21,6 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
-import uk.ac.ebi.arrayexpress.components.Files;
 import uk.ac.ebi.arrayexpress.components.JobsController;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
@@ -59,21 +58,22 @@ public class ControlServlet extends ApplicationServlet {
         try {
             if (
                     "reload-atlas-info".equals(command)
-                            || "reload-ae2-xml".equals(command)
+                            || "reload-xml".equals(command)
                             || "reload-efo".equals(command)
                             || "update-efo".equals(command)
                             || "check-files".equals(command)
+                            || "rescan-files".equals(command)
                             || "check-experiments".equals(command)
                             || "reload-atlas-info".equals(command)
                     ) {
-                ((JobsController) getComponent("JobsController")).executeJob(command);
-            } else if ("reload-ae1-xml".equals(command)) {
-                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
-            } else if ("rescan-files".equals(command)) {
-                if (!params.isEmpty()) {
-                    ((Files) getComponent("Files")).setRootFolder(params);
-                }
-                ((JobsController) getComponent("JobsController")).executeJob(command);
+                getComponent(JobsController.class).executeJob(command);
+//            } else if ("reload-ae1-xml".equals(command)) {
+//                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
+//            } else if ("rescan-files".equals(command)) {
+//                if (!params.isEmpty()) {
+//                    ((Files) getComponent("Files")).setRootFolder(params);
+//                }
+//                ((JobsController) getComponent("JobsController")).executeJob(command);
             } else if ("test-email".equals(command)) {
                 getApplication().sendEmail(
                         null

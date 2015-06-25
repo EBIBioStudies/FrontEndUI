@@ -29,10 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Configuration {
-    // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private Map<String, HierarchicalConfiguration> indicesConfig = new HashMap<String, HierarchicalConfiguration>();
+    private Map<String, HierarchicalConfiguration> indicesConfig = new HashMap<>();
 
     public Configuration(URL configResource) {
         try {

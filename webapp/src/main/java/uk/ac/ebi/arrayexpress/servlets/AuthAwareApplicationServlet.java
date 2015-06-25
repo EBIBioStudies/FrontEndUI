@@ -20,15 +20,11 @@ package uk.ac.ebi.arrayexpress.servlets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
-import uk.ac.ebi.arrayexpress.components.Users;
-import uk.ac.ebi.arrayexpress.utils.CookieMap;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,68 +66,69 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
     }
 
     private boolean checkAuthCookies(HttpServletRequest request) throws ServletException {
-        try {
-            CookieMap cookies = new CookieMap(request.getCookies());
-            String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
-            if (null != userName) {
-                userName = URLDecoder.decode(userName, "UTF-8");
-            }
-            String token = cookies.getCookieValue(AE_LOGIN_TOKEN_COOKIE);
-            String userAgent = request.getHeader("User-Agent");
-            Users users = (Users) getComponent("Users");
-            return users.verifyLogin(
-                    userName
-                    , token
-                    , request.getRemoteAddr().concat(
-                            userAgent != null ? userAgent : "unknown"
-                    )
-            );
-        } catch (Exception x) {
-            throw new AuthApplicationServletException(x);
-        }
+//        try {
+//            CookieMap cookies = new CookieMap(request.getCookies());
+//            String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
+//            if (null != userName) {
+//                userName = URLDecoder.decode(userName, "UTF-8");
+//            }
+//            String token = cookies.getCookieValue(AE_LOGIN_TOKEN_COOKIE);
+//            String userAgent = request.getHeader("User-Agent");
+//            Users users = (Users) getComponent("Users");
+//            return users.verifyLogin(
+//                    userName
+//                    , token
+//                    , request.getRemoteAddr().concat(
+//                            userAgent != null ? userAgent : "unknown"
+//                    )
+//            );
+//        } catch (Exception x) {
+//            throw new AuthApplicationServletException(x);
+//        }
+        return false;
     }
 
     private void invalidateAuthCookies(HttpServletResponse response) {
         // deleting user cookie
-        Cookie userCookie = new Cookie(AE_LOGIN_USER_COOKIE, "");
-        userCookie.setPath("/");
-        userCookie.setMaxAge(0);
-
-        response.addCookie(userCookie);
+//        Cookie userCookie = new Cookie(AE_LOGIN_USER_COOKIE, "");
+//        userCookie.setPath("/");
+//        userCookie.setMaxAge(0);
+//
+//        response.addCookie(userCookie);
     }
 
     protected String getAuthUserName(HttpServletRequest request) throws ServletException {
-        if (checkAuthCookies(request)) {
-            try {
-                String userName = new CookieMap(request.getCookies()).getCookieValue(AE_LOGIN_USER_COOKIE);
-                if (null != userName) {
-                    return URLDecoder.decode(userName, "UTF-8");
-                }
-            } catch (Exception x) {
-                throw new AuthApplicationServletException(x);
-            }
-        }
+//        if (checkAuthCookies(request)) {
+//            try {
+//                String userName = new CookieMap(request.getCookies()).getCookieValue(AE_LOGIN_USER_COOKIE);
+//                if (null != userName) {
+//                    return URLDecoder.decode(userName, "UTF-8");
+//                }
+//            } catch (Exception x) {
+//                throw new AuthApplicationServletException(x);
+//            }
+//        }
         return null;
     }
 
     protected List<String> getUserIds(String userName) throws ServletException {
-        if (null == userName) {
+//        if (null == userName) {
             return AE_PUBLIC_ACCESS;
-        }
-        try {
-            userName = URLDecoder.decode(userName, "UTF-8");
-            Users users = (Users) getComponent("Users");
-
-            if (users.isPrivilegedByName(userName)) {
-                return AE_UNRESTRICTED_ACCESS;
-            } else {
-                List<String> userIds = users.getUserIDs(userName);
-                // so we allow public access as well
-                userIds.addAll(AE_PUBLIC_ACCESS);
-                return userIds;
-            }
-        } catch (Exception x) {
-            throw new AuthApplicationServletException(x);
-        }
+//        }
+//        try {
+//            userName = URLDecoder.decode(userName, "UTF-8");
+//            Users users = (Users) getComponent("Users");
+//
+//            if (users.isPrivilegedByName(userName)) {
+//                return AE_UNRESTRICTED_ACCESS;
+//            } else {
+//                List<String> userIds = users.getUserIDs(userName);
+//                // so we allow public access as well
+//                userIds.addAll(AE_PUBLIC_ACCESS);
+//                return userIds;
+//            }
+//        } catch (Exception x) {
+//            throw new AuthApplicationServletException(x);
+//        }
     }
 }

@@ -55,10 +55,10 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         addJob("update-efo", UpdateOntologyJob.class);
 
         // schedule jobs
-        scheduleJob("rescan-files", "ae.files.rescan");
-        scheduleJob("check-files", "ae.files.check");
-        scheduleJob("reload-xml", "ae.experiments.ae2.reload");
-        scheduleJob("update-efo", "ae.efo.update");
+        //scheduleJob("rescan-files", "bs.files.rescan");
+        //scheduleJob("check-files", "bs.files.check");
+        scheduleJob("reload-xml", "bs.studies.reload");
+        scheduleJob("update-efo", "bs.efo.update");
 
         startScheduler();
     }

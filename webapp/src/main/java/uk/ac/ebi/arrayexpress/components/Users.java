@@ -17,21 +17,16 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.value.BooleanValue;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
-import uk.ac.ebi.arrayexpress.utils.saxon.DocumentUpdater;
-import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
-import uk.ac.ebi.arrayexpress.utils.saxon.PersistableDocumentContainer;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
+import uk.ac.ebi.arrayexpress.utils.saxon.*;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.AuthenticationHelper;
 
 import java.io.File;
@@ -40,14 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Users extends ApplicationComponent implements IDocumentSource {
-    // logging machinery
+public class Users extends ApplicationComponent implements XMLDocumentSource {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final static String MAP_USERS_FOR_ACCESSION = "users-for-accession";
 
     private AuthenticationHelper authHelper;
-    private FilePersistence<PersistableDocumentContainer> document;
+    private StoredDocument document;
     private MapEngine.JointValueMap userMap;
 
     private SaxonEngine saxon;
@@ -74,18 +68,18 @@ public class Users extends ApplicationComponent implements IDocumentSource {
 
     @Override
     public void initialize() throws Exception {
-        this.saxon = (SaxonEngine) getComponent("SaxonEngine");
-        this.search = (SearchEngine) getComponent("SearchEngine");
-        this.document = new FilePersistence<>(
-                new PersistableDocumentContainer("users")
-                , new File(getPreferences().getString("ae.users.persistence-location"))
+        this.saxon = getComponent(SaxonEngine.class);
+        this.search = getComponent(SearchEngine.class);
+        this.document = new StoredDocument(
+                new File(getPreferences().getString("bs.users.persistence-location")),
+                "users"
         );
 
         this.userMap = new MapEngine.JointValueMap(MAP_USERS_FOR_ACCESSION);
 
-        MapEngine maps = ((MapEngine) getComponent("MapEngine"));
+        MapEngine maps = getComponent(MapEngine.class);
         maps.registerMap(this.userMap);
-        maps.registerMap(new MapEngine.SimpleValueMap(Experiments.MAP_EXPERIMENTS_FOR_USER));
+//        maps.registerMap(new MapEngine.SimpleValueMap(Studies.MAP_EXPERIMENTS_FOR_USER));
 
         updateIndex();
 
@@ -97,23 +91,21 @@ public class Users extends ApplicationComponent implements IDocumentSource {
     public void terminate() throws Exception {
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI() {
+    public String getURI() {
         return "users.xml";
     }
 
-    // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException {
-        return this.document.getObject().getDocument();
+    public synchronized NodeInfo getRootNode() throws IOException {
+        return document.getRootNode();
     }
 
-    // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
-        if (null != doc) {
-            this.document.setObject(new PersistableDocumentContainer("users", doc));
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
+        if (null != rootNode) {
+            this.document = new StoredDocument(rootNode,
+                    new File(getPreferences().getString("bs.users.persistence-location")));
             updateIndex();
         } else {
             this.logger.error("User information NOT updated, NULL document passed");
@@ -155,20 +147,19 @@ public class Users extends ApplicationComponent implements IDocumentSource {
 
     public void update(String xmlString, UserSource source) throws IOException, InterruptedException {
         try {
-            DocumentInfo updateDoc = this.saxon.transform(xmlString, source.getStylesheetName(), null);
-            if (null != updateDoc) {
-                new DocumentUpdater(this, updateDoc).update();
+            NodeInfo update = this.saxon.transform(xmlString, source.getStylesheetName(), null);
+            if (null != update) {
+                new DocumentUpdater(this, update).update();
             }
         } catch (SaxonException x) {
             throw new RuntimeException(x);
         }
     }
 
-    private void updateIndex() throws IOException, InterruptedException {
-        Thread.sleep(0);
+    private void updateIndex() throws IOException {
         try {
-            this.search.getController().index(INDEX_ID, this.getDocument());
-        } catch (IndexerException x) {
+            this.search.getController().index(INDEX_ID, document);
+        } catch (Exception x) {
             throw new RuntimeException(x);
         }
     }
@@ -176,10 +167,10 @@ public class Users extends ApplicationComponent implements IDocumentSource {
     public boolean isPrivilegedByName(String name) throws IOException {
         name = StringEscapeUtils.escapeXml(name);
         try {
-            return (Boolean) saxon.evaluateXPathSingle(
-                    getDocument()
+            return ((BooleanValue) saxon.evaluateXPathSingle(
+                    getRootNode()
                     , "(/users/user[name = '" + name + "']/is_privileged = true())"
-            );
+            )).effectiveBooleanValue();
         } catch (XPathException x) {
             throw new RuntimeException(x);
         }
@@ -188,10 +179,10 @@ public class Users extends ApplicationComponent implements IDocumentSource {
     public boolean isPrivilegedByID(String id) throws IOException {
         id = StringEscapeUtils.escapeXml(id);
         try {
-            return (Boolean) saxon.evaluateXPathSingle(
-                    getDocument()
+            return ((BooleanValue) saxon.evaluateXPathSingle(
+                    getRootNode()
                     , "(/users/user[id = '" + id + "']/is_privileged = true())"
-            );
+            )).effectiveBooleanValue();
         } catch (XPathException x) {
             throw new RuntimeException(x);
         }
@@ -201,7 +192,7 @@ public class Users extends ApplicationComponent implements IDocumentSource {
         name = StringEscapeUtils.escapeXml(name);
         try {
             List idNodes = this.saxon.evaluateXPath(
-                    getDocument()
+                    getRootNode()
                     , "/users/user[name = '" + name + "']/id"
             );
 
@@ -220,7 +211,7 @@ public class Users extends ApplicationComponent implements IDocumentSource {
         name = StringEscapeUtils.escapeXml(name);
         try {
             List passwordNodes = this.saxon.evaluateXPath(
-                    getDocument()
+                    getRootNode()
                     , "/users/user[name = '" + name + "']/password"
             );
 
@@ -271,7 +262,7 @@ public class Users extends ApplicationComponent implements IDocumentSource {
                 String ids = StringTools.arrayToString(uids.toArray(new String[uids.size()]), ",");
 
                 users = this.saxon.evaluateXPath(
-                        getDocument()
+                        getRootNode()
                         , "/users/user[(name|email = '" + nameOrEmail + "') and id = (" + ids + ")]"
                 );
             }
@@ -280,14 +271,14 @@ public class Users extends ApplicationComponent implements IDocumentSource {
             String result = "Unable to find matching account information, please contact us for assistance.";
             if (null != users && users.size() > 0) {
                 if (1 == users.size()) {
-                    String username = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(name)");
-                    String email = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(email)");
-                    String password = (String) this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(password)");
+                    String username = this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(name)").getStringValue();
+                    String email = this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(email)").getStringValue();
+                    String password = this.saxon.evaluateXPathSingle((NodeInfo) users.get(0), "string(password)").getStringValue();
 
                     getApplication().sendEmail(
-                            getPreferences().getString("ae.password-remind.originator")
+                            getPreferences().getString("bs.password-remind.originator")
                             , new String[]{email}
-                            , getPreferences().getString("ae.password-remind.subject")
+                            , getPreferences().getString("bs.password-remind.subject")
                             , "Dear " + username + "," + StringTools.EOL
                                     + StringTools.EOL
                                     + "Your ArrayExpress account information is:" + StringTools.EOL
@@ -313,8 +304,8 @@ public class Users extends ApplicationComponent implements IDocumentSource {
             }
 
             getApplication().sendEmail(
-                    getPreferences().getString("ae.password-remind.originator")
-                    , getPreferences().getStringArray("ae.password-remind.recipients")
+                    getPreferences().getString("bs.password-remind.originator")
+                    , getPreferences().getStringArray("bs.password-remind.recipients")
                     , "ArrayExpress account information request"
                     , reportMessage + StringTools.EOL
                             + StringTools.EOL

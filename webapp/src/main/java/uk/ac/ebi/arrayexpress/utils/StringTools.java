@@ -17,6 +17,8 @@
 
 package uk.ac.ebi.arrayexpress.utils;
 
+import com.google.common.io.CharStreams;
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,11 +29,6 @@ public class StringTools {
     }
 
     public final static String EOL = System.getProperty("line.separator");
-    public final static String EMPTY_STRING = "";
-
-    public static boolean isNotEmpty(String s) {
-        return null != s && !s.isEmpty();
-    }
 
     public static String listToString(List<String> l, String separator) {
         if (null == l) {
@@ -57,52 +54,9 @@ public class StringTools {
         return result.toString();
     }
 
-    public static String streamToString(InputStream is, String encoding) throws IOException {
-        if (is != null) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, encoding));
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append(EOL);
-                }
-            } finally {
-                is.close();
-            }
-            return sb.toString();
-        } else {
-            return "";
-        }
-    }
-
     public static Set<String> streamToStringSet(InputStream is, String encoding) throws IOException {
-        String[] lines = streamToString(is, encoding).split(EOL);
+        String[] lines = CharStreams.toString(new InputStreamReader(is, encoding)).split(EOL);
         return new HashSet<>(Arrays.asList(lines));
-    }
-
-    public static String fileToString(File f, String encoding) throws IOException {
-        if (f.exists()) {
-            InputStream is = new FileInputStream(f);
-            return streamToString(is, encoding);
-        } else {
-            throw new FileNotFoundException("File [" + f.getName() + "] not found");
-        }
-    }
-
-    public static void stringToFile(String string, File file, String encoding) throws IOException {
-        BufferedWriter w = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(file)
-                        , encoding
-                )
-        );
-
-        w.write(string);
-        w.close();
-    }
-
-    public static String longDateTimeToXSDDateTime(long dateTime) {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date(dateTime));
     }
 
     public static Date rfc822StringToDate(String rfc822) {
@@ -121,10 +75,6 @@ public class StringTools {
 
     public static String safeToString(Object obj, String nullObjString) {
         return (null == obj) ? nullObjString : obj.toString();
-    }
-
-    public static String nullToEmpty(String str) {
-        return (null == str) ? EMPTY_STRING : str;
     }
 
     public static Boolean stringToBoolean(String boolString) {
@@ -153,7 +103,7 @@ public class StringTools {
             }
             out.append(in.substring(currentIndex, entityStart));
             entityEnd = in.indexOf(";", entityStart);
-            if (-1 != entityEnd && in.substring(entityStart + 2, entityEnd).matches("^\\d{1,}$")) {
+            if (-1 != entityEnd && in.substring(entityStart + 2, entityEnd).matches("^\\d+$")) {
                 // good stuff, we found decimal entity
                 out.append((char) Integer.parseInt(in.substring(entityStart + 2, entityEnd)));
                 currentIndex = entityEnd + 1;
@@ -182,7 +132,7 @@ public class StringTools {
             return in;
         } else if (in >= 0x80 && in <= 0x9f) {
             return C1_CONTROL_TRANSCODE_MAP[in - 0x80];
-        } else if ((in >= 0xa0 && in <= 0xd7ff) || (in >= 0xe000 && in <= 0xfffd) || (in >= 0x10000 && in <= 0x10ffff)) {
+        } else if ((in >= 0xa0 && in <= 0xd7ff) || (in >= 0xe000 && in <= 0xfffd) || (in >= 0x10000)) {
             return in;
         } else if (in >= 0x80) {
             return ILLEGAL_CHAR_REPRESENATION;

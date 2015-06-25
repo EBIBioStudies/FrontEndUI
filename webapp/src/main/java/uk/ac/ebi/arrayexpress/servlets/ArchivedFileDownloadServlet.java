@@ -127,12 +127,12 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
         String fileName = requestArgs[2];
 
         logger.info("Requested download of [{}] from archive [{}],  accession [" + accession + "]", fileName, archName);
-        Files files = (Files) getComponent("Files");
-        Users users = (Users) getComponent("Users");
+        Files files = getComponent(Files.class);
+        Users users = getComponent(Users.class);
 
         try {
 
-            if (!files.doesExist(accession, null, archName)) {
+            if (!files.doesExist(accession, archName)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 throw new DownloadServletException(
                         "Archive with name ["
@@ -141,7 +141,7 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
                                 + accession
                                 + "] is not in files.xml");
             } else {
-                String archLocation = files.getLocation(accession, null, archName);
+                String archLocation = files.getLocation(accession, archName);
 
                 // finally if there is no accession or location determined at the stage - panic
                 if ("".equals(archLocation) || "".equals(accession)) {

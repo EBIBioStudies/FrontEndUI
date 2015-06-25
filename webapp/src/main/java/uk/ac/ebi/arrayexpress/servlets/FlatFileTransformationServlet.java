@@ -34,6 +34,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
@@ -82,12 +83,12 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
         PrintWriter out = null;
 
         try {
-            SaxonEngine saxonEngine = (SaxonEngine) getComponent("SaxonEngine");
-            Files files = (Files) getComponent("Files");
+            SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
+            Files files = getComponent(Files.class);
 
             String stylesheetName = stylesheet + "-" + outputType + ".xsl";
 
-            String flatFileLocation = files.getLocation(accession, null, fileName);
+            String flatFileLocation = files.getLocation(accession, fileName);
             SAXSource source = new SAXSource();
             File flatFile = null != flatFileLocation ? new File(files.getRootFolder(), flatFileLocation) : null;
 
@@ -125,12 +126,7 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
                 // Output goes to the response PrintWriter.
                 out = response.getWriter();
 
-                if (!saxonEngine.transformToWriter(
-                        source
-                        , stylesheetName
-                        , params
-                        , out
-                )) {                     // where to dump resulting text
+                if (!saxonEngine.transform(source, stylesheetName, params, new StreamResult(out))) {                     // where to dump resulting text
                     throw new Exception("Transformation returned an error");
                 }
             }

@@ -25,13 +25,12 @@
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
 
-    <xsl:include href="ae-html-page.xsl"/>
-    <xsl:include href="ae-date-functions.xsl"/>
+    <xsl:include href="bs-html-page.xsl"/>
+    <xsl:include href="bs-date-functions.xsl"/>
 
     <xsl:template match="/">
-        <xsl:call-template name="ae-page">
+        <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
-            <xsl:with-param name="pSearchInputValue"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail"/>
             <xsl:with-param name="pExtraCSS"/>
@@ -42,53 +41,49 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template name="ae-content-section">
-        <xsl:variable name="vExperiments" select="search:queryIndex('experiments', 'visible:true public:true')"/>
-        <xsl:variable name="vTotal" select="fn:count($vExperiments)"/>
-        <xsl:variable name="vRetrieved" select="$vExperiments[1]/../@retrieved"/>
+    <xsl:template name="bs-content-section">
+        <xsl:variable name="vStudies" select="search:queryIndex('studies', 'public:true')"/>
+        <xsl:variable name="vTotal" select="fn:count($vStudies)"/>
+        <xsl:variable name="vRetrieved" select="$vStudies[1]/../@updated"/>
+        <!--
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>
         <xsl:variable name="vNews" select="doc('news.xml')"/>
+        -->
 
-
-        <div>
-            <xsl:attribute name="class">alpha
+        <section>
+            <xsl:attribute name="class">alpha intro
                 <xsl:choose>
                     <xsl:when test="$vTotal > 0">grid_18</xsl:when>
                     <xsl:otherwise>grid_24 omega</xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <section>
-                <h2>BioStudies – database of biological studies</h2>
-                <p class="intro justify">The goal of the BioStudies database is to provide light-weight means for
-                    capturing data from biological studies, especially for the cases where due to the pace of
-                    high-throughput technology development the generated data does not fit into any of the specialized
-                    EBI databases, or where established technologies are used in combination. The database will be able
-                    to accept a wide range of types of studies described via a simple format, and will not impose
-                    minimum requirements outside the respective community agreements. It will also enable manuscript
-                    authors to submit supplementary information and link to it from the publication.
-                </p>
-            </section>
-        </div>
+            <h2>BioStudies – database of biological studies</h2>
+            <p class="justify">The BioStudies database holds descriptions of biological studies, links to data
+                from these studies in other databases at EMBL-EBI or outside, as well as data that do not fit in the
+                structured archives at EMBL-EBI. The database can accept a wide range of types of studies described
+                via a simple format. It also enables manuscript authors to submit supplementary information and link
+                to it from the publication.</p>
+            <p class="browse-link"><a href="{$context-path}/studies/" title="Browse BioStudies">Browse BioStudies</a></p>
+        </section>
 
         <xsl:if test="$vTotal > 0">
-            <div class="grid_6 omega">
-                <section>
-                    <h3 class="icon icon-generic" data-icon="g">Statistics</h3>
+            <aside class="grid_6 omega">
+                    <!-- <h3 class="icon icon-generic" data-icon="g">Statistics</h3> -->
                     <xsl:if test="fn:string-length($vRetrieved) > 1">
                         <h5>Updated <xsl:value-of select="ae:formatDateTime2($vRetrieved)"/></h5>
                     </xsl:if>
                     <ul>
                         <li>
-                            <xsl:value-of select="$vTotal"/> stud
-                            <xsl:choose>
-                                <xsl:when test="fn:count($vExperiments) > 1">ies</xsl:when>
-                                <xsl:otherwise>y</xsl:otherwise>
-                            </xsl:choose>
+                            <a href="{$context-path}/studies/" title="Browse BioStudies">
+                                <xsl:value-of
+                                        select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'studies' else 'study')"/>
+                            </a>
                         </li>
+                        <!--
                         <li><xsl:value-of select="ae:formatFileSize(fn:sum($vFiles/@size) cast as xs:integer)"/> of archived data</li>
+                        -->
                     </ul>
-                </section>
-            </div>
+            </aside>
         </xsl:if>
         <!--
         <div class="grid_24 alpha">

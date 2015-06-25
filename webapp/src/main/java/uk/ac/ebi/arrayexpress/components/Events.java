@@ -17,44 +17,36 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.om.NodeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.persistence.FilePersistence;
-import uk.ac.ebi.arrayexpress.utils.saxon.DocumentUpdater;
-import uk.ac.ebi.arrayexpress.utils.saxon.IDocumentSource;
-import uk.ac.ebi.arrayexpress.utils.saxon.PersistableDocumentContainer;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
+import uk.ac.ebi.arrayexpress.utils.saxon.*;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Events extends ApplicationComponent implements IDocumentSource {
+public class Events extends ApplicationComponent implements XMLDocumentSource {
     // logging machinery
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private FilePersistence<PersistableDocumentContainer> document;
+    private StoredDocument document;
     private SearchEngine search;
 
     public final String INDEX_ID = "events";
 
     public static interface IEventInformation {
-        public abstract DocumentInfo getEventXML();
-    }
-
-    public Events() {
+        public abstract NodeInfo getEventXML();
     }
 
     @Override
     public void initialize() throws Exception {
-        SaxonEngine saxon = (SaxonEngine) getComponent("SaxonEngine");
-        this.search = (SearchEngine) getComponent("SearchEngine");
+        SaxonEngine saxon = getComponent(SaxonEngine.class);
+        this.search = getComponent(SearchEngine.class);
 
-        this.document = new FilePersistence<>(
-                new PersistableDocumentContainer("events")
-                , new File(getPreferences().getString("ae.events.persistence-location"))
+        this.document = new StoredDocument(
+                new File(getPreferences().getString("bs.events.persistence-location")),
+                "events"
         );
 
         updateIndex();
@@ -65,23 +57,21 @@ public class Events extends ApplicationComponent implements IDocumentSource {
     public void terminate() throws Exception {
     }
 
-    // implementation of IDocumentSource.getDocumentURI()
     @Override
-    public String getDocumentURI() {
+    public String getURI() {
         return "events.xml";
     }
 
-    // implementation of IDocumentSource.getDocument()
     @Override
-    public synchronized DocumentInfo getDocument() throws IOException {
-        return this.document.getObject().getDocument();
+    public synchronized NodeInfo getRootNode() throws IOException {
+        return document.getRootNode();
     }
 
-    // implementation of IDocumentSource.setDocument(DocumentInfo)
     @Override
-    public synchronized void setDocument(DocumentInfo doc) throws IOException, InterruptedException {
-        if (null != doc) {
-            this.document.setObject(new PersistableDocumentContainer("events", doc));
+    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
+        if (null != rootNode) {
+            document = new StoredDocument(rootNode,
+                    new File(getPreferences().getString("bs.events.persistence-location")));
             updateIndex();
         } else {
             this.logger.error("Events NOT updated, NULL document passed");
@@ -90,20 +80,19 @@ public class Events extends ApplicationComponent implements IDocumentSource {
 
     public void addEvent(IEventInformation event) throws IOException, InterruptedException {
         try {
-            DocumentInfo eventDoc = event.getEventXML();
-            if (null != eventDoc) {
-                new DocumentUpdater(this, eventDoc).update();
+            NodeInfo events = event.getEventXML();
+            if (null != events) {
+                new DocumentUpdater(this, events).update();
             }
         } catch (SaxonException x) {
             throw new RuntimeException(x);
         }
     }
 
-    private void updateIndex() throws IOException, InterruptedException {
-        Thread.sleep(0);
+    private void updateIndex() throws IOException {
         try {
-            this.search.getController().index(INDEX_ID, this.getDocument());
-        } catch (IndexerException x) {
+            this.search.getController().index(INDEX_ID, document);
+        } catch (Exception x) {
             throw new RuntimeException(x);
         }
     }
