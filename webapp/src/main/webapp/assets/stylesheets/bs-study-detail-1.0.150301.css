@@ -44,3 +44,69 @@
 #ae-detail u {
     display: none;
 }
+
+#ae-detail-left-column {
+    width:60%;
+    float:left;
+    padding: 0 1em;
+}
+
+#ae-detail-right-column {
+    width:30%;
+    float:right;
+    margin: 0 2em 1em 1em;
+    padding: 1em;
+    background-color: hsla(201, 65%, 95%, 1)
+}
+
+
+.ae-detail-links-title, .ae-detail-files-title 
+ {
+    font-size: 120%;
+    margin:0px 0px 5px 0px;
+}
+
+.ae-detail-links-title:before {
+    font-family:FontAwesome;
+    content:'\f08E';
+    font-family: 'FontAwesome';
+    font-size: 90%;
+    color: #888;
+    margin: 0 0.3em 0 0;
+}
+
+.ae-detail-files-title:before {
+    font-family:FontAwesome;
+    content:'\f019';
+    font-family: 'FontAwesome';
+    font-size: 90%;
+    color: #888;
+    margin: 0 0.3em 0 0;
+}
+
+.ae-detail-list {
+    list-style-type: none;
+}
+
+.ae-detail-list li{
+    padding: 0.3em 0 0.3em 0 ;
+}
+
+.ae-detail-name {
+    font-size: 120%;
+    margin: 20px 0px 5px 0px;
+}
+
+#ae-detail-release-date {
+    color: #999;
+    padding-left: 1em;
+}
+
+#ae-detail-title {
+    padding: 0.5em 0 0.5em 0  !important;
+    
+}
+
+.clearboth {
+    clear:both;
+}

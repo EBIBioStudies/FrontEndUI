@@ -134,7 +134,7 @@ ul#secondary-nav li.active > a {
 }
 
 a.show-more, a.show-less {
-    color: ${color.c3};
+    color: #8F5109;
     padding: 0;
 }
 
@@ -143,7 +143,7 @@ a.show-less:hover {
     padding: 0 4px;
     margin-left: -4px;
     color: #fff;
-    background-color: ${color.c3};
+    background-color: #8F5109;
     -moz-border-radius: 3px;
     -khtml-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -404,7 +404,7 @@ p.center {
 .search-title h3,
 .search-title h4,
 .search-title h5 {
-    color: ${color.p1};
+    color: #17668C;
 }
 
 .search-title span.ae_keywords,
@@ -471,7 +471,7 @@ p.center {
     vertical-align: bottom;
     white-space: nowrap;
     background: #fff;
-    border-bottom: 2px solid ${color.p1};
+    border-bottom: 2px solid #17668C;
 }
 
 #ae-browse th.sortable a:link,
@@ -483,7 +483,7 @@ p.center {
 #ae-browse th.sortable a:hover,
 #ae-browse th.sortable a:focus,
 #ae-browse th.sortable a:active {
-    color: ${color.b3};
+    color: #066630;
 }
 
 #ae-browse th.sortable i {
@@ -569,13 +569,13 @@ p.center {
 }
 
 #ae-browse .col_pager div {
-    color: ${color.c3};
+    color: #8F5109;
 }
 
 #ae-browse .col_pager a {
     padding: 2px 3px 0 3px;
     margin: 0 2px;
-    color: ${color.c3};
+    color: #8F5109;
 }
 
 #ae-browse .col_pager span {
@@ -599,12 +599,12 @@ p.center {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-bottom: 0 none;
-    background-color: ${color.c3};
+    background-color: #8F5109;
     color: #fff;
 }
 
 #ae-browse .col_pager span {
-    background-color: ${color.p2};
+    background-color: #275369;
     color: #FFF;
 }
 
@@ -724,7 +724,7 @@ p.center {
 
 #ae-detail p.orgs {
     font-size: 85%;
-    padding: 0;
+    padding: 0.5em 0;
     margin: 5px 0 0;
 }
 

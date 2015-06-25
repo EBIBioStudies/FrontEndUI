@@ -440,7 +440,7 @@
                 .click(function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    span.hide().prev().show();
+                    span.hide().prev().show().focus();
                 });
             span.before(showMore);
             showMore.before(" ");
