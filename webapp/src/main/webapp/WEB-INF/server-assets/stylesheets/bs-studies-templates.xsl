@@ -152,7 +152,10 @@
                             <xsl:variable name="vAffiliation" select="$vUniqueRefs/orgs/org[@acc=$vAffiliationId]"/>
                             <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1 and $vAffiliation">
                                 <sup>
-                                    <xsl:value-of select="fn:count($vAffiliation/preceding-sibling::org) + 1"/>
+                                    <a>
+                                        <xsl:attribute name="href" select="fn:concat('#affiliation',fn:count($vAffiliation/preceding-sibling::org) + 1)"></xsl:attribute>
+                                        <xsl:value-of select="fn:count($vAffiliation/preceding-sibling::org) + 1"/>
+                                    </a>
                                 </sup>
                             </xsl:if>
                             <xsl:if test="fn:position() != fn:last()">
@@ -163,8 +166,9 @@
                             <p class="orgs">
                                 <xsl:for-each select="$vUniqueRefs/orgs/org">
                                     <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
+                                        <span class="ae-detail-affilliation"><xsl:attribute name="id" select="fn:concat('affiliation',position())"></xsl:attribute></span>
                                         <sup>
-                                            <xsl:value-of select="position()"/>
+                                                <xsl:value-of select="position()"/>
                                         </sup>
                                     </xsl:if>
                                     <xsl:call-template name="highlight">

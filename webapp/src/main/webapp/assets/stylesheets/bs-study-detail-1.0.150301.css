@@ -115,3 +115,10 @@
 .ae-detail-group-heading {
     color: #888;
 }
+
+.ae-detail-affilliation {
+    display: inline-block;
+    height: 80px;
+    margin-top: -80px;
+    visibility: hidden;
+}
