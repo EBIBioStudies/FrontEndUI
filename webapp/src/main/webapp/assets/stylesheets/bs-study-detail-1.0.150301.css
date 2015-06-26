@@ -86,6 +86,7 @@
 
 .ae-detail-list {
     list-style-type: none;
+    padding: 0;
 }
 
 .ae-detail-list li{
@@ -109,4 +110,8 @@
 
 .clearboth {
     clear:both;
+}
+
+.ae-detail-group-heading {
+    color: #888;
 }

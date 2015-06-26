@@ -123,6 +123,10 @@
                     <xsl:with-param name="pTitle" select="title"/>
                     <xsl:with-param name="pNodes" select="section"/>
                 </xsl:call-template>
+                <xsl:call-template name="study-funding">
+                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                    <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
+                </xsl:call-template>
                 <xsl:call-template name="section">
                     <xsl:with-param name="pName" select="'Accession Number'"/>
                     <xsl:with-param name="pContent"><xsl:value-of select="$vAccession"/></xsl:with-param>

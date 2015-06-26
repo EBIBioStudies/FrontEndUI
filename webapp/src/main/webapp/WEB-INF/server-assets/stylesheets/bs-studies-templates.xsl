@@ -195,7 +195,7 @@
             <xsl:with-param name="pContent">
                 <xsl:variable name="vSize" select="fn:count($pNodes)"/>
                 <ul class="ae-detail-list">
-                    <xsl:for-each select="$pNodes[fn:position() = (1 to 20)]">
+                    <xsl:for-each select="$pNodes[fn:position() = (1 to 10)]">
                         <xsl:variable name="vName" select="@name"/>
                         <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
                         <xsl:if test="$vFile">
@@ -209,9 +209,9 @@
                             </li>
                         </xsl:if>
                     </xsl:for-each>
-                    <xsl:if test="$vSize &gt; 20">
+                    <xsl:if test="$vSize &gt; 10">
                         <div class="hidden-values" size="{$vSize}">
-                            <xsl:for-each select="$pNodes[fn:position() = (21 to $vSize)]">
+                            <xsl:for-each select="$pNodes[fn:position() = (11 to $vSize)]">
                                 <xsl:variable name="vName" select="@name"/>
                                 <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
                                 <xsl:if test="$vFile">
@@ -269,6 +269,31 @@
                     </xsl:choose>
                     </li>
                 </xsl:for-each-group>
+                </ul>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="study-funding">
+        <xsl:param name="pQueryId"/>
+        <xsl:param name="pNodes"/>
+        <xsl:call-template name="section">
+            <xsl:with-param name="pName" select="'Funding'"/>
+            <xsl:with-param name="pClass" select="('ae-detail-funding-list')"/>
+            <xsl:with-param name="pContent">
+                <ul class="ae-detail-list">
+                    <xsl:for-each-group select="$pNodes" group-by="attribute[fn:lower-case(@name)='agency']">
+                        <li>
+                            <span class="ae-detail-group-heading"><xsl:value-of select="fn:current-grouping-key()"/>
+                            <xsl:text>: </xsl:text></span>
+                            <xsl:call-template name="highlighted-list">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pType" select="fn:current-grouping-key()"/>
+                                <xsl:with-param name="pList" select="fn:current-group()/attribute[@name='grant_id']"/>
+                            </xsl:call-template>
+                            <br/>
+                        </li>
+                    </xsl:for-each-group>
                 </ul>
             </xsl:with-param>
         </xsl:call-template>
