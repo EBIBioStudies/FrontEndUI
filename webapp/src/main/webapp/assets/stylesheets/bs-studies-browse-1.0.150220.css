@@ -77,3 +77,16 @@
     padding: 1px 4px;
     border-radius: 2px;
 }
+#ae-studies-browse-sort-by {
+    float: right;
+    padding: 8px;
+    position: relative;
+    color: #8F5109;
+}
+
+div#ae-studies-browse-sort-by select {
+    background-color: rgb(226,237,243);
+    color: #555;
+}
+
+div#ae-studies-browse-sort-by {}

@@ -318,8 +318,8 @@
         // (which will be inverted) against its current state
         var newOrder = (colname === sortby) ? ("ascending" === sortorder ? "descending" : "ascending"): options.fields[colname].sort;
         var queryString = $.query.set("sortby", colname).set("sortorder", newOrder).toString();
-
-        $column.wrapInner("<a href=\"" + pageName + queryString + "\" title=\"Click to sort by " + options.fields[colname].title + "\"/>");
+        $column.attr("data-url",""+window.location.pathname + queryString);
+        if (colname === sortby) $column.attr("selected","selected");
     };
 
     function updateTableHeaders() {

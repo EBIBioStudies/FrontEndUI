@@ -65,16 +65,20 @@
     }
 
     $(function() {
-        $("th.sortable").aeBrowseSorting({
+        $("option.sortable").aeBrowseSorting({
             defaultField: "release_date"
             , fields:
-                { accession: { title: "accession", sort : "ascending" }
+                {   relevance: { title: "relevance", sort : "ascending" }
+                    , accession: { title: "accession", sort : "ascending" }
                     , title: {title: "title", sort: "ascending"}
                     , author: {title: "first author", sort: "ascending"}
                     , release_date: {title: "release date", sort: "descending"}
                     , files: {title: "number of files", sort: "descending"}
                     , links: {title: "number of links", sort: "descending"}
             }
+        });
+        $("#studies-browse-sorter").bind('change', function(){
+            window.location = $("#studies-browse-sorter").find(":selected").attr("data-url");
         });
 
         if ($("#noresults").length > 0) {
