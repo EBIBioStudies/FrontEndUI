@@ -319,7 +319,19 @@
         var newOrder = (colname === sortby) ? ("ascending" === sortorder ? "descending" : "ascending"): options.fields[colname].sort;
         var queryString = $.query.set("sortby", colname).set("sortorder", newOrder).toString();
         $column.attr("data-url",""+window.location.pathname + queryString);
-        if (colname === sortby) $column.attr("selected","selected");
+        if (colname === sortby) {
+            $column.attr("selected","selected");
+            var sortOrderDiv = $("#" + options.sortOrderElement);
+            if(sortorder=="ascending") {
+                sortOrderDiv.addClass("aw-icon-angle-up").removeClass("aw-icon-angle-down")
+            }
+            else {
+                sortOrderDiv.addClass("aw-icon-angle-down").removeClass("aw-icon-angle-up")
+            }
+            sortOrderDiv.attr("href",window.location.pathname + queryString);
+            sortOrderDiv.attr("title","Click here to sort in "+newOrder+ " order");
+        }
+
     };
 
     function updateTableHeaders() {

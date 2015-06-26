@@ -142,61 +142,27 @@
                                     <select id="studies-browse-sorter">
                                         <option class="col_relevance sortable">
                                             <xsl:text>Relevance</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'relevance'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
                                         <option class="col_accession sortable">
                                             <xsl:text>Accession</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'accession'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
                                         <option class="col_title sortable">
                                             <xsl:text>Title</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'name'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
                                         <option class="col_author sortable">
                                             <xsl:text>Authors</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'author'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
                                         <option class="col_release_date sortable">
                                             <xsl:text>Released</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'releasedate'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
                                         <option class="col_files sortable">
                                             <xsl:text>Files</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'files'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
                                         <option class="col_links sortable">
                                             <xsl:text>Links</xsl:text>
-                                            <xsl:call-template name="add-table-sort">
-                                                <xsl:with-param name="pKind" select="'links'"/>
-                                                <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                                <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                            </xsl:call-template>
                                         </option>
-                                </select>
+                                     </select>
+                                    <a id="studies-browse-sort-order"/>
                                 </div>
                                 <div>
                                     <ul class="ae-studies-browse-list">

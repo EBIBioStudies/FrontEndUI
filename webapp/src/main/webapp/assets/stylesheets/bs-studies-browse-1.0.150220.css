@@ -84,9 +84,16 @@
     color: #8F5109;
 }
 
-div#ae-studies-browse-sort-by select {
+#ae-studies-browse-sort-by select {
     background-color: rgb(226,237,243);
     color: #555;
+    border-right: 0px;
 }
 
-div#ae-studies-browse-sort-by {}
+#studies-browse-sort-order{
+    padding: 2px 5px;
+    border: 1px solid #6BA8C5;
+    border-left: 0;
+    color: white;
+    background-color: #6BA8C5;
+}

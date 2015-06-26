@@ -75,7 +75,7 @@
                     , release_date: {title: "release date", sort: "descending"}
                     , files: {title: "number of files", sort: "descending"}
                     , links: {title: "number of links", sort: "descending"}
-            }
+            }, sortOrderElement: "studies-browse-sort-order"
         });
         $("#studies-browse-sorter").bind('change', function(){
             window.location = $("#studies-browse-sorter").find(":selected").attr("data-url");
