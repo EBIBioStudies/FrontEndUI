@@ -47,3 +47,33 @@
     width: 60px;
     text-align: right;
 }
+
+.ae-studies-browse-list
+{
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.browse-study {
+    padding: 10px;
+}
+
+.browse-study-title {
+    font-size:120%;
+}
+
+.browse-study-release-date
+{
+    color: #999;
+    /* padding-left: 1em; */
+}
+
+.browse-study-release-files,.browse-study-release-links {
+    margin-left: 10px;
+    background-color: #6BA8C5;
+    color: white;
+    font-size: smaller;
+    padding: 1px 4px;
+    border-radius: 2px;
+}

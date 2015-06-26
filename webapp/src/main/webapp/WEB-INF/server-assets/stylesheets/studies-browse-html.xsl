@@ -83,7 +83,7 @@
     </xsl:template>
 
     <xsl:template name="bs-content-section">
-        <xsl:variable name="vSortBy" select="if ($sortby) then $sortby else 'releasedate'"/>
+        <xsl:variable name="vSortBy" select="if ($sortby) then $sortby else 'name'"/>
         <xsl:variable name="vSortOrder" select="if ($sortorder) then $sortorder else 'descending'"/>
 
         <xsl:variable name="vPage" select="if ($page and $page castable as xs:integer) then $page cast as xs:integer else 1" as="xs:integer"/>
@@ -142,7 +142,7 @@
                                             <xsl:with-param name="pPage" select="$vPage"/>
                                             <xsl:with-param name="pPageSize" select="$vPageSize"/>
                                         </xsl:call-template>
-                                        <tr>
+                                        <!--tr>
                                             <th class="col_accession sortable">
                                                 <xsl:text>Accession</xsl:text>
                                                 <xsl:call-template name="add-table-sort">
@@ -191,17 +191,11 @@
                                                     <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                                 </xsl:call-template>
                                             </th>
-                                        </tr>
+                                        </tr-->
                                     </thead>
                                 </table>
-                                <table class="experiments" border="0" cellpadding="0" cellspacing="0">
-                                    <col class="col_accession"/>
-                                    <col class="col_title"/>
-                                    <col class="col_author"/>
-                                    <col class="col_release_date"/>
-                                    <col class="col_files"/>
-                                    <col class="col_links"/>
-                                    <tbody>
+                                <div>
+                                    <ul class="ae-studies-browse-list">
                                         <xsl:call-template name="ae-sort-experiments">
                                             <xsl:with-param name="pExperiments" select="$vFilteredStudies"/>
                                             <xsl:with-param name="pFrom" select="$vFrom"/>
@@ -209,17 +203,8 @@
                                             <xsl:with-param name="pSortBy" select="$vSortBy"/>
                                             <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
                                         </xsl:call-template>
-                                        <tr>
-                                            <td colspan="6" class="col_footer">&#160;
-                                                <!--
-                                                <a href="{$context-path}/ArrayExpress-Experiments.txt{$vQueryString}" class="icon icon-functional" data-icon="S">Export table in Tab-delimited format</a>
-                                                <a href="{$context-path}/xml/v2/experiments{$vQueryString}" class="icon  icon-functional" data-icon="S">Export matching metadata in XML format</a>
-                                                <a href="{$context-path}/rss/v2/experiments{$vQueryString}" class="icon icon-socialmedia" data-icon="R">Subscribe to RSS feed matching this search</a>
-                                                -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -234,96 +219,61 @@
     <xsl:template match="study">
         <xsl:param name="pFrom"/>
         <xsl:param name="pTo"/>
-
         <xsl:if test="position() >= $pFrom and not(position() > $pTo)">
             <xsl:variable name="vAccession" select="accession"/>
             <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
-
-            <tr>
-                <td class="col_accession">
-                    <div>
-                        <a href="{$context-path}/studies/{accession}/{$vQueryString}">
-                            <!--
-                            <xsl:if test="not(user/@id = '1')">
-                                <xsl:attribute name="class" select="'icon icon-functional'"/>
-                                <xsl:attribute name="data-icon" select="'L'"/>
-                            </xsl:if>
-                            -->
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="pQueryId" select="$queryid"/>
-                                <xsl:with-param name="pText" select="accession"/>
-                                <xsl:with-param name="pFieldName" select="'accession'"/>
-                            </xsl:call-template>
-                        </a>
-                    </div>
-                </td>
-                <td class="col_title">
-                    <div>
+            <li class="browse-study">
+                <div>
+                    <span class="browse-study-release-date">
+                        <xsl:value-of select="ae:formatDateLong(releasedate)"/>
+                    </span>
+                    <xsl:if test="@files != '0'">
+                        <span class="browse-study-release-files">
+                                <xsl:value-of select="@files"/><xsl:text> data files</xsl:text>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@links != '0'">
+                        <span class="browse-study-release-links">
+                            <xsl:value-of select="@links"/><xsl:text> links</xsl:text>
+                        </span>
+                    </xsl:if>
+                </div>
+                <div class="browse-study-title">
+                    <a href="{$context-path}/studies/{accession}/{$vQueryString}">
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
                             <xsl:with-param name="pFieldName"/>
                         </xsl:call-template>
-                    </div>
-                </td>
-                <td class="col_author">
-                    <div>
+                    </a>
+                </div>
+                <div>
+                    <xsl:variable name="vSize" select="fn:count(author)"/>
+                    <xsl:for-each select="author[fn:position() = (1 to 5)]">
                         <span>
                             <xsl:call-template name="highlight">
                                 <xsl:with-param name="pQueryId" select="$queryid"/>
-                                <xsl:with-param name="pText" select="author[1]"/>
+                                <xsl:with-param name="pText" select="."/>
                                 <xsl:with-param name="pFieldName"/>
                             </xsl:call-template>
                         </span>
-                        <xsl:if test="author[2]">
-                            <xsl:text>,</xsl:text>
-                            <xsl:if test="author[2]/@index > 2">
-                                <xsl:text>…</xsl:text>
-                            </xsl:if>
-                            <xsl:text> </xsl:text>
-                            <span>
-                                <xsl:call-template name="highlight">
-                                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                                    <xsl:with-param name="pText" select="author[2]"/>
-                                    <xsl:with-param name="pFieldName"/>
-                                </xsl:call-template>
-                            </span>
+                        <xsl:if test="fn:position() != fn:last() or $vSize &gt; 5">
+                            <xsl:text>, </xsl:text>
                         </xsl:if>
-                    </div>
-                </td>
-                <td class="col_release_date">
-                    <div>
-                        <xsl:value-of select="ae:formatDateShort(releasedate)"/>
-                        <!-- TODO: implement proper highlighting (and date search TBH)
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="releasedate"/>
-                            <xsl:with-param name="pFieldName" select="'date'"/>
-                        </xsl:call-template>
-                        -->
-                    </div>
-                </td>
-                <td class="col_files">
-                    <div>
-                        <xsl:choose>
-                            <xsl:when test="@files != '0'">
-                                <xsl:value-of select="@files"/>
-                            </xsl:when>
-                            <xsl:otherwise>&#8729;</xsl:otherwise>
-                        </xsl:choose>
-                    </div>
-                </td>
-                <td class="col_links">
-                    <div>
-                        <xsl:choose>
-                            <xsl:when test="@links != '0'">
-                                <xsl:value-of select="@links"/>
-                            </xsl:when>
-                            <xsl:otherwise>&#8729;</xsl:otherwise>
-                        </xsl:choose>
-                    </div>
-                </td>
-            </tr>
+                    </xsl:for-each>
+                </div>
+                <!--div>
+
+                </div>
+                <div>
+                    <xsl:choose>
+                        <xsl:when test="@links != '0'">
+                            <xsl:value-of select="@links"/>
+                        </xsl:when>
+                        <xsl:otherwise>&#8729;</xsl:otherwise>
+                    </xsl:choose>
+                </div-->
+            </li>
         </xsl:if>
     </xsl:template>
 

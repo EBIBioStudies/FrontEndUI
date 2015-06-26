@@ -106,6 +106,30 @@
         </xsl:choose>
     </xsl:function>
 
+    <xsl:function name="ae:formatDateLong" as="xs:string">
+        <xsl:param name="pDate"/>
+        <xsl:variable name="vTodaysDate" as="xs:date" select="fn:current-date()"/>
+        <xsl:variable name="vTomorrowDate" as="xs:date" select="$vTodaysDate + xs:dayTimeDuration('P1D')"/>
+        <xsl:variable name="vYesterdaysDate" as="xs:date" select="$vTodaysDate - xs:dayTimeDuration('P1D')"/>
+        <xsl:choose>
+            <xsl:when test="fn:not($pDate castable as xs:date)">
+                <xsl:value-of select="''"/>
+            </xsl:when>
+            <xsl:when test="$vTomorrowDate eq xs:date($pDate)">
+                <xsl:value-of select="'tomorrow'"/>
+            </xsl:when>
+            <xsl:when test="$vTodaysDate eq xs:date($pDate)">
+                <xsl:value-of select="'today'"/>
+            </xsl:when>
+            <xsl:when test="$vYesterdaysDate eq xs:date($pDate)">
+                <xsl:value-of select="'yesterday'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="fn:format-date(xs:date($pDate), '[D1] [MNn] [Y0001]', 'en', (), ())"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
     <xsl:function name="ae:formatDateGoogle" as="xs:string">
         <xsl:param name="pDate"/>
 
