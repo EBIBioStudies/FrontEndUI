@@ -103,9 +103,10 @@
     border-color: #6BA8C5;
 }
 
-.studies-browse-sort-order-left, .studies-browse-sort-order-right{
+a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
     padding: 2px 5px;
     border: 1px solid #6BA8C5 !important;
+    color: #6BA8C5 !important;
 }
 
 .studies-browse-sort-order-left{
@@ -119,5 +120,5 @@
 }
 .studies-browse-sort-order-left[disabled],.studies-browse-sort-order-right[disabled]{
     background-color: #6BA8C5;
-    color:white;
+    color:white !important;
 }
