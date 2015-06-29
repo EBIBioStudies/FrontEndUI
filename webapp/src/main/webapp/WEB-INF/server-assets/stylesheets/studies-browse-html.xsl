@@ -140,29 +140,16 @@
                                 <div id="ae-studies-browse-sort-by">
                                     <xsl:text>Sort by: </xsl:text>
                                     <select id="studies-browse-sorter">
-                                        <option class="col_relevance sortable">
-                                            <xsl:text>Relevance</xsl:text>
-                                        </option>
-                                        <option class="col_accession sortable">
-                                            <xsl:text>Accession</xsl:text>
-                                        </option>
-                                        <option class="col_title sortable">
-                                            <xsl:text>Title</xsl:text>
-                                        </option>
-                                        <option class="col_author sortable">
-                                            <xsl:text>Authors</xsl:text>
-                                        </option>
-                                        <option class="col_release_date sortable">
-                                            <xsl:text>Released</xsl:text>
-                                        </option>
-                                        <option class="col_files sortable">
-                                            <xsl:text>Files</xsl:text>
-                                        </option>
-                                        <option class="col_links sortable">
-                                            <xsl:text>Links</xsl:text>
-                                        </option>
+                                        <option class="col_relevance sortable">Relevance</option>
+                                        <option class="col_accession sortable">Accession</option>
+                                        <option class="col_title sortable">Title</option>
+                                        <option class="col_author sortable">Authors</option>
+                                        <option class="col_release_date sortable">Released</option>
+                                        <option class="col_files sortable">Files</option>
+                                        <option class="col_links sortable">Links</option>
                                      </select>
-                                    <a id="studies-browse-sort-order"/>
+                                    <a class="studies-browse-sort-order-left aw-icon-angle-down"/>
+                                    <a class="studies-browse-sort-order-right aw-icon-angle-up"/>
                                 </div>
                                 <div>
                                     <ul class="ae-studies-browse-list">
@@ -212,10 +199,13 @@
                     <a href="{$context-path}/studies/{accession}/{$vQueryString}">
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
+                            <xsl:with-param name="pText" select="title"/>
                             <xsl:with-param name="pFieldName"/>
                         </xsl:call-template>
                     </a>
+                    <span class="browse-study-accession">
+                        <xsl:value-of select="$vAccession"></xsl:value-of>
+                    </span>
                 </div>
                 <div>
                     <xsl:variable name="vSize" select="fn:count(author)"/>

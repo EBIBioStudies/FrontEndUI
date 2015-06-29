@@ -321,15 +321,8 @@
         $column.attr("data-url",""+window.location.pathname + queryString);
         if (colname === sortby) {
             $column.attr("selected","selected");
-            var sortOrderDiv = $("#" + options.sortOrderElement);
-            if(sortorder=="ascending") {
-                sortOrderDiv.addClass("aw-icon-angle-up").removeClass("aw-icon-angle-down")
-            }
-            else {
-                sortOrderDiv.addClass("aw-icon-angle-down").removeClass("aw-icon-angle-up")
-            }
-            sortOrderDiv.attr("href",window.location.pathname + queryString);
-            sortOrderDiv.attr("title","Click here to sort in "+newOrder+ " order");
+            $("a.aw-icon-angle-" + (sortorder=="ascending" ? "down" : "up")).attr("href",window.location.pathname + queryString);
+            $("a.aw-icon-angle-" + (sortorder=="ascending" ? "up" : "down")).attr("disabled","disabled");
         }
 
     };

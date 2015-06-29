@@ -76,7 +76,6 @@
 }
 
 .ae-detail-files-title:before {
-    font-family:FontAwesome;
     content:'\f019';
     font-family: 'FontAwesome';
     font-size: 90%;

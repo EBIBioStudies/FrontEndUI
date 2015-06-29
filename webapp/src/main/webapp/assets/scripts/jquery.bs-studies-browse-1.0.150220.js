@@ -66,16 +66,16 @@
 
     $(function() {
         $("option.sortable").aeBrowseSorting({
-            defaultField: "release_date"
+            defaultField: "relevance"
             , fields:
-                {   relevance: { title: "relevance", sort : "ascending" }
+                {   relevance: { title: "relevance", sort : "descending" }
                     , accession: { title: "accession", sort : "ascending" }
                     , title: {title: "title", sort: "ascending"}
                     , author: {title: "first author", sort: "ascending"}
                     , release_date: {title: "release date", sort: "descending"}
                     , files: {title: "number of files", sort: "descending"}
                     , links: {title: "number of links", sort: "descending"}
-            }, sortOrderElement: "studies-browse-sort-order"
+            }
         });
         $("#studies-browse-sorter").bind('change', function(){
             window.location = $("#studies-browse-sorter").find(":selected").attr("data-url");
