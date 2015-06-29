@@ -214,7 +214,7 @@
                         </xsl:if>
                     </xsl:for-each>
                     <xsl:if test="$vSize &gt; 10">
-                        <div class="hidden-values" size="{$vSize}">
+                        <div class="hidden-values" size="{$vSize - 10}">
                             <xsl:for-each select="$pNodes[fn:position() = (11 to $vSize)]">
                                 <xsl:variable name="vName" select="@name"/>
                                 <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
@@ -304,10 +304,10 @@
     </xsl:template>
 
     <xsl:template name="section">
-        <xsl:param name="pName"/>
+        <xsl:param name="pName" select="''"/>
         <xsl:param name="pContent"/>
-        <xsl:param name="pClass" as="xs:string*"/>
-        <xsl:param name="pTitleClass" as="xs:string*"/>
+        <xsl:param name="pClass" as="xs:string*" select="''"/>
+        <xsl:param name="pTitleClass" as="xs:string*" select="''"/>
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <xsl:if test="fn:exists($pName) and fn:matches($pName,'[^\s*]')">
                 <div class="ae-detail-name">
@@ -321,6 +321,39 @@
                 <xsl:attribute name="class" select="fn:string-join((('value'),$pClass), ' ')"/>
                 <xsl:copy-of select="$pContent"/>
             </div>
+        </xsl:if>
+    </xsl:template>
+
+
+    <xsl:template name="general-highlighted-list">
+        <xsl:param name="pQueryId"/>
+        <xsl:param name="pList"/>
+        <xsl:param name="pSize"/>
+        <xsl:variable name="vSize" select="fn:count($pList)"/>
+        <xsl:for-each select="$pList[fn:position() = (1 to $pSize)]">
+            <xsl:call-template name="highlight">
+                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                <xsl:with-param name="pText" select="."/>
+                <xsl:with-param name="pFieldName" select="''"/>
+            </xsl:call-template>
+            <xsl:if test="fn:position() != fn:last() or $vSize &gt; $pSize">
+                <xsl:text>, </xsl:text>
+            </xsl:if>
+        </xsl:for-each>
+        <xsl:if test="$vSize &gt; $pSize">
+            <span class="hidden-values" size="{$vSize - $pSize}">
+                <xsl:for-each select="$pList[fn:position() = ( ($pSize + 1) to $vSize)]">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                        <xsl:with-param name="pText" select="."/>
+                        <xsl:with-param name="pFieldName" select="''"/>
+                    </xsl:call-template>
+                    <xsl:if test="fn:position() != fn:last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </xsl:for-each>
+                <xsl:text> </xsl:text>
+            </span>
         </xsl:if>
     </xsl:template>
 
@@ -342,7 +375,7 @@
             </xsl:if>
         </xsl:for-each>
         <xsl:if test="$vSize &gt; 20">
-            <span class="hidden-values" size="{$vSize}">
+            <span class="hidden-values" size="{$vSize - 20}">
                 <xsl:for-each select="$pList[fn:position() = (21 to $vSize)]">
                     <xsl:call-template name="highlight-reference">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>

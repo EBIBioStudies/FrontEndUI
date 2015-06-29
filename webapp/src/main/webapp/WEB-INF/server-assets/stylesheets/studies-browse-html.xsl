@@ -33,9 +33,8 @@
     <xsl:param name="queryid"/>
 
     <xsl:include href="bs-html-page.xsl"/>
-    <xsl:include href="bs-highlight.xsl"/>
     <xsl:include href="bs-sort-studies.xsl"/>
-    <xsl:include href="bs-date-functions.xsl"/>
+    <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:variable name="vSearchMode" select="$keywords != ''"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
@@ -209,9 +208,9 @@
                 </div>
                 <div>
                     <xsl:variable name="vSize" select="fn:count(author)"/>
-                    <xsl:for-each select="author[fn:position() = (1 to 5)]">
+                    <!--xsl:for-each select="author[fn:position() = (1 to 5)]">
                         <span>
-                            <xsl:call-template name="highlight">
+                            <xsl:call-template name="highlight-list">
                                 <xsl:with-param name="pQueryId" select="$queryid"/>
                                 <xsl:with-param name="pText" select="."/>
                                 <xsl:with-param name="pFieldName"/>
@@ -220,7 +219,12 @@
                         <xsl:if test="fn:position() != fn:last() or $vSize &gt; 5">
                             <xsl:text>, </xsl:text>
                         </xsl:if>
-                    </xsl:for-each>
+                    </xsl:for-each-->
+                    <xsl:call-template name="general-highlighted-list">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pList" select="author"/>
+                        <xsl:with-param name="pSize" select="10"/>
+                    </xsl:call-template>
                 </div>
                 <!--div>
 

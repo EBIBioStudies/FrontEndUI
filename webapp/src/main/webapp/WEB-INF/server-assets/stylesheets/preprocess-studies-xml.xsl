@@ -55,11 +55,11 @@
             <accession><xsl:value-of select="$vAccession"/></accession>
             <releasedate>2015-02-01</releasedate>
             <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
-                <xsl:if test="fn:position() = 1 or fn:position() = fn:last()">
-                    <author index="{fn:position()}">
-                        <xsl:value-of select="attributes/attribute[fn:lower-case(name)='name']/value"/>
-                    </author>
-                </xsl:if>
+                <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
+                <author index="{fn:position()}">
+                    <xsl:value-of select="attributes/attribute[fn:lower-case(name)='name']/value"/>
+                </author>
+                <!--/xsl:if-->
             </xsl:for-each>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
