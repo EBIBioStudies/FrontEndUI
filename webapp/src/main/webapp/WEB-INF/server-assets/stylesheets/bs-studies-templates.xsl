@@ -163,8 +163,9 @@
                             </xsl:if>
                         </xsl:for-each>
                         <xsl:if test="fn:count($vUniqueRefs/orgs/org)>0">
+                            <xsl:variable name="vSize" select="fn:count($vUniqueRefs/orgs/org)"/>
                             <p class="orgs">
-                                <xsl:for-each select="$vUniqueRefs/orgs/org">
+                                <xsl:for-each select="$vUniqueRefs/orgs/org[fn:position() = (1 to 10)]">
                                     <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
                                         <span class="ae-detail-affilliation"><xsl:attribute name="id" select="fn:concat('affiliation',position())"></xsl:attribute></span>
                                         <sup>
@@ -176,10 +177,30 @@
                                         <xsl:with-param name="pText"
                                                         select="."/>
                                     </xsl:call-template>
-                                    <xsl:if test="fn:position() != fn:last()">
+                                    <xsl:if test="$vSize &gt; 10">
                                         <xsl:text>, </xsl:text>
                                     </xsl:if>
                                 </xsl:for-each>
+                                <xsl:if test="$vSize &gt; 10">
+                                    <span class="hidden-values" size="{$vSize - 10}">
+                                        <xsl:for-each select="$vUniqueRefs/orgs/org[fn:position() = (11 to $vSize)]">
+                                            <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
+                                                <span class="ae-detail-affilliation"><xsl:attribute name="id" select="fn:concat('affiliation',position())"></xsl:attribute></span>
+                                                <sup>
+                                                    <xsl:value-of select="position()+10"/>
+                                                </sup>
+                                            </xsl:if>
+                                            <xsl:call-template name="highlight">
+                                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                                <xsl:with-param name="pText"
+                                                                select="."/>
+                                            </xsl:call-template>
+                                            <xsl:if test="fn:position() != fn:last()">
+                                                <xsl:text>, </xsl:text>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </span>
+                                </xsl:if>
                             </p>
                         </xsl:if>
                     </xsl:with-param>
