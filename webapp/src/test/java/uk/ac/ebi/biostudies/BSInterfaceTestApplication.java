@@ -1,19 +1,20 @@
-package uk.ac.ebi.arrayexpress;
+package uk.ac.ebi.biostudies;
 
 import uk.ac.ebi.arrayexpress.app.Application;
-import uk.ac.ebi.arrayexpress.components.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AEInterfaceTestApplication extends Application
+public class BSInterfaceTestApplication extends Application
 {
-    public AEInterfaceTestApplication()
+    public BSInterfaceTestApplication()
     {
-        super("arrayexpress");
+        super("biostudies");
 
         // test-instance only code to emulate functionality missing from tomcat container
         // add a shutdown hook to to a proper termination
+
+        /* // Commenting the block below since we don't test individual components in integration tests
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
 
         addComponent(new SaxonEngine());
@@ -22,13 +23,13 @@ public class AEInterfaceTestApplication extends Application
         addComponent(new Users());
         addComponent(new Files());
         addComponent(new JobsController());
-
+        */
         initialize();
     }
 
     public String getName()
     {
-        return "Arrayexpress Test Application";    
+        return "BioStudies Test Application";
     }
 
     public URL getResource(String path) throws MalformedURLException

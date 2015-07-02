@@ -15,9 +15,11 @@
  *
  */
 
-package uk.ac.ebi.arrayexpress.utils;
+package uk.ac.ebi.biostudies.utils;
 
+import org.junit.Assert;
 import org.junit.Test;
+import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +28,7 @@ public class StringToolsTest
     @Test
     public void testUnescapeXMLDecimalEntities()
     {
-        assertEquals("hello world", StringTools.unescapeXMLDecimalEntities("hello world"));
+        Assert.assertEquals("hello world", StringTools.unescapeXMLDecimalEntities("hello world"));
         assertEquals("hello &# world", StringTools.unescapeXMLDecimalEntities("hello &# world"));
         assertEquals("hello &# world &#", StringTools.unescapeXMLDecimalEntities("hello &# world &#"));
         assertEquals("hello &# world 0", StringTools.unescapeXMLDecimalEntities("hello &# world &#48;"));

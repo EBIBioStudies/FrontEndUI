@@ -77,7 +77,7 @@
     <logger name="org.quartz.core.QuartzSchedulerThread" level="info"/>
     <logger name="de.schlichtherle.io" level="warn"/>
     <logger name="com.google.inject.internal" level="info"/>
-
+    <logger name="com.gargoylesoftware.htmlunit" level="warn"/>
     <root level="${level}">
         <appender-ref ref="${appender}"/>
     </root>

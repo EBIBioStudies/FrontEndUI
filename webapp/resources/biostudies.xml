@@ -186,5 +186,12 @@
             </document>
         </index>
         -->
+        <test>
+            <integration>
+                <server>
+                    <url>${interface.application.pref.test.integration.server.url}</url>
+                </server>
+            </integration>
+        </test>
     </bs>
 </configuration>
