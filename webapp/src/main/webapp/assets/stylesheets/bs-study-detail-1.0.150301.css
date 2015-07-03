@@ -121,3 +121,17 @@
     margin-top: -80px;
     visibility: hidden;
 }
+
+.ae-file-size {
+    color: #888;
+    font-size: xx-small;
+    margin-left: 5px;
+}
+
+.ae-file-size:before {
+    content: '(';
+}
+
+.ae-file-size:after {
+    content: ')';
+}

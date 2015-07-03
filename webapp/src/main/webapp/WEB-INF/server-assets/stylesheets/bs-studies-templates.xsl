@@ -231,6 +231,9 @@
                                         <xsl:with-param name="pText" select="$vName"/>
                                     </xsl:call-template>
                                 </a>
+                                <xsl:call-template name="file-size">
+                                    <xsl:with-param name="size" select="$vFile/@size"/>
+                                </xsl:call-template>
                             </li>
                         </xsl:if>
                     </xsl:for-each>
@@ -256,6 +259,30 @@
                 <br/>
             </xsl:with-param>
         </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="file-size">
+        <xsl:param name="size"/>
+        <span class="ae-file-size">
+            <xsl:choose>
+                <xsl:when test="$size &gt;= 1073741824">
+                    <xsl:value-of select="format-number($size div 1073741824,'#,###')"/>
+                    <xsl:text> GB</xsl:text>
+                </xsl:when>
+                <xsl:when test="$size &gt;= 1048576">
+                    <xsl:value-of select="format-number($size div 1048576,'#,###')"/>
+                    <xsl:text> MB</xsl:text>
+                </xsl:when>
+                <xsl:when test="$size &gt;= 1024">
+                    <xsl:value-of select="format-number($size div 1024,'#,###')"/>
+                    <xsl:text> KB</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="format-number($size,'#,###')"/>
+                    <xsl:text> bytes</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </span>
     </xsl:template>
 
     <xsl:template name="study-links">
