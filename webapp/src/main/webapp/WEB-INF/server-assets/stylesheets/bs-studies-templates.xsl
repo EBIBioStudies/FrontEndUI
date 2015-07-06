@@ -216,6 +216,8 @@
         <xsl:param name="pBasePath"/>
         <xsl:call-template name="section">
             <xsl:with-param name="pTitleClass" select="'ae-detail-files-title'"/>
+            <xsl:with-param name="pIconClass" select="'icon icon-functional padded-gray-icon'"/>
+            <xsl:with-param name="pIconType" select="'='"/>
             <xsl:with-param name="pName" select="'Download data files'"/>
             <xsl:with-param name="pContent">
                 <xsl:variable name="vSize" select="fn:count($pNodes)"/>
@@ -250,6 +252,9 @@
                                                 <xsl:with-param name="pText" select="$vName"/>
                                             </xsl:call-template>
                                         </a>
+                                        <xsl:call-template name="file-size">
+                                            <xsl:with-param name="size" select="$vFile/@size"/>
+                                        </xsl:call-template>
                                     </li>
                                 </xsl:if>
                             </xsl:for-each>
@@ -291,6 +296,8 @@
         <xsl:call-template name="section">
             <xsl:with-param name="pName" select="'Linked information'"/>
             <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+            <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
+            <xsl:with-param name="pIconType" select="'x'"/>
             <xsl:with-param name="pClass" select="('left')"/>
             <xsl:with-param name="pContent">
                 <ul class="ae-detail-list">
@@ -356,11 +363,19 @@
         <xsl:param name="pContent"/>
         <xsl:param name="pClass" as="xs:string*" select="''"/>
         <xsl:param name="pTitleClass" as="xs:string*" select="''"/>
+        <xsl:param name="pIconClass" as="xs:string*" select="''"/>
+        <xsl:param name="pIconType" as="xs:string*" select="''"/>
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <xsl:if test="fn:exists($pName) and fn:matches($pName,'[^\s*]')">
                 <div class="ae-detail-name">
                     <xsl:if test="fn:exists($pTitleClass)">
-                        <xsl:attribute name="class" select="fn:string-join((('value'),$pTitleClass), ' ')"/>
+                        <xsl:attribute name="class" select="fn:string-join($pTitleClass, ' ')"/>
+                    </xsl:if>
+                    <xsl:if test="fn:exists($pIconClass)">
+                        <span>
+                            <xsl:attribute name="class" select="fn:string-join($pIconClass, ' ')"/>
+                            <xsl:attribute name="data-icon" select="fn:string-join($pIconType, ' ')"/>
+                        </span>
                     </xsl:if>
                     <xsl:value-of select="$pName"/>
                 </div>

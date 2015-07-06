@@ -66,23 +66,6 @@
     margin:0px 0px 5px 0px;
 }
 
-.ae-detail-links-title:before {
-    font-family:FontAwesome;
-    content:'\f08E';
-    font-family: 'FontAwesome';
-    font-size: 90%;
-    color: #888;
-    margin: 0 0.3em 0 0;
-}
-
-.ae-detail-files-title:before {
-    content:'\f019';
-    font-family: 'FontAwesome';
-    font-size: 90%;
-    color: #888;
-    margin: 0 0.3em 0 0;
-}
-
 .ae-detail-list {
     list-style-type: none;
     padding: 0;
@@ -134,4 +117,9 @@
 
 .ae-file-size:after {
     content: ')';
+}
+
+.padded-gray-icon {
+    margin-right:5px;
+    color:#888;
 }
