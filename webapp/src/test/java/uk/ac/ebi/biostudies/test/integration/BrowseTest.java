@@ -25,6 +25,7 @@ public class BrowseTest {
     @Before
     public void setUp() {
         driver.get(baseUrl+"/studies/"); 
+    }
 
     @Test
     public void testIndex() {
