@@ -14,18 +14,17 @@ import static org.junit.Assert.assertTrue;
 public class BrowseTest {
 
     protected static WebDriver driver;
-    protected static String serverURL;
+    protected static String baseUrl;
 
     @BeforeClass
     public static void setUpBeforeClass() {
         driver = new HtmlUnitDriver();
-        serverURL = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
+        baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
     }
 
     @Before
     public void setUp() {
-        driver.get(serverURL+"/studies/"); // TODO: Shift the url to configuration
-    }
+        driver.get(baseUrl+"/studies/"); 
 
     @Test
     public void testIndex() {
