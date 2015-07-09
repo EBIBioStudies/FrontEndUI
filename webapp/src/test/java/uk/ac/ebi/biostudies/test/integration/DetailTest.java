@@ -6,8 +6,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.ac.ebi.biostudies.BSInterfaceTestApplication;
 
@@ -22,7 +24,7 @@ public class DetailTest {
     @BeforeClass
     public static void setUpBeforeClass() {
         driver = new HtmlUnitDriver();
-        ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
+        ((HtmlUnitDriver) driver).setJavascriptEnabled(true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
     }
 
@@ -35,7 +37,7 @@ public class DetailTest {
         // store file and link count on the search page
         driver.get(baseUrl + "/studies/search.html?query=S-EPMC3315455");
         String fileCountText = driver.findElement(By.cssSelector(".browse-study-release-files")).getText();
-        int fileCount = Integer.parseInt(fileCountText.substring(0,fileCountText.indexOf(" ")));
+        int fileCount = Integer.parseInt(fileCountText.substring(0, fileCountText.indexOf(" ")));
         driver.findElement(By.cssSelector(".browse-study-title a")).click();
         WebDriverWait wait = new WebDriverWait(driver, 3);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".files")));
@@ -49,12 +51,29 @@ public class DetailTest {
         // store file and link count on the search page
         driver.get(baseUrl + "/studies/search.html?query=S-EPMC2685405");
         String linkCountText = driver.findElement(By.cssSelector(".browse-study-release-links")).getText();
-        int linkCount = Integer.parseInt(linkCountText.substring(0,linkCountText.indexOf(" ")));
+        int linkCount = Integer.parseInt(linkCountText.substring(0, linkCountText.indexOf(" ")));
         driver.findElement(By.cssSelector(".browse-study-title a")).click();
         WebDriverWait wait = new WebDriverWait(driver, 3);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".links")));
-        int linkCountOnDetails = driver.findElements(By.cssSelector(".links a")).size() -2; // removing shoe more/less links
+        int linkCountOnDetails = driver.findElements(By.cssSelector(".links a")).size() - 2; // removing shoe more/less links
         assertEquals(linkCountOnDetails, linkCount);
     }
+
+    @Test
+    public void testFileFilter() {
+        driver.get(baseUrl + "/studies/");
+        new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Files");
+        driver.findElement(By.cssSelector(".browse-study-title a")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#filter-file-name")));
+        driver.findElement(By.cssSelector("#filter-file-name")).sendKeys("pdf");
+        int visible = 0, filtered = 0;
+        for (WebElement we : driver.findElements(By.cssSelector("#file-list li"))) {
+            if (we.isDisplayed()) visible++;
+            if (we.getText().toLowerCase().contains("pdf")) filtered++;
+        }
+        assertEquals(visible, filtered);
+    }
+
 
 }
