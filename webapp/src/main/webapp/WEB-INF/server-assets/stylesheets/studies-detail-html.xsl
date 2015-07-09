@@ -63,7 +63,9 @@
                 <xsl:value-of select="$vAccession"/>
             </xsl:with-param>
             <xsl:with-param name="pEBISearchWidget"/>
-            <xsl:with-param name="pExtraJS"/>
+            <xsl:with-param name="pExtraJS">
+                <script src="{$context-path}/assets/scripts/jquery.bs-studies-detail-1.0.150708.js" type="text/javascript"/>
+            </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>
     </xsl:template>
