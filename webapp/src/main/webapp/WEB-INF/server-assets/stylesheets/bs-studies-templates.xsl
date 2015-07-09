@@ -368,10 +368,10 @@
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <xsl:if test="fn:exists($pName) and fn:matches($pName,'[^\s*]')">
                 <div class="ae-detail-name">
-                    <xsl:if test="fn:exists($pTitleClass)">
+                    <xsl:if test="fn:exists($pTitleClass)  and fn:not(fn:matches(fn:string-join($pTitleClass, ''), '^\s*$'))">
                         <xsl:attribute name="class" select="fn:string-join($pTitleClass, ' ')"/>
                     </xsl:if>
-                    <xsl:if test="fn:exists($pIconClass)">
+                    <xsl:if test="fn:exists($pIconClass)   and fn:not(fn:matches(fn:string-join($pIconClass, ''), '^\s*$'))">
                         <span>
                             <xsl:attribute name="class" select="fn:string-join($pIconClass, ' ')"/>
                             <xsl:attribute name="data-icon" select="fn:string-join($pIconType, ' ')"/>
