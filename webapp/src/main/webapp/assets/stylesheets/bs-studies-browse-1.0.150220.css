@@ -33,21 +33,6 @@
     white-space: nowrap;
 }
 
-#ae-browse .col_release_date {
-    width: 90px;
-    text-align: left;
-}
-
-#ae-browse .col_files {
-    width: 60px;
-    text-align: right;
-}
-
-#ae-browse .col_links {
-    width: 60px;
-    text-align: right;
-}
-
 .ae-studies-browse-list
 {
     list-style-type: none;
@@ -101,6 +86,7 @@
     color: #555;
     border-radius: 3px;
     border-color: #6BA8C5;
+    width: 150px;
 }
 
 a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{

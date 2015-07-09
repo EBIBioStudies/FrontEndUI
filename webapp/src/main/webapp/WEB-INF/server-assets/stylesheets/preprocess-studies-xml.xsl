@@ -124,7 +124,6 @@
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
-            <xsl:apply-templates select="files" mode="files"/>
         </section>
     </xsl:template>
 

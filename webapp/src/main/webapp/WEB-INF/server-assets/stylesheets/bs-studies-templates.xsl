@@ -221,7 +221,7 @@
             <xsl:with-param name="pName" select="'Download data files'"/>
             <xsl:with-param name="pContent">
                 <xsl:variable name="vSize" select="fn:count($pNodes)"/>
-                <ul class="ae-detail-list">
+                <ul class="ae-detail-list files">
                     <xsl:for-each select="$pNodes[fn:position() = (1 to 10)]">
                         <xsl:variable name="vName" select="@name"/>
                         <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
@@ -300,7 +300,7 @@
             <xsl:with-param name="pIconType" select="'x'"/>
             <xsl:with-param name="pClass" select="('left')"/>
             <xsl:with-param name="pContent">
-                <ul class="ae-detail-list">
+                <ul class="ae-detail-list links">
                 <xsl:for-each-group select="$pNodes" group-by="if (attribute[fn:lower-case(@name)='type']) then attribute[fn:lower-case(@name)='type']/value else ''">
                     <li>
                     <xsl:choose>

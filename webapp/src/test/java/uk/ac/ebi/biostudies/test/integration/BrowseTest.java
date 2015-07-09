@@ -24,7 +24,7 @@ public class BrowseTest {
 
     @Before
     public void setUp() {
-        driver.get(baseUrl+"/studies/"); 
+        driver.get(baseUrl+"/studies/");
     }
 
     @Test
