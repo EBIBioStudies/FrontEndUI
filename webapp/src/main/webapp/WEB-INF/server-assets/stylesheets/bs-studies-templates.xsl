@@ -241,7 +241,7 @@
                         </xsl:if>
                     </xsl:for-each>
                 </ul>
-                <br/>
+                <br/><br/>
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>

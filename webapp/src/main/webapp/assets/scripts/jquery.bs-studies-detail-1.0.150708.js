@@ -19,6 +19,7 @@
     if($ == undefined)
         throw "jQuery not loaded";
 
+    var isExpanded = false;
     $(function() {
 
         $('#filter-file-name').keyup(function(){
@@ -27,8 +28,27 @@
                 var text = $(this).text().toLowerCase();
                 (text.indexOf(query) >= 0) ? $(this).parent().show() : $(this).parent().hide();
             });
+            addShowMore();
         });
-
+        addShowMore();
     });
+
+    function addShowMore() {
+        $("ul#file-list").readmore(
+            {
+                moreLink: '<a href="#" class="show-more">show all '+  $('ul#file-list > li > a:visible').size()+' </a>',
+                lessLink: '<a href="#" class="show-less">show less</a>',
+                embedCSS: false,
+                startOpen: isExpanded,
+                afterToggle: function(trigger, element, expanded) {
+                    if(!expanded) { // The "Close" link was clicked
+                        $('#filter-file-name').focus();
+                    }
+                    isExpanded = expanded;
+                }
+            }
+        );
+
+    }
 
 })(window.jQuery);

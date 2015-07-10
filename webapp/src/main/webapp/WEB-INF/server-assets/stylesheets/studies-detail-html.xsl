@@ -65,6 +65,7 @@
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS">
                 <script src="{$context-path}/assets/scripts/jquery.bs-studies-detail-1.0.150708.js" type="text/javascript"/>
+                <script src="{$context-path}/assets/scripts/readmore.min.js" type="text/javascript"/>
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>

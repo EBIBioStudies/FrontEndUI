@@ -124,13 +124,14 @@
     color:#888;
 }
 
-#file-list{
-    max-height: 300px;
-    display: block;
-    overflow: auto;
+#file-list {
+    margin: 5px 0;
+    max-height: 270px;
 }
 
 #filter-file-name {
     padding:2px;
     margin-bottom: 5px;
 }
+
+
