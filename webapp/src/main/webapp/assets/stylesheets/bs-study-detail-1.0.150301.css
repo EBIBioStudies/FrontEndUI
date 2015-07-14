@@ -146,3 +146,22 @@ table.file-attributes td{
     background-color: rgba(69, 106, 123, 0.05) !important;
 }
 
+.file-attribute-expander {
+    border: none !important;
+}
+
+.file-attribute-expander-off:before {
+    content: '\229E';
+    font-size: 12pt;
+    cursor: pointer;
+    padding-left: 5px;
+}
+
+.file-attribute-expander-on:before {
+    content: '\229F';
+    font-size: 12pt;
+    cursor: pointer;
+    padding-left: 5px;
+}
+
+

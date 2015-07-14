@@ -239,6 +239,7 @@
                                 </xsl:call-template>
                                 <xsl:call-template name="file-attributes">
                                     <xsl:with-param name="attributes" select="$vFile/attributes"/>
+                                    <xsl:with-param name="position" select="position()"/>
                                 </xsl:call-template>
                             </li>
                         </xsl:if>
@@ -275,25 +276,29 @@
 
     <xsl:template name="file-attributes">
         <xsl:param name="attributes"/>
-        <table class="file-attributes">
-            <xsl:for-each select=".//attribute[@name!='Type']">
-                <tr>
-                    <td>
-                        <xsl:value-of select="@name"/>
-                    </td>
-                    <td>
-                        <xsl:choose>
-                            <xsl:when test="fn:exists(url)">
-                                <a href="{url}" target="_blank"><xsl:value-of select="value"/></a>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="value"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </table>
+        <xsl:param name="position"/>
+        <xsl:if test="count(.//attribute[@name!='Type']) &gt; 0">
+            <a class="file-attribute-expander file-attribute-expander-off" data-attribute-table="file-attributes-{$position}"></a>
+            <table class="file-attributes" id="file-attributes-{$position}" style="display:none">
+                <xsl:for-each select=".//attribute[@name!='Type']">
+                    <tr>
+                        <td>
+                            <xsl:value-of select="@name"/>
+                        </td>
+                        <td>
+                            <xsl:choose>
+                                <xsl:when test="fn:exists(url)">
+                                    <a href="{url}" target="_blank"><xsl:value-of select="value"/></a>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="value"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </table>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="study-links">
