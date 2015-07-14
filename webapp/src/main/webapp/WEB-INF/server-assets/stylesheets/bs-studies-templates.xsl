@@ -237,6 +237,9 @@
                                 <xsl:call-template name="file-size">
                                     <xsl:with-param name="size" select="$vFile/@size"/>
                                 </xsl:call-template>
+                                <xsl:call-template name="file-attributes">
+                                    <xsl:with-param name="attributes" select="$vFile/attributes"/>
+                                </xsl:call-template>
                             </li>
                         </xsl:if>
                     </xsl:for-each>
@@ -268,6 +271,29 @@
                 </xsl:otherwise>
             </xsl:choose>
         </span>
+    </xsl:template>
+
+    <xsl:template name="file-attributes">
+        <xsl:param name="attributes"/>
+        <table class="file-attributes">
+            <xsl:for-each select=".//attribute[@name!='Type']">
+                <tr>
+                    <td>
+                        <xsl:value-of select="@name"/>
+                    </td>
+                    <td>
+                        <xsl:choose>
+                            <xsl:when test="fn:exists(url)">
+                                <a href="{url}" target="_blank"><xsl:value-of select="value"/></a>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="value"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </table>
     </xsl:template>
 
     <xsl:template name="study-links">

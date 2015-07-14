@@ -21,12 +21,11 @@
 
     var isExpanded = false;
     $(function() {
-
         $('#filter-file-name').keyup(function(){
             var query = $(this).val().toLowerCase();
-            $('ul#file-list > li > a').each(function(){
+            $('ul#file-list > li').each(function(){
                 var text = $(this).text().toLowerCase();
-                (text.indexOf(query) >= 0) ? $(this).parent().show() : $(this).parent().hide();
+                (text.indexOf(query) >= 0) ? $(this).show() : $(this).hide();
             });
             addShowMore();
         });

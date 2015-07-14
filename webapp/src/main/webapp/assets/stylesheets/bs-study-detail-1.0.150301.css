@@ -132,6 +132,17 @@
 #filter-file-name {
     padding:2px;
     margin-bottom: 5px;
+    width: 98%;
 }
 
+table.file-attributes {
+    margin-left: 20px !important;
+    width: auto !important;
+    /* background-color: black !important; */
+}
+
+table.file-attributes td{
+    padding: 0 5px !important;
+    background-color: rgba(69, 106, 123, 0.05) !important;
+}
 

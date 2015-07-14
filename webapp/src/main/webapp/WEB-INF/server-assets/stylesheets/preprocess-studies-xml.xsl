@@ -106,6 +106,12 @@
         </xsl:element>
     </xsl:template>
 
+    <xsl:template match="url" mode="attribute">
+        <url>
+            <xsl:value-of select="text()"/>
+        </url>
+    </xsl:template>
+
     <xsl:template match="value" mode="attribute">
         <value>
             <xsl:value-of select="text()"/>
