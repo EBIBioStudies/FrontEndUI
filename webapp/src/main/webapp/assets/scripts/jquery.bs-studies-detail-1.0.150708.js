@@ -30,6 +30,11 @@
                 if (text.replace($('a:first',this).text().toLowerCase(),'').indexOf(query) > 0) {
                     showFileAttributes($('.file-attribute-expander',this));
                 }
+                if (query=='') {
+                    hideFileAttributes($('.file-attribute-expander',this));
+                }
+                $(this).unhighlight();
+                $(this).highlight(query);
             });
             addShowMore();
         });
