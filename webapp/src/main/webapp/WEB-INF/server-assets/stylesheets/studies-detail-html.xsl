@@ -47,8 +47,8 @@
                 </xsl:if>
             </xsl:with-param>
             <xsl:with-param name="pExtraCSS">
-                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-detail-1.0.150301.css"
-                      type="text/css"/>
+                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-detail-1.0.150301.css" type="text/css"/>
+                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/jquery.dataTables.css" type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
                 <xsl:choose>
@@ -65,8 +65,7 @@
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS">
                 <script src="{$context-path}/assets/scripts/jquery.bs-studies-detail-1.0.150708.js" type="text/javascript"/>
-                <script src="{$context-path}/assets/scripts/jquery.highlight.min.js" type="text/javascript"/>
-                <script src="{$context-path}/assets/scripts/readmore.min.js" type="text/javascript"/>
+                <script src="{$context-path}/assets/scripts/jquery.dataTables.min.js" type="text/javascript"/>
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>
@@ -102,39 +101,41 @@
             <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
             <xsl:with-param name="pIsPrivate" select="fn:false()"/>
         </xsl:call-template>
-        <div id="ae-detail">
+        <div>
             <div id="ae-detail-left-column">
-                <div class="persist-header">
-                    <h4 id="ae-detail-title">
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
-                            <xsl:with-param name="pFieldName"/>
-                        </xsl:call-template>
-                    </h4>
+                <div id="ae-detail">
+                    <div class="persist-header">
+                        <h4 id="ae-detail-title">
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$queryid"/>
+                                <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
+                                <xsl:with-param name="pFieldName"/>
+                            </xsl:call-template>
+                        </h4>
+                    </div>
+                    <xsl:call-template name="study-authors">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pTitle" select="title"/>
+                        <xsl:with-param name="pNodes" select="section"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-attributes">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pNodes" select="attribute"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-publications">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pTitle" select="title"/>
+                        <xsl:with-param name="pNodes" select="section"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-funding">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="section">
+                        <xsl:with-param name="pName" select="'Accession Number'"/>
+                        <xsl:with-param name="pContent"><xsl:value-of select="$vAccession"/></xsl:with-param>
+                    </xsl:call-template>
                 </div>
-                <xsl:call-template name="study-authors">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pTitle" select="title"/>
-                    <xsl:with-param name="pNodes" select="section"/>
-                </xsl:call-template>
-                <xsl:call-template name="study-attributes">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pNodes" select="attribute"/>
-                </xsl:call-template>
-                <xsl:call-template name="study-publications">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pTitle" select="title"/>
-                    <xsl:with-param name="pNodes" select="section"/>
-                </xsl:call-template>
-                <xsl:call-template name="study-funding">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
-                </xsl:call-template>
-                <xsl:call-template name="section">
-                    <xsl:with-param name="pName" select="'Accession Number'"/>
-                    <xsl:with-param name="pContent"><xsl:value-of select="$vAccession"/></xsl:with-param>
-                </xsl:call-template>
             </div>
             <div id="ae-detail-right-column">
                 <xsl:choose>

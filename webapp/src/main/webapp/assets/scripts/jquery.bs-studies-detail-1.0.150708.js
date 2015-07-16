@@ -19,67 +19,11 @@
     if($ == undefined)
         throw "jQuery not loaded";
 
-    var isExpanded = false;
     $(function() {
-        $('#filter-file-name').keyup(function(){
-            var query = $(this).val().toLowerCase();
-            $('ul#file-list > li').each(function(){
-                var text = $(this).text().toLowerCase();
-                (text.indexOf(query) >= 0) ? $(this).show() : $(this).hide();
-                // expand attributes if there's a match in them
-                if (text.replace($('a:first',this).text().toLowerCase(),'').indexOf(query) > 0) {
-                    showFileAttributes($('.file-attribute-expander',this));
-                }
-                if (query=='') {
-                    hideFileAttributes($('.file-attribute-expander',this));
-                }
-                $(this).unhighlight();
-                $(this).highlight(query);
-            });
-            addShowMore();
-        });
-
-        $('.file-attribute-expander').click(function() {
-            var tbl = $('#'+$(this).data('attribute-table'));
-            if (tbl.css('display')=='none')
-                showFileAttributes(this);
-            else
-                hideFileAttributes(this);
-            addShowMore();
-        });
-
-        // call after page load
-        addShowMore();
-
+        $("#file-list").DataTable( {
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "scrollX": true
+        } );
     });
-
-    function showFileAttributes(obj){
-        $('#'+$(obj).data('attribute-table')).show();
-        $(obj).removeClass('file-attribute-expander-off').addClass('file-attribute-expander-on');
-    }
-
-
-    function hideFileAttributes(obj){
-        $('#'+$(obj).data('attribute-table')).hide();
-        $(obj).removeClass('file-attribute-expander-on').addClass('file-attribute-expander-off');
-    }
-
-    function addShowMore() {
-        var allShown = $('ul#file-list > li:visible').size() == $('ul#file-list > li').size();
-        $("ul#file-list").readmore(            {
-                moreLink: ('<a href="#" class="show-more">show '+ ( allShown ? 'all '  : 'filtered ')+ $('ul#file-list > li:visible').size() +' </a>'),
-                lessLink: '<a href="#" class="show-less">show less</a>',
-                embedCSS: false,
-                startOpen: isExpanded,
-                afterToggle: function(trigger, element, expanded) {
-                    if(!expanded) { // The "Close" link was clicked
-                        $('#filter-file-name').focus();
-                    }
-                    isExpanded = expanded;
-                }
-            }
-        );
-
-    }
 
 })(window.jQuery);

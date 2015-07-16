@@ -17,7 +17,7 @@
 
 * {
     text-align: inherit;
-    font-weight: inherit
+    font-weight: inherit;
 }
 
 
@@ -35,17 +35,20 @@
 }
 
 #content table {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border: 0 none
+   /* width: auto; */
+    
+   margin: 0;
+    
+   padding: 0;
+    
+   border: 0 none;
 }
 
 #content th, #content td {
-    padding: 0;
+    /*padding: 0;*/
     border:  0 none;
     border-collapse: collapse;
-    vertical-align: middle
+    vertical-align: middle;
 }
 
 a span.link-doc,
@@ -634,8 +637,7 @@ p.center {
 }
 
 #ae-detail tr:nth-child(odd) {
-    background-color: hsla(200, 65%, 95%, 1)
-}
+    background-color: hsla(200, 65%, 95%, 1)}
 
 #ae-detail tr:nth-child(even) {
     background-color: #fff

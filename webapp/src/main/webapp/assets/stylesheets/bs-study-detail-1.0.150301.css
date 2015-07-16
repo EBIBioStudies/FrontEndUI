@@ -15,14 +15,6 @@
  *
  */
 
-#ae-detail tr:first-child td:nth-child(2) {
-    font-style: italic
-}
-
-#ae-detail tr tr:first-child td:nth-child(2) {
-    font-style: normal
-}
-
 #ae-detail span.sample-view {
     font-size: 108%
 }
@@ -46,13 +38,13 @@
 }
 
 #ae-detail-left-column {
-    width:60%;
+    width: 60%;
     float:left;
     padding: 0 1em;
 }
 
 #ae-detail-right-column {
-    width:30%;
+    width: 30%;
     float:right;
     margin: 0 2em 1em 1em;
     padding: 1em;
@@ -105,28 +97,12 @@
     visibility: hidden;
 }
 
-.ae-file-size {
-    color: #888;
-    font-size: xx-small;
-    margin-left: 5px;
-}
-
-.ae-file-size:before {
-    content: '(';
-}
-
-.ae-file-size:after {
-    content: ')';
-}
-
 .padded-gray-icon {
     margin-right:5px;
     color:#888;
 }
 
-#file-list {
-    margin: 5px 0;
-    max-height: 270px;
+#file-list{
 }
 
 #filter-file-name {
@@ -135,36 +111,11 @@
     width: 98%;
 }
 
-table.file-attributes {
-    margin-left: 20px !important;
-    width: auto !important;
-    /* background-color: black !important; */
+.file-list-file-name
+{
+    word-break: break-all;
 }
 
-table.file-attributes td{
-    padding: 0 5px !important;
-    background-color: rgba(69, 106, 123, 0.05) !important;
+.align-right {
+    text-align: right;
 }
-
-.file-attribute-expander {
-    border: none !important;
-}
-
-.file-attribute-expander-off:before {
-    content: '\229E';
-    font-size: 12pt;
-    cursor: pointer;
-    padding-left: 5px;
-}
-
-.file-attribute-expander-on:before {
-    content: '\229F';
-    font-size: 12pt;
-    cursor: pointer;
-    padding-left: 5px;
-}
-
-.highlight {
-    background-color: #FFFF88;
-}
-

@@ -214,40 +214,64 @@
         <xsl:param name="pNodes"/>
         <xsl:param name="pFiles"/>
         <xsl:param name="pBasePath"/>
-        <xsl:call-template name="section">
-            <xsl:with-param name="pTitleClass" select="'ae-detail-files-title'"/>
-            <xsl:with-param name="pIconClass" select="'icon icon-functional padded-gray-icon'"/>
-            <xsl:with-param name="pIconType" select="'='"/>
-            <xsl:with-param name="pName" select="'Download data files'"/>
-            <xsl:with-param name="pContent">
-                <xsl:variable name="vSize" select="fn:count($pNodes)"/>
-                <input class="search" id="filter-file-name" placeholder="Filter on filename (e.g. pdf)" />
-                <ul class="ae-detail-list files" id="file-list">
-                    <xsl:for-each select="$pNodes">
-                        <xsl:variable name="vName" select="@name"/>
-                        <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
-                        <xsl:if test="$vFile">
-                            <li>
-                                <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
-                                    <xsl:call-template name="highlight">
-                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                        <xsl:with-param name="pText" select="$vName"/>
+        <xsl:if test="fn:count($pNodes)>0">
+            <xsl:call-template name="section">
+                <xsl:with-param name="pTitleClass" select="'ae-detail-files-title'"/>
+                <xsl:with-param name="pIconClass" select="'icon icon-functional padded-gray-icon'"/>
+                <xsl:with-param name="pIconType" select="'='"/>
+                <xsl:with-param name="pName" select="'Download data files'"/>
+                <xsl:with-param name="pContent">
+                    <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
+                    <table class="stripe" cellspacing="0" width="100%" id="file-list">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <xsl:for-each select="$vColumns">
+                                <th><xsl:value-of select="." /></th>
+                            </xsl:for-each>
+                        </tr></thead>
+                        <tbody>
+                        <xsl:for-each select="$pNodes">
+                            <xsl:variable name="aFile" select="."/>
+                            <xsl:variable name="vName" select="@name"/>
+                            <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
+                            <tr>
+                                <td class="file-list-file-name">
+                                    <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pText" select="$vName"/>
+                                        </xsl:call-template>
+                                    </a>
+                                </td>
+                                <td class="align-right">
+                                    <xsl:call-template name="file-size">
+                                        <xsl:with-param name="size" select="$vFile/@size"/>
                                     </xsl:call-template>
-                                </a>
-                                <xsl:call-template name="file-size">
-                                    <xsl:with-param name="size" select="$vFile/@size"/>
-                                </xsl:call-template>
-                                <xsl:call-template name="file-attributes">
-                                    <xsl:with-param name="attributes" select="$vFile/attributes"/>
-                                    <xsl:with-param name="position" select="position()"/>
-                                </xsl:call-template>
-                            </li>
-                        </xsl:if>
-                    </xsl:for-each>
-                </ul>
-                <br/><br/>
-            </xsl:with-param>
-        </xsl:call-template>
+                                </td>
+                                <xsl:for-each select="$vColumns">
+                                    <xsl:variable name="vColumnName" select="."/>
+                                    <xsl:variable name="vColumn" select="$aFile/attribute[@name=$vColumnName]"/>
+                                    <td>
+                                        <xsl:choose>
+                                            <xsl:when test="fn:exists($vColumn/url)">
+                                                <a href="{$vColumn/url}" target="_blank"><xsl:value-of select="$vColumn/value"/></a>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$vColumn/value"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </td>
+                                </xsl:for-each>
+                            </tr>
+                        </xsl:for-each>
+                        </tbody>
+                    </table>
+                    <br/><br/>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="file-size">
@@ -272,33 +296,6 @@
                 </xsl:otherwise>
             </xsl:choose>
         </span>
-    </xsl:template>
-
-    <xsl:template name="file-attributes">
-        <xsl:param name="attributes"/>
-        <xsl:param name="position"/>
-        <xsl:if test="count(.//attribute[@name!='Type']) &gt; 0">
-            <a class="file-attribute-expander file-attribute-expander-off" data-attribute-table="file-attributes-{$position}"></a>
-            <table class="file-attributes" id="file-attributes-{$position}" style="display:none">
-                <xsl:for-each select=".//attribute[@name!='Type']">
-                    <tr>
-                        <td>
-                            <xsl:value-of select="@name"/>
-                        </td>
-                        <td>
-                            <xsl:choose>
-                                <xsl:when test="fn:exists(url)">
-                                    <a href="{url}" target="_blank"><xsl:value-of select="value"/></a>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:value-of select="value"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </td>
-                    </tr>
-                </xsl:for-each>
-            </table>
-        </xsl:if>
     </xsl:template>
 
     <xsl:template name="study-links">
