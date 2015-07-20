@@ -119,3 +119,14 @@
 .align-right {
     text-align: right;
 }
+
+#right-column-expander {
+    float:right;
+    cursor: pointer;
+    border: 0px;
+}
+.expanded-right-column {
+    position: absolute;
+    width: 93% !important;
+    left: 30px;
+}

@@ -19,11 +19,22 @@
     if($ == undefined)
         throw "jQuery not loaded";
 
+    var table = undefined;
     $(function() {
-        $("#file-list").DataTable( {
+        redrawTable();
+    });
+
+    function redrawTable() {
+        if(table) table.destroy()
+        table = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "scrollX": true
         } );
+    }
+    $('#right-column-expander').click( function() {
+        $('#ae-detail-right-column').toggleClass('expanded-right-column');
+        $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
+        redrawTable();
     });
 
 })(window.jQuery);
