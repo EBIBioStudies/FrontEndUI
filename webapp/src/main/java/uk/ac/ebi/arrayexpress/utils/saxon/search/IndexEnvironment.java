@@ -57,6 +57,8 @@ public class IndexEnvironment {
         public boolean shouldStore;
         public boolean shouldEscape;
         public boolean shouldExpand;
+        public String docValueType;
+        public float boost;
 
         public FieldInfo(HierarchicalConfiguration fieldConfig) {
             this.name = fieldConfig.getString("[@name]");
@@ -69,6 +71,8 @@ public class IndexEnvironment {
                 this.shouldStore = fieldConfig.getBoolean("[@store]");
                 this.shouldEscape = fieldConfig.getBoolean("[@escape]");
                 this.shouldExpand = fieldConfig.getBoolean("[@expand]");
+                this.docValueType =  fieldConfig.getString("[@docValueType]", "none");
+                this.boost =  fieldConfig.getFloat("[@boost]", 1.0f);
             }
         }
     }

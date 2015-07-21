@@ -152,7 +152,7 @@ public class Controller implements IQuerier, IHighlighter {
         );
     }
 
-    public List<NodeInfo> queryIndex(Integer queryId) throws IOException {
+    public List<NodeInfo> queryIndex(Integer queryId) throws ParseException, IOException {
         QueryInfo queryInfo = this.queryPool.getQueryInfo(queryId);
         return new Querier(getEnvironment(queryInfo.getIndexId())).query(queryInfo);
     }
