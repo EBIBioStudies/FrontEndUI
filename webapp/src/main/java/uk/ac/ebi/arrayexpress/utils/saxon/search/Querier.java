@@ -140,9 +140,13 @@ public class Querier {
                 params.put("sortorder", new String[]{"descending"});
         }
         boolean reverse =  ("descending".equalsIgnoreCase(params.get("sortorder")[0]) ? true : false);
+        // relevance should by default be descending
+        if (sortBy ==null || "relevance".equalsIgnoreCase(sortBy) ) {
+            reverse = !reverse;
+        }
         SortField sortField = new SortField(sortBy, sortFieldType  , reverse);
         Sort sort = new Sort( sortField );
-        logger.info("Sorting by {} {}",sort, reverse );
+        logger.info("Sorting by {} reversing = {}",sort, reverse );
 
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             LeafReader leafReader = SlowCompositeReaderWrapper.wrap(reader);
