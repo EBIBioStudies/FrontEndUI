@@ -19,6 +19,8 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
 import org.apache.lucene.index.*;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
@@ -31,6 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Querier {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -119,7 +122,63 @@ public class Querier {
         }
     }
 
-    public List<NodeInfo> query(QueryInfo queryInfo) throws IOException {
-        return query(queryInfo.getQuery());
+    // Any changes in this method should probably bereflected in List<NodeInfo> query(Query) as well
+    public List<NodeInfo> query(QueryInfo queryInfo) throws ParseException, IOException {
+        Query query = queryInfo.getQuery();
+        Map<String, String[]> params = queryInfo.getParams();
+        String sortBy =  (params.containsKey("sortby")) ? params.get("sortby")[0] : null;
+        SortField.Type sortFieldType = (sortBy != null && !"relevance".equalsIgnoreCase(sortBy)) ?
+                                    ("string".equalsIgnoreCase(env.fields.get(sortBy).type) ?
+                                            SortField.Type.STRING
+                                            : SortField.Type.LONG)
+                                    : SortField.Type.SCORE;
+        // set default sorting order if none is specified. Changes should be reflected in jquery.bs.studies-browse-*.js too.
+        if (!params.containsKey("sortorder")) {
+            if ("accession".equalsIgnoreCase(sortBy) || "title".equalsIgnoreCase(sortBy) || "authors".equalsIgnoreCase(sortBy))
+                params.put("sortorder", new String[]{"ascending"});
+            else
+                params.put("sortorder", new String[]{"descending"});
+        }
+        boolean reverse =  ("descending".equalsIgnoreCase(params.get("sortorder")[0]) ? true : false);
+        // relevance should by default be descending
+        if (sortBy ==null || "relevance".equalsIgnoreCase(sortBy) ) {
+            reverse = !reverse;
+        }
+        SortField sortField = new SortField(sortBy, sortFieldType  , reverse);
+        Sort sort = new Sort( sortField );
+        logger.info("Sorting by {} reversing = {}",sort, reverse );
+
+        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
+            LeafReader leafReader = SlowCompositeReaderWrapper.wrap(reader);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            // empty query returns everything
+            if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
+                logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
+                if (sortBy ==null || "relevance".equalsIgnoreCase(sortBy))
+                    return this.env.documentNodes;
+                Term term = new Term(sortBy, "*");
+                query = new WildcardQuery(term);
+            }
+            logger.info("Search of index [{}] with query [{}] started", env.indexId, query.toString());
+            TopDocs hits = searcher.search(
+                    query,
+                    this.env.documentNodes.size() + 1,
+                    sort
+            );
+
+            logger.info("Search reported [{}] matches", hits.totalHits);
+            final List<NodeInfo> matchingNodes = new ArrayList<>(hits.totalHits);
+            final NumericDocValues ids = leafReader.getNumericDocValues(Indexer.DOCID_FIELD);
+            for (ScoreDoc d : hits.scoreDocs) {
+                matchingNodes.add(
+                        this.env.documentNodes.get(
+                                (int)ids.get(d.doc)
+                        )
+                );
+            }
+            logger.info("Search completed", matchingNodes.size());
+
+            return matchingNodes;
+        }
     }
 }

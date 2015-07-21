@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IQuerier {
-    List<NodeInfo> queryIndex(Integer queryId) throws IOException;
+    List<NodeInfo> queryIndex(Integer queryId) throws ParseException, IOException;
 
     List<NodeInfo> queryIndex(String indexId, String queryString) throws ParseException, IOException;
 }

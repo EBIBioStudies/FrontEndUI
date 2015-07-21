@@ -100,11 +100,13 @@
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
             <document path="/studies/study" defaultField="keywords">
                 <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
-                <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false"/>
-                <field name="date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false"/>
+                <field name="title" title="by Accession" type="string" path="title" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" boost="2.0"/>
+                <field name="authors" title="by Authors" type="string" path="string-join(.//author, ' ')" analyze="true" store="false" escape="false" expand="false" docValueType="sorted"  />
+                <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false" docValueType="sorted"  />
+                <field name="release_date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" />
                 <field name="public" type="boolean" path="true()"/>
-                <field name="files"  title="Number of Files" type="integer" path="@files"/>
-                <field name="links" title="Number of Links" type="integer" path="@links"/>
+                <field name="files"  title="Number of Files" type="long" path="@files" store="true" docValueType="numeric" />
+                <field name="links" title="Number of Links" type="long" path="@links" store="true" docValueType="numeric"  />
                 <!--
                 <field name="organism" title="by Organism" type="string" path="organism" analyze="true" store="false" escape="false" expand="true"/>
                 <field name="array" title="by Array" type="string" path="arraydesign/id | arraydesign/legacy_id | arraydesign/accession | arraydesign/name" analyze="true" store="false" escape="false" expand="false"/>

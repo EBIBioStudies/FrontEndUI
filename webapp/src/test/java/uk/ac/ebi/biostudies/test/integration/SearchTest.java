@@ -62,12 +62,14 @@ public class SearchTest {
 
     @Test
     public void testAccessionAscendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Accession");
         testSort(".browse-study-accession");
     }
 
     @Test
     public void testAccessionDescendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Accession");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-left")).click();
         testSort(".browse-study-accession", true);
@@ -94,12 +96,14 @@ public class SearchTest {
 
     @Test
     public void testTitleAscendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Title");
         testSort(".browse-study-title a");
     }
 
     @Test
     public void testTitleDescendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Title");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-left")).click();
         testSort(".browse-study-title a", true);
@@ -107,12 +111,14 @@ public class SearchTest {
 
     @Test
     public void testAuthorsAscendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Authors");
         testSort(".browse-study-title + div");
     }
 
     @Test
     public void testAuthorsDescendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Authors");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-left")).click();
         testSort(".browse-study-title + div", true);
@@ -121,6 +127,7 @@ public class SearchTest {
 
     @Test
     public void testFilesDescendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Files");
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-files"));
         Integer [] values = new Integer[list.size()];
@@ -134,6 +141,7 @@ public class SearchTest {
 
     @Test
     public void testFilesAscendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Files");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-right")).click();
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-files"));
@@ -147,6 +155,7 @@ public class SearchTest {
 
     @Test
     public void testLinksDescendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Links");
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-links"));
         Integer [] values = new Integer[list.size()];
@@ -160,6 +169,7 @@ public class SearchTest {
 
     @Test
     public void testLinks() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Links");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-right")).click();
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-links"));
@@ -173,6 +183,7 @@ public class SearchTest {
 
     @Test
     public void testReleasedDescendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Released");
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-date"));
         Date [] values = new Date[list.size()];
@@ -188,6 +199,7 @@ public class SearchTest {
 
     @Test
     public void testReleasedAscendingSort() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Released");
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-date"));
         Date [] values = new Date[list.size()];

@@ -48,7 +48,8 @@
     float:right;
     margin: 0 2em 1em 1em;
     padding: 1em;
-    background-color: hsla(201, 65%, 95%, 1)
+    background-color: hsla(201, 65%, 95%, 1);
+    border: solid 1px rgba(226, 238, 244, 0.99);
 }
 
 

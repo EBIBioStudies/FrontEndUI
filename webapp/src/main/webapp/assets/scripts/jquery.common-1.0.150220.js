@@ -306,13 +306,10 @@
         }
 
         var $column = $(column);
-
-        var sortby = $.query.get("sortby") || options.defaultField;
-        var sortorder = $.query.get("sortorder") || options.fields[options.defaultField].sort;
-
-        var pageName = /\/?([^\/]*)$/.exec(decodeURI(window.location.pathname))[1];
-
         var colname = /col_(\w+)/.exec($column.attr("class"))[1];
+        var sortby = $.query.get("sortby") || options.defaultField;
+        var sortorder = $.query.get("sortorder") || options.fields[colname].sort;
+        var pageName = /\/?([^\/]*)$/.exec(decodeURI(window.location.pathname))[1];
 
         // so the idea is to set default sorting for all columns except the "current" one
         // (which will be inverted) against its current state
@@ -320,9 +317,9 @@
         var queryString = $.query.set("sortby", colname).set("sortorder", newOrder).toString();
         $column.attr("data-url",""+window.location.pathname + queryString);
         if (colname === sortby) {
-            $column.attr("selected","selected");
             $("a.aw-icon-angle-" + (sortorder=="ascending" ? "down" : "up")).attr("href",window.location.pathname + queryString);
             $("a.aw-icon-angle-" + (sortorder=="ascending" ? "up" : "down")).attr("disabled","disabled");
+            // $column.attr("selected","selected");
         }
 
     };

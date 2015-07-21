@@ -82,7 +82,7 @@
     </xsl:template>
 
     <xsl:template name="bs-content-section">
-        <xsl:variable name="vSortBy" select="if ($sortby) then $sortby else 'name'"/>
+        <xsl:variable name="vSortBy" select="if ($sortby) then $sortby else 'relevance'"/>
         <xsl:variable name="vSortOrder" select="if ($sortorder) then $sortorder else 'descending'"/>
 
         <xsl:variable name="vPage" select="if ($page and $page castable as xs:integer) then $page cast as xs:integer else 1" as="xs:integer"/>
@@ -139,26 +139,47 @@
                                 <div id="ae-studies-browse-sort-by">
                                     <xsl:text>Sort by: </xsl:text>
                                     <select id="studies-browse-sorter">
-                                        <option class="col_relevance sortable">Relevance</option>
-                                        <option class="col_accession sortable">Accession</option>
-                                        <option class="col_title sortable">Title</option>
-                                        <option class="col_author sortable">Authors</option>
-                                        <option class="col_release_date sortable">Released</option>
-                                        <option class="col_files sortable">Files</option>
-                                        <option class="col_links sortable">Links</option>
+                                        <option class="col_relevance sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='relevance'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Relevance</option>
+                                        <option class="col_accession sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='accession'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Accession
+                                        </option>
+                                        <option class="col_title sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='title'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Title</option>
+                                        <option class="col_authors sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='authors'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Authors</option>
+                                        <option class="col_release_date sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='release_date'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Released</option>
+                                        <option class="col_files sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='files'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Files</option>
+                                        <option class="col_links sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='links'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Links</option>
                                      </select>
-                                    <a class="studies-browse-sort-order-left aw-icon-angle-down"/>
-                                    <a class="studies-browse-sort-order-right aw-icon-angle-up"/>
+                                    <span id="sorting-links">
+                                        <a class="studies-browse-sort-order-left aw-icon-angle-down"/>
+                                        <a class="studies-browse-sort-order-right aw-icon-angle-up"/>
+                                    </span>
                                 </div>
                                 <div>
                                     <ul class="ae-studies-browse-list">
-                                        <xsl:call-template name="ae-sort-experiments">
-                                            <xsl:with-param name="pExperiments" select="$vFilteredStudies"/>
+                                        <xsl:apply-templates select="$vFilteredStudies">
                                             <xsl:with-param name="pFrom" select="$vFrom"/>
                                             <xsl:with-param name="pTo" select="$vTo"/>
-                                            <xsl:with-param name="pSortBy" select="$vSortBy"/>
-                                            <xsl:with-param name="pSortOrder" select="$vSortOrder"/>
-                                        </xsl:call-template>
+                                        </xsl:apply-templates>
                                     </ul>
                                 </div>
                             </div>
