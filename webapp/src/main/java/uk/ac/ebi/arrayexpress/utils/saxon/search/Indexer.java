@@ -91,7 +91,7 @@ public class Indexer {
                                 } else {
                                     addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
                                     if (!"none".equalsIgnoreCase(field.docValueType)) {
-                                        d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue())));
+                                        d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase()))); // TODO: add analyser to the field definition
                                     }
                                 }
                                 Thread.sleep(0);
