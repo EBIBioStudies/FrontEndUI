@@ -47,7 +47,7 @@ public class Querier {
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             Terms terms = MultiFields.getTerms(reader, fieldName);
             if (null != terms) {
-                TermsEnum iterator = terms.iterator(null);
+                TermsEnum iterator = terms.iterator();
                 BytesRef byteRef;
                 while((byteRef = iterator.next()) != null) {
                     if (iterator.docFreq() >= minFreq) {
@@ -66,7 +66,7 @@ public class Querier {
                 File f = new File(System.getProperty("java.io.tmpdir"), fieldName + "_terms.txt");
                 try (BufferedWriter w = new BufferedWriter(new FileWriter(f))) {
                     StringBuilder sb = new StringBuilder();
-                    TermsEnum iterator = terms.iterator(null);
+                    TermsEnum iterator = terms.iterator();
                     BytesRef byteRef;
                     while ((byteRef = iterator.next()) != null) {
                         sb.append(iterator.docFreq()).append('\t').append(byteRef.utf8ToString()).append(StringTools.EOL);

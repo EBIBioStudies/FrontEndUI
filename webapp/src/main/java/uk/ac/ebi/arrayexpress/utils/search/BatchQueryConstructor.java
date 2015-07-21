@@ -94,9 +94,13 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
                     query = null;
                 }
             }
-        } else if (query instanceof TermQuery || query instanceof PhraseQuery) {
-            Set<Term> terms = new HashSet<>();
-            query.extractTerms(terms);
+        } else if (query instanceof TermQuery) {
+            Term term = ((TermQuery)query).getTerm();
+            if (fieldName.equals(term.field())) {
+                return null;
+            }
+        } else if (query instanceof PhraseQuery) {
+            Term[] terms = ((PhraseQuery)query).getTerms();
             for (Term term : terms) {
                 if (fieldName.equals(term.field())) {
                     return null;

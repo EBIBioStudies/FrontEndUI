@@ -27,6 +27,7 @@ import uk.ac.ebi.arrayexpress.utils.saxon.search.QueryInfo;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public final class EFOQueryExpander implements IQueryExpander {
@@ -129,16 +130,18 @@ public final class EFOQueryExpander implements IQueryExpander {
                 field = ((NumericRangeQuery) query).getField();
             } else if (query instanceof FuzzyQuery) {
                 field = ((FuzzyQuery) query).getTerm().field();
-            } else {
-                Set<Term> terms = new HashSet<>();
-                query.extractTerms(terms);
-                if (terms.size() > 1 && !(query instanceof PhraseQuery)) {
-                    logger.warn("More than one term found for query [{}]", query.toString());
-                } else if (0 == terms.size()) {
+            } else if (query instanceof TermQuery) {
+                field = ((TermQuery) query).getTerm().field();
+            } else if (query instanceof PhraseQuery) {
+                Term[] terms = ((PhraseQuery)query).getTerms();
+                if (0 == terms.length) {
                     logger.error("No terms found for query [{}]", query.toString());
                     return null;
                 }
-                field = ((Term) terms.toArray()[0]).field();
+                field = terms[0].field();
+            } else {
+                logger.error("Unsupported class [{}] for  query [{}]", query.getClass().getName(), query.toString());
+                return null;
             }
         } catch (UnsupportedOperationException x) {
             logger.error("Query of [{}], class [{}] doesn't allow us to get its terms extracted", query.toString(), query.getClass().getCanonicalName());
@@ -177,19 +180,37 @@ public final class EFOQueryExpander implements IQueryExpander {
     }
 
     private Term getFirstTerm(Query query) {
-        if (query instanceof PhraseQuery) {
-            Term[] terms = ((PhraseQuery) query).getTerms();
-            if (0 != terms.length) {
-                return terms[0];
+        Term term = new Term("", "");
+        if (query instanceof BooleanQuery) {
+            List<BooleanClause> clauses = ((BooleanQuery)query).clauses();
+            if (0 < clauses.size()) {
+                return getFirstTerm(clauses.get(0).getQuery());
+            } else {
+                return term;
             }
+        } else if (query instanceof PrefixQuery) {
+            term = ((PrefixQuery) query).getPrefix();
+        } else if (query instanceof WildcardQuery) {
+            term = ((WildcardQuery) query).getTerm();
+        } else if (query instanceof TermRangeQuery) {
+            term = new Term(((TermRangeQuery) query).getField(), "");
+        } else if (query instanceof NumericRangeQuery) {
+            term = new Term(((NumericRangeQuery) query).getField(), "");
+        } else if (query instanceof FuzzyQuery) {
+            term = ((FuzzyQuery) query).getTerm();
         } else if (query instanceof TermQuery) {
-            return ((TermQuery) query).getTerm();
+            term = ((TermQuery) query).getTerm();
+        } else if (query instanceof PhraseQuery) {
+            Term[] terms = ((PhraseQuery)query).getTerms();
+            if (0 == terms.length) {
+                logger.error("No terms found for query [{}]", query.toString());
+                return term;
+            }
+            term = terms[0];
         } else {
-            Set<Term> terms = new HashSet<>();
-            query.extractTerms(terms);
-
-            return terms.iterator().next();
+            logger.error("Unsupported class [{}] for query [{}]", query.getClass().getName(), query.toString());
+            return term;
         }
-        return new Term("", "");
+        return term;
     }
 }
