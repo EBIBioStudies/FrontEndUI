@@ -154,7 +154,7 @@ public class Querier {
             // empty query returns everything
             if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
                 logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
-                if ("SCORE".equals(sortBy))
+                if (sortBy ==null || "relevance".equalsIgnoreCase(sortBy))
                     return this.env.documentNodes;
                 Term term = new Term(sortBy, "*");
                 query = new WildcardQuery(term);
