@@ -310,7 +310,9 @@
         var sortby = $.query.get("sortby") || options.defaultField;
         var sortorder = $.query.get("sortorder") || options.fields[colname].sort;
         var pageName = /\/?([^\/]*)$/.exec(decodeURI(window.location.pathname))[1];
-
+        if ($.isEmptyObject($.query.keys)) {
+            sortby = 'release_date';
+        }
         // so the idea is to set default sorting for all columns except the "current" one
         // (which will be inverted) against its current state
         var newOrder = (colname === sortby) ? ("ascending" === sortorder ? "descending" : "ascending"): options.fields[colname].sort;
@@ -319,7 +321,7 @@
         if (colname === sortby) {
             $("a.aw-icon-angle-" + (sortorder=="ascending" ? "down" : "up")).attr("href",window.location.pathname + queryString);
             $("a.aw-icon-angle-" + (sortorder=="ascending" ? "up" : "down")).attr("disabled","disabled");
-            // $column.attr("selected","selected");
+            $column.attr("selected","selected");
         }
 
     };
