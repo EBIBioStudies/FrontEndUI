@@ -14,21 +14,64 @@
  * limitations under the License.
  *
  */
+var table = undefined;
 
 (function($, undefined) {
     if($ == undefined)
         throw "jQuery not loaded";
 
-    var table = undefined;
     $(function() {
         redrawTable();
+        updateSelectedFiles();
+
+        $("#file-list tbody").on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
+            if ( $(this).hasClass('selected')) {
+                $('input[type="checkbox"]',$(this)).attr('checked','checked');
+            } else {
+                $('input[type="checkbox"]',$(this)).removeAttr('checked');
+            }
+            updateSelectedFiles();
+        });
+
+        $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
+            $(this).toggleClass('selected');
+            updateSelectedFiles();
+        });
+
+        $("#select-all-files").on ('click', function () {
+            var isChecked = $(this).is(':checked');
+            if (!isChecked) {
+                $('input[type="checkbox"]', table.cells().nodes()).removeAttr('checked', isChecked);
+                $('input[type="checkbox"]', table.cells().nodes()).parent().parent().removeClass('selected');
+            } else {
+                $('input[type="checkbox"]', table.cells().nodes()).prop('checked', 'checked');
+                $('input[type="checkbox"]', table.cells().nodes()).parent().parent().addClass('selected');
+            }
+            updateSelectedFiles();
+        });
     });
+
+    function updateSelectedFiles()
+    {
+        var totalRows = table.rows().eq(0).length;
+        var selectedRows = $('input:checked', table.cells().nodes()).length;
+        $("#selected-file-text").text( (selectedRows == 0 ? 'No ' : selectedRows) +' file'+(selectedRows>1 ? 's':'')+' selected');
+        if (selectedRows==totalRows)
+            $("#select-all-files").attr('checked', 'checked');
+        else
+            $("#select-all-files").removeAttr('checked');
+
+    }
 
     function redrawTable() {
         if(table) table.destroy()
         table = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-            "scrollX": true
+            "scrollX": true,
+            "columnDefs": [  { "targets": [0], "searchable": false, "orderable": false, "visible": true}],
+            "order": [[ 1, "asc" ]],
+            "dom":"lfrtpi"
         } );
     }
     $('#right-column-expander').click( function() {

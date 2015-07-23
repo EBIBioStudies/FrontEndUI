@@ -222,9 +222,10 @@
                 <xsl:with-param name="pName" select="'Download data files'"/>
                 <xsl:with-param name="pContent">
                     <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
-                    <table class="stripe" cellspacing="0" width="100%" id="file-list">
+                    <table class="stripe compact hover" cellspacing="0" width="100%" id="file-list">
                         <thead>
                         <tr>
+                            <th id="select-all-files-header"><input type="checkbox" id="select-all-files"/></th>
                             <th>Name</th>
                             <th>Size</th>
                             <xsl:for-each select="$vColumns">
@@ -237,6 +238,7 @@
                             <xsl:variable name="vName" select="@name"/>
                             <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
                             <tr>
+                                <td><input type="checkbox" /></td>
                                 <td class="file-list-file-name">
                                     <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
                                         <xsl:call-template name="highlight">
@@ -268,7 +270,7 @@
                         </xsl:for-each>
                         </tbody>
                     </table>
-                    <br/><br/>
+                    <div id="selected-file-text"/><br/><br/>
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>

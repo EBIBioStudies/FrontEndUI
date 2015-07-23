@@ -130,10 +130,12 @@ public class Querier {
 
         // empty query returns everything
         if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
-            sortBy = "release_date";
-            params.put("sortby", new String[]{"release_date"});
-            logger.info("Empty search, returning all [{}] documents by release date", this.env.documentNodes.size());
-            Term term = new Term(sortBy, "*");
+            if (sortBy==null) {
+                sortBy = "release_date";
+                params.put("sortby", new String[]{"release_date"});
+            }
+            logger.info("Empty search, returning all [{}] documents", this.env.documentNodes.size());
+            Term term = new Term("title", "*");
             query = new WildcardQuery(term);
         }
         SortField.Type sortFieldType = (sortBy != null && !"relevance".equalsIgnoreCase(sortBy)) ?
