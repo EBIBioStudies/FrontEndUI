@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-var table = undefined;
+var table = null;
 
 (function($, undefined) {
     if($ == undefined)
@@ -39,24 +39,49 @@ var table = undefined;
             updateSelectedFiles();
         });
 
+        $("#download-selected-files").on( 'click', function () {
+            // select all checked input boxes and get the href in the links contained in their siblings
+            var files = $.map($('a',$('input[checked]', table.cells().nodes()).parent().next()), function (v) {
+                return $(v).attr('href');
+            });
+            downloadFiles(files);
+        });
+
         $("#select-all-files").on ('click', function () {
             var isChecked = $(this).is(':checked');
             if (!isChecked) {
-                $('input[type="checkbox"]', table.cells().nodes()).removeAttr('checked', isChecked);
+                $('input[type="checkbox"]', table.cells().nodes()).removeAttr('checked');
                 $('input[type="checkbox"]', table.cells().nodes()).parent().parent().removeClass('selected');
             } else {
-                $('input[type="checkbox"]', table.cells().nodes()).prop('checked', 'checked');
+                $('input[type="checkbox"]', table.cells().nodes()).attr('checked', 'checked');
                 $('input[type="checkbox"]', table.cells().nodes()).parent().parent().addClass('selected');
             }
             updateSelectedFiles();
         });
     });
 
+    function downloadFiles(files) {
+        $(files).each( function(i,v) {
+            var ifr=$('<iframe/>', {
+                id:'MainPopupIframe',
+                src:v,
+                style:'display:none'
+            });
+            $('body').append(ifr);
+         });
+    }
+
     function updateSelectedFiles()
     {
         var totalRows = table.rows().eq(0).length;
         var selectedRows = $('input:checked', table.cells().nodes()).length;
         $("#selected-file-text").text( (selectedRows == 0 ? 'No ' : selectedRows) +' file'+(selectedRows>1 ? 's':'')+' selected');
+        if (selectedRows==0) {
+            $('#download-selected-files').hide();
+        } else {
+            $('#download-selected-files').show();
+        }
+
         if (selectedRows==totalRows)
             $("#select-all-files").attr('checked', 'checked');
         else
@@ -65,7 +90,7 @@ var table = undefined;
     }
 
     function redrawTable() {
-        if(table) table.destroy()
+        if(table!=null) table.destroy()
         table = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "scrollX": true,

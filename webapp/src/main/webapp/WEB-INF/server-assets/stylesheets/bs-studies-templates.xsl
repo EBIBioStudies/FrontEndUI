@@ -270,7 +270,7 @@
                         </xsl:for-each>
                         </tbody>
                     </table>
-                    <div id="selected-file-text"/><br/><br/>
+                    <span id="selected-file-text"/> <a id="download-selected-files">Download all</a><br/><br/>
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>

@@ -182,9 +182,12 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
         // If content type is unknown, then set the default value.
         // For all content types, see: http://www.w3schools.com/media/media_mimeref.asp
         // To add new content types, add new mime-mapping entry in web.xml.
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
+        //if (contentType == null) {
+        //    contentType = "application/octet-stream";
+        //}
+
+        // Forcing download to handle
+        contentType = "application/octet-stream";
 
         // Determine content disposition. If content type is supported by the browser or an image
         // then it is set to inline, else attachment which will pop up a 'save as' dialogue.
@@ -344,15 +347,19 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
         // If content type is unknown, then set the default value.
         // For all content types, see: http://www.w3schools.com/media/media_mimeref.asp
         // To add new content types, add new mime-mapping entry in web.xml.
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
+        //if (contentType == null) {
+        //    contentType = "application/octet-stream";
+        //}
+
+        // Forcing download in order to handle multiple files
+        contentType = "application/octet-stream";
+
 
         // Determine content disposition. If content type is supported by the browser or an image
         // then it is set to inline, else attachment which will pop up a 'save as' dialogue.
         String accept = request.getHeader("Accept");
         boolean inline = (accept != null && accepts(accept, contentType));
-        String disposition = (inline || contentType.startsWith("image")) ? "inline" : "attachment";
+        String disposition = "attachment"; //(inline || contentType.startsWith("image")) ? "inline" : "attachment";
 
         // Initialize response.
         response.reset();

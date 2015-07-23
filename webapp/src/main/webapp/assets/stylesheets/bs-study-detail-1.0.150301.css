@@ -135,3 +135,10 @@
     text-align: left;
     padding: 4px 2px 0px 4px;
 }
+
+#selected-file-text {
+    padding-right:10px;
+}
+#download-selected-files {
+    cursor: pointer;
+}
