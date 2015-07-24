@@ -99,7 +99,7 @@
         <index id="studies" location="${sys:java.io.tmpdir}/bs-index"
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer">
             <document path="/studies/study" defaultField="keywords">
-                <field name="keywords" type="string" path="string-join(.//text(), ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
+                <field name="keywords" type="string" path="string-join(.//text() | .//file/@name| .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
                 <field name="title" title="by Accession" type="string" path="title" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" boost="2.0"/>
                 <field name="authors" title="by Authors" type="string" path="string-join(.//author, ' ')" analyze="true" store="false" escape="false" expand="false" docValueType="sorted"  />
                 <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false" docValueType="sorted"  />
