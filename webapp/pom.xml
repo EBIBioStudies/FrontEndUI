@@ -145,6 +145,10 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>basex-repo</id>
+            <url>http://files.basex.org/maven</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -350,6 +354,10 @@
         <dependency>
             <groupId>net.sf.uadetector</groupId>
             <artifactId>uadetector-resources</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.basex</groupId>
+            <artifactId>basex</artifactId>
         </dependency>
     </dependencies>
 </project>

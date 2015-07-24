@@ -38,6 +38,7 @@ public class BSInterfaceApplication extends Application implements ServletContex
     public BSInterfaceApplication() {
         super("biostudies");
 
+        addComponent(new BaseXEngine());
         addComponent(new MapEngine());
         addComponent(new SaxonEngine());
         addComponent(new SearchEngine());
