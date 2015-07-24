@@ -41,7 +41,8 @@
 }
 
 .browse-study {
-    padding: 10px;
+    padding: 14px 10px;
+    width:70%;
 }
 
 .browse-study-title {
@@ -107,4 +108,17 @@ a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
 .studies-browse-sort-order-left[disabled],.studies-browse-sort-order-right[disabled]{
     background-color: #6BA8C5;
     color:white !important;
+}
+
+.search-field-name {
+    color:#999;
+}
+.search-snippet {
+    padding-top:5px;
+}
+.search-snippet:before, .search-snippet:after {
+    content: '...';
+}
+.search-authors {
+    color: #666;
 }

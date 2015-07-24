@@ -18,10 +18,7 @@
 package uk.ac.ebi.arrayexpress.utils.search;
 
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.NullFragmenter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.search.highlight.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
@@ -76,9 +73,9 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
     private String doHighlightQuery(Query query, String fieldName, String text, String openMark, String closeMark) {
         try {
             SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(openMark, closeMark);
-            Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query, fieldName, this.env.defaultField));
-            highlighter.setTextFragmenter(new NullFragmenter());
-
+            QueryScorer scorer = new QueryScorer(query, fieldName, this.env.defaultField);
+            Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
+            highlighter.setTextFragmenter(new SimpleSpanFragmenter(scorer, this.env.searchSnippetFragmentSize));
             String str = highlighter.getBestFragment(this.env.indexAnalyzer, "".equals(fieldName) ? this.env.defaultField : fieldName, text);
 
             return null != str ? str : text;

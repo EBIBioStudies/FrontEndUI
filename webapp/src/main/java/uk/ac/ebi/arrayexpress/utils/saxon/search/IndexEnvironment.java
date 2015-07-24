@@ -42,6 +42,7 @@ public class IndexEnvironment {
     public Directory indexDirectory;
     public PerFieldAnalyzerWrapper indexAnalyzer;
     public String defaultField;
+    public int searchSnippetFragmentSize;
 
     // index document xpath
     public String indexDocumentPath;
@@ -76,7 +77,7 @@ public class IndexEnvironment {
             }
         }
     }
-
+    
     public Map<String, FieldInfo> fields;
 
     // document info
@@ -107,6 +108,8 @@ public class IndexEnvironment {
 
             this.defaultField = indexConfig.getString("document[@defaultField]");
 
+            this.searchSnippetFragmentSize = indexConfig.getInt("[@searchSnippetFragmentSize]", 256);
+
             List fieldsConfig = indexConfig.configurationsAt("document.field");
 
             this.fields = new HashMap<>();
@@ -131,4 +134,7 @@ public class IndexEnvironment {
     public boolean doesFieldExist(String fieldName) {
         return fields.containsKey(fieldName);
     }
+
+
+
 }

@@ -45,7 +45,6 @@
 
     <xsl:template match="/">
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
-
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pEBISearchWidget">
@@ -227,37 +226,25 @@
                         <xsl:value-of select="$vAccession"></xsl:value-of>
                     </span>
                 </div>
-                <div>
-                    <xsl:variable name="vSize" select="fn:count(author)"/>
-                    <!--xsl:for-each select="author[fn:position() = (1 to 5)]">
-                        <span>
-                            <xsl:call-template name="highlight-list">
-                                <xsl:with-param name="pQueryId" select="$queryid"/>
-                                <xsl:with-param name="pText" select="."/>
-                                <xsl:with-param name="pFieldName"/>
-                            </xsl:call-template>
-                        </span>
-                        <xsl:if test="fn:position() != fn:last() or $vSize &gt; 5">
-                            <xsl:text>, </xsl:text>
-                        </xsl:if>
-                    </xsl:for-each-->
+                <xsl:variable name="vSize" select="fn:count(author)"/>
+                <xsl:if test="$vSize gt 0">
+                   <div class="search-authors">
                     <xsl:call-template name="general-highlighted-list">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pList" select="author"/>
                         <xsl:with-param name="pSize" select="10"/>
                     </xsl:call-template>
-                </div>
-                <!--div>
-
-                </div>
-                <div>
-                    <xsl:choose>
-                        <xsl:when test="@links != '0'">
-                            <xsl:value-of select="@links"/>
-                        </xsl:when>
-                        <xsl:otherwise>&#8729;</xsl:otherwise>
-                    </xsl:choose>
-                </div-->
+                   </div>
+                </xsl:if>
+                <xsl:if test="$vSearchMode">
+                    <div class="search-snippet">
+                        <xsl:call-template name="highlight">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pFieldName" select="'keywords'"/>
+                            <xsl:with-param name="pText" select="string-join( ( .//text()[not(ancestor::file or ancestor::link)] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name | .//link/@url), ' ')"/>
+                        </xsl:call-template>
+                    </div>
+                </xsl:if>
             </li>
         </xsl:if>
     </xsl:template>

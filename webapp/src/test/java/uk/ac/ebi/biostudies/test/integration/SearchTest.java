@@ -113,7 +113,7 @@ public class SearchTest {
     public void testAuthorsAscendingSort() throws Exception{
         driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Authors");
-        testSort(".browse-study-title + div");
+        testSort(".browse-study-title + div.search-authors");
     }
 
     @Test
@@ -121,7 +121,7 @@ public class SearchTest {
         driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Authors");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-left")).click();
-        testSort(".browse-study-title + div", true);
+        testSort(".browse-study-title + div.search-authors", true);
     }
 
 
