@@ -100,7 +100,7 @@
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer"
                searchSnippetFragmentSize="300">
             <document path="/studies/study" defaultField="keywords">
-                <field name="keywords" type="string" path="string-join( ( .//text()[not(ancestor::file or ancestor::link)] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name ) | .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
+                <field name="keywords" type="string" path="string-join( ( .//text()[not(ancestor::file or ancestor::link or ancestor::attribute[@name='affiliation'])] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name ) | .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
                 <field name="title" title="by Accession" type="string" path="title" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" boost="2.0"/>
                 <field name="authors" title="by Authors" type="string" path="string-join(.//author, ' ')" analyze="true" store="false" escape="false" expand="false" docValueType="sorted"  />
                 <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false" docValueType="sorted"  />
