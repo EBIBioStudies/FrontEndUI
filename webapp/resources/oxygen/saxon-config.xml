@@ -13,6 +13,6 @@
         <extensionFunction>uk.ac.ebi.fg.saxon.functions.TabularDocumentFunction</extensionFunction>
         <extensionFunction>uk.ac.ebi.fg.saxon.functions.search.QueryIndexFunction</extensionFunction>
         <extensionFunction>uk.ac.ebi.fg.saxon.functions.search.HighlightQueryFunction</extensionFunction>
-
+        <extensionFunction>uk.ac.ebi.fg.saxon.functions.search.QueryInfoParameterFunction</extensionFunction>
     </resources>
 </configuration>

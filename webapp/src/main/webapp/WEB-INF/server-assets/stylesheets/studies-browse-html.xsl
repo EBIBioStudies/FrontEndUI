@@ -41,7 +41,8 @@
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
 
     <xsl:variable name="vFilteredStudies" select="search:queryIndex($queryid)"/>
-    <xsl:variable name="vTotal" select="count($vFilteredStudies)"/>
+    <!-- The 'if condition' is needed for avoiding lazy evalution of vFilteredStudies-->
+    <xsl:variable name="vTotal" select="if($vFilteredStudies) then xs:integer(search:getQueryInfoParameter($queryid,'total')) else 0"/>
 
     <xsl:template match="/">
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
@@ -87,21 +88,8 @@
         <xsl:variable name="vPage" select="if ($page and $page castable as xs:integer) then $page cast as xs:integer else 1" as="xs:integer"/>
         <xsl:variable name="vPageSize" select="if ($pagesize and $pagesize castable as xs:integer) then $pagesize cast as xs:integer else 25" as="xs:integer"/>
 
-        <xsl:variable name="vFrom" as="xs:integer">
-            <xsl:choose>
-                <xsl:when test="$vPage > 0"><xsl:value-of select="1 + ( $vPage - 1 ) * $vPageSize"/></xsl:when>
-                <xsl:when test="$vTotal = 0">0</xsl:when>
-                <xsl:otherwise>1</xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="vTo" as="xs:integer">
-            <xsl:choose>
-                <xsl:when test="( $vFrom + $vPageSize - 1 ) > $vTotal"><xsl:value-of select="$vTotal"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="$vFrom + $vPageSize - 1"/></xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
-
+        <xsl:variable name="vFrom" as="xs:integer" select="xs:integer(search:getQueryInfoParameter($queryid,'from'))" />
+        <xsl:variable name="vTo" as="xs:integer" select="xs:integer(search:getQueryInfoParameter($queryid,'to'))" />
         <xsl:choose>
             <xsl:when test="$vTotal&gt;0">
                 <section class="grid_18 alpha search-title">
@@ -195,58 +183,56 @@
     <xsl:template match="study">
         <xsl:param name="pFrom"/>
         <xsl:param name="pTo"/>
-        <xsl:if test="position() >= $pFrom and not(position() > $pTo)">
-            <xsl:variable name="vAccession" select="accession"/>
-            <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
-            <li class="browse-study">
-                <div>
-                    <span class="browse-study-release-date">
-                        <xsl:value-of select="ae:formatDateLong(releasedate)"/>
+        <xsl:variable name="vAccession" select="accession"/>
+        <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
+        <li class="browse-study">
+            <div>
+                <span class="browse-study-release-date">
+                    <xsl:value-of select="ae:formatDateLong(releasedate)"/>
+                </span>
+                <xsl:if test="@files != '0'">
+                    <span class="browse-study-release-files">
+                            <xsl:value-of select="@files"/><xsl:text> data files</xsl:text>
                     </span>
-                    <xsl:if test="@files != '0'">
-                        <span class="browse-study-release-files">
-                                <xsl:value-of select="@files"/><xsl:text> data files</xsl:text>
-                        </span>
-                    </xsl:if>
-                    <xsl:if test="@links != '0'">
-                        <span class="browse-study-release-links">
-                            <xsl:value-of select="@links"/><xsl:text> links</xsl:text>
-                        </span>
-                    </xsl:if>
-                </div>
-                <div class="browse-study-title">
-                    <a href="{$context-path}/studies/{accession}/{$vQueryString}">
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pText" select="title"/>
-                            <xsl:with-param name="pFieldName"/>
-                        </xsl:call-template>
-                    </a>
-                    <span class="browse-study-accession">
-                        <xsl:value-of select="$vAccession"></xsl:value-of>
+                </xsl:if>
+                <xsl:if test="@links != '0'">
+                    <span class="browse-study-release-links">
+                        <xsl:value-of select="@links"/><xsl:text> links</xsl:text>
                     </span>
-                </div>
-                <xsl:variable name="vSize" select="fn:count(author)"/>
-                <xsl:if test="$vSize gt 0">
-                   <div class="search-authors">
-                    <xsl:call-template name="general-highlighted-list">
+                </xsl:if>
+            </div>
+            <div class="browse-study-title">
+                <a href="{$context-path}/studies/{accession}/{$vQueryString}">
+                    <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pList" select="author"/>
-                        <xsl:with-param name="pSize" select="10"/>
+                        <xsl:with-param name="pText" select="title"/>
+                        <xsl:with-param name="pFieldName"/>
                     </xsl:call-template>
-                   </div>
-                </xsl:if>
-                <xsl:if test="$vSearchMode">
-                    <div class="search-snippet">
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pFieldName" select="'keywords'"/>
-                            <xsl:with-param name="pText" select="string-join( ( .//text()[not(ancestor::file or ancestor::link)] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name | .//link/@url), ' ')"/>
-                        </xsl:call-template>
-                    </div>
-                </xsl:if>
-            </li>
-        </xsl:if>
+                </a>
+                <span class="browse-study-accession">
+                    <xsl:value-of select="$vAccession"></xsl:value-of>
+                </span>
+            </div>
+            <xsl:variable name="vSize" select="fn:count(author)"/>
+            <xsl:if test="$vSize gt 0">
+               <div class="search-authors">
+                <xsl:call-template name="general-highlighted-list">
+                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                    <xsl:with-param name="pList" select="author"/>
+                    <xsl:with-param name="pSize" select="10"/>
+                </xsl:call-template>
+               </div>
+            </xsl:if>
+            <xsl:if test="$vSearchMode">
+                <div class="search-snippet">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pFieldName" select="'keywords'"/>
+                        <xsl:with-param name="pText" select="string-join( ( .//text()[not(ancestor::file or ancestor::link)] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name | .//link/@url), ' ')"/>
+                    </xsl:call-template>
+                </div>
+            </xsl:if>
+        </li>
     </xsl:template>
 
     <!--

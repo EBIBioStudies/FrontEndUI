@@ -176,10 +176,19 @@ public class Querier {
             logger.info("Search reported [{}] matches", hits.totalHits);
             final List<NodeInfo> matchingNodes = new ArrayList<>(hits.totalHits);
             final NumericDocValues ids = leafReader.getNumericDocValues(Indexer.DOCID_FIELD);
-            for (ScoreDoc d : hits.scoreDocs) {
+
+            int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
+            int pageSize = params.containsKey("pagesize") ? Integer.parseInt(params.get("pagesize")[0].toString()) : 25;
+            int from = 1 + ( page - 1 ) * pageSize;
+            int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
+            params.put("total", new String[]{hits.totalHits+""});
+            params.put("from", new String[]{from+""});
+            params.put("to", new String[]{to+""});
+            ScoreDoc [] scoreDocs = hits.scoreDocs;
+            for (int i = from -1; i < to; i++) {
                 matchingNodes.add(
                         this.env.documentNodes.get(
-                                (int)ids.get(d.doc)
+                                (int) ids.get(scoreDocs[i].doc)
                         )
                 );
             }

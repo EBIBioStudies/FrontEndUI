@@ -28,12 +28,13 @@ import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.saxon.Document;
 import uk.ac.ebi.fg.saxon.functions.search.IHighlighter;
 import uk.ac.ebi.fg.saxon.functions.search.IQuerier;
+import uk.ac.ebi.fg.saxon.functions.search.IQueryInfoAccessor;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class Controller implements IQuerier, IHighlighter {
+public class Controller implements IQuerier, IHighlighter, IQueryInfoAccessor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Configuration config;
@@ -41,6 +42,7 @@ public class Controller implements IQuerier, IHighlighter {
     private IQueryConstructor queryConstructor;
     private IQueryExpander queryExpander;
     private IQueryHighlighter queryHighlighter;
+    private IQueryInfoParameterAccessor queryInfoParameterGetter;
     private SaxonEngine saxon;
 
     private Map<String, IndexEnvironment> environment = new HashMap<>();
@@ -137,6 +139,14 @@ public class Controller implements IQuerier, IHighlighter {
         return (null != env && env.doesFieldExist(fieldName) ? env.fields.get(fieldName).type : null);
     }
 
+    public IQueryInfoParameterAccessor getQueryInfoParameterGetter() {
+        return queryInfoParameterGetter;
+    }
+
+    public void setQueryInfoParameterGetter(IQueryInfoParameterAccessor queryInfoParameterGetter) {
+        this.queryInfoParameterGetter = queryInfoParameterGetter;
+    }
+
     public Integer addQuery(String indexId, Map<String, String[]> queryParams)
             throws ParseException, IOException {
         if (null == this.queryConstructor) {
@@ -174,6 +184,21 @@ public class Controller implements IQuerier, IHighlighter {
         } else {
             this.logger.error("Unable to find query info for query with id [{}]", queryId);
             return text;
+        }
+    }
+
+    @Override
+    public String[] getQueryInfoParameter(Integer queryId, String key) {
+        if (null == this.queryInfoParameterGetter) {
+            this.setQueryInfoParameterGetter(new QueryInfoParameterAccessor());
+        }
+        QueryInfo queryInfo = this.queryPool.getQueryInfo(queryId);
+        if (null != queryInfo) {
+            return queryInfoParameterGetter.setEnvironment(getEnvironment(queryInfo.getIndexId()))
+                    .getQueryInfoParameter(queryInfo, key);
+        } else {
+            this.logger.error("Unable to find query info for query with id [{}]", queryId);
+            return null;
         }
     }
 }

@@ -23,6 +23,7 @@ import uk.ac.ebi.fg.saxon.functions.search.HighlightQueryFunction;
 import uk.ac.ebi.fg.saxon.functions.search.QueryIndexFunction;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Controller;
 import uk.ac.ebi.arrayexpress.utils.search.BatchQueryConstructor;
+import uk.ac.ebi.fg.saxon.functions.search.QueryInfoParameterFunction;
 
 public class SearchEngine extends ApplicationComponent {
     private Controller controller;
@@ -40,6 +41,7 @@ public class SearchEngine extends ApplicationComponent {
         if (null != saxon) {
             saxon.registerExtensionFunction(new QueryIndexFunction(getController()));
             saxon.registerExtensionFunction(new HighlightQueryFunction(getController()));
+            saxon.registerExtensionFunction(new QueryInfoParameterFunction(getController()));
         }
     }
 
