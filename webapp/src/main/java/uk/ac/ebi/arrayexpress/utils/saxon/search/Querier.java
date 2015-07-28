@@ -179,7 +179,7 @@ public class Querier {
 
             int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
             int pageSize = params.containsKey("pagesize") ? Integer.parseInt(params.get("pagesize")[0].toString()) : 25;
-            int from = 1 + ( page - 1 ) * pageSize;
+            int from = 1+ ( page - 1 ) * pageSize <  hits.totalHits ? 1+ ( page - 1 ) * pageSize : 1;
             int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
             params.put("total", new String[]{hits.totalHits+""});
             params.put("from", new String[]{from+""});

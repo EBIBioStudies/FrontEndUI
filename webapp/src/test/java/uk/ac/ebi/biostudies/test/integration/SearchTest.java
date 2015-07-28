@@ -53,7 +53,7 @@ public class SearchTest {
         driver.get(baseUrl + "/studies/search.html?query=cancer");
         driver.findElement(By.id("local-searchbox")).clear();
         driver.findElement(By.id("local-searchbox")).sendKeys("dna");
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ac_inner")));
         //checking only the first suggestion with more than two words
         assertEquals("DNA assay", driver.findElements(By.cssSelector(".ac_inner li")).get(3).getText());
@@ -209,6 +209,21 @@ public class SearchTest {
         }
         Date [] unsortedValues = values.clone();
         assertArrayEquals(values, unsortedValues);
+    }
+
+
+    @Test
+    public void testPaging() throws Exception{
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
+        driver.findElement(By.linkText("2")).click();
+        String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
+        assertTrue(pages.startsWith("Showing 26"));
+        String accession  = driver.findElement(By.cssSelector(".browse-study-accession")).getText();
+        System.out.println(accession);
+        driver.findElement(By.cssSelector(".browse-study-title a")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#ae-detail-title")));
+        assertTrue(driver.getTitle().startsWith(accession));
     }
 
 }
