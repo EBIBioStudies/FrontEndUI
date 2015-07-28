@@ -851,3 +851,10 @@ p.center {
 .ac_efo {
     font-weight: bold;
 }
+
+.disable-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

@@ -100,7 +100,12 @@
 
 .padded-gray-icon {
     margin-right:5px;
-    color:#888;
+    color: #AAA;
+}
+
+.padded-blue-icon {
+    margin-right:5px;
+    color: #6BA8C5;
 }
 
 #file-list{
@@ -129,7 +134,7 @@
 .expanded-right-column {
     position: absolute;
     width: 93% !important;
-    left: 30px;
+    left: 28px;
 }
 #select-all-files-header {
     text-align: left;

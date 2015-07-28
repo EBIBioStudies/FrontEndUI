@@ -138,7 +138,7 @@
                 </div>
             </div>
             <div id="ae-detail-right-column">
-                <span class="icon icon-functional padded-gray-icon" data-icon="u" id="right-column-expander"/>
+                <span class="icon icon-functional padded-blue-icon" data-icon="u" id="right-column-expander" title="Click to expand"/>
                 <xsl:choose>
                     <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0">
                         <xsl:value-of select="'No data'"/>

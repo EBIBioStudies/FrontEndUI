@@ -102,6 +102,7 @@ var table = null;
     $('#right-column-expander').click( function() {
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
         $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
+        $(this).attr('title', $(this).attr('data-icon')=='u' ? 'Click to expand' : 'Click to collapse')
         redrawTable();
     });
 
