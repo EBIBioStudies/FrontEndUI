@@ -18,9 +18,9 @@
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.s9api.Axis;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
@@ -138,6 +138,7 @@ public class Querier {
             Term term = new Term("title", "*");
             query = new WildcardQuery(term);
         }
+
         SortField.Type sortFieldType = (sortBy != null && !"relevance".equalsIgnoreCase(sortBy)) ?
                 ("string".equalsIgnoreCase(env.fields.get(sortBy).type) ?
                         SortField.Type.STRING
@@ -167,6 +168,7 @@ public class Querier {
             logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
                     query.toString(), sort, reverse);
 
+
             TopDocs hits = searcher.search(
                     query,
                     this.env.documentNodes.size() + 1,
@@ -184,17 +186,44 @@ public class Querier {
             params.put("total", new String[]{hits.totalHits+""});
             params.put("from", new String[]{from+""});
             params.put("to", new String[]{to+""});
-            ScoreDoc [] scoreDocs = hits.scoreDocs;
-            for (int i = from -1; i < to; i++) {
-                matchingNodes.add(
-                        this.env.documentNodes.get(
-                                (int) ids.get(scoreDocs[i].doc)
-                        )
-                );
+
+            // if page is from search results, get the document at nth position in the search results
+            // and store the previous and next result as well. Otherwise, return the whole result set
+            if (params.containsKey("n")) {
+               matchingNodes.add(getSingleDocument(params, hits, ids));
+            } else {
+                ScoreDoc [] scoreDocs = hits.scoreDocs;
+                for (int i = from - 1; i < to; i++) {
+                    matchingNodes.add(
+                            this.env.documentNodes.get(
+                                    (int) ids.get(scoreDocs[i].doc)
+                            )
+                    );
+                }
             }
-            logger.info("Search completed", matchingNodes.size());
+
+            logger.info("Search completed {}", matchingNodes.size());
 
             return matchingNodes;
         }
+    }
+
+    private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, NumericDocValues ids) {
+        int position = Integer.parseInt(params.get("n")[0])-1;
+        ScoreDoc [] scoreDocs = hits.scoreDocs;
+
+        NodeInfo ni = this.env.documentNodes.get((int) ids.get(scoreDocs[position].doc));
+        params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+        params.put("accessionIndex", new String[]{""+position});
+
+        if (position>0) {
+            ni = this.env.documentNodes.get((int) ids.get(scoreDocs[position-1].doc));
+            params.put("previousAccession", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+        }
+        if (position<hits.totalHits-1) {
+            ni = this.env.documentNodes.get((int) ids.get(scoreDocs[position+1].doc));
+            params.put("nextAccession", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+        }
+        return ni;
     }
 }

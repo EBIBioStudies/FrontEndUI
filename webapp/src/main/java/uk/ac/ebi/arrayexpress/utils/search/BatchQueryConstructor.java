@@ -36,7 +36,12 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
 
     @Override
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
+
         Query query = super.construct(env, querySource);
+
+        if (querySource.containsKey("accession") && querySource.containsKey("n")) {
+            query = removeTermQueriesForField(query,FIELD_ACCESSION);
+        }
 
         if (querySource.containsKey(FIELD_KEYWORDS)) {
             String keywords = StringTools.arrayToString(querySource.get(FIELD_KEYWORDS), " ").toLowerCase() + " ";

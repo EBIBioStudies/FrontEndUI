@@ -93,6 +93,8 @@ public class QueryInfoParameterFunction extends ExtensionFunctionDefinition {
                     Strings.nullToEmpty(key)
             );
 
+            if (result==null) return EmptySequence.getInstance();
+
             Item [] items = new Item[result.length];
             for (int i = 0; i < result.length ; i++) {
                 items[i] = new StringValue(result[i]);

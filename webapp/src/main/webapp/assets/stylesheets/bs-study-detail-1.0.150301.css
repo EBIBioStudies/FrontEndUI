@@ -75,7 +75,6 @@
 
 #ae-detail-release-date {
     color: #999;
-    padding-left: 1em;
 }
 
 #ae-detail-title {
@@ -105,7 +104,6 @@
 
 .padded-blue-icon {
     margin-right:5px;
-    color: #6BA8C5;
 }
 
 #file-list{
@@ -146,4 +144,28 @@
 }
 #download-selected-files {
     cursor: pointer;
+}
+
+#search-iterator {
+    float: right;
+    width: 50%;
+}
+#search-iterator a{
+    border: 0px !important;
+    color: #466B7D !important;
+}
+
+#search-iterator a > span{
+    vertical-align: -1px;
+    padding: 3px;
+    color: #466B7D !important;
+}
+
+span.icon.icon-functional:before{
+    color: #466B7D !important;
+    margin: 0px;
+}
+
+#search-iterator > a:nth-child(2)  {
+    padding-left: 20px;
 }

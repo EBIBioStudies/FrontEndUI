@@ -163,10 +163,13 @@
                                 </div>
                                 <div>
                                     <ul class="ae-studies-browse-list">
-                                        <xsl:apply-templates select="$vFilteredStudies">
-                                            <xsl:with-param name="pFrom" select="$vFrom"/>
-                                            <xsl:with-param name="pTo" select="$vTo"/>
-                                        </xsl:apply-templates>
+                                        <xsl:for-each select="$vFilteredStudies">
+                                            <xsl:call-template name="study">
+                                                <xsl:with-param name="pFrom" select="$vFrom"/>
+                                                <xsl:with-param name="pTo" select="$vTo"/>
+                                                <xsl:with-param name="pPosition" select="position()-1+$vFrom"/>
+                                            </xsl:call-template>
+                                        </xsl:for-each>
                                     </ul>
                                 </div>
                             </div>
@@ -180,9 +183,10 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="study">
+    <xsl:template name="study">
         <xsl:param name="pFrom"/>
         <xsl:param name="pTo"/>
+        <xsl:param name="pPosition"/>
         <xsl:variable name="vAccession" select="accession"/>
         <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
         <li class="browse-study">
@@ -202,7 +206,8 @@
                 </xsl:if>
             </div>
             <div class="browse-study-title">
-                <a href="{$context-path}/studies/{accession}/{$vQueryString}">
+                <xsl:variable name="linkPositionParameter" select="if ($vSearchMode) then concat('&amp;n=',$pPosition) else ''"/>
+                <a href="{$context-path}/studies/{accession}/{$vQueryString}{$linkPositionParameter}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pText" select="title"/>

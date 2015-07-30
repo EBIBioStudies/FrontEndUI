@@ -29,13 +29,16 @@
     <xsl:param name="accession"/>
     <xsl:param name="user-agent"/>
 
-    <xsl:variable name="vAccession" select="fn:upper-case($accession)"/>
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
+    <xsl:variable name="vStudy" select="search:queryIndex($queryid)"/>
+    <xsl:variable name="vAccession" select="if ($vStudy and $accession) then fn:upper-case($accession) else fn:upper-case(search:getQueryInfoParameter($queryid,'accessionNumber'))"/>
+    <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:template match="/">
+
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pExtraSearchFields"/>
@@ -61,6 +64,21 @@
                 </xsl:choose>
                 >
                 <xsl:value-of select="$vAccession"/>
+                <span id="search-iterator">
+                    <xsl:variable name="previousAccession" select="search:getQueryInfoParameter($queryid,'previousAccession')"/>
+                    <xsl:variable name="nextAccession" select="search:getQueryInfoParameter($queryid,'nextAccession')"/>
+                    <xsl:variable name="accessionIndex" select="xs:integer(search:getQueryInfoParameter($queryid,'accessionIndex'))"/>
+                    <xsl:if test="$previousAccession">
+                        <a href="{$context-path}/studies/{$previousAccession}/{fn:replace($vQueryString,'n=\d+',concat('n=',$accessionIndex))}">
+                            <span class="icon icon-functional" data-icon="&lt;"></span>Previous
+                        </a>
+                    </xsl:if>
+                    <xsl:if test="$nextAccession">
+                        <a href="{$context-path}/studies/{$nextAccession}/{fn:replace($vQueryString,'n=\d+',concat('n=',$accessionIndex+2))}">
+                            Next<span class="icon icon-functional" data-icon="&gt;"></span>
+                        </a>
+                    </xsl:if>
+                </span>
             </xsl:with-param>
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS">
@@ -72,7 +90,6 @@
     </xsl:template>
 
     <xsl:template name="bs-content-section">
-        <xsl:variable name="vStudy" select="search:queryIndex($queryid)[accession = $vAccession]"/>
         <section>
             <div id="ae-content" class="persist-area">
                 <xsl:choose>
@@ -96,14 +113,13 @@
 
     <xsl:template match="study">
         <xsl:variable name="vFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
-        <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
-        <xsl:call-template name="study-status">
-            <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
-            <xsl:with-param name="pIsPrivate" select="fn:false()"/>
-        </xsl:call-template>
         <div>
             <div id="ae-detail-left-column">
                 <div id="ae-detail">
+                    <xsl:call-template name="study-status">
+                        <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
+                        <xsl:with-param name="pIsPrivate" select="fn:false()"/>
+                    </xsl:call-template>
                     <div class="persist-header">
                         <h4 id="ae-detail-title">
                             <xsl:call-template name="highlight">
