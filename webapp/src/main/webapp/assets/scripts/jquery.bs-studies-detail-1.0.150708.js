@@ -96,7 +96,8 @@ var table = null;
             "scrollX": true,
             "columnDefs": [  { "targets": [0], "searchable": false, "orderable": false, "visible": true}],
             "order": [[ 1, "asc" ]],
-            "dom":"lfrtpi"
+            "dom":"lfrtpi",
+            "autoWidth": false
         } );
     }
     $('#right-column-expander').click( function() {
