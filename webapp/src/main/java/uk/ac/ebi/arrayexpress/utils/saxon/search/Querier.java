@@ -176,7 +176,7 @@ public class Querier {
             );
 
             logger.info("Search reported [{}] matches", hits.totalHits);
-            final List<NodeInfo> matchingNodes = new ArrayList<>(hits.totalHits);
+            final List<NodeInfo> matchingNodes = new ArrayList<>();
             final NumericDocValues ids = leafReader.getNumericDocValues(Indexer.DOCID_FIELD);
 
             int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
@@ -185,7 +185,7 @@ public class Querier {
             int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
             params.put("total", new String[]{hits.totalHits+""});
             params.put("from", new String[]{from+""});
-            params.put("to", new String[]{to+""});
+            params.put("to", new String[]{to + ""});
 
             // if page is from search results, get the document at nth position in the search results
             // and store the previous and next result as well. Otherwise, return the whole result set
@@ -217,12 +217,12 @@ public class Querier {
         params.put("accessionIndex", new String[]{""+position});
 
         if (position>0) {
-            ni = this.env.documentNodes.get((int) ids.get(scoreDocs[position-1].doc));
-            params.put("previousAccession", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+            NodeInfo prev = this.env.documentNodes.get((int) ids.get(scoreDocs[position-1].doc));
+            params.put("previousAccession", new String[]{prev.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
         }
         if (position<hits.totalHits-1) {
-            ni = this.env.documentNodes.get((int) ids.get(scoreDocs[position+1].doc));
-            params.put("nextAccession", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+            NodeInfo next = this.env.documentNodes.get((int) ids.get(scoreDocs[position+1].doc));
+            params.put("nextAccession", new String[]{next.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
         }
         return ni;
     }
