@@ -170,3 +170,7 @@ span.icon.icon-functional:before{
 #search-iterator > a:nth-child(2)  {
     padding-left: 20px;
 }
+
+.text-bottom {
+    vertical-align: text-bottom;
+}

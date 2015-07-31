@@ -58,6 +58,10 @@ var table = null;
             }
             updateSelectedFiles();
         });
+
+        $(window).resize(function () {
+            redrawTable();
+        });
     });
 
     function downloadFiles(files) {
@@ -90,6 +94,7 @@ var table = null;
     }
 
     function redrawTable() {
+
         if(table!=null) table.destroy()
         table = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],

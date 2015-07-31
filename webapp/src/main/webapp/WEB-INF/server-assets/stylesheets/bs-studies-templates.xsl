@@ -238,7 +238,7 @@
                             <xsl:variable name="vName" select="@name"/>
                             <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
                             <tr>
-                                <td class="disable-select"><input type="checkbox" /></td>
+                                <td class="disable-select"><input class="text-bottom" type="checkbox" /></td>
                                 <td class="file-list-file-name">
                                     <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
                                         <xsl:call-template name="highlight">
