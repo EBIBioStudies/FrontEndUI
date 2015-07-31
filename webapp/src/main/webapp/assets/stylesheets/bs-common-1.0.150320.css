@@ -728,6 +728,7 @@ p.center {
     font-size: 85%;
     padding: 0.5em 0;
     margin: 5px 0 0;
+    color: #888;
 }
 
 #ae-detail p.orgs sup {
