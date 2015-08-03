@@ -25,7 +25,10 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.ebi.arrayexpress.app.Application;
+import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -92,38 +95,7 @@ public class Querier {
         }
     }
 
-    public List<NodeInfo> query(Query query) throws IOException {
-        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
-            LeafReader leafReader = SlowCompositeReaderWrapper.wrap(reader);
-            IndexSearcher searcher = new IndexSearcher(reader);
-            // empty query returns everything
-            if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
-                logger.info("Empty search, returned all [{}] documents", this.env.documentNodes.size());
-                return this.env.documentNodes;
-            }
-            logger.info("Search of index [{}] with query [{}] started", env.indexId, query.toString());
-            TopDocs hits = searcher.search(
-                    new ConstantScoreQuery(query),
-                    this.env.documentNodes.size() + 1
-            );
-            logger.info("Search reported [{}] matches", hits.totalHits);
-            final List<NodeInfo> matchingNodes = new ArrayList<>(hits.totalHits);
-            final NumericDocValues ids = leafReader.getNumericDocValues(Indexer.DOCID_FIELD);
-            for (ScoreDoc d : hits.scoreDocs) {
-                matchingNodes.add(
-                        this.env.documentNodes.get(
-                                (int)ids.get(d.doc)
-                        )
-                );
-            }
-            logger.info("Search completed", matchingNodes.size());
-
-            return matchingNodes;
-        }
-    }
-
-    // Any changes in this method should probably be reflected in List<NodeInfo> query(Query) as well
-    public List<NodeInfo> query(QueryInfo queryInfo) throws ParseException, IOException {
+    public List<NodeInfo> query(QueryInfo queryInfo) throws ParseException, IOException, SaxonException {
         Query query = queryInfo.getQuery();
         Map<String, String[]> params = queryInfo.getParams();
         String sortBy =  (params.containsKey("sortby")) ? params.get("sortby")[0] : null;
@@ -190,15 +162,18 @@ public class Querier {
             // if page is from search results, get the document at nth position in the search results
             // and store the previous and next result as well. Otherwise, return the whole result set
             if (params.containsKey("n")) {
-               matchingNodes.add(getSingleDocument(params, hits, ids));
+               matchingNodes.add(getSingleDocument(params, hits, leafReader));
             } else {
                 ScoreDoc [] scoreDocs = hits.scoreDocs;
                 for (int i = from - 1; i < to; i++) {
-                    matchingNodes.add(
-                            this.env.documentNodes.get(
-                                    (int) ids.get(scoreDocs[i].doc)
-                            )
-                    );
+                    try {
+                        matchingNodes.add(
+                                Application.getAppComponent(SaxonEngine.class)
+                                        .buildDocument(leafReader.document(scoreDocs[i].doc).get("xml"))
+                        );
+                    } catch (SaxonException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -208,20 +183,20 @@ public class Querier {
         }
     }
 
-    private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, NumericDocValues ids) {
-        int position = Integer.parseInt(params.get("n")[0])-1;
-        ScoreDoc [] scoreDocs = hits.scoreDocs;
+    private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, IndexReader leafReader) throws IOException, SaxonException {
+        int position = Integer.parseInt(params.get("n")[0]) - 1;
+        ScoreDoc[] scoreDocs = hits.scoreDocs;
 
-        NodeInfo ni = this.env.documentNodes.get((int) ids.get(scoreDocs[position].doc));
+        NodeInfo ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
         params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
-        params.put("accessionIndex", new String[]{""+position});
+        params.put("accessionIndex", new String[]{"" + position});
 
-        if (position>0) {
-            NodeInfo prev = this.env.documentNodes.get((int) ids.get(scoreDocs[position-1].doc));
+        if (position > 0) {
+            NodeInfo prev = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position - 1].doc).get("xml"));
             params.put("previousAccession", new String[]{prev.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
         }
-        if (position<hits.totalHits-1) {
-            NodeInfo next = this.env.documentNodes.get((int) ids.get(scoreDocs[position+1].doc));
+        if (position < hits.totalHits - 1) {
+            NodeInfo next = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position + 1].doc).get("xml"));
             params.put("nextAccession", new String[]{next.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
         }
         return ni;

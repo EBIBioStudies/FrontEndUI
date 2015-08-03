@@ -39,10 +39,7 @@
     <xsl:variable name="vSearchMode" select="$keywords != ''"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
-
-    <xsl:variable name="vFilteredStudies" select="search:queryIndex($queryid)"/>
-    <!-- The 'if condition' is needed for avoiding lazy evalution of vFilteredStudies-->
-    <xsl:variable name="vTotal" select="if($vFilteredStudies) then xs:integer(search:getQueryInfoParameter($queryid,'total')) else 0"/>
+    <xsl:variable name="vTotal" select="xs:integer(search:getQueryInfoParameter($queryid,'total'))"/>
 
     <xsl:template match="/">
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
@@ -163,7 +160,7 @@
                                 </div>
                                 <div>
                                     <ul class="ae-studies-browse-list">
-                                        <xsl:for-each select="$vFilteredStudies">
+                                        <xsl:for-each select=".//study">
                                             <xsl:call-template name="study">
                                                 <xsl:with-param name="pFrom" select="$vFrom"/>
                                                 <xsl:with-param name="pTo" select="$vTo"/>

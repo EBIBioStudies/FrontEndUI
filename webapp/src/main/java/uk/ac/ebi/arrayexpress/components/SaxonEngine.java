@@ -189,6 +189,10 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
     }
 
     public String serializeDocument(Source source) throws SaxonException {
+        return serializeDocument(source, false);
+    }
+
+    public String serializeDocument(Source source, boolean omitXmlDeclaration) throws SaxonException {
         try (ByteArrayOutputStream outStream = new ByteArrayOutputStream()) {
             Transformer transformer = trFactory.newTransformer();
 
@@ -196,6 +200,7 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
             transformer.setOutputProperty(OutputKeys.ENCODING, XML_STRING_ENCODING);
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, omitXmlDeclaration ? "yes" : "no");
 
             transformer.transform(source, new StreamResult(outStream));
             return outStream.toString(XML_STRING_ENCODING);

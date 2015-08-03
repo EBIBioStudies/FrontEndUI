@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,10 +68,10 @@ public class Indexer {
             try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
                 setDocumentHash(document.getHash());
 
-                List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
+                List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
                 List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
 
-                for (Object node : documentNodes) {
+                for (Item node : documentNodes) {
                     Document d = new Document();
 
                     // get all the fields taken care of
@@ -94,7 +95,6 @@ public class Indexer {
                                         d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase()))); // TODO: add analyser to the field definition
                                     }
                                 }
-                                Thread.sleep(0);
                             }
                         } catch (XPathException x) {
                             String expression = ((NodeInfo) node).getStringValue();
@@ -103,6 +103,7 @@ public class Indexer {
                         }
                     }
                     addDocIdField(d, indexedNodes.size());
+                    addXMLField(d, node);
                     w.addDocument(d);
                     // append node to the list
                     indexedNodes.add((NodeInfo) node);
@@ -112,9 +113,20 @@ public class Indexer {
 
                 return indexedNodes;
             }
-        } catch (IOException | XPathException x) {
+        } catch (IOException | XPathException | SaxonException x) {
             throw new IndexerException(x);
         }
+    }
+
+    private void addXMLField(Document d, Item node) throws SaxonException {
+        FieldType fieldType = new FieldType();
+        fieldType.setOmitNorms(true);
+        fieldType.setIndexOptions(IndexOptions.NONE);
+        fieldType.setStored(true);
+        fieldType.setTokenized(false);
+        fieldType.freeze();
+        Field field =new Field("xml", saxon.serializeDocument((NodeInfo)node) , fieldType );
+        d.add(field);
     }
 
 

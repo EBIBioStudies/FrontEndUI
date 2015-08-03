@@ -26,15 +26,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.saxon.Document;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.fg.saxon.functions.search.IHighlighter;
-import uk.ac.ebi.fg.saxon.functions.search.IQuerier;
 import uk.ac.ebi.fg.saxon.functions.search.IQueryInfoAccessor;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class Controller implements IQuerier, IHighlighter, IQueryInfoAccessor {
+public class Controller implements IHighlighter, IQueryInfoAccessor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Configuration config;
@@ -162,13 +162,10 @@ public class Controller implements IQuerier, IHighlighter, IQueryInfoAccessor {
         );
     }
 
-    public List<NodeInfo> queryIndex(Integer queryId) throws ParseException, IOException {
+    public List<NodeInfo> search(Integer queryId) throws ParseException, IOException, SaxonException {
         QueryInfo queryInfo = this.queryPool.getQueryInfo(queryId);
-        return new Querier(getEnvironment(queryInfo.getIndexId())).query(queryInfo);
-    }
-
-    public List<NodeInfo> queryIndex(String indexId, String queryString) throws ParseException, IOException {
-        return new Querier(getEnvironment(indexId)).query(this.queryConstructor.construct(getEnvironment(indexId), queryString));  // should use "queryIndex( Integer queryId )" instead
+        Querier querier = new Querier( getEnvironment(queryInfo.getIndexId()));
+        return querier.query(queryInfo);
     }
 
     @Override

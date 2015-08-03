@@ -30,15 +30,13 @@
     <xsl:param name="user-agent"/>
 
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
-    <xsl:variable name="vStudy" select="search:queryIndex($queryid)"/>
-    <xsl:variable name="vAccession" select="if ($vStudy and $accession) then fn:upper-case($accession) else fn:upper-case(search:getQueryInfoParameter($queryid,'accessionNumber'))"/>
+    <xsl:variable name="vAccession" select="if ($accession) then fn:upper-case($accession) else fn:upper-case(search:getQueryInfoParameter($queryid,'accessionNumber'))"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:template match="/">
-
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pExtraSearchFields"/>
@@ -92,16 +90,7 @@
     <xsl:template name="bs-content-section">
         <section>
             <div id="ae-content" class="persist-area">
-                <xsl:choose>
-                    <xsl:when test="exists($vStudy)">
-                        <xsl:call-template name="block-study">
-                            <xsl:with-param name="pStudy" select="$vStudy"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="ae:httpStatus(404)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:apply-templates/>
             </div>
         </section>
     </xsl:template>

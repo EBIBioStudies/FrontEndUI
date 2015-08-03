@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
+
 import net.sf.saxon.om.NodeInfo;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class QueryServlet extends AuthAwareApplicationServlet {
     private static final long serialVersionUID = 6806580383145704364L;
@@ -118,16 +120,22 @@ public class QueryServlet extends AuthAwareApplicationServlet {
 
             // migration rudiment - show only "visible" i.e. overlapping experiments from AE2
             params.put("visible", "true");
-
             try {
                 SearchEngine search = getComponent(SearchEngine.class);
                 SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
-                NodeInfo source = saxonEngine.getAppDocument().getRootNode();
-                if (search.getController().hasIndexDefined(index)) { // only do query if index id is defined
-                    source = saxonEngine.getRegisteredDocument(index + ".xml");
-                    Integer queryId = search.getController().addQuery(index, params);
-                    params.put("queryid", String.valueOf(queryId));
+
+                if (!search.getController().hasIndexDefined(index)) // default to studies index to show total
+                    index = "studies";
+                Integer queryId = search.getController().addQuery(index, params);
+                params.put("queryid", String.valueOf(queryId));
+                StringBuilder sb = new StringBuilder("<studies>");
+
+                List<NodeInfo> results = search.getController().search(queryId);
+                for (NodeInfo node : results) {
+                   sb.append(saxonEngine.serializeDocument(node,true));
                 }
+                sb.append("</studies>");
+                NodeInfo source = saxonEngine.buildDocument(sb.toString());
 
                 if (!saxonEngine.transform(source, stylesheetName, params, new StreamResult(out))) {
                     throw new Exception("Transformation returned an error");
