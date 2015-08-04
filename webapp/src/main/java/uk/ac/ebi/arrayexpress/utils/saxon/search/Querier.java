@@ -140,7 +140,7 @@ public class Querier {
         }
 
         SortField.Type sortFieldType = (sortBy != null && !"relevance".equalsIgnoreCase(sortBy)) ?
-                ("string".equalsIgnoreCase(env.fields.get(sortBy).type) ?
+                (env.fields.containsKey(sortBy) && "string".equalsIgnoreCase(env.fields.get(sortBy).type) ?
                         SortField.Type.STRING
                         : SortField.Type.LONG)
                 : SortField.Type.SCORE;
