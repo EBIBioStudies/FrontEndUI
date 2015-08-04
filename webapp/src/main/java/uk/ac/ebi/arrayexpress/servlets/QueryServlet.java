@@ -18,7 +18,6 @@
 package uk.ac.ebi.arrayexpress.servlets;
 
 
-import net.sf.saxon.om.NodeInfo;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +32,12 @@ import uk.ac.ebi.fg.saxon.functions.HTTPStatusException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class QueryServlet extends AuthAwareApplicationServlet {
     private static final long serialVersionUID = 6806580383145704364L;
@@ -128,15 +127,7 @@ public class QueryServlet extends AuthAwareApplicationServlet {
                     index = "studies";
                 Integer queryId = search.getController().addQuery(index, params);
                 params.put("queryid", String.valueOf(queryId));
-                StringBuilder sb = new StringBuilder("<studies>");
-
-                List<NodeInfo> results = search.getController().search(queryId);
-                for (NodeInfo node : results) {
-                   sb.append(saxonEngine.serializeDocument(node,true));
-                }
-                sb.append("</studies>");
-                NodeInfo source = saxonEngine.buildDocument(sb.toString());
-
+                Source source = search.getController().search(queryId);
                 if (!saxonEngine.transform(source, stylesheetName, params, new StreamResult(out))) {
                     throw new Exception("Transformation returned an error");
                 }

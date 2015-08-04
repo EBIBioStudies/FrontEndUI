@@ -18,7 +18,9 @@
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.pattern.NameTest;
 import net.sf.saxon.s9api.Axis;
+import net.sf.saxon.type.Type;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.*;
@@ -187,17 +189,19 @@ public class Querier {
         int position = Integer.parseInt(params.get("n")[0]) - 1;
         ScoreDoc[] scoreDocs = hits.scoreDocs;
 
+
         NodeInfo ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
-        params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+        params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
         params.put("accessionIndex", new String[]{"" + position});
 
         if (position > 0) {
             NodeInfo prev = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position - 1].doc).get("xml"));
-            params.put("previousAccession", new String[]{prev.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+
+            params.put("previousAccession", new String[]{prev.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
         }
         if (position < hits.totalHits - 1) {
             NodeInfo next = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position + 1].doc).get("xml"));
-            params.put("nextAccession", new String[]{next.iterateAxis(Axis.CHILD.getAxisNumber()).next().getStringValue()});
+            params.put("nextAccession", new String[]{next.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
         }
         return ni;
     }

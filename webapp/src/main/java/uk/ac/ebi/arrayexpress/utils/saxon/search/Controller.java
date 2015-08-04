@@ -30,6 +30,7 @@ import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.fg.saxon.functions.search.IHighlighter;
 import uk.ac.ebi.fg.saxon.functions.search.IQueryInfoAccessor;
 
+import javax.xml.transform.Source;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -162,10 +163,16 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
         );
     }
 
-    public List<NodeInfo> search(Integer queryId) throws ParseException, IOException, SaxonException {
+    public Source search(Integer queryId) throws ParseException, IOException, SaxonException {
         QueryInfo queryInfo = this.queryPool.getQueryInfo(queryId);
         Querier querier = new Querier( getEnvironment(queryInfo.getIndexId()));
-        return querier.query(queryInfo);
+        StringBuilder sb = new StringBuilder("<studies>");
+        List<NodeInfo> results = querier.query(queryInfo);
+        for (NodeInfo node : results) {
+            sb.append(saxon.serializeDocument(node,true));
+        }
+        sb.append("</studies>");
+        return saxon.buildDocument(sb.toString());
     }
 
     @Override
