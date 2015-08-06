@@ -23,6 +23,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
@@ -47,6 +48,7 @@ public class Indexer {
 
     private final IndexEnvironment env;
     private final SaxonEngine saxon;
+    static int counter = 0;
 
     public Indexer(IndexEnvironment env, SaxonEngine saxon) {
         this.env = env;
@@ -74,6 +76,7 @@ public class Indexer {
                 for (Item node : documentNodes) {
                     Document d = new Document();
 
+                    String idValue = ""; // value of id field (i.e. accession in case of studies)
                     // get all the fields taken care of
                     for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
                         try {
@@ -95,6 +98,9 @@ public class Indexer {
                                         d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase()))); // TODO: add analyser to the field definition
                                     }
                                 }
+                                if ( field.name.equalsIgnoreCase(env.idField)) {
+                                    idValue = v.getStringValue();
+                                }
                             }
                         } catch (XPathException x) {
                             String expression = ((NodeInfo) node).getStringValue();
@@ -102,10 +108,9 @@ public class Indexer {
                             throw x;
                         }
                     }
-                    addDocIdField(d, indexedNodes.size());
                     addXMLField(d, node);
-                    w.addDocument(d);
-                    // append node to the list
+                    //logger.debug("Indexing document {} = {}", env.idField, idValue);
+                    w.updateDocument(new Term(env.idField, idValue), d);
                     indexedNodes.add((NodeInfo) node);
                 }
 

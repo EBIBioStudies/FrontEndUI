@@ -145,7 +145,7 @@ public class Querier {
 
             TopDocs hits = searcher.search(
                     query,
-                    this.env.documentNodes.size() + 1,
+                    Integer.MAX_VALUE,
                     sort
             );
 

@@ -90,7 +90,14 @@
     <xsl:template name="bs-content-section">
         <section>
             <div id="ae-content" class="persist-area">
-                <xsl:apply-templates/>
+                <xsl:choose>
+                    <xsl:when test="exists(study)">
+                        <xsl:apply-templates/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="ae:httpStatus(404)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </section>
     </xsl:template>

@@ -42,6 +42,7 @@ public class IndexEnvironment {
     public Directory indexDirectory;
     public PerFieldAnalyzerWrapper indexAnalyzer;
     public String defaultField;
+    public String idField;
     public int searchSnippetFragmentSize;
 
     // index document xpath
@@ -107,6 +108,8 @@ public class IndexEnvironment {
             this.indexDocumentPath = indexConfig.getString("document[@path]");
 
             this.defaultField = indexConfig.getString("document[@defaultField]");
+
+            this.idField = indexConfig.getString("document[@idField]", defaultField);
 
             this.searchSnippetFragmentSize = indexConfig.getInt("[@searchSnippetFragmentSize]", 256);
 
