@@ -21,10 +21,13 @@ import net.sf.saxon.om.NodeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
+import uk.ac.ebi.arrayexpress.utils.FileTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class Studies extends ApplicationComponent implements XMLDocumentSource {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -142,6 +145,14 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
         }
     }
 
+    public void updateFromXMLFile(String xmlFileName) throws IOException, InterruptedException {
+        String sourceLocation = getPreferences().getString("bs.studies.source-location");
+        if (isNotBlank(sourceLocation)) {
+            logger.info("Reload of experiment data from [{}] requested", sourceLocation);
+            update(FileTools.readXMLStringFromFile(new File(sourceLocation, xmlFileName)));
+        }
+    }
+
     private void updateIndex() throws IOException {
         try {
             this.search.getController().index(INDEX_ID, document);
@@ -236,4 +247,6 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
 //        }
 //
 //    }
+
+
 }

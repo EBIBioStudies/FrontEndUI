@@ -181,6 +181,11 @@
         <to type="forward" last="true">/servlets/control/update-efo</to>
     </rule>
     <rule>
+        <from>^/update-xml/([^/]+)/?$</from>
+        <set type="parameter" name="xmlFilePath">$1</set>
+        <to type="forward" last="true">/servlets/control/update-xml</to>
+    </rule>
+    <rule>
         <from>^/reload-xml$</from>
         <to type="forward" last="true">/servlets/control/reload-xml</to>
     </rule>
