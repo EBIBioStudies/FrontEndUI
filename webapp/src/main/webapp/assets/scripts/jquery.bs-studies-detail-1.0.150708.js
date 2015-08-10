@@ -77,6 +77,7 @@ var table = null;
 
     function updateSelectedFiles()
     {
+        if (!table || !table.rows() || !table.rows().eq(0) ) return;
         var totalRows = table.rows().eq(0).length;
         var selectedRows = $('input:checked', table.cells().nodes()).length;
         $("#selected-file-text").text( (selectedRows == 0 ? 'No ' : selectedRows) +' file'+(selectedRows>1 ? 's':'')+' selected');

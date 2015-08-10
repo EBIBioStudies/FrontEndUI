@@ -90,7 +90,7 @@ public class Querier {
             IndexSearcher searcher = new IndexSearcher(reader);
 
             // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
-            TopDocs hits = searcher.search(query, this.env.documentNodes.size() + 1);
+            TopDocs hits = searcher.search(query, Integer.MAX_VALUE);
 
 
             return hits.totalHits;
@@ -108,7 +108,7 @@ public class Querier {
                 sortBy = "release_date";
                 params.put("sortby", new String[]{"release_date"});
             }
-            logger.info("Empty search, returning all [{}] documents", this.env.documentNodes.size());
+            logger.info("Empty search, returning all documents");
             Term term = new Term("title", "*");
             query = new WildcardQuery(term);
         }

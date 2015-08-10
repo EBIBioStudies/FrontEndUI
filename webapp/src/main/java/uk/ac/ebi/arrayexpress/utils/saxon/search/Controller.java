@@ -98,6 +98,13 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
         this.logger.info("Indexing for index id [{}] completed", indexId);
     }
 
+    public void clearIndex(String indexId) throws IndexerException, InterruptedException, IOException {
+        this.logger.info("Clearing index for index id [{}]", indexId);
+        new Indexer(getEnvironment(indexId), saxon).clearIndex();
+        this.logger.info("Indexfor index id [{}] cleared", indexId);
+    }
+
+
     public List<String> getTerms(String indexId, String fieldName, int minFreq) throws IOException {
         IndexEnvironment env = getEnvironment(indexId);
         if (!env.doesFieldExist(fieldName)) {

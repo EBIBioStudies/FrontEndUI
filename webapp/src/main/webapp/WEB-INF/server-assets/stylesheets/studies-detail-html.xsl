@@ -91,7 +91,7 @@
         <section>
             <div id="ae-content" class="persist-area">
                 <xsl:choose>
-                    <xsl:when test="exists(study)">
+                    <xsl:when test="exists(descendant::study)">
                         <xsl:apply-templates/>
                     </xsl:when>
                     <xsl:otherwise>

@@ -42,13 +42,11 @@ public class ReloadStudiesJob extends ApplicationJob {
             String sourceLocation = getPreferences().getString("bs.studies.source-location");
             if (isNotBlank(sourceLocation)) {
                 logger.info("Reload of experiment data from [{}] requested", sourceLocation);
-
+                updateStudies(new File(sourceLocation, "studies.xml"));
 //                updateNews(new File(sourceLocation, "news.xml"));
 //                updateUsers(new File(sourceLocation, "users.xml"));
-                updateStudies(new File(sourceLocation, "studies.xml"));
 //                updateArrayDesigns(new File(sourceLocation, "arrays.xml"));
 //                updateProtocols(new File(sourceLocation, "protocols.xml"));
-
                 logger.info("Reload of experiment data from [{}] completed", sourceLocation);
             }
         } catch (Exception x) {
@@ -108,6 +106,8 @@ public class ReloadStudiesJob extends ApplicationJob {
                             , Charset.forName("UTF-8")
                     );
                 }
+                getComponent(Studies.class).update(xml);
+
 
 //                UpdateSourceInformation sourceInformation = new UpdateSourceInformation(
 //                        Studies.StudySource.AE2
@@ -133,9 +133,6 @@ public class ReloadStudiesJob extends ApplicationJob {
 //                        Studies.MAP_STUDIES_COMPLETE_DOWNLOADS
 //                        , new File(file.getParentFile(), "experiments-complete-downloads.txt")
 //                );
-
-                getComponent(Studies.class).update(xml);
-
 //                clearMap(Studies.MAP_EXPERIMENTS_IN_ATLAS);
 //                clearMap(Studies.MAP_STUDIES_VIEWS);
 //                clearMap(Studies.MAP_STUDIES);

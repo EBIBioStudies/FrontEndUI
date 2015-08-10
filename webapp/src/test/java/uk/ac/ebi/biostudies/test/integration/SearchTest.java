@@ -34,6 +34,7 @@ public class SearchTest {
         driver = new HtmlUnitDriver();
         ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
+        driver.get(baseUrl + "/reload-xml");
     }
 
     @Before

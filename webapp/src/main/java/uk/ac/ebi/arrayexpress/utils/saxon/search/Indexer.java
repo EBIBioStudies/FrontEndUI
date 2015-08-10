@@ -109,8 +109,9 @@ public class Indexer {
                         }
                     }
                     addXMLField(d, node);
+                    addDocIdField(d, idValue);
                     //logger.debug("Indexing document {} = {}", env.idField, idValue);
-                    w.updateDocument(new Term(env.idField, idValue), d);
+                    w.updateDocument(new Term("id", idValue), d);
                     indexedNodes.add((NodeInfo) node);
                 }
 
@@ -137,9 +138,19 @@ public class Indexer {
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
-        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
         return new IndexWriter(indexDirectory, config);
+    }
+
+    public void clearIndex() throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(this.env.indexAnalyzer);
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE );
+        try (IndexWriter w = new IndexWriter(this.env.indexDirectory, config) ){
+            w.deleteAll();
+            w.commit();
+            w.close();
+        }
+
     }
 
     private void addStringField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore, float boost) {
@@ -181,8 +192,13 @@ public class Indexer {
         }
     }
 
-    private void addDocIdField(Document document, int docId) {
-        document.add(new NumericDocValuesField(DOCID_FIELD, docId));
+    private void addDocIdField(Document document, String value) {
+        FieldType fieldType = new FieldType();
+        fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
+        fieldType.setTokenized(false);
+        fieldType.setStored(true);
+        Field field =new Field("id", value, fieldType);
+        document.add(field);
     }
 
     private void setDocumentHash(String hash) throws IOException {
