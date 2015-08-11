@@ -48,7 +48,6 @@ public class Indexer {
 
     private final IndexEnvironment env;
     private final SaxonEngine saxon;
-    static int counter = 0;
 
     public Indexer(IndexEnvironment env, SaxonEngine saxon) {
         this.env = env;
@@ -57,7 +56,7 @@ public class Indexer {
 
     public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
         try {
-            if (getDocumentHash().equals(document.getHash())) {
+            /*if (getDocumentHash().equals(document.getHash())) {
                 logger.debug("Existing index found, no need to refresh");
                 List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
                 List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
@@ -66,7 +65,7 @@ public class Indexer {
                     indexedNodes.add((NodeInfo) node);
                 }
                 return indexedNodes;
-            }
+            }*/
             try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
                 setDocumentHash(document.getHash());
 
@@ -147,8 +146,8 @@ public class Indexer {
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE );
         try (IndexWriter w = new IndexWriter(this.env.indexDirectory, config) ){
             w.deleteAll();
+            w.forceMergeDeletes();
             w.commit();
-            w.close();
         }
 
     }

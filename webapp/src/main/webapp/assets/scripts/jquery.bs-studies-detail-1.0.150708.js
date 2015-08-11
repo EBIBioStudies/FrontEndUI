@@ -34,6 +34,10 @@ var table = null;
             updateSelectedFiles();
         });
 
+        $("#file-list tbody tr").on( 'click', 'a', function () {
+            event.stopPropagation();
+        });
+
         $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
             $(this).toggleClass('selected');
             updateSelectedFiles();
