@@ -56,18 +56,8 @@ public class Indexer {
 
     public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
         try {
-            /*if (getDocumentHash().equals(document.getHash())) {
-                logger.debug("Existing index found, no need to refresh");
-                List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
-                List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
-
-                for (Object node : documentNodes) {
-                    indexedNodes.add((NodeInfo) node);
-                }
-                return indexedNodes;
-            }*/
             try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
-                setDocumentHash(document.getHash());
+                //setDocumentHash(document.getHash());
 
                 List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
                 List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
@@ -76,7 +66,7 @@ public class Indexer {
                     Document d = new Document();
 
                     String idValue = ""; // value of id field (i.e. accession in case of studies)
-                    // get all the fields taken care of
+
                     for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
                         try {
                             List<Item> values = saxon.evaluateXPath((NodeInfo) node, field.path);
@@ -94,7 +84,7 @@ public class Indexer {
                                 } else {
                                     addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
                                     if (!"none".equalsIgnoreCase(field.docValueType)) {
-                                        d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase()))); // TODO: add analyser to the field definition
+                                        d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase())));
                                     }
                                 }
                                 if ( field.name.equalsIgnoreCase(env.idField)) {
@@ -200,27 +190,4 @@ public class Indexer {
         document.add(field);
     }
 
-    private void setDocumentHash(String hash) throws IOException {
-        Directory dir = this.env.indexDirectory;
-        for (String f : dir.listAll()) {
-            if (f.endsWith(".hash")) {
-                dir.deleteFile(f);
-            }
-        }
-        try (IndexOutput o = dir.createOutput(hash + ".hash", null)) {
-            o.close();
-        }
-    }
-
-    private String getDocumentHash() throws IOException {
-        Directory dir = this.env.indexDirectory;
-        if (DirectoryReader.indexExists(dir)) {
-            for (String f : dir.listAll()) {
-                if (f.endsWith(".hash")) {
-                    return f.substring(0, f.indexOf(".hash"));
-                }
-            }
-        }
-        return "";
-    }
 }
