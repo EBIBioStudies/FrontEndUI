@@ -24,38 +24,23 @@
                 exclude-result-prefixes="search xs fn html"
                 version="2.0">
     
-    <xsl:template match="*" mode="highlight">
-        <xsl:param name="pQueryId" as="xs:string?" select="''"/>
-        <xsl:param name="pFieldName" as="xs:string?" select="''"/>
-        <xsl:element name="{if (fn:name() = 'text') then 'div' else name()}">
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="highlight">
-                <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                <xsl:with-param name="pFieldName" select="$pFieldName"/>
-            </xsl:apply-templates>
-        </xsl:element>
-    </xsl:template>
-
-    <xsl:template match="text()" mode="highlight">
-        <xsl:param name="pQueryId" as="xs:string?" select="''"/>
-        <xsl:param name="pFieldName" as="xs:string?" select="''"/>
-        <xsl:call-template name="highlight">
-            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-            <xsl:with-param name="pText" select="."/>
-            <xsl:with-param name="pFieldName" select="$pFieldName"/>
-        </xsl:call-template>
-    </xsl:template>
-
     <xsl:template name="highlight">
         <xsl:param name="pQueryId" as="xs:string?" select="''"/>
         <xsl:param name="pText" as="xs:string?" select="''"/>
         <xsl:param name="pFieldName" as="xs:string?" select="''"/>
+        <xsl:param name="pCallHighlightingFunction" as="xs:boolean?" select="false()"/>
         <xsl:choose>
             <xsl:when test="fn:string-length($pQueryId) = 0 and fn:string-length($pText) != 0">
                 <xsl:value-of select="$pText"/>
             </xsl:when>
-            <xsl:when test="fn:string-length($pText)!=0">
+            <xsl:when test="fn:string-length($pText)!=0 and $pCallHighlightingFunction=true()">
                 <xsl:variable name="vHighlightedText" select="search:highlightQuery($pQueryId, $pFieldName, $pText)"/>
+                <xsl:call-template name="format-highlighted-text">
+                    <xsl:with-param name="pText" select="$vHighlightedText"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="fn:string-length($pText)!=0 and $pCallHighlightingFunction=false()">
+                <xsl:variable name="vHighlightedText" select="$pText"/>
                 <xsl:call-template name="format-highlighted-text">
                     <xsl:with-param name="pText" select="$vHighlightedText"/>
                 </xsl:call-template>

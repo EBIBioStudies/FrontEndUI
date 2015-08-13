@@ -24,6 +24,7 @@ import net.sf.saxon.type.Type;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
+import uk.ac.ebi.arrayexpress.utils.search.EFOExpandedHighlighter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Querier {
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IndexEnvironment env;
@@ -161,6 +164,7 @@ public class Querier {
             params.put("from", new String[]{from+""});
             params.put("to", new String[]{to + ""});
 
+
             // if page is from search results, get the document at nth position in the search results
             // and store the previous and next result as well. Otherwise, return the whole result set
             if (params.containsKey("n")) {
@@ -177,6 +181,25 @@ public class Querier {
                         e.printStackTrace();
                     }
                 }
+
+                //do highlighting for fields shown on search page
+                ArrayList<String> titles = new ArrayList<>();
+                ArrayList<String> authors = new ArrayList<>();
+                ArrayList<String> snippets = new ArrayList<>();
+                EFOExpandedHighlighter highlighter = new EFOExpandedHighlighter();
+                highlighter.setEnvironment(this.env);
+                for (int i = from - 1; i < to; i++) {
+                    String title = leafReader.document(scoreDocs[i].doc).get("title");
+                    titles.add(highlighter.highlightQuery(queryInfo, "title", title));
+                    String author = leafReader.document(scoreDocs[i].doc).get("authors");
+                    authors.add(highlighter.highlightQuery(queryInfo, "authors", author));
+                    String snippet = leafReader.document(scoreDocs[i].doc).get("keywords");
+                    snippets.add(highlighter.highlightQuery(queryInfo, "keywords", snippet));
+                }
+                params.put("titles", titles.toArray(new String[titles.size()]));
+                params.put("authors", authors.toArray(new String[authors.size()]));
+                params.put("fragments", snippets.toArray(new String[snippets.size()]));
+
             }
 
             logger.info("Search completed {}", matchingNodes.size());

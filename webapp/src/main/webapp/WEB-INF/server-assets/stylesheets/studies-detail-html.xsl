@@ -121,7 +121,7 @@
                             <xsl:call-template name="highlight">
                                 <xsl:with-param name="pQueryId" select="$queryid"/>
                                 <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
-                                <xsl:with-param name="pFieldName"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                             </xsl:call-template>
                         </h4>
                     </div>
@@ -145,7 +145,13 @@
                     </xsl:call-template>
                     <xsl:call-template name="section">
                         <xsl:with-param name="pName" select="'Accession Number'"/>
-                        <xsl:with-param name="pContent"><xsl:value-of select="$vAccession"/></xsl:with-param>
+                        <xsl:with-param name="pContent">
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$queryid"/>
+                                <xsl:with-param name="pText" select="$vAccession"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                            </xsl:call-template>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </div>
             </div>

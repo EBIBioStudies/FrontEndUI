@@ -207,8 +207,8 @@
                 <a href="{$context-path}/studies/{accession}/{$vQueryString}{$linkPositionParameter}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pText" select="title"/>
-                        <xsl:with-param name="pFieldName"/>
+                        <xsl:with-param name="pFieldName" select="'title'"/>
+                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'titles')[$pPosition - $pFrom + 1]"/>
                     </xsl:call-template>
                 </a>
                 <span class="browse-study-accession">
@@ -218,11 +218,11 @@
             <xsl:variable name="vSize" select="fn:count(author)"/>
             <xsl:if test="$vSize gt 0">
                <div class="search-authors">
-                <xsl:call-template name="general-highlighted-list">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pList" select="author"/>
-                    <xsl:with-param name="pSize" select="10"/>
-                </xsl:call-template>
+                   <xsl:call-template name="highlight">
+                       <xsl:with-param name="pQueryId" select="$queryid"/>
+                       <xsl:with-param name="pFieldName" select="'authors'"/>
+                       <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'authors')[$pPosition - $pFrom + 1]"/>
+                   </xsl:call-template>
                </div>
             </xsl:if>
             <xsl:if test="$vSearchMode">
@@ -230,7 +230,7 @@
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pFieldName" select="'keywords'"/>
-                        <xsl:with-param name="pText" select="string-join( ( .//text()[not(ancestor::file or ancestor::link)] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name | .//link/@url), ' ')"/>
+                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'fragments')[$pPosition - $pFrom + 1]"/>
                     </xsl:call-template>
                 </div>
             </xsl:if>

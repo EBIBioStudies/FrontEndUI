@@ -139,6 +139,7 @@ ul#secondary-nav li.active > a {
 a.show-more, a.show-less {
     color: #8F5109;
     padding: 0;
+    cursor: pointer;
 }
 
 a.show-more:hover,

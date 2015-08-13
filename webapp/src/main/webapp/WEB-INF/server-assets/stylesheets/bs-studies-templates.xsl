@@ -66,6 +66,7 @@
                         <xsl:call-template name="highlight">
                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                             <xsl:with-param name="pText" select="value"/>
+                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                         </xsl:call-template>
                         <xsl:if test="fn:position() != fn:last()">, </xsl:if>
                     </xsl:for-each>
@@ -88,6 +89,7 @@
                             <xsl:for-each select="fn:current-group()">
                                 <xsl:call-template name="highlight">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                     <xsl:with-param name="pText">
                                         <xsl:value-of select="attribute[fn:lower-case(@name)='journal']"/>
                                         <xsl:text> [</xsl:text>
@@ -103,6 +105,7 @@
                                 <a href="http://europepmc.org/articles/{attribute[fn:lower-case(@name)='pmcid']}" target="_blank">
                                     <xsl:call-template name="highlight">
                                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                        <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                         <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
                                     </xsl:call-template>
                                 </a>
@@ -144,11 +147,10 @@
                         <xsl:for-each select="current-group()">
                             <xsl:call-template name="highlight">
                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                <xsl:with-param name="pText"
-                                                select="attribute[fn:lower-case(@name)='name']/value"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='name']/value"/>
                             </xsl:call-template>
-                            <xsl:variable name="vAffiliationId"
-                                          select="attribute[fn:lower-case(@name)='affiliation']/value"/>
+                            <xsl:variable name="vAffiliationId" select="attribute[fn:lower-case(@name)='affiliation']/value"/>
                             <xsl:variable name="vAffiliation" select="$vUniqueRefs/orgs/org[@acc=$vAffiliationId]"/>
                             <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1 and $vAffiliation">
                                 <sup>
@@ -174,8 +176,8 @@
                                     </xsl:if>
                                     <xsl:call-template name="highlight">
                                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                        <xsl:with-param name="pText"
-                                                        select="."/>
+                                        <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                        <xsl:with-param name="pText" select="."/>
                                     </xsl:call-template>
                                     <xsl:if test="$vSize &gt; 10">
                                         <xsl:text>, </xsl:text>
@@ -192,8 +194,8 @@
                                             </xsl:if>
                                             <xsl:call-template name="highlight">
                                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                                <xsl:with-param name="pText"
-                                                                select="."/>
+                                                <xsl:with-param name="pText" select="."/>
+                                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                             </xsl:call-template>
                                             <xsl:if test="fn:position() != fn:last()">
                                                 <xsl:text>, </xsl:text>
@@ -244,6 +246,7 @@
                                         <xsl:call-template name="highlight">
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                             <xsl:with-param name="pText" select="$vName"/>
+                                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                         </xsl:call-template>
                                     </a>
                                 </td>
@@ -258,10 +261,22 @@
                                     <td>
                                         <xsl:choose>
                                             <xsl:when test="fn:exists($vColumn/url)">
-                                                <a href="{$vColumn/url}" target="_blank"><xsl:value-of select="$vColumn/value"/></a>
+                                                <xsl:variable name="text"><xsl:value-of select="$vColumn/value" disable-output-escaping="yes"/></xsl:variable>
+                                                <a href="{$vColumn/url}" target="_blank">
+                                                    <xsl:call-template name="highlight">
+                                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                                        <xsl:with-param name="pText" select="$text"/>
+                                                        <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                                    </xsl:call-template>
+                                                </a>
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                <xsl:value-of select="$vColumn/value"/>
+                                                <xsl:variable name="text"><xsl:value-of select="$vColumn/value" disable-output-escaping="yes"/></xsl:variable>
+                                                <xsl:call-template name="highlight">
+                                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                                    <xsl:with-param name="pText" select="$text"/>
+                                                    <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                                </xsl:call-template>
                                             </xsl:otherwise>
                                         </xsl:choose>
                                     </td>
@@ -320,18 +335,24 @@
                                     <xsl:call-template name="highlight">
                                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                         <xsl:with-param name="pText" select="if (attribute[fn:lower-case(@name)='description']) then attribute[fn:lower-case(@name)='description']/value else @url"/>
+                                        <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                     </xsl:call-template>
                                 </a>
                                 <br/>
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="ae:getTitleFor(fn:current-grouping-key())"/>
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pText" select="ae:getTitleFor(fn:current-grouping-key())"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                            </xsl:call-template>
                             <xsl:text>: </xsl:text>
                             <xsl:call-template name="highlighted-list">
                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                 <xsl:with-param name="pType" select="fn:current-grouping-key()"/>
                                 <xsl:with-param name="pList" select="fn:current-group()/@url"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                             </xsl:call-template>
                             <br/>
                         </xsl:otherwise>
@@ -353,10 +374,16 @@
                 <ul class="ae-detail-list">
                     <xsl:for-each-group select="$pNodes" group-by="attribute[fn:lower-case(@name)='agency']">
                         <li>
-                            <span class="ae-detail-group-heading"><xsl:value-of select="fn:current-grouping-key()"/>
+                            <span class="ae-detail-group-heading">
+                                <xsl:call-template name="highlight">
+                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                    <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                    <xsl:with-param name="pText" select="fn:current-grouping-key()"/>
+                                </xsl:call-template>
                             <xsl:text>: </xsl:text></span>
                             <xsl:call-template name="highlighted-list">
                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                 <xsl:with-param name="pType" select="fn:current-grouping-key()"/>
                                 <xsl:with-param name="pList" select="fn:current-group()/attribute[@name='grant_id']"/>
                             </xsl:call-template>
@@ -434,13 +461,13 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pList"/>
         <xsl:param name="pType"/>
-
+        <xsl:param name="pCallHighlightingFunction" as="xs:boolean?" select="false()"/>
         <xsl:variable name="vSize" select="fn:count($pList)"/>
         <xsl:for-each select="$pList[fn:position() = (1 to 20)]">
             <xsl:call-template name="highlight-reference">
                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                <xsl:with-param name="pText"
-                                select="."/>
+                <xsl:with-param name="pCallHighlightingFunction" select="$pCallHighlightingFunction"/>
+                <xsl:with-param name="pText" select="."/>
                 <xsl:with-param name="pType" select="$pType"/>
             </xsl:call-template>
             <xsl:if test="fn:position() != fn:last() or $vSize &gt; 20">
@@ -452,8 +479,8 @@
                 <xsl:for-each select="$pList[fn:position() = (21 to $vSize)]">
                     <xsl:call-template name="highlight-reference">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        <xsl:with-param name="pText"
-                                        select="."/>
+                        <xsl:with-param name="pCallHighlightingFunction" select="$pCallHighlightingFunction"/>
+                        <xsl:with-param name="pText" select="."/>
                         <xsl:with-param name="pType" select="$pType"/>
                     </xsl:call-template>
                     <xsl:if test="fn:position() != fn:last()">
@@ -469,22 +496,23 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pText"/>
         <xsl:param name="pType"/>
+        <xsl:param name="pCallHighlightingFunction" as="xs:boolean?"  select="false()"/>
         <xsl:variable name="vUrl" select="ae:getUrlFor($pType, $pText)"/>
         <xsl:choose>
             <xsl:when test="$vUrl != ''">
                 <a href="{$vUrl}" target="_blank">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        <xsl:with-param name="pText"
-                                        select="$pText"/>
+                        <xsl:with-param name="pCallHighlightingFunction" select="$pCallHighlightingFunction"/>
+                        <xsl:with-param name="pText" select="$pText"/>
                     </xsl:call-template>
                 </a>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:call-template name="highlight">
                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                    <xsl:with-param name="pText"
-                                    select="$pText"/>
+                    <xsl:with-param name="pCallHighlightingFunction" select="$pCallHighlightingFunction"/>
+                    <xsl:with-param name="pText" select="$pText"/>
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
