@@ -212,7 +212,11 @@
                     </xsl:call-template>
                 </a>
                 <span class="browse-study-accession">
-                    <xsl:value-of select="$vAccession"></xsl:value-of>
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pFieldName" select="'accession'"/>
+                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'accessions')[$pPosition - $pFrom + 1]"/>
+                    </xsl:call-template>
                 </span>
             </div>
             <xsl:variable name="vSize" select="fn:count(author)"/>
@@ -225,8 +229,10 @@
                    </xsl:call-template>
                </div>
             </xsl:if>
-            <xsl:if test="$vSearchMode">
+            <xsl:variable name="snippet" select="search:getQueryInfoParameter($queryid,'fragments')[$pPosition - $pFrom + 1]"/>
+            <xsl:if test="$vSearchMode and $snippet!=''">
                 <div class="search-snippet">
+                    <xsl:if test="substring($snippet,1,1)=fn:lower-case(substring($snippet,1,1))"><xsl:attribute name="class">search-snippet search-snippet-before</xsl:attribute></xsl:if>
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pFieldName" select="'keywords'"/>

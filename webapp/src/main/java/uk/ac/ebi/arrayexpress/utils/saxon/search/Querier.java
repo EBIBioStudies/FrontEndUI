@@ -183,19 +183,25 @@ public class Querier {
                 }
 
                 //do highlighting for fields shown on search page
+                ArrayList<String> accessions = new ArrayList<>();
                 ArrayList<String> titles = new ArrayList<>();
                 ArrayList<String> authors = new ArrayList<>();
                 ArrayList<String> snippets = new ArrayList<>();
                 EFOExpandedHighlighter highlighter = new EFOExpandedHighlighter();
                 highlighter.setEnvironment(this.env);
                 for (int i = from - 1; i < to; i++) {
+                    String accession = leafReader.document(scoreDocs[i].doc).get("id");
+                    accessions.add(highlighter.highlightQuery(queryInfo, "id", accession));
                     String title = leafReader.document(scoreDocs[i].doc).get("title");
                     titles.add(highlighter.highlightQuery(queryInfo, "title", title));
                     String author = leafReader.document(scoreDocs[i].doc).get("authors");
                     authors.add(highlighter.highlightQuery(queryInfo, "authors", author));
                     String snippet = leafReader.document(scoreDocs[i].doc).get("keywords");
-                    snippets.add(highlighter.highlightQuery(queryInfo, "keywords", snippet));
+                    String highlightedSnippet = highlighter.highlightQuery(queryInfo, "keywords", snippet);
+                    snippets.add( snippet.length() == highlightedSnippet.length() ? "" : highlightedSnippet );
+
                 }
+                params.put("accessions", accessions.toArray(new String[accessions.size()]));
                 params.put("titles", titles.toArray(new String[titles.size()]));
                 params.put("authors", authors.toArray(new String[authors.size()]));
                 params.put("fragments", snippets.toArray(new String[snippets.size()]));
