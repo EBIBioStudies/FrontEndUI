@@ -21,6 +21,16 @@ var table = null;
         throw "jQuery not loaded";
 
     $(function() {
+
+        // create all sub-section file tables and hide them
+        $(".file-list:not(#file-list)").DataTable( {
+            "scrollX": true,
+            "dom":"t",
+            "autoWidth":true
+        });
+        $(".ae-section-files").hide();
+
+        // draw the main file table
         redrawTable();
         updateSelectedFiles();
 
@@ -66,6 +76,18 @@ var table = null;
         $(window).resize(function () {
             redrawTable();
         });
+
+        $(".toggle-files").on ('click', function () {
+            var section = $(this).first().next();
+            if (section.css('display')=='none') {
+                section.show();
+                $(this).text('hide files in this section')
+            } else {
+                section.hide();
+                $(this).text('show files in this section')
+            }
+
+        });
     });
 
     function downloadFiles(files) {
@@ -99,15 +121,13 @@ var table = null;
     }
 
     function redrawTable() {
-
         if(table!=null) table.destroy()
         table = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "scrollX": true,
             "columnDefs": [  { "targets": [0], "searchable": false, "orderable": false, "visible": true}],
             "order": [[ 1, "asc" ]],
-            "dom":"lfrtpi",
-            "autoWidth": false
+            "dom":"lfrtpi"
         } );
     }
     $('#right-column-expander').click( function() {

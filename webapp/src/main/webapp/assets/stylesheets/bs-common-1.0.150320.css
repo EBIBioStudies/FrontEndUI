@@ -45,7 +45,7 @@
 }
 
 #content th, #content td {
-    /*padding: 0;*/
+    /* padding: 0; */
     border:  0 none;
     border-collapse: collapse;
     vertical-align: middle;
@@ -654,8 +654,7 @@ p.center {
 
 #ae-detail th
 , #ae-detail td {
-    font-size: 100%
-}
+    font-size: 100%}
 
 #ae-detail td {
     vertical-align: top

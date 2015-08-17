@@ -130,19 +130,6 @@
                         <xsl:with-param name="pTitle" select="title"/>
                         <xsl:with-param name="pNodes" select="section"/>
                     </xsl:call-template>
-                    <xsl:call-template name="study-attributes">
-                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pNodes" select="attribute"/>
-                    </xsl:call-template>
-                    <xsl:call-template name="study-publications">
-                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pTitle" select="title"/>
-                        <xsl:with-param name="pNodes" select="section"/>
-                    </xsl:call-template>
-                    <xsl:call-template name="study-funding">
-                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
-                    </xsl:call-template>
                     <xsl:call-template name="section">
                         <xsl:with-param name="pName" select="'Accession Number'"/>
                         <xsl:with-param name="pContent">
@@ -152,6 +139,25 @@
                                 <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                             </xsl:call-template>
                         </xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-attributes">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pNodes" select="attribute"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-publications">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pTitle" select="title"/>
+                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='publication']"/>
+                        <xsl:with-param name="vFiles" select="$vFiles"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-subsections">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)!='funding' and fn:lower-case(@type)!='publication' and fn:lower-case(@type)!='author' and fn:lower-case(@type)!='organization']"/>
+                        <xsl:with-param name="vFiles" select="$vFiles"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-funding">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
                     </xsl:call-template>
                 </div>
             </div>
@@ -164,7 +170,7 @@
                     <xsl:otherwise>
                         <xsl:call-template name="study-files">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pNodes" select="descendant::file"/>
+                            <xsl:with-param name="pNodes" select="//file"/>
                             <xsl:with-param name="pFiles" select="$vFiles"/>
                             <xsl:with-param name="pBasePath" select="$context-path"/>
                         </xsl:call-template>

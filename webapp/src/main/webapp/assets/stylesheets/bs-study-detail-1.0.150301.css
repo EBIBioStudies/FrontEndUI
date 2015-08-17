@@ -108,6 +108,11 @@
     color: #466B7D !important;
 }
 
+.section-files-icon {
+    margin-right:5px;
+    color: #466B7D !important;
+}
+
 #file-list{
 }
 
@@ -174,4 +179,12 @@ span.icon.icon-functional:before{
 
 .text-bottom {
     vertical-align: text-bottom;
+}
+
+.ae-section-files {
+    margin: 10px 0px;
+}
+
+.toggle-files {
+
 }

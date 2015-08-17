@@ -42,7 +42,7 @@
         <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
         <xsl:variable name="vFiles">
             <files>
-                <xsl:for-each select="descendant::file">
+                <xsl:for-each select="//file[not(ancestor::subsections)]">
                     <xsl:variable name="vName" select="fn:replace(path, '.+/([^/]+)$', '$1')"/>
                     <xsl:if test="$vPhysicalFiles/file[@name=$vName]">
                         <xsl:copy-of select="."/>
@@ -130,6 +130,8 @@
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:apply-templates select="subsections" mode="section"/>
+            <xsl:copy-of select="./*[not(name()='file')]"/>
+            <xsl:apply-templates select=".//file" mode="files"/>
         </section>
     </xsl:template>
 
