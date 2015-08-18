@@ -104,6 +104,11 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
         this.logger.info("Indexfor index id [{}] cleared", indexId);
     }
 
+    public void delete(String indexId, String accession) throws IndexerException, InterruptedException, IOException {
+        this.logger.info("Deleting {} from index id [{}]", accession, indexId);
+        new Indexer(getEnvironment(indexId), saxon).delete(accession);
+        this.logger.info("Document {} deleted", accession);
+    }
 
     public List<String> getTerms(String indexId, String fieldName, int minFreq) throws IOException {
         IndexEnvironment env = getEnvironment(indexId);

@@ -2,7 +2,6 @@ package uk.ac.ebi.biostudies.test.integration;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.ac.ebi.biostudies.BSInterfaceTestApplication;
+import uk.ac.ebi.biostudies.utils.TestUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -81,7 +81,7 @@ public class SearchTest {
     }
 
     private void testSort(String cssSelector) {
-        testSort(cssSelector,false);
+        testSort(cssSelector, false);
     }
 
     private void testSort(String cssSelector, boolean isDescending) {
@@ -180,7 +180,7 @@ public class SearchTest {
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-links"));
         Integer [] values = new Integer[list.size()];
         for(int i=0; i < values.length; i++) {
-            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" links",""));
+            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" links", ""));
         }
         Integer [] unsortedValues = values.clone();
         assertArrayEquals(values, unsortedValues);
@@ -246,7 +246,7 @@ public class SearchTest {
         driver.get(baseUrl + "/clear-index");
         StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
         for (int doc = 0; doc <= 200000; doc++) {
-            sb.append(getTestSubmission(doc));
+            sb.append(TestUtils.getTestSubmission(doc));
             if (doc%10000==0) {
                 sb.append("</submissions></pmdocument>");
                 String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
@@ -260,59 +260,6 @@ public class SearchTest {
         driver.get(baseUrl + "/studies/");
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
         assertTrue(pages.endsWith("Showing 1 - 25 of 200001 studies"));
-        driver.get(baseUrl + "/clear-index");
-        driver.get(baseUrl + "/reload-xml");
-    }
-
-    private String getTestSubmission(int doc) {
-        StringBuffer sb = new StringBuffer();
-        String docId = ""+doc;
-        sb.append(String.format("<submission acc=\"TEST-%s\" id=\"%s\" access=\"Public\">", docId, docId));
-        sb.append(String.format("<section id=\"%s\" type=\"Study\">", docId));
-        sb.append(String.format("<attributes><attribute><name>Title</name><value>Test Document %s</value></attribute>", docId));
-        sb.append(String.format("<attribute><name>Description</name><value>Description for Test Document %s</value></attribute>", docId));
-        for (int i = 0; i < 10; i++) {
-            sb.append(
-                    String.format("<attribute><name>Attribute %s</name><value>%s</value></attribute>",
-                            RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(15)
-                    )
-            );
-        }
-        sb.append(String.format("</attributes><links>", docId));
-        for (int i = 0; i < 10; i++) {
-            sb.append(
-                    String.format("<link><url>http://%s</url><attributes><attribute><name>Description</name><value>Link %s</value></attribute></attributes></link>",
-                            RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(15)
-                    )
-            );
-        }
-        sb.append(String.format("</links></section></submission>", docId));
-        return sb.toString();
-    }
-
-    @Test
-    public void testAddAndUpdateIndex() throws Exception{
-        driver.get(baseUrl + "/clear-index");
-
-        // add a document
-        StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
-        sb.append(getTestSubmission(0));
-        sb.append("</submissions></pmdocument>");
-        String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
-        File file = new File(sourceLocation, "temp-test-study.xml");
-        FileUtils.writeStringToFile(file, sb.toString());
-        driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
-        file.delete();
-
-        driver.get(baseUrl + "/");
-        assertEquals("1 study", driver.findElement(By.cssSelector("#content > aside > ul > li > a")).getText());
-
-        file = new File(sourceLocation, "temp-test-study.xml");
-        FileUtils.writeStringToFile(file, StringUtils.replaceOnce(sb.toString(), "<value>Test Document 0</value>", "<value>Updated Test Document 0</value>"));
-        driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
-        file.delete();
-        driver.get(baseUrl + "/studies/TEST-0");
-        assertEquals("Updated Test Document 0",driver.findElement(By.cssSelector("#ae-detail-title")).getText());
         driver.get(baseUrl + "/clear-index");
         driver.get(baseUrl + "/reload-xml");
     }

@@ -447,7 +447,10 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                     <xsl:with-param name="pText" select="fn:current-grouping-key()"/>
                                 </xsl:call-template>
-                            <xsl:text>: </xsl:text></span>
+                                <xsl:if test="fn:current-group()/attribute[@name='grant_id']">
+                                    <xsl:text>: </xsl:text>
+                                </xsl:if>
+                            </span>
                             <xsl:call-template name="highlighted-list">
                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                 <xsl:with-param name="pCallHighlightingFunction" select="true()"/>

@@ -169,6 +169,15 @@ public class Studies extends ApplicationComponent  {
         }
     }
 
+    public void delete(String accession) throws IOException {
+        try {
+            this.search.getController().delete(INDEX_ID, accession);
+            this.autocompletion.rebuild();
+        } catch (Exception x) {
+            throw new RuntimeException(x);
+        }
+    }
+
     public void clearIndex() throws IOException {
         try {
              this.search.getController().clearIndex(INDEX_ID);

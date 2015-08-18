@@ -111,6 +111,7 @@ var table = null;
             $('#download-selected-files').hide();
         } else {
             $('#download-selected-files').show();
+            $('#download-selected-files').text('Download' + (selectedRows==2 ? ' both' : selectedRows>1 ? ' all '+selectedRows : ''));
         }
 
         if (selectedRows==totalRows)

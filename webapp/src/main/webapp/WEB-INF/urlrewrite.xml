@@ -181,6 +181,11 @@
         <to type="forward" last="true">/servlets/control/update-efo</to>
     </rule>
     <rule>
+        <from>^/delete/([^/]+)/?$</from>
+        <set type="parameter" name="accession">$1</set>
+        <to type="forward" last="true">/servlets/control/delete</to>
+    </rule>
+    <rule>
         <from>^/reload-xml/([^/]+)/?$</from>
         <set type="parameter" name="xmlFilePath">$1</set>
         <to type="forward" last="true">/servlets/control/reload-xml</to>

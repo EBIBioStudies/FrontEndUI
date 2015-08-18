@@ -57,6 +57,7 @@ public class ControlServlet extends ApplicationServlet {
             params = requestArgs[1];
         }
         try {
+            //TODO: place these behind an authentication flow
             if (
                     "reload-atlas-info".equals(command)
                             || "reload-efo".equals(command)
@@ -71,6 +72,8 @@ public class ControlServlet extends ApplicationServlet {
                 getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"));
             } else if ("clear-index".equals(command)) {
                 getComponent(Studies.class).clearIndex();
+            } else if ("delete".equals(command)) {
+                getComponent(Studies.class).delete(request.getParameter("accession"));
             } else if ("test-email".equals(command)) {
                 getApplication().sendEmail(
                         null

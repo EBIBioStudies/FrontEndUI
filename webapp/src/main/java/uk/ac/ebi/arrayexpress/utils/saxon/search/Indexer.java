@@ -142,6 +142,17 @@ public class Indexer {
 
     }
 
+    public void delete(String accession) throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(this.env.indexAnalyzer);
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND );
+        try (IndexWriter w = new IndexWriter(this.env.indexDirectory, config) ){
+            w.deleteDocuments( new Term("id",accession));
+            w.forceMergeDeletes();
+            w.commit();
+        }
+
+    }
+
     private void addStringField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore, float boost) {
         String stringValue = value.getStringValue();
         FieldType fieldType = new FieldType();
