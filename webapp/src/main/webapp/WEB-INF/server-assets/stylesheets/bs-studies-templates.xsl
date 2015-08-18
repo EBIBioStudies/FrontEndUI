@@ -88,20 +88,18 @@
                 </xsl:with-param>
                 <xsl:with-param name="pClass" select="('left')"/>
             </xsl:call-template>
-
             <xsl:if test="fn:count(.//file)>0">
                 <a class="show-more toggle-files">show files in this section</a>
                 <div class="ae-section-files">
                     <xsl:call-template name="file-table">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pNodes" select="$pNodes//file"/>
+                        <xsl:with-param name="pNodes" select=".//file"/>
                         <xsl:with-param name="pFiles" select="$vFiles"/>
                         <xsl:with-param name="pBasePath" select="$context-path"/>
                     </xsl:call-template>
                 </div>
             </xsl:if>
         </xsl:for-each>
-
     </xsl:template>
 
     <xsl:template name="study-publications">
@@ -139,6 +137,18 @@
                                     </xsl:call-template>
                                 </a>
                                 <xsl:text>)</xsl:text>
+                                <xsl:if test="fn:count(.//file)>0">
+                                    <br/>
+                                    <a class="show-more toggle-files">show files in this section</a>
+                                    <div class="ae-section-files">
+                                        <xsl:call-template name="file-table">
+                                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                                            <xsl:with-param name="pNodes" select=".//file"/>
+                                            <xsl:with-param name="pFiles" select="$vFiles"/>
+                                            <xsl:with-param name="pBasePath" select="$context-path"/>
+                                        </xsl:call-template>
+                                    </div>
+                                </xsl:if>
                             </xsl:for-each>
                         </xsl:with-param>
                         <xsl:with-param name="pClass" select="('left')"/>
@@ -147,19 +157,6 @@
                 <xsl:otherwise/>
             </xsl:choose>
         </xsl:for-each-group>
-
-        <xsl:if test="fn:count($pNodes//file)>0">
-            <a class="show-more toggle-files">show files in this section</a>
-            <div class="ae-section-files">
-                <xsl:call-template name="file-table">
-                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                    <xsl:with-param name="pNodes" select="$pNodes//file"/>
-                    <xsl:with-param name="pFiles" select="$vFiles"/>
-                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                </xsl:call-template>
-            </div>
-        </xsl:if>
-
     </xsl:template>
 
     <xsl:template name="study-authors">

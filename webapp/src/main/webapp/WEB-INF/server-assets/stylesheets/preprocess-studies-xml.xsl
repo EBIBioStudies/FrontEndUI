@@ -50,7 +50,7 @@
                 </xsl:for-each>
             </files>
         </xsl:variable>
-        <study files="{fn:count($vFiles/files/file)}"
+        <study files="{fn:count(.//file)}"
                links="{fn:count(descendant::link)}">
             <accession><xsl:value-of select="$vAccession"/></accession>
             <releasedate>2015-02-01</releasedate>
@@ -62,9 +62,9 @@
                 <!--/xsl:if-->
             </xsl:for-each>
             <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:apply-templates select="subsections" mode="section"/>
+            <xsl:apply-templates select=".//subsections" mode="section"/>
             <xsl:apply-templates select="$vFiles/files" mode="files"/>
-            <xsl:apply-templates select="descendant::links" mode="links"/>
+            <xsl:apply-templates select=".//links" mode="links"/>
         </study>
     </xsl:template>
 
@@ -129,9 +129,8 @@
                 </attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:apply-templates select="subsections" mode="section"/>
-            <xsl:copy-of select="./*[not(name()='file')]"/>
-            <xsl:apply-templates select=".//file" mode="files"/>
+            <xsl:copy-of select="./*[not(name()='files' or name()='links')]"/>
+            <xsl:apply-templates select=".//files" mode="files"/>
         </section>
     </xsl:template>
 

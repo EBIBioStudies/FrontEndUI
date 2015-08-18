@@ -224,11 +224,10 @@ public class SearchTest {
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
         assertTrue(pages.startsWith("Showing 26"));
         String accession  = driver.findElement(By.cssSelector(".browse-study-accession")).getText();
-        System.out.println(accession);
         driver.findElement(By.cssSelector(".browse-study-title a")).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#ae-detail-title")));
-        assertTrue(driver.getTitle().startsWith(accession));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".accessionNumber")));
+        assertEquals(accession, driver.findElement(By.cssSelector(".accessionNumber")).getText());
     }
 
     @Test

@@ -50,11 +50,12 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
             querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
         }
 
+        if (querySource.containsKey(FIELD_ACCESSION) && querySource.containsKey("n")) {
+            querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
+        }
+
         Query query = super.construct(env, querySource);
 
-        if (querySource.containsKey(FIELD_ACCESSION) && querySource.containsKey("n")) {
-            query = removeTermQueriesForField(query,FIELD_ACCESSION);
-        }
 
         if (querySource.containsKey(FIELD_KEYWORDS)) {
             String keywords = StringTools.arrayToString(querySource.get(FIELD_KEYWORDS), " ").toLowerCase() + " ";

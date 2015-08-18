@@ -30,7 +30,8 @@
     <xsl:param name="user-agent"/>
 
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
-    <xsl:variable name="vAccession" select="if ($accession) then fn:upper-case($accession) else fn:upper-case(search:getQueryInfoParameter($queryid,'accessionNumber'))"/>
+    <xsl:variable name="vAccessionNumber" select="search:getQueryInfoParameter($queryid,'accessionNumber')"/>
+    <xsl:variable name="vAccession" select="if ($vAccessionNumber) then fn:upper-case($vAccessionNumber) else fn:upper-case($accession)"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
     <xsl:include href="bs-html-page.xsl"/>
@@ -139,6 +140,7 @@
                                 <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                             </xsl:call-template>
                         </xsl:with-param>
+                        <xsl:with-param name="pClass" select="('accessionNumber')"/>
                     </xsl:call-template>
                     <xsl:call-template name="study-attributes">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
@@ -147,7 +149,7 @@
                     <xsl:call-template name="study-publications">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pTitle" select="title"/>
-                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='publication']"/>
+                        <xsl:with-param name="pNodes" select="section[fn:lower-case(@type)='publication']"/>
                         <xsl:with-param name="vFiles" select="$vFiles"/>
                     </xsl:call-template>
                     <xsl:call-template name="study-subsections">
@@ -170,7 +172,7 @@
                     <xsl:otherwise>
                         <xsl:call-template name="study-files">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pNodes" select="//file"/>
+                            <xsl:with-param name="pNodes" select="descendant::file"/>
                             <xsl:with-param name="pFiles" select="$vFiles"/>
                             <xsl:with-param name="pBasePath" select="$context-path"/>
                         </xsl:call-template>
