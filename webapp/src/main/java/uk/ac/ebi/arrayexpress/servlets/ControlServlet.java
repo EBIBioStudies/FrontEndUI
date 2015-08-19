@@ -74,6 +74,8 @@ public class ControlServlet extends ApplicationServlet {
                 getComponent(Studies.class).clearIndex();
             } else if ("delete".equals(command)) {
                 getComponent(Studies.class).delete(request.getParameter("accession"));
+            } else if ("clear-thumbnails".equals(command)) {
+                getComponent(Studies.class).clearThumbnails();
             } else if ("test-email".equals(command)) {
                 getApplication().sendEmail(
                         null

@@ -187,6 +187,14 @@ public class Studies extends ApplicationComponent  {
         }
     }
 
+    public void clearThumbnails() throws IOException {
+        try {
+            getComponent(Files.class).clearThumbnails();
+        } catch (Exception x) {
+            throw new RuntimeException(x);
+        }
+    }
+
 //    private void updateMaps() throws IOException {
 //        this.logger.debug("Updating maps for studies");
 //

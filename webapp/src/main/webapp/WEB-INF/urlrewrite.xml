@@ -203,6 +203,10 @@
         <to type="forward" last="true">/servlets/control/clear-index</to>
     </rule>
     <rule>
+        <from>^/clear-thumbnails$</from>
+        <to type="forward" last="true">/servlets/control/clear-thumbnails</to>
+    </rule>
+    <rule>
         <from>^/rescan-files$</from>
         <to type="forward" last="true">/servlets/control/rescan-files</to>
     </rule>

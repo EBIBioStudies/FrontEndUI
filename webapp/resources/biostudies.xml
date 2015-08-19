@@ -27,6 +27,7 @@
         <studies>
             <source-location>${interface.application.pref.studies.source.location}</source-location>
             <files-location>${interface.application.pref.studies.files.location}</files-location>
+            <thumbnails-location>${sys:java.io.tmpdir}/thumbnails/</thumbnails-location>
 
             <reload>
                 <atstart>false</atstart>

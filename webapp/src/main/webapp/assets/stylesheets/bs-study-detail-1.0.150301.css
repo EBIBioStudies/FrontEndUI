@@ -201,13 +201,16 @@ a.file-link {
 img.thumbnail {
     display: none;
     position: absolute;
-    border: 1px solid rgb(170, 170, 170);
+    border: 1px solid #888;
+    left: -175px;
+    margin-top: -15px !important;
+    box-shadow: 3px 3px 5px #AAA;
 }
 
 .file-link {
     border: 0px !important;
 }
 
-.file-link:hover img.thumbnail {
+.file-list-file-name:hover > a img.thumbnail {
     display: block;
 }

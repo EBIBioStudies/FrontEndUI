@@ -2,6 +2,7 @@ package uk.ac.ebi.arrayexpress.servlets;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.util.ThumbnailatorUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -38,12 +40,12 @@ public class ThumbnailServlet extends ApplicationServlet {
             accession = requestArgs[0];
             name = requestArgs[1];
         }
-        logger.info("Requested download of [" + name + "], accession [" + accession + "]");
+        logger.info("Requested thumbnail of [" + name + "], accession [" + accession + "]");
         Files files = getComponent(Files.class);
 
         if (!files.doesExist(accession, name)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            throw new IOException("File [" + name + "], accession [" + accession + "] is not present");
+                throw new IOException("File [" + name + "], accession [" + accession + "] is not present");
         } else {
             String location = files.getLocation(accession, name);
             // finally if there is no accession or location determined at the stage - panic
@@ -57,11 +59,18 @@ public class ThumbnailServlet extends ApplicationServlet {
                                 + "] were not determined");
             }
 
-            logger.debug("Will be serving file [{}{}]",files.getRootFolder(), location);
-            Thumbnails.of(files.getRootFolder()+location)
-                    .size(200, 200)
-                    .outputFormat("png")
-                    .toOutputStream(response.getOutputStream());
+            File thumbnail = new File(files.getThumbnailsFolder()+location);
+            if (!thumbnail.exists()) {
+                logger.debug("Creating thumbnail [{}{}]", thumbnail.getAbsolutePath());
+                thumbnail.getParentFile().mkdirs();
+                Thumbnails.of(files.getRootFolder() + location)
+                        .size(200, 200)
+                        .outputFormat("png")
+                        .toFile(thumbnail);
+            }
+            IOUtils.copy(new FileInputStream(thumbnail), response.getOutputStream());
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
         }
 
     }

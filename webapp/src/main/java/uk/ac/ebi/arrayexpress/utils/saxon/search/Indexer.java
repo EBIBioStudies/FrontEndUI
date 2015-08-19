@@ -133,7 +133,7 @@ public class Indexer {
 
     public void clearIndex() throws IOException {
         IndexWriterConfig config = new IndexWriterConfig(this.env.indexAnalyzer);
-        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE );
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND );
         try (IndexWriter w = new IndexWriter(this.env.indexDirectory, config) ){
             w.deleteAll();
             w.forceMergeDeletes();
