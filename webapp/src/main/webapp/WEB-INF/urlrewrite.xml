@@ -106,6 +106,10 @@
         <from>^/files/([^/]+)/([^/]+)$</from>
         <to type="forward" last="true">/servlets/download/${upper:$1}/$2</to>
     </rule>
+    <rule>
+        <from>^/thumbnail/([^/]+)/([^/]+)$</from>
+        <to type="forward" last="true">/servlets/thumbnail/${upper:$1}/$2</to>
+    </rule>
     <!-- about page -->
     <rule>
         <from>^/about[.]html?$</from>

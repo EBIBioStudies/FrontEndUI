@@ -185,6 +185,29 @@ span.icon.icon-functional:before{
     margin: 10px 0px;
 }
 
-.toggle-files {
+a.file-link {
+    padding-left: 2px;
+}
 
+.invisible {
+    visibility: hidden;
+}
+
+.thumbnail {
+    color: #888;
+    padding-left: 2px;
+}
+
+img.thumbnail {
+    display: none;
+    position: absolute;
+    border: 1px solid rgb(170, 170, 170);
+}
+
+.file-link {
+    border: 0px !important;
+}
+
+.file-link:hover img.thumbnail {
+    display: block;
 }

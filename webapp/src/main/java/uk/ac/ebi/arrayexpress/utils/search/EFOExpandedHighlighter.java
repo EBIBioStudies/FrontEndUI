@@ -48,7 +48,15 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
         return this;
     }
 
+    public String highlightFragment(QueryInfo info, String fieldName, String text) {
+        return highlightQuery(info, fieldName, text, true);
+    }
+
     public String highlightQuery(QueryInfo info, String fieldName, String text) {
+        return highlightQuery(info, fieldName, text,false);
+    }
+
+    private String highlightQuery(QueryInfo info, String fieldName, String text, boolean fragmentOnly ) {
         EFOExpandableQueryInfo queryInfo = null;
 
         if (info instanceof EFOExpandableQueryInfo) {
@@ -56,11 +64,11 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
         }
 
         if (null == queryInfo) {
-            return doHighlightQuery(info.getQuery(), fieldName, text, HIT_OPEN_MARK, HIT_CLOSE_MARK);
+            return doHighlightQuery(info.getQuery(), fieldName, text, HIT_OPEN_MARK, HIT_CLOSE_MARK, fragmentOnly);
         } else {
-            String result = doHighlightQuery(queryInfo.getOriginalQuery(), fieldName, text, HIT_OPEN_MARK, HIT_CLOSE_MARK);
-            result = doHighlightQuery(queryInfo.getSynonymPartQuery(), fieldName, result, SYN_OPEN_MARK, SYN_CLOSE_MARK);
-            result = doHighlightQuery(queryInfo.getEfoExpansionPartQuery(), fieldName, result, EFO_OPEN_MARK, EFO_CLOSE_MARK);
+            String result = doHighlightQuery(queryInfo.getOriginalQuery(), fieldName, text, HIT_OPEN_MARK, HIT_CLOSE_MARK, fragmentOnly);
+            result = doHighlightQuery(queryInfo.getSynonymPartQuery(), fieldName, result, SYN_OPEN_MARK, SYN_CLOSE_MARK, fragmentOnly);
+            result = doHighlightQuery(queryInfo.getEfoExpansionPartQuery(), fieldName, result, EFO_OPEN_MARK, EFO_CLOSE_MARK, fragmentOnly);
 
             result = EFO_AND_SYN_REGEX.replace(result, SYN_OPEN_MARK + "$1" + SYN_CLOSE_MARK);
             result = SYN_AND_HIT_REGEX.replace(result, HIT_OPEN_MARK + "$1" + HIT_CLOSE_MARK);
@@ -71,11 +79,18 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
     }
 
     private String doHighlightQuery(Query query, String fieldName, String text, String openMark, String closeMark) {
+        return doHighlightQuery(query,fieldName,text,openMark,closeMark,false);
+    }
+
+    private String doHighlightQuery(Query query, String fieldName, String text, String openMark,
+                                    String closeMark, boolean fragmentOnly) {
         try {
             SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(openMark, closeMark);
             QueryScorer scorer = new QueryScorer(query, fieldName, this.env.defaultField);
             Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
-            highlighter.setTextFragmenter(new SimpleSpanFragmenter(scorer, this.env.searchSnippetFragmentSize));
+            highlighter.setTextFragmenter( fragmentOnly
+                    ? new SimpleSpanFragmenter(scorer, this.env.searchSnippetFragmentSize)
+                    : new NullFragmenter());
             String str = highlighter.getBestFragment(this.env.indexAnalyzer, "".equals(fieldName) ? this.env.defaultField : fieldName, text);
 
             return null != str ? str : text;

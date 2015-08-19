@@ -317,6 +317,17 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                 </xsl:call-template>
                             </a>
+                            <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}" class="file-link">
+                                <span class="thumbnail icon icon-functional" data-icon="4" title="Click to download">
+                                    <xsl:if test="not(ends-with($vName,'.png'))">
+                                        <xsl:attribute name="class" select="('invisible')"/>
+                                    </xsl:if>
+                                    <xsl:if test="fn:ends-with($vName,'.png')">
+                                        <img class="thumbnail" src="{$pBasePath}/thumbnail/{$pFiles/@accession}/{$vName}"/>
+                                    </xsl:if>
+                                </span>
+                            </a>
+
                         </td>
                         <td class="align-right">
                             <xsl:call-template name="file-size">

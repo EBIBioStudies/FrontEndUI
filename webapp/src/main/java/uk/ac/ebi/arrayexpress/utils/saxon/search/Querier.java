@@ -200,13 +200,13 @@ public class Querier {
         highlighter.setEnvironment(this.env);
         for (int i = from - 1; i < to; i++) {
             String accession = leafReader.document(scoreDocs[i].doc).get("id");
-            accessions.add(highlighter.highlightQuery(queryInfo, "id", accession));
+            accessions.add(highlighter.highlightFragment(queryInfo, "id", accession));
             String title = leafReader.document(scoreDocs[i].doc).get("title");
-            titles.add(highlighter.highlightQuery(queryInfo, "title", title));
+            titles.add(highlighter.highlightFragment(queryInfo, "title", title));
             String author = leafReader.document(scoreDocs[i].doc).get("authors");
-            authors.add(highlighter.highlightQuery(queryInfo, "authors", author));
+            authors.add(highlighter.highlightFragment(queryInfo, "authors", author));
             String snippet = leafReader.document(scoreDocs[i].doc).get("keywords");
-            String highlightedSnippet = highlighter.highlightQuery(queryInfo, "keywords", snippet);
+            String highlightedSnippet = highlighter.highlightFragment(queryInfo, "keywords", snippet);
             snippets.add( snippet.length() == highlightedSnippet.length() ? "" : highlightedSnippet );
 
         }
