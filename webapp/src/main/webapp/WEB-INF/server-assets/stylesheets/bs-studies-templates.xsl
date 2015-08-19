@@ -317,7 +317,7 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                 </xsl:call-template>
                             </a>
-                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif')"/>
+                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff')"/>
                             <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}" class="file-link">
                                 <span class="thumbnail icon icon-functional" data-icon="4" title="Click to download">
                                     <xsl:if test="not($isImage)">
