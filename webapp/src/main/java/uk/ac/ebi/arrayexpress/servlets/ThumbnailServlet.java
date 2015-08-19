@@ -1,6 +1,7 @@
 package uk.ac.ebi.arrayexpress.servlets;
 
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.util.ThumbnailatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
@@ -42,7 +43,7 @@ public class ThumbnailServlet extends ApplicationServlet {
 
         if (!files.doesExist(accession, name)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            throw new IOException("File [" + name + "], accession [" + accession + "] is not in files.xml");
+            throw new IOException("File [" + name + "], accession [" + accession + "] is not present");
         } else {
             String location = files.getLocation(accession, name);
             // finally if there is no accession or location determined at the stage - panic
@@ -57,7 +58,6 @@ public class ThumbnailServlet extends ApplicationServlet {
             }
 
             logger.debug("Will be serving file [{}{}]",files.getRootFolder(), location);
-
             Thumbnails.of(files.getRootFolder()+location)
                     .size(200, 200)
                     .outputFormat("png")
