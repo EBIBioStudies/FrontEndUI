@@ -61,6 +61,7 @@
 
 .ae-detail-list {
     list-style-type: none;
+    margin: 0;
     padding: 0;
 }
 
@@ -184,7 +185,11 @@ span.icon.icon-functional:before{
 .ae-section-files {
     margin: 10px 0px;
 }
-
+.ae-section-file-title
+{
+    color: #6BA8C5;
+    font-size: 110%;
+}
 a.file-link {
     padding-left: 2px;
 }
@@ -199,11 +204,7 @@ a.file-link {
 }
 
 img.thumbnail {
-    display: none;
-    position: absolute;
     border: 1px solid #888;
-    left: -175px;
-    margin-top: -15px !important;
     box-shadow: 3px 3px 5px #AAA;
 }
 
@@ -211,6 +212,3 @@ img.thumbnail {
     border: 0px !important;
 }
 
-.file-list-file-name:hover > a img.thumbnail {
-    display: block;
-}

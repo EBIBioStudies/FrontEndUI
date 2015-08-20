@@ -25,8 +25,7 @@ var table = null;
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {
             "scrollX": true,
-            "dom":"t",
-            "autoWidth":false
+            "dom":"t"
         });
         $(".ae-section-files").hide();
 
@@ -87,6 +86,18 @@ var table = null;
                 $(this).text('show files in this section')
             }
 
+        });
+
+        $(".file-link").hover(function (e) {
+            if (! $(this).data('thumbnail')) return;
+            $("body").append("<div id='thumbnail-div'><img class='thumbnail' src='" + $(this).data('thumbnail') + "'/></div>");
+            $("#thumbnail-div")
+                .css("position", "absolute")
+                .css("top", (e.pageY - 10) + "px")
+                .css("left", (e.pageX + 20) + "px")
+                .fadeIn("fast");
+        }, function () {
+            $("#thumbnail-div").remove();
         });
     });
 
