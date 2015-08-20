@@ -32,6 +32,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.converter.AbstractWordUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
+import org.apache.poi.xwpf.converter.pdf.PdfConverter;
+import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.file.Paths;
@@ -89,19 +92,32 @@ public class Thumbnails extends ApplicationComponent {
         response.getOutputStream().close();
     }
 
-    private void createThumbnail(String filepath, Files files, File thumbnailFile)  {
+    private void createThumbnail(String sourceFilePath, Files files, File thumbnailFile)  {
         try {
             thumbnailFile.getParentFile().mkdirs();
-            String mimeType = java.nio.file.Files.probeContentType(Paths.get(filepath));
+            String mimeType = java.nio.file.Files.probeContentType(Paths.get(sourceFilePath));
             logger.debug("Creating thumbnail [{}] for mime-type {}", thumbnailFile.getAbsolutePath(), mimeType);
             if (Arrays.asList(ImageIO.getReaderMIMETypes()).contains(mimeType)) {
-                net.coobird.thumbnailator.Thumbnails.of(filepath)
+                net.coobird.thumbnailator.Thumbnails.of(sourceFilePath)
                         .size(200, 200)
                         .outputFormat("png")
                         .toFile(thumbnailFile);
+            } else if ("application/vnd.openxmlformats-officedocument.wordprocessingml.document".equalsIgnoreCase(mimeType)) {
+                //convert word to pdf
+                String tempPDFFilePath = thumbnailFile.getAbsolutePath()+".pdf";
+                FileInputStream in = new FileInputStream(sourceFilePath);
+                FileOutputStream out = new FileOutputStream(tempPDFFilePath);
+                XWPFDocument wordDoc = new XWPFDocument(in);
+                PdfConverter.getInstance().convert(wordDoc, out, PdfOptions.create());
+                in.close();
+                out.close();
+                //convert pdf to image
+                PDPage page = (PDPage) PDDocument.load(tempPDFFilePath).getDocumentCatalog().getAllPages().get(0);
+                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB,96);
+                ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
+                new File(tempPDFFilePath).delete();
             } else if ("application/pdf".equalsIgnoreCase(mimeType)) {
-                PDDocument document = PDDocument.load(filepath);
-                PDPage page = (PDPage) PDDocument.load(filepath).getDocumentCatalog().getAllPages().get(0);
+                PDPage page = (PDPage) PDDocument.load(sourceFilePath).getDocumentCatalog().getAllPages().get(0);
                 BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB,96);
                 ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
             }
