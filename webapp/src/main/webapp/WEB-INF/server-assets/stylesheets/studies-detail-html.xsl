@@ -160,6 +160,7 @@
                     <xsl:call-template name="study-funding">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
+                        <xsl:with-param name="vFiles" select="$vFiles"/>
                     </xsl:call-template>
                 </div>
             </div>

@@ -446,6 +446,7 @@
     <xsl:template name="study-funding">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
+        <xsl:param name="vFiles" select="''"/>
         <xsl:call-template name="section">
             <xsl:with-param name="pName" select="'Funding'"/>
             <xsl:with-param name="pClass" select="('ae-detail-funding-list')"/>
@@ -473,6 +474,18 @@
                         </li>
                     </xsl:for-each-group>
                 </ul>
+                <xsl:if test="fn:exists($pNodes//file)">
+                    <a class="show-more toggle-files">show files in this section</a>
+                    <div class="ae-section-files">
+                        <div class="ae-section-file-title">Files</div>
+                        <xsl:call-template name="file-table">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select="$pNodes//file"/>
+                            <xsl:with-param name="pFiles" select="$vFiles"/>
+                            <xsl:with-param name="pBasePath" select="$context-path"/>
+                        </xsl:call-template>
+                    </div>
+                </xsl:if>
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
@@ -483,7 +496,7 @@
         <xsl:param name="pClass" as="xs:string*" select="''"/>
         <xsl:param name="queryid" select="''"/>
         <xsl:param name="pNodes" select="''"/>
-        <xsl:param name="vFiles" select="''"/>
+        <xsl:param name="vFiles"/>
         <xsl:param name="context-path" select="''"/>
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <xsl:if test="fn:exists($pName) and fn:matches($pName,'[^\s*]')">
