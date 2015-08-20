@@ -22,6 +22,21 @@ var table = null;
 
     $(function() {
 
+        // capture hover before datatable is rendered
+        $(".file-link").hover(function (e) {
+            if (! $(this).data('thumbnail')) return;
+            $("#thumbnail-div")
+                .css("position", "absolute")
+                .css("top", (e.pageY - 10) + "px")
+                .css("left", (e.pageX + 20) + "px")
+                .fadeIn("fast");
+            $("#thumbnail-image").attr("src",($(this).data('thumbnail')));
+
+        }, function () {
+            $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
+            $("#thumbnail-div").hide();
+        });
+
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {
             "scrollX": true,
@@ -86,18 +101,6 @@ var table = null;
                 $(this).text('show files in this section')
             }
 
-        });
-
-        $(".file-link").hover(function (e) {
-            if (! $(this).data('thumbnail')) return;
-            $("body").append("<div id='thumbnail-div'><img class='thumbnail' src='" + $(this).data('thumbnail') + "'/></div>");
-            $("#thumbnail-div")
-                .css("position", "absolute")
-                .css("top", (e.pageY - 10) + "px")
-                .css("left", (e.pageX + 20) + "px")
-                .fadeIn("fast");
-        }, function () {
-            $("#thumbnail-div").remove();
         });
     });
 

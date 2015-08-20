@@ -1,21 +1,19 @@
 package uk.ac.ebi.arrayexpress.servlets;
 
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.util.ThumbnailatorUtils;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
 import uk.ac.ebi.arrayexpress.components.Files;
+import uk.ac.ebi.arrayexpress.components.Thumbnails;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Created by awais on 19/08/2015.
@@ -44,6 +42,7 @@ public class ThumbnailServlet extends ApplicationServlet {
         }
         logger.info("Requested thumbnail of [" + name + "], accession [" + accession + "]");
         Files files = getComponent(Files.class);
+        Thumbnails thumbnails = getComponent(Thumbnails.class);
 
         if (!files.doesExist(accession, name)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -61,19 +60,10 @@ public class ThumbnailServlet extends ApplicationServlet {
                                 + "] were not determined");
             }
 
-            File thumbnail = new File(files.getThumbnailsFolder()+location+".thumbnail.png");
-            if (!thumbnail.exists()) {
-                logger.debug("Creating thumbnail [{}{}]", thumbnail.getAbsolutePath());
-                thumbnail.getParentFile().mkdirs();
-                Thumbnails.of(files.getRootFolder() + location)
-                        .size(200, 200)
-                        .outputFormat("png")
-                        .toFile(thumbnail);
-            }
-            IOUtils.copy(new FileInputStream(thumbnail), response.getOutputStream());
-            response.getOutputStream().flush();
-            response.getOutputStream().close();
+            thumbnails.sendThumbnail(response, location);
         }
 
     }
+
+
 }

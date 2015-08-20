@@ -199,9 +199,14 @@ a.file-link {
 }
 
 .thumbnail {
-    color: #888;
+    color: #aaa;
     padding-left: 2px;
 }
+
+#thumbnail-div {
+    display: none;
+}
+
 
 img.thumbnail {
     border: 1px solid #888;
