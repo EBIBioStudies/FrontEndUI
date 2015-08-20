@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
 import uk.ac.ebi.arrayexpress.components.JobsController;
 import uk.ac.ebi.arrayexpress.components.Studies;
+import uk.ac.ebi.arrayexpress.components.Thumbnails;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.Indexer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +75,7 @@ public class ControlServlet extends ApplicationServlet {
             } else if ("delete".equals(command)) {
                 getComponent(Studies.class).delete(request.getParameter("accession"));
             } else if ("clear-thumbnails".equals(command)) {
-                getComponent(Studies.class).clearThumbnails();
+                getComponent(Thumbnails.class).clearThumbnails();
             } else if ("test-email".equals(command)) {
                 getApplication().sendEmail(
                         null

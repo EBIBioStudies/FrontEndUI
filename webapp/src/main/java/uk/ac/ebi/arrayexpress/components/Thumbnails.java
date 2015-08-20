@@ -17,21 +17,11 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.wmf.tosvg.WMFTranscoder;
-import org.apache.batik.transcoder.wmf.tosvg.WMFUtilities;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.ImageIOUtil;
-import org.apache.pdfbox.util.PDFImageWriter;
-import org.apache.poi.hpsf.SummaryInformation;
-import org.apache.poi.hpsf.Thumbnail;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hwpf.converter.AbstractWordUtils;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
 import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -39,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -47,7 +36,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
@@ -74,26 +62,28 @@ public class Thumbnails extends ApplicationComponent {
     }
 
     public synchronized void clearThumbnails() throws IOException {
-        FileUtils.deleteDirectory(new File(getThumbnailsFolder()));
+        FileDeleteStrategy.FORCE.delete(new File(getThumbnailsFolder()));
     }
 
     public void sendThumbnail(HttpServletResponse response, String location) throws IOException {
         Files files = getComponent(Files.class);
-        File thumbnail = new File(files.getThumbnailsFolder()+location+".thumbnail.png");
+        File thumbnail = new File(getThumbnailsFolder()+location+".thumbnail.png");
+
         if (!thumbnail.exists()) {
             createThumbnail(files.getRootFolder() + location, files, thumbnail);
         }
-        if (thumbnail.exists()) {
-            FileInputStream in = new FileInputStream(thumbnail);
+        FileInputStream in = new FileInputStream(thumbnail);
+        try {
             IOUtils.copy(in, response.getOutputStream());
+        } finally {
             in.close();
         }
         response.getOutputStream().flush();
         response.getOutputStream().close();
     }
 
-    private void createThumbnail(String sourceFilePath, Files files, File thumbnailFile)  {
-        try {
+    private void createThumbnail(String sourceFilePath, Files files, File thumbnailFile) throws IOException {
+        synchronized (sourceFilePath) {
             thumbnailFile.getParentFile().mkdirs();
             String mimeType = java.nio.file.Files.probeContentType(Paths.get(sourceFilePath));
             logger.debug("Creating thumbnail [{}] for mime-type {}", thumbnailFile.getAbsolutePath(), mimeType);
@@ -102,9 +92,13 @@ public class Thumbnails extends ApplicationComponent {
                         .size(200, 200)
                         .outputFormat("png")
                         .toFile(thumbnailFile);
+            } else if ("application/pdf".equalsIgnoreCase(mimeType)) {
+                PDPage page = (PDPage) PDDocument.load(sourceFilePath).getDocumentCatalog().getAllPages().get(0);
+                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB, 96);
+                ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
             } else if ("application/vnd.openxmlformats-officedocument.wordprocessingml.document".equalsIgnoreCase(mimeType)) {
                 //convert word to pdf
-                String tempPDFFilePath = thumbnailFile.getAbsolutePath()+".pdf";
+                String tempPDFFilePath = thumbnailFile.getAbsolutePath() + ".pdf";
                 FileInputStream in = new FileInputStream(sourceFilePath);
                 FileOutputStream out = new FileOutputStream(tempPDFFilePath);
                 XWPFDocument wordDoc = new XWPFDocument(in);
@@ -113,16 +107,10 @@ public class Thumbnails extends ApplicationComponent {
                 out.close();
                 //convert pdf to image
                 PDPage page = (PDPage) PDDocument.load(tempPDFFilePath).getDocumentCatalog().getAllPages().get(0);
-                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB,96);
+                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB, 96);
                 ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
                 new File(tempPDFFilePath).delete();
-            } else if ("application/pdf".equalsIgnoreCase(mimeType)) {
-                PDPage page = (PDPage) PDDocument.load(sourceFilePath).getDocumentCatalog().getAllPages().get(0);
-                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB,96);
-                ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
         }
     }
 

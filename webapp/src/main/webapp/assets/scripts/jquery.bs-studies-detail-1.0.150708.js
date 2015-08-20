@@ -29,14 +29,19 @@ var table = null;
                 .css("position", "absolute")
                 .css("top", (e.pageY - 10) + "px")
                 .css("left", (e.pageX + 20) + "px")
+                .css("width", "150px")
                 .fadeIn("fast");
             $("#thumbnail-image").attr("src",($(this).data('thumbnail')));
 
         }, function () {
             $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
-            $("#thumbnail-div").hide();
+            $("#thumbnail-div").css("width","auto").hide();
         });
 
+        $(".file-link").mouseout(function (e) {
+            $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
+            $("#thumbnail-div").css("width","auto").hide();
+        });
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {
             "scrollX": true,

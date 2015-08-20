@@ -149,17 +149,6 @@ public class Files extends ApplicationComponent implements XMLDocumentSource {
         return this.rootFolder;
     }
 
-    public synchronized String getThumbnailsFolder() {
-        if (null == this.thumbnailsFolder) {
-            this.thumbnailsFolder = getPreferences().getString("bs.studies.thumbnails-location");
-        }
-        return this.thumbnailsFolder;
-    }
-
-    public synchronized void clearThumbnails() throws IOException {
-        FileUtils.deleteDirectory(new File(getThumbnailsFolder()));
-    }
-
     public String getLastReloadMessage() {
         return this.lastReloadMessage;
     }
