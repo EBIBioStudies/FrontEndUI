@@ -18,32 +18,39 @@
 package uk.ac.ebi.arrayexpress.components;
 
 import org.apache.commons.io.FileDeleteStrategy;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.util.ImageIOUtil;
-import org.apache.poi.xwpf.converter.pdf.PdfConverter;
-import org.apache.poi.xwpf.converter.pdf.PdfOptions;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
+import uk.ac.ebi.arrayexpress.components.thumbnails.*;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Thumbnails extends ApplicationComponent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String thumbnailsFolder;
+    private Map<String, IThumbnail> thumbnailGenerators = new HashMap<>();
 
     public Thumbnails() {
+        //register thumbnail generators
+        //TODO: use ServiceLoader or annotations instead
+        registerThumbnailHandler(new ImageThumbnail());
+        registerThumbnailHandler(new PDFThumbnail());
+        registerThumbnailHandler(new DOCXThumbnail());
+        registerThumbnailHandler(new TXTThumbnail());
+
+    }
+
+    private void registerThumbnailHandler(IThumbnail thumbnailHandler) {
+        for (String mimeType: thumbnailHandler.getSupportedTypes()) {
+            thumbnailGenerators.put(mimeType, thumbnailHandler);
+        }
     }
 
     @Override
@@ -85,31 +92,13 @@ public class Thumbnails extends ApplicationComponent {
     private void createThumbnail(String sourceFilePath, Files files, File thumbnailFile) throws IOException {
         synchronized (sourceFilePath) {
             thumbnailFile.getParentFile().mkdirs();
-            String mimeType = java.nio.file.Files.probeContentType(Paths.get(sourceFilePath));
-            logger.debug("Creating thumbnail [{}] for mime-type {}", thumbnailFile.getAbsolutePath(), mimeType);
-            if (Arrays.asList(ImageIO.getReaderMIMETypes()).contains(mimeType)) {
-                net.coobird.thumbnailator.Thumbnails.of(sourceFilePath)
-                        .size(200, 200)
-                        .outputFormat("png")
-                        .toFile(thumbnailFile);
-            } else if ("application/pdf".equalsIgnoreCase(mimeType)) {
-                PDPage page = (PDPage) PDDocument.load(sourceFilePath).getDocumentCatalog().getAllPages().get(0);
-                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB, 96);
-                ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
-            } else if ("application/vnd.openxmlformats-officedocument.wordprocessingml.document".equalsIgnoreCase(mimeType)) {
-                //convert word to pdf
-                String tempPDFFilePath = thumbnailFile.getAbsolutePath() + ".pdf";
-                FileInputStream in = new FileInputStream(sourceFilePath);
-                FileOutputStream out = new FileOutputStream(tempPDFFilePath);
-                XWPFDocument wordDoc = new XWPFDocument(in);
-                PdfConverter.getInstance().convert(wordDoc, out, PdfOptions.create());
-                in.close();
-                out.close();
-                //convert pdf to image
-                PDPage page = (PDPage) PDDocument.load(tempPDFFilePath).getDocumentCatalog().getAllPages().get(0);
-                BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB, 96);
-                ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
-                new File(tempPDFFilePath).delete();
+            //Using extension to decide on the class as mime-types are different across *nix/Windows
+            String fileType = FilenameUtils.getExtension(sourceFilePath);
+            logger.debug("Creating thumbnail [{}] for file type {}", thumbnailFile.getAbsolutePath(), fileType);
+            if (thumbnailGenerators.containsKey(fileType)) {
+                thumbnailGenerators.get(fileType).generateThumbnail(sourceFilePath, thumbnailFile);
+            } else {
+                logger.debug("Invalid file type for creating thumbnail: {}", fileType);
             }
         }
     }
