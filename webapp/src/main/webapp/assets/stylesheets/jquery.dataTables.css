@@ -176,8 +176,11 @@ table.dataTable.no-footer {
 table.dataTable.nowrap th, table.dataTable.nowrap td {
   white-space: nowrap;
 }
-table.dataTable.compact thead th,
 table.dataTable.compact thead td {
+  padding: 4px 17px 4px 4px;
+  word-wrap: break-word;
+}
+table.dataTable.compact thead th{
   padding: 4px 17px 4px 4px;
 }
 table.dataTable.compact tfoot th,
@@ -186,6 +189,7 @@ table.dataTable.compact tfoot td {
 }
 table.dataTable.compact tbody th,
 table.dataTable.compact tbody td {
+  word-wrap: break-word;
   padding: 4px;
 }
 table.dataTable th.dt-left,

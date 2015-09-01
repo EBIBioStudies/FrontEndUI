@@ -21,12 +21,15 @@ import net.sf.saxon.om.NodeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
+import uk.ac.ebi.arrayexpress.utils.FileTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Studies extends ApplicationComponent implements XMLDocumentSource {
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+public class Studies extends ApplicationComponent  {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 //    public final static String MAP_STUDIES_VIEWS = "studies-views";
@@ -35,7 +38,7 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
 //    public final static String MAP_STUDIES = "studies";
 //    public final static String MAP_STUDIES_FOR_USER = "studies-for-user";
 
-    private Document document;
+//    private Document document;
 //    private FilePersistence<PersistableString> species;
 //    private FilePersistence<PersistableString> arrays;
 
@@ -57,9 +60,9 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
 //        this.events = (Events) getComponent("Events");
         this.autocompletion = getComponent(Autocompletion.class);
 
-        this.document = new StoredDocument(
-                new File(getPreferences().getString("bs.studies.persistence-location")),
-                "studies");
+//        this.document = new StoredDocument(
+//                new File(getPreferences().getString("bs.studies.persistence-location")),
+//                "studies");
 
 //        this.species = new FilePersistence<>(
 //                new PersistableString()
@@ -82,15 +85,16 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
 //        maps.registerMap(new MapEngine.SimpleValueMap(MAP_EXPERIMENTS_FOR_USER));
 //        users.registerUserMap(new MapEngine.SimpleValueMap(INDEX_ID));
 
-        updateIndex();
+        update("<studies/>"); // Initialise index with empty body if it doesn't exist
 //        updateMaps();
-        this.saxon.registerDocumentSource(this);
+       // this.saxon.registerDocumentSource(this);
     }
 
     @Override
     public void terminate() throws Exception {
     }
 
+    /*
     @Override
     public String getURI() {
         return "studies.xml";
@@ -112,7 +116,7 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
             this.logger.error("Studies NOT updated, NULL document passed");
         }
     }
-
+    */
 //    public String getSpecies() throws IOException {
 //        return this.species.getObject().get();
 //    }
@@ -130,7 +134,10 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
                     , null
             );
             if (null != updateXml) {
-                new DocumentUpdater(this, updateXml).update();
+                Document document = new StoredDocument(updateXml.getDocumentRoot(),
+                        new File(getPreferences().getString("bs.studies.persistence-location")));
+                updateIndex(document);
+//                new DocumentUpdater(this, updateXml).update();
 //                buildSpeciesArrays();
 //                success = true;
             }
@@ -142,9 +149,38 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
         }
     }
 
-    private void updateIndex() throws IOException {
+    public void updateFromXMLFile(String xmlFileName) throws IOException, InterruptedException {
+        if (xmlFileName == null) {
+            xmlFileName = "studies.xml";
+        }
+        String sourceLocation = getPreferences().getString("bs.studies.source-location");
+        if (isNotBlank(sourceLocation)) {
+            logger.info("Reload of experiment data from [{}] requested", sourceLocation);
+            update(FileTools.readXMLStringFromFile(new File(sourceLocation, xmlFileName)));
+        }
+    }
+
+    private void updateIndex(Document document) throws IOException {
         try {
             this.search.getController().index(INDEX_ID, document);
+            this.autocompletion.rebuild();
+        } catch (Exception x) {
+            throw new RuntimeException(x);
+        }
+    }
+
+    public void delete(String accession) throws IOException {
+        try {
+            this.search.getController().delete(INDEX_ID, accession);
+            this.autocompletion.rebuild();
+        } catch (Exception x) {
+            throw new RuntimeException(x);
+        }
+    }
+
+    public void clearIndex() throws IOException {
+        try {
+             this.search.getController().clearIndex(INDEX_ID);
             this.autocompletion.rebuild();
         } catch (Exception x) {
             throw new RuntimeException(x);
@@ -236,4 +272,6 @@ public class Studies extends ApplicationComponent implements XMLDocumentSource {
 //        }
 //
 //    }
+
+
 }

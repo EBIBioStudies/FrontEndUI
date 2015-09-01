@@ -61,6 +61,7 @@
 
 .ae-detail-list {
     list-style-type: none;
+    margin: 0;
     padding: 0;
 }
 
@@ -104,6 +105,11 @@
 }
 
 .padded-blue-icon {
+    margin-right:5px;
+    color: #466B7D !important;
+}
+
+.section-files-icon {
     margin-right:5px;
     color: #466B7D !important;
 }
@@ -175,3 +181,38 @@ span.icon.icon-functional:before{
 .text-bottom {
     vertical-align: text-bottom;
 }
+
+.ae-section-files {
+    margin: 10px 0px;
+}
+.ae-section-file-title
+{
+    color: #6BA8C5;
+    font-size: 110%;
+}
+a.file-link {
+    padding-left: 2px;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.thumbnail {
+    color: #aaa;
+    padding-left: 2px;
+}
+
+#thumbnail-div {
+    display: none;
+}
+
+img.thumbnail {
+    border: 1px solid #888;
+    box-shadow: 3px 3px 5px #AAA;
+}
+
+.file-link {
+    border: 0px !important;
+}
+

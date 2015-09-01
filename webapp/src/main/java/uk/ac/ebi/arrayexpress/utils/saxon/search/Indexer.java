@@ -23,6 +23,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
@@ -33,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,26 +56,17 @@ public class Indexer {
 
     public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
         try {
-            if (getDocumentHash().equals(document.getHash())) {
-                logger.debug("Existing index found, no need to refresh");
-                List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
-                List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
-
-                for (Object node : documentNodes) {
-                    indexedNodes.add((NodeInfo) node);
-                }
-                return indexedNodes;
-            }
             try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
-                setDocumentHash(document.getHash());
+                //setDocumentHash(document.getHash());
 
-                List documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
+                List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
                 List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
 
-                for (Object node : documentNodes) {
+                for (Item node : documentNodes) {
                     Document d = new Document();
 
-                    // get all the fields taken care of
+                    String idValue = ""; // value of id field (i.e. accession in case of studies)
+
                     for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
                         try {
                             List<Item> values = saxon.evaluateXPath((NodeInfo) node, field.path);
@@ -91,10 +84,12 @@ public class Indexer {
                                 } else {
                                     addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
                                     if (!"none".equalsIgnoreCase(field.docValueType)) {
-                                        d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase()))); // TODO: add analyser to the field definition
+                                        d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase())));
                                     }
                                 }
-                                Thread.sleep(0);
+                                if ( field.name.equalsIgnoreCase(env.idField)) {
+                                    idValue = v.getStringValue();
+                                }
                             }
                         } catch (XPathException x) {
                             String expression = ((NodeInfo) node).getStringValue();
@@ -102,9 +97,10 @@ public class Indexer {
                             throw x;
                         }
                     }
-                    addDocIdField(d, indexedNodes.size());
-                    w.addDocument(d);
-                    // append node to the list
+                    addXMLField(d, node);
+                    addDocIdField(d, idValue);
+                    //logger.debug("Indexing document {} = {}", env.idField, idValue);
+                    w.updateDocument(new Term("id", idValue), d);
                     indexedNodes.add((NodeInfo) node);
                 }
 
@@ -112,17 +108,49 @@ public class Indexer {
 
                 return indexedNodes;
             }
-        } catch (IOException | XPathException x) {
+        } catch (IOException | XPathException | SaxonException x) {
             throw new IndexerException(x);
         }
+    }
+
+    private void addXMLField(Document d, Item node) throws SaxonException {
+        FieldType fieldType = new FieldType();
+        fieldType.setOmitNorms(true);
+        fieldType.setIndexOptions(IndexOptions.NONE);
+        fieldType.setStored(true);
+        fieldType.setTokenized(false);
+        fieldType.freeze();
+        Field field =new Field("xml", saxon.serializeDocument((NodeInfo)node) , fieldType );
+        d.add(field);
     }
 
 
     private IndexWriter createIndex(Directory indexDirectory, Analyzer analyzer) throws IOException {
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
-        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
         return new IndexWriter(indexDirectory, config);
+    }
+
+    public void clearIndex() throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(this.env.indexAnalyzer);
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND );
+        try (IndexWriter w = new IndexWriter(this.env.indexDirectory, config) ){
+            w.deleteAll();
+            w.forceMergeDeletes();
+            w.commit();
+        }
+
+    }
+
+    public void delete(String accession) throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(this.env.indexAnalyzer);
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND );
+        try (IndexWriter w = new IndexWriter(this.env.indexDirectory, config) ){
+            w.deleteDocuments( new Term("id",accession));
+            w.forceMergeDeletes();
+            w.commit();
+        }
+
     }
 
     private void addStringField(Document document, String name, Item value, boolean shouldAnalyze, boolean shouldStore, float boost) {
@@ -164,31 +192,13 @@ public class Indexer {
         }
     }
 
-    private void addDocIdField(Document document, int docId) {
-        document.add(new NumericDocValuesField(DOCID_FIELD, docId));
+    private void addDocIdField(Document document, String value) {
+        FieldType fieldType = new FieldType();
+        fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
+        fieldType.setTokenized(false);
+        fieldType.setStored(true);
+        Field field =new Field("id", value, fieldType);
+        document.add(field);
     }
 
-    private void setDocumentHash(String hash) throws IOException {
-        Directory dir = this.env.indexDirectory;
-        for (String f : dir.listAll()) {
-            if (f.endsWith(".hash")) {
-                dir.deleteFile(f);
-            }
-        }
-        try (IndexOutput o = dir.createOutput(hash + ".hash", null)) {
-            o.close();
-        }
-    }
-
-    private String getDocumentHash() throws IOException {
-        Directory dir = this.env.indexDirectory;
-        if (DirectoryReader.indexExists(dir)) {
-            for (String f : dir.listAll()) {
-                if (f.endsWith(".hash")) {
-                    return f.substring(0, f.indexOf(".hash"));
-                }
-            }
-        }
-        return "";
-    }
 }

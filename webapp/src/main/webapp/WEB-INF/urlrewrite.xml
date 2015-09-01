@@ -106,6 +106,10 @@
         <from>^/files/([^/]+)/([^/]+)$</from>
         <to type="forward" last="true">/servlets/download/${upper:$1}/$2</to>
     </rule>
+    <rule>
+        <from>^/thumbnail/([^/]+)/([^/]+)$</from>
+        <to type="forward" last="true">/servlets/thumbnail/${upper:$1}/$2</to>
+    </rule>
     <!-- about page -->
     <rule>
         <from>^/about[.]html?$</from>
@@ -181,8 +185,26 @@
         <to type="forward" last="true">/servlets/control/update-efo</to>
     </rule>
     <rule>
-        <from>^/reload-xml$</from>
+        <from>^/delete/([^/]+)/?$</from>
+        <set type="parameter" name="accession">$1</set>
+        <to type="forward" last="true">/servlets/control/delete</to>
+    </rule>
+    <rule>
+        <from>^/reload-xml/([^/]+)/?$</from>
+        <set type="parameter" name="xmlFilePath">$1</set>
         <to type="forward" last="true">/servlets/control/reload-xml</to>
+    </rule>
+    <rule>
+        <from>^/reload-xml/?$</from>
+        <to type="forward" last="true">/servlets/control/reload-xml</to>
+    </rule>
+    <rule>
+        <from>^/clear-index$</from>
+        <to type="forward" last="true">/servlets/control/clear-index</to>
+    </rule>
+    <rule>
+        <from>^/clear-thumbnails$</from>
+        <to type="forward" last="true">/servlets/control/clear-thumbnails</to>
     </rule>
     <rule>
         <from>^/rescan-files$</from>

@@ -45,7 +45,7 @@
 }
 
 #content th, #content td {
-    /*padding: 0;*/
+    /* padding: 0; */
     border:  0 none;
     border-collapse: collapse;
     vertical-align: middle;
@@ -139,6 +139,8 @@ ul#secondary-nav li.active > a {
 a.show-more, a.show-less {
     color: #8F5109;
     padding: 0;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 a.show-more:hover,
@@ -359,6 +361,7 @@ a.show-less:hover {
 
 .text-hit {
     background-color: #FFFF00;
+    padding: 0px 1px;
 }
 
 .text-syn {
@@ -367,6 +370,7 @@ a.show-less:hover {
 
 .text-efo {
     background-color: #FFCCAA;
+    padding: 0px 1px;
 }
 
 /* home page stuff */
@@ -650,8 +654,7 @@ p.center {
 
 #ae-detail th
 , #ae-detail td {
-    font-size: 100%
-}
+    font-size: 100%}
 
 #ae-detail td {
     vertical-align: top

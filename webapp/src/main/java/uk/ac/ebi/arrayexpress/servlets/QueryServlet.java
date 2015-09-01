@@ -17,7 +17,7 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
-import net.sf.saxon.om.NodeInfo;
+
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,7 @@ import uk.ac.ebi.fg.saxon.functions.HTTPStatusException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -118,17 +119,15 @@ public class QueryServlet extends AuthAwareApplicationServlet {
 
             // migration rudiment - show only "visible" i.e. overlapping experiments from AE2
             params.put("visible", "true");
-
             try {
                 SearchEngine search = getComponent(SearchEngine.class);
                 SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
-                NodeInfo source = saxonEngine.getAppDocument().getRootNode();
-                if (search.getController().hasIndexDefined(index)) { // only do query if index id is defined
-                    source = saxonEngine.getRegisteredDocument(index + ".xml");
-                    Integer queryId = search.getController().addQuery(index, params);
-                    params.put("queryid", String.valueOf(queryId));
-                }
 
+                if (!search.getController().hasIndexDefined(index)) // default to studies index to show total
+                    index = "studies";
+                Integer queryId = search.getController().addQuery(index, params);
+                params.put("queryid", String.valueOf(queryId));
+                Source source = search.getController().search(queryId);
                 if (!saxonEngine.transform(source, stylesheetName, params, new StreamResult(out))) {
                     throw new Exception("Transformation returned an error");
                 }

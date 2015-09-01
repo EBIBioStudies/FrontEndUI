@@ -33,10 +33,11 @@ public class CheckExperimentsJob extends ApplicationJob {
     public void doExecute(JobExecutionContext jec) throws Exception {
         SaxonEngine saxon = getComponent(SaxonEngine.class);
 
-        String report = saxon.transformToString(
+        String report = "";
+        /*saxon.transformToString(
                 getComponent(Studies.class).getRootNode()
                 , "check-experiments-plain.xsl"
-                , null);
+                , null);*/
 
         if (!report.trim().isEmpty()) {
             getApplication().sendEmail(

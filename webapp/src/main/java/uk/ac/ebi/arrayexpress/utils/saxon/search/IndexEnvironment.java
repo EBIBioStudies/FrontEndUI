@@ -42,6 +42,7 @@ public class IndexEnvironment {
     public Directory indexDirectory;
     public PerFieldAnalyzerWrapper indexAnalyzer;
     public String defaultField;
+    public String idField;
     public int searchSnippetFragmentSize;
 
     // index document xpath
@@ -82,7 +83,7 @@ public class IndexEnvironment {
 
     // document info
     public String documentHashCode;
-    public List<NodeInfo> documentNodes;
+    //public List<NodeInfo> documentNodes;
 
     public IndexEnvironment(HierarchicalConfiguration indexConfig) {
         this.indexConfig = indexConfig;
@@ -91,7 +92,7 @@ public class IndexEnvironment {
 
     public void setDocumentInfo(String documentHashCode, List<NodeInfo> documentNodes) {
         this.documentHashCode = documentHashCode;
-        this.documentNodes = documentNodes;
+        //this.documentNodes = documentNodes;
     }
 
     private void populateIndexConfiguration() {
@@ -107,6 +108,8 @@ public class IndexEnvironment {
             this.indexDocumentPath = indexConfig.getString("document[@path]");
 
             this.defaultField = indexConfig.getString("document[@defaultField]");
+
+            this.idField = indexConfig.getString("document[@idField]", defaultField);
 
             this.searchSnippetFragmentSize = indexConfig.getInt("[@searchSnippetFragmentSize]", 256);
 

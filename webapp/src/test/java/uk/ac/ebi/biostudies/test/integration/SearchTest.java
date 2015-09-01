@@ -1,5 +1,7 @@
 package uk.ac.ebi.biostudies.test.integration;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,7 +14,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.ac.ebi.biostudies.BSInterfaceTestApplication;
+import uk.ac.ebi.biostudies.utils.TestUtils;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,6 +38,7 @@ public class SearchTest {
         driver = new HtmlUnitDriver();
         ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
+        driver.get(baseUrl + "/reload-xml");
     }
 
     @Before
@@ -76,7 +81,7 @@ public class SearchTest {
     }
 
     private void testSort(String cssSelector) {
-        testSort(cssSelector,false);
+        testSort(cssSelector, false);
     }
 
     private void testSort(String cssSelector, boolean isDescending) {
@@ -175,7 +180,7 @@ public class SearchTest {
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-links"));
         Integer [] values = new Integer[list.size()];
         for(int i=0; i < values.length; i++) {
-            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" links",""));
+            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" links", ""));
         }
         Integer [] unsortedValues = values.clone();
         assertArrayEquals(values, unsortedValues);
@@ -219,11 +224,44 @@ public class SearchTest {
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
         assertTrue(pages.startsWith("Showing 26"));
         String accession  = driver.findElement(By.cssSelector(".browse-study-accession")).getText();
-        System.out.println(accession);
         driver.findElement(By.cssSelector(".browse-study-title a")).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#ae-detail-title")));
-        assertTrue(driver.getTitle().startsWith(accession));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".accessionNumber")));
+        assertEquals(accession, driver.findElement(By.cssSelector(".accessionNumber")).getText());
+    }
+
+    @Test
+    public void testClearIndex() throws Exception {
+        driver.get(baseUrl + "/clear-index");
+        driver.get(baseUrl + "/studies/");
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("h2.alert")));
+        driver.get(baseUrl + "/reload-xml");
+        assertTrue(true);
+    }
+
+    @Test
+    public void testLargeIndex() throws Exception{
+
+        driver.get(baseUrl + "/clear-index");
+        StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
+        for (int doc = 0; doc <= 200000; doc++) {
+            sb.append(TestUtils.getTestSubmission(doc));
+            if (doc%10000==0) {
+                sb.append("</submissions></pmdocument>");
+                String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
+                File file = new File(sourceLocation, "temp-test-study.xml");
+                FileUtils.writeStringToFile(file, sb.toString());
+                driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
+                file.delete();
+                sb = new StringBuffer("<pmdocument><submissions>");
+            }
+        }
+        driver.get(baseUrl + "/studies/");
+        String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
+        assertTrue(pages.endsWith("Showing 1 - 25 of 200001 studies"));
+        driver.get(baseUrl + "/clear-index");
+        driver.get(baseUrl + "/reload-xml");
     }
 
 }

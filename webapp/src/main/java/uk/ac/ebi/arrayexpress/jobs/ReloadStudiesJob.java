@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationJob;
 import uk.ac.ebi.arrayexpress.components.*;
+import uk.ac.ebi.arrayexpress.utils.FileTools;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import java.io.File;
@@ -41,13 +42,11 @@ public class ReloadStudiesJob extends ApplicationJob {
             String sourceLocation = getPreferences().getString("bs.studies.source-location");
             if (isNotBlank(sourceLocation)) {
                 logger.info("Reload of experiment data from [{}] requested", sourceLocation);
-
+                updateStudies(new File(sourceLocation, "studies.xml"));
 //                updateNews(new File(sourceLocation, "news.xml"));
 //                updateUsers(new File(sourceLocation, "users.xml"));
-                updateStudies(new File(sourceLocation, "studies.xml"));
 //                updateArrayDesigns(new File(sourceLocation, "arrays.xml"));
 //                updateProtocols(new File(sourceLocation, "protocols.xml"));
-
                 logger.info("Reload of experiment data from [{}] completed", sourceLocation);
             }
         } catch (Exception x) {
@@ -55,18 +54,7 @@ public class ReloadStudiesJob extends ApplicationJob {
         }
     }
 
-    private String getXmlFromFile(File xmlFile) throws IOException {
-        logger.info("Getting XML from file [{}]", xmlFile);
-        String xml = com.google.common.io.Files.toString(
-                xmlFile
-                , Charset.forName("UTF-8")
-        );
-        xml = xml.replaceAll("&amp;#(\\d+);", "&#$1;");
-        xml = StringTools.unescapeXMLDecimalEntities(xml);
-        xml = StringTools.detectDecodeUTF8Sequences(xml);
-        xml = StringTools.replaceIllegalHTMLCharacters(xml);
-        return xml;
-    }
+
 
     private void loadMapFromFile(String mapName, File mapFile) throws IOException {
         if (null != mapFile && mapFile.exists()) {
@@ -104,7 +92,7 @@ public class ReloadStudiesJob extends ApplicationJob {
 //
     private void updateStudies(File file) throws IOException, InterruptedException {
         if (null != file && file.exists()) {
-            String xml = getXmlFromFile(file);
+            String xml = FileTools.readXMLStringFromFile(file);
 
             if (isNotBlank(xml)) {
                 // export to temp directory anyway (only if debug is enabled)
@@ -118,6 +106,8 @@ public class ReloadStudiesJob extends ApplicationJob {
                             , Charset.forName("UTF-8")
                     );
                 }
+                getComponent(Studies.class).update(xml);
+
 
 //                UpdateSourceInformation sourceInformation = new UpdateSourceInformation(
 //                        Studies.StudySource.AE2
@@ -143,9 +133,6 @@ public class ReloadStudiesJob extends ApplicationJob {
 //                        Studies.MAP_STUDIES_COMPLETE_DOWNLOADS
 //                        , new File(file.getParentFile(), "experiments-complete-downloads.txt")
 //                );
-
-                getComponent(Studies.class).update(xml);
-
 //                clearMap(Studies.MAP_EXPERIMENTS_IN_ATLAS);
 //                clearMap(Studies.MAP_STUDIES_VIEWS);
 //                clearMap(Studies.MAP_STUDIES);

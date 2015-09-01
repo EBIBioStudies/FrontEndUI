@@ -30,15 +30,14 @@
     <xsl:param name="user-agent"/>
 
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
-    <xsl:variable name="vStudy" select="search:queryIndex($queryid)"/>
-    <xsl:variable name="vAccession" select="if ($vStudy and $accession) then fn:upper-case($accession) else fn:upper-case(search:getQueryInfoParameter($queryid,'accessionNumber'))"/>
+    <xsl:variable name="vAccessionNumber" select="search:getQueryInfoParameter($queryid,'accessionNumber')"/>
+    <xsl:variable name="vAccession" select="if ($vAccessionNumber) then fn:upper-case($vAccessionNumber) else fn:upper-case($accession)"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
 
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:template match="/">
-
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pExtraSearchFields"/>
@@ -87,16 +86,15 @@
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>
+        <div id='thumbnail-div'><img id='thumbnail-image' class='thumbnail' src='../../assets/images/ajax-loader.gif'/></div>
     </xsl:template>
 
     <xsl:template name="bs-content-section">
         <section>
             <div id="ae-content" class="persist-area">
                 <xsl:choose>
-                    <xsl:when test="exists($vStudy)">
-                        <xsl:call-template name="block-study">
-                            <xsl:with-param name="pStudy" select="$vStudy"/>
-                        </xsl:call-template>
+                    <xsl:when test="exists(descendant::study)">
+                        <xsl:apply-templates/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="ae:httpStatus(404)"/>
@@ -125,7 +123,7 @@
                             <xsl:call-template name="highlight">
                                 <xsl:with-param name="pQueryId" select="$queryid"/>
                                 <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
-                                <xsl:with-param name="pFieldName"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                             </xsl:call-template>
                         </h4>
                     </div>
@@ -134,6 +132,17 @@
                         <xsl:with-param name="pTitle" select="title"/>
                         <xsl:with-param name="pNodes" select="section"/>
                     </xsl:call-template>
+                    <xsl:call-template name="section">
+                        <xsl:with-param name="pName" select="'Accession Number'"/>
+                        <xsl:with-param name="pContent">
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$queryid"/>
+                                <xsl:with-param name="pText" select="$vAccession"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                            </xsl:call-template>
+                        </xsl:with-param>
+                        <xsl:with-param name="pClass" select="('accessionNumber')"/>
+                    </xsl:call-template>
                     <xsl:call-template name="study-attributes">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pNodes" select="attribute"/>
@@ -141,15 +150,18 @@
                     <xsl:call-template name="study-publications">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pTitle" select="title"/>
-                        <xsl:with-param name="pNodes" select="section"/>
+                        <xsl:with-param name="pNodes" select="section[fn:lower-case(@type)='publication']"/>
+                        <xsl:with-param name="vFiles" select="$vFiles"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="study-subsections">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)!='funding' and fn:lower-case(@type)!='publication' and fn:lower-case(@type)!='author' and fn:lower-case(@type)!='organization']"/>
+                        <xsl:with-param name="vFiles" select="$vFiles"/>
                     </xsl:call-template>
                     <xsl:call-template name="study-funding">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
-                    </xsl:call-template>
-                    <xsl:call-template name="section">
-                        <xsl:with-param name="pName" select="'Accession Number'"/>
-                        <xsl:with-param name="pContent"><xsl:value-of select="$vAccession"/></xsl:with-param>
+                        <xsl:with-param name="vFiles" select="$vFiles"/>
                     </xsl:call-template>
                 </div>
             </div>

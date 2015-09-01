@@ -26,15 +26,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.saxon.Document;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.fg.saxon.functions.search.IHighlighter;
-import uk.ac.ebi.fg.saxon.functions.search.IQuerier;
 import uk.ac.ebi.fg.saxon.functions.search.IQueryInfoAccessor;
 
+import javax.xml.transform.Source;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class Controller implements IQuerier, IHighlighter, IQueryInfoAccessor {
+public class Controller implements IHighlighter, IQueryInfoAccessor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Configuration config;
@@ -95,6 +96,18 @@ public class Controller implements IQuerier, IHighlighter, IQueryInfoAccessor {
                 , new Indexer(getEnvironment(indexId), saxon).index(document)
         );
         this.logger.info("Indexing for index id [{}] completed", indexId);
+    }
+
+    public void clearIndex(String indexId) throws IndexerException, InterruptedException, IOException {
+        this.logger.info("Clearing index for index id [{}]", indexId);
+        new Indexer(getEnvironment(indexId), saxon).clearIndex();
+        this.logger.info("Indexfor index id [{}] cleared", indexId);
+    }
+
+    public void delete(String indexId, String accession) throws IndexerException, InterruptedException, IOException {
+        this.logger.info("Deleting {} from index id [{}]", accession, indexId);
+        new Indexer(getEnvironment(indexId), saxon).delete(accession);
+        this.logger.info("Document {} deleted", accession);
     }
 
     public List<String> getTerms(String indexId, String fieldName, int minFreq) throws IOException {
@@ -162,13 +175,16 @@ public class Controller implements IQuerier, IHighlighter, IQueryInfoAccessor {
         );
     }
 
-    public List<NodeInfo> queryIndex(Integer queryId) throws ParseException, IOException {
+    public Source search(Integer queryId) throws ParseException, IOException, SaxonException {
         QueryInfo queryInfo = this.queryPool.getQueryInfo(queryId);
-        return new Querier(getEnvironment(queryInfo.getIndexId())).query(queryInfo);
-    }
-
-    public List<NodeInfo> queryIndex(String indexId, String queryString) throws ParseException, IOException {
-        return new Querier(getEnvironment(indexId)).query(this.queryConstructor.construct(getEnvironment(indexId), queryString));  // should use "queryIndex( Integer queryId )" instead
+        Querier querier = new Querier( getEnvironment(queryInfo.getIndexId()));
+        StringBuilder sb = new StringBuilder("<studies>");
+        List<NodeInfo> results = querier.query(queryInfo);
+        for (NodeInfo node : results) {
+            sb.append(saxon.serializeDocument(node,true));
+        }
+        sb.append("</studies>");
+        return saxon.buildDocument(sb.toString());
     }
 
     @Override

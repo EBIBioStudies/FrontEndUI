@@ -21,6 +21,7 @@ import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -40,6 +41,7 @@ public class Files extends ApplicationComponent implements XMLDocumentSource {
     private final String MAP_FOLDER = "accession-folder";
 
     private String rootFolder;
+    private String thumbnailsFolder;
     private StoredDocument document;
     private String lastReloadMessage = "";
 

@@ -34,5 +34,44 @@
          $("#studies-browse-sorter").bind('change', function () {
              window.location = $("#studies-browse-sorter").find(":selected").attr("data-url");
          });
+
+        $(".search-authors").each( function() {
+            var showSize = 10;
+            $(this).data('authors',$(this).html());
+            var values = $(this).html().split(',');
+            $(this).html('<span class="authors">'+values.slice(0,showSize).join(',')+'</span>');
+            if (values.length < showSize) return;
+            $(this).append(
+                $('<span>, <a class="show-more">show ' + (values.length - showSize) +' more</a></span>')
+                .click( function() {
+                        $(this).hide();
+                        $(this).parent().find('.authors').html(($(this).parent().data('authors')));
+                        $('a.show-less',$(this).parent()).parent().show();
+                })
+            ).append( $('<span> <a class="show-less">show less</a></span>')
+                    .hide().click( function () {
+                        $(this).hide();
+                        $(this).parent().find('.authors').html(values.slice(0,showSize).join(','));
+                        $('a.show-more',$(this).parent()).parent().show();
+                }))
+
+
+
+            /*$('ul.authors li:nth-child(n+4)', $(this)).hide();
+            $('ul.authors', $(this)).append(
+                $('<a class="show-more">show ' + $('ul.authors li:hidden').length +' more</a>').click(function () {
+                    $(this).parent().find('li').show();
+                    $(this).hide();
+                    $(this).parent().find('.show-less').show();
+                })
+            ).append(
+                $('<a class="show-less">show less</a>').click(function () {
+                    $(this).parent().find('.show-more').show();
+                    $(this).hide();
+                    $('ul.authors li', $(this).parent('ul')).show();
+                }).hide()
+            );*/
+
+        });
      });
 })(window.jQuery);

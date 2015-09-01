@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
 import uk.ac.ebi.arrayexpress.components.JobsController;
+import uk.ac.ebi.arrayexpress.components.Studies;
+import uk.ac.ebi.arrayexpress.components.Thumbnails;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 
@@ -54,11 +56,10 @@ public class ControlServlet extends ApplicationServlet {
             command = requestArgs[0];
             params = requestArgs[1];
         }
-
         try {
+            //TODO: place these behind an authentication flow
             if (
                     "reload-atlas-info".equals(command)
-                            || "reload-xml".equals(command)
                             || "reload-efo".equals(command)
                             || "update-efo".equals(command)
                             || "check-files".equals(command)
@@ -67,13 +68,14 @@ public class ControlServlet extends ApplicationServlet {
                             || "reload-atlas-info".equals(command)
                     ) {
                 getComponent(JobsController.class).executeJob(command);
-//            } else if ("reload-ae1-xml".equals(command)) {
-//                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
-//            } else if ("rescan-files".equals(command)) {
-//                if (!params.isEmpty()) {
-//                    ((Files) getComponent("Files")).setRootFolder(params);
-//                }
-//                ((JobsController) getComponent("JobsController")).executeJob(command);
+            } else if ("reload-xml".equals(command)) {
+                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"));
+            } else if ("clear-index".equals(command)) {
+                getComponent(Studies.class).clearIndex();
+            } else if ("delete".equals(command)) {
+                getComponent(Studies.class).delete(request.getParameter("accession"));
+            } else if ("clear-thumbnails".equals(command)) {
+                getComponent(Thumbnails.class).clearThumbnails();
             } else if ("test-email".equals(command)) {
                 getApplication().sendEmail(
                         null
@@ -97,9 +99,18 @@ public class ControlServlet extends ApplicationServlet {
                     response.sendRedirect("/" + params);
                 }
             }
+//            } else if ("reload-ae1-xml".equals(command)) {
+//                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
+//            } else if ("rescan-files".equals(command)) {
+//                if (!params.isEmpty()) {
+//                    ((Files) getComponent("Files")).setRootFolder(params);
+//                }
+//                ((JobsController) getComponent("JobsController")).executeJob(command);
 
         } catch (SchedulerException x) {
             logger.error("Jobs controller threw an exception", x);
+        } catch (InterruptedException e) {
+            logger.error("Controller threw an exception", e);
         }
     }
 }

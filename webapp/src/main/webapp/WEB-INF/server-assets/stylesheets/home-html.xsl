@@ -24,7 +24,7 @@
                 extension-element-prefixes="fn ae search html xs"
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
-
+    <xsl:param name="queryid"/>
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-date-functions.xsl"/>
 
@@ -42,8 +42,8 @@
     </xsl:template>
 
     <xsl:template name="bs-content-section">
-        <xsl:variable name="vStudies" select="search:queryIndex('studies', 'public:true')"/>
-        <xsl:variable name="vTotal" select="fn:count($vStudies)"/>
+        <xsl:variable name="vStudies" select="//study"/>
+        <xsl:variable name="vTotal" select="xs:integer(search:getQueryInfoParameter($queryid,'total'))"/>
         <xsl:variable name="vRetrieved" select="$vStudies[1]/../@updated"/>
         <!--
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>

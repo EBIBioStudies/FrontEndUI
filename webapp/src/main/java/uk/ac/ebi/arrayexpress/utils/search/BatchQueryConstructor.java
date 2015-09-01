@@ -30,6 +30,8 @@ import java.util.Set;
 public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
     private final static String FIELD_KEYWORDS = "keywords";
     private final static String FIELD_ACCESSION = "accession";
+    private final static String FIELD_TITLE = "title";
+    private final static String FIELD_AUTHORS = "authors";
 
     private final static String RE_MATCHES_BATCH_OF_ACCESSIONS = "^\\s*(([ae]-\\w{4}-\\d+)[\\s,;]+)+$";
     private final static String RE_SPLIT_BATCH_OF_ACCESSIONS = "[\\s,;]+";
@@ -37,11 +39,23 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
     @Override
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
 
+        //expand query to other fields
+        if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_AUTHORS)) {
+            querySource.put(FIELD_AUTHORS, querySource.get(FIELD_KEYWORDS));
+        }
+        if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TITLE)) {
+            querySource.put(FIELD_TITLE, querySource.get(FIELD_KEYWORDS));
+        }
+        if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_ACCESSION)) {
+            querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
+        }
+
+        if (querySource.containsKey(FIELD_ACCESSION) && querySource.containsKey("n")) {
+            querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
+        }
+
         Query query = super.construct(env, querySource);
 
-        if (querySource.containsKey("accession") && querySource.containsKey("n")) {
-            query = removeTermQueriesForField(query,FIELD_ACCESSION);
-        }
 
         if (querySource.containsKey(FIELD_KEYWORDS)) {
             String keywords = StringTools.arrayToString(querySource.get(FIELD_KEYWORDS), " ").toLowerCase() + " ";
@@ -60,13 +74,16 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
                     topQuery = (BooleanQuery) query;
                 } else {
                     topQuery = new BooleanQuery();
-                    topQuery.add(query, BooleanClause.Occur.MUST);
+                    topQuery.add(query, BooleanClause.Occur.SHOULD);
                 }
 
-                topQuery.add(accQuery, BooleanClause.Occur.MUST);
+                topQuery.add(accQuery, BooleanClause.Occur.SHOULD);
                 query = topQuery;
             }
         }
+
+
+
         return query;
     }
 

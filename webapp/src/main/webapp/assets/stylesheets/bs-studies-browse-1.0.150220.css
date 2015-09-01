@@ -46,7 +46,7 @@
 }
 
 .browse-study-title {
-    font-size:120%;
+    font-size: 120%;
 }
 
 .browse-study-release-date
@@ -69,12 +69,14 @@
 }
 
 .browse-study-release-files,.browse-study-release-links {
-    margin-left: 10px;
-    background-color: #6BA8C5;
-    color: white;
-    font-size: smaller;
-    padding: 1px 4px;
+    color: #999;
     border-radius: 2px;
+}
+
+.browse-study-release-files:before,.browse-study-release-links:before {
+    content: ' \25AA';
+    color: #6BA8C5;
+    padding: 10px;
 }
 #ae-studies-browse-sort-by {
     float: right;
@@ -117,7 +119,7 @@ a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
 .search-snippet {
     padding-top:5px;
 }
-.search-snippet:before, .search-snippet:after {
+.search-snippet-before:before, .search-snippet:after {
     content: '...';
 }
 .search-authors {

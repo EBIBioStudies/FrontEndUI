@@ -21,6 +21,35 @@ var table = null;
         throw "jQuery not loaded";
 
     $(function() {
+
+        // capture hover before datatable is rendered
+        $(".file-link").hover(function (e) {
+            if (! $(this).data('thumbnail')) return;
+            $("#thumbnail-div")
+                .css("position", "absolute")
+                .css("top", (e.pageY - 10) + "px")
+                .css("left", (e.pageX + 20) + "px")
+                .css("width", "150px")
+                .fadeIn("fast");
+            $("#thumbnail-image").attr("src",($(this).data('thumbnail')));
+
+        }, function () {
+            $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
+            $("#thumbnail-div").css("width","auto").hide();
+        });
+
+        $(".file-link").mouseout(function (e) {
+            $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
+            $("#thumbnail-div").css("width","auto").hide();
+        });
+        // create all sub-section file tables and hide them
+        $(".file-list:not(#file-list)").DataTable( {
+            "scrollX": true,
+            "dom":"t"
+        });
+        $(".ae-section-files").hide();
+
+        // draw the main file table
         redrawTable();
         updateSelectedFiles();
 
@@ -32,6 +61,10 @@ var table = null;
                 $('input[type="checkbox"]',$(this)).removeAttr('checked');
             }
             updateSelectedFiles();
+        });
+
+        $("#file-list tbody tr").on( 'click', 'a', function () {
+            event.stopPropagation();
         });
 
         $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
@@ -62,6 +95,18 @@ var table = null;
         $(window).resize(function () {
             redrawTable();
         });
+
+        $(".toggle-files").on ('click', function () {
+            var section = $(this).first().next();
+            if (section.css('display')=='none') {
+                section.show();
+                $(this).text('hide files in this section')
+            } else {
+                section.hide();
+                $(this).text('show files in this section')
+            }
+
+        });
     });
 
     function downloadFiles(files) {
@@ -77,6 +122,7 @@ var table = null;
 
     function updateSelectedFiles()
     {
+        if (!table || !table.rows() || !table.rows().eq(0) ) return;
         var totalRows = table.rows().eq(0).length;
         var selectedRows = $('input:checked', table.cells().nodes()).length;
         $("#selected-file-text").text( (selectedRows == 0 ? 'No ' : selectedRows) +' file'+(selectedRows>1 ? 's':'')+' selected');
@@ -84,6 +130,7 @@ var table = null;
             $('#download-selected-files').hide();
         } else {
             $('#download-selected-files').show();
+            $('#download-selected-files').text('Download' + (selectedRows==2 ? ' both' : selectedRows>1 ? ' all '+selectedRows : ''));
         }
 
         if (selectedRows==totalRows)
@@ -94,7 +141,6 @@ var table = null;
     }
 
     function redrawTable() {
-
         if(table!=null) table.destroy()
         table = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -102,7 +148,7 @@ var table = null;
             "columnDefs": [  { "targets": [0], "searchable": false, "orderable": false, "visible": true}],
             "order": [[ 1, "asc" ]],
             "dom":"lfrtpi",
-            "autoWidth": false
+            "autoWidth" : false
         } );
     }
     $('#right-column-expander').click( function() {

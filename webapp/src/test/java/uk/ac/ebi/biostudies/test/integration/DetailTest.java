@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -40,7 +41,7 @@ public class DetailTest {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#file-list_info")));
         String filesCountOnDetails = driver.findElement(By.cssSelector("#file-list_info")).getText();
-        assertEquals(filesCountOnDetails, "Showing 1 to 5 of "+fileCount+" entries");
+        assertEquals( "Showing 1 to 5 of "+fileCount+" entries", filesCountOnDetails);
     }
 
 
@@ -54,7 +55,18 @@ public class DetailTest {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".links")));
         int linkCountOnDetails = driver.findElements(By.cssSelector(".links a")).size() - 2; // removing shoe more/less links
-        assertEquals(linkCountOnDetails, linkCount);
+        assertEquals(linkCount, linkCountOnDetails);
+    }
+
+    @Test
+    public void testTitle() {
+        driver.get(baseUrl + "/studies/search.html?query=cancer");
+        WebElement secondLink = driver.findElements(By.cssSelector(".browse-study-title a")).get(1);
+        String expectedTitle = secondLink.getText();
+        secondLink.click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#ae-detail-title")));
+        assertEquals(expectedTitle, driver.findElement(By.cssSelector("#ae-detail-title")).getText());
     }
 
     /* Not working with HtmlUnitDriver
