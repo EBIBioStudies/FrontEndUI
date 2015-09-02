@@ -45,10 +45,6 @@ var table = null;
         });
         $(".ae-section-files").hide();
 
-        $("#file-list a").on( 'click', function () {
-            event.stopPropagation();
-        });
-
         $("#file-list tbody").on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
             if ( $(this).hasClass('selected')) {
@@ -63,6 +59,10 @@ var table = null;
         $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
             $(this).toggleClass('selected');
             updateSelectedFiles();
+        });
+
+        $("#file-list tbody tr td a").on( 'click', function () {
+            event.stopPropagation();
         });
 
         $("#download-selected-files").on( 'click', function () {
