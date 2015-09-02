@@ -24,7 +24,7 @@ var table = null;
 
         $("body").append("<div id='thumbnail-div'><img id='thumbnail-image' class='thumbnail' src='../../assets/images/ajax-loader.gif'/></div>");
         // capture hover before datatable is rendered
-        $(".file-link").on('mouseover',function (e) {
+        $(".file-link").on('mouseenter',function (e) {
             if (! $(this).data('thumbnail')) return;
             $("#thumbnail-div")
                 .css("position", "absolute")
@@ -36,7 +36,7 @@ var table = null;
 
         });
 
-        $(".file-link").on('mouseout', function (e) {
+        $(".file-link").on('mouseleave', function (e) {
             $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
             $("#thumbnail-div").css("width","auto").hide();
         });
