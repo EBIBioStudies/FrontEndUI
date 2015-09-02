@@ -291,7 +291,7 @@
                         </th>
                     </xsl:if>
                     <th>Name</th>
-                    <th>Size</th>
+                    <th class="filesize">Size</th>
                     <xsl:for-each select="$vColumns">
                         <th>
                             <xsl:value-of select="."/>
