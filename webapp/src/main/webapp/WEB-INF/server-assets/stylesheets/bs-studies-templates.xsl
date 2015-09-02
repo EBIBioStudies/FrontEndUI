@@ -166,6 +166,7 @@
         <xsl:for-each-group select="$pNodes" group-by="fn:lower-case(@type)">
             <xsl:if test="fn:current-grouping-key()='author'">
                 <xsl:call-template name="section">
+                    <xsl:with-param name="pClass" select="('justify')"/>
                     <xsl:with-param name="pContent">
                         <xsl:variable name="vOrgRefs">
                             <orgs>
