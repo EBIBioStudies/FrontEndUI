@@ -200,17 +200,24 @@ a.file-link {
 
 .thumbnail {
     color: #aaa;
-    padding-left: 2px;
+    padding: 0 2px;
 }
 
-#thumbnail-div {
+.thumbnail-div {
+    display: inline-block;
+}
+
+
+.thumbnail-loader {
     display: none;
-    background-color: white;
 }
 
-img.thumbnail {
+.thumbnail-image {
+    display: none;
+    padding:2px;
     border: 1px solid #888;
     box-shadow: 3px 3px 5px #AAA;
+    background-color: white;
 }
 
 .file-link {
