@@ -24,7 +24,7 @@ var table = null;
 
         $("body").append("<div id='thumbnail-div'><img id='thumbnail-image' class='thumbnail' src='../../assets/images/ajax-loader.gif'/></div>");
         // capture hover before datatable is rendered
-        $(".file-link").hover(function (e) {
+        $(".file-link").on('mouseover',function (e) {
             if (! $(this).data('thumbnail')) return;
             $("#thumbnail-div")
                 .css("position", "absolute")
@@ -34,12 +34,9 @@ var table = null;
                 .fadeIn("fast");
             $("#thumbnail-image").attr("src",($(this).data('thumbnail')));
 
-        }, function () {
-            $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
-            $("#thumbnail-div").css("width","auto").hide();
         });
 
-        $(".file-link").mouseout(function (e) {
+        $(".file-link").on('mouseout', function (e) {
             $("#thumbnail-image").attr("src","../../assets/images/ajax-loader.gif");
             $("#thumbnail-div").css("width","auto").hide();
         });
@@ -50,9 +47,9 @@ var table = null;
         });
         $(".ae-section-files").hide();
 
-        // draw the main file table
-        redrawTable();
-        updateSelectedFiles();
+        $("#file-list a").on( 'click', function () {
+            event.stopPropagation();
+        });
 
         $("#file-list tbody").on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
@@ -64,9 +61,6 @@ var table = null;
             updateSelectedFiles();
         });
 
-        $("#file-list tbody tr").on( 'click', 'a', function () {
-            event.stopPropagation();
-        });
 
         $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
             $(this).toggleClass('selected');
@@ -108,6 +102,10 @@ var table = null;
             }
 
         });
+
+        // draw the main file table
+        redrawTable();
+        updateSelectedFiles();
     });
 
     function downloadFiles(files) {

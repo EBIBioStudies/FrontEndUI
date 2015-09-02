@@ -28,8 +28,8 @@
         <interface.application.webxml.security.transport.guarantee>NONE</interface.application.webxml.security.transport.guarantee>
 
         <interface.application.pref.reports.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
-        <interface.application.pref.reports.hidden-recipients>kolais&#64;ebi.ac.uk</interface.application.pref.reports.hidden-recipients>
-        <interface.application.pref.feedback.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
+        <interface.application.pref.reports.hidden-recipients>awais&#64;ebi.ac.uk</interface.application.pref.reports.hidden-recipients>
+        <interface.application.pref.feedback.recipients>awais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
         <interface.application.pref.remind.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
 
         <interface.application.pref.studies.source.location>/nfs/public/rw/fg/biostudies/xml</interface.application.pref.studies.source.location>
@@ -50,9 +50,9 @@
         <profile>
             <id>debug</id>
             <properties>
-                <interface.application.pref.reports.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
-                <interface.application.pref.feedback.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
-                <interface.application.pref.remind.recipients>kolais&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
+                <interface.application.pref.reports.recipients>awais&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
+                <interface.application.pref.feedback.recipients>awais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
+                <interface.application.pref.remind.recipients>awais&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
                 <webapp.log.priority>debug</webapp.log.priority>
             </properties>
         </profile>
@@ -119,6 +119,14 @@
     </profiles>
 
     <developers>
+        <developer>
+            <id>awais</id>
+            <name>Awais Athar</name>
+            <email>awais@ebi.ac.uk</email>
+            <roles>
+                <role>Software Development Project Lead</role>
+            </roles>
+        </developer>
         <developer>
             <id>kolais</id>
             <name>Nikolay Kolesnikov</name>

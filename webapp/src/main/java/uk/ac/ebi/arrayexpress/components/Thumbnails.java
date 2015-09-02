@@ -20,15 +20,22 @@ package uk.ac.ebi.arrayexpress.components;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.util.ImageIOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.components.thumbnails.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextLayout;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +96,22 @@ public class Thumbnails extends ApplicationComponent {
         response.getOutputStream().close();
     }
 
+    private void createPlaceholderThumbnail(String sourceFilePath, Files files, File thumbnailFile) throws IOException {
+        synchronized (sourceFilePath) {
+            thumbnailFile.getParentFile().mkdirs();
+            //Using extension to decide on the class as mime-types are different across *nix/Windows
+            String fileType = FilenameUtils.getExtension(sourceFilePath).toLowerCase();
+            logger.debug("Creating placeholder thumbnail [{}] for file type {}", thumbnailFile.getAbsolutePath(), fileType);
+            BufferedImage image = new BufferedImage(50,65, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = image.createGraphics();
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, 50, 65);
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("sans-serif", Font.PLAIN, 12));
+            g.drawString(fileType, 15, 30);
+            ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
+        }
+    }
     private void createThumbnail(String sourceFilePath, Files files, File thumbnailFile) throws IOException {
         synchronized (sourceFilePath) {
             thumbnailFile.getParentFile().mkdirs();
@@ -96,11 +119,16 @@ public class Thumbnails extends ApplicationComponent {
             String fileType = FilenameUtils.getExtension(sourceFilePath).toLowerCase();
             logger.debug("Creating thumbnail [{}] for file type {}", thumbnailFile.getAbsolutePath(), fileType);
             if (thumbnailGenerators.containsKey(fileType)) {
-                thumbnailGenerators.get(fileType).generateThumbnail(sourceFilePath, thumbnailFile);
+                try {
+                    thumbnailGenerators.get(fileType).generateThumbnail(sourceFilePath, thumbnailFile);
+                } catch (Exception ex) {
+                    createPlaceholderThumbnail(sourceFilePath,files,thumbnailFile);
+                }
             } else {
                 logger.debug("Invalid file type for creating thumbnail: {}", fileType);
+                throw new IOException("Invalid file type for creating thumbnail");
             }
         }
     }
 
-}
+    }

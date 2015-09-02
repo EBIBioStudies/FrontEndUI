@@ -9,6 +9,14 @@
     <packaging>pom</packaging>
     <developers>
         <developer>
+            <id>awais</id>
+            <name>Awais Athar</name>
+            <email>awais@ebi.ac.uk</email>
+            <roles>
+                <role>Software Development Project Lead</role>
+            </roles>
+        </developer>
+        <developer>
             <id>kolais</id>
             <name>Nikolay Kolesnikov</name>
             <email>kolais@ebi.ac.uk</email>
