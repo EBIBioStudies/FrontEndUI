@@ -86,7 +86,6 @@
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>
-        <div id='thumbnail-div'><img id='thumbnail-image' class='thumbnail' src='../../assets/images/ajax-loader.gif'/></div>
     </xsl:template>
 
     <xsl:template name="bs-content-section">

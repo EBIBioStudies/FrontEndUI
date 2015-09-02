@@ -36,8 +36,9 @@ public class TXTThumbnail implements IThumbnail{
     public void generateThumbnail(String sourceFilePath, File thumbnailFile) throws IOException{
         try(FileInputStream source = new FileInputStream(sourceFilePath) )
         {
-
-            AttributedString text =  new AttributedString(IOUtils.toString(source));
+            byte[] data      = new byte[512]; // get only the first 0.5K
+            int bytesRead = source.read(data);
+            AttributedString text =  new AttributedString(new String(data));
             BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setColor(background);

@@ -22,13 +22,14 @@ var table = null;
 
     $(function() {
 
+        $("body").append("<div id='thumbnail-div'><img id='thumbnail-image' class='thumbnail' src='../../assets/images/ajax-loader.gif'/></div>");
         // capture hover before datatable is rendered
         $(".file-link").hover(function (e) {
             if (! $(this).data('thumbnail')) return;
             $("#thumbnail-div")
                 .css("position", "absolute")
                 .css("top", (e.pageY - 10) + "px")
-                .css("left", (e.pageX + 20) + "px")
+                .css("left", (e.pageX + 10) + "px")
                 .css("width", "150px")
                 .fadeIn("fast");
             $("#thumbnail-image").attr("src",($(this).data('thumbnail')));

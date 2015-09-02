@@ -60,9 +60,9 @@ public class ThumbnailServlet extends ApplicationServlet {
                                 + "] were not determined");
             }
 
-            try {
+            try { Thread.sleep(1000);
                 thumbnails.sendThumbnail(response, location);
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 logger.warn("Could not generate thumbnail. User might have moved their mouse too fast. "+ ex.getMessage());
             }
 

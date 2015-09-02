@@ -93,7 +93,7 @@ public class Thumbnails extends ApplicationComponent {
         synchronized (sourceFilePath) {
             thumbnailFile.getParentFile().mkdirs();
             //Using extension to decide on the class as mime-types are different across *nix/Windows
-            String fileType = FilenameUtils.getExtension(sourceFilePath);
+            String fileType = FilenameUtils.getExtension(sourceFilePath).toLowerCase();
             logger.debug("Creating thumbnail [{}] for file type {}", thumbnailFile.getAbsolutePath(), fileType);
             if (thumbnailGenerators.containsKey(fileType)) {
                 thumbnailGenerators.get(fileType).generateThumbnail(sourceFilePath, thumbnailFile);
