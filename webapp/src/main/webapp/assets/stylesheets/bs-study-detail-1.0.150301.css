@@ -207,11 +207,6 @@ a.file-link {
     display: inline-block;
 }
 
-
-.thumbnail-loader {
-    display: none;
-}
-
 .thumbnail-image {
     display: none;
     padding:2px;

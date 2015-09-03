@@ -108,7 +108,7 @@ public class Thumbnails extends ApplicationComponent {
             g.fillRect(0, 0, 50, 65);
             g.setColor(Color.BLACK);
             g.setFont(new Font("sans-serif", Font.PLAIN, 12));
-            g.drawString(fileType, 15, 30);
+            g.drawString(fileType, 14, 30);
             ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
         }
     }

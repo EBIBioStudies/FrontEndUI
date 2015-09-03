@@ -27,8 +27,9 @@ var table = null;
         $(".file-link").on('mouseenter',function (e) {
             if (! $(this).data('thumbnail')) return;
             $(".thumbnail-image", $(this)).one("load",function(){
-                $(this).css({position:"absolute", width:"150px"})
+                $(this).css({"position":"absolute", "max-width":"150px"})
             });
+            $(".thumbnail-image",$(this)).show();
             $(".thumbnail-image", $(this))
                 .attr("src",($(this).data('thumbnail')))
                 .fadeIn("fast");
