@@ -102,13 +102,16 @@ public class Thumbnails extends ApplicationComponent {
             //Using extension to decide on the class as mime-types are different across *nix/Windows
             String fileType = FilenameUtils.getExtension(sourceFilePath).toLowerCase();
             logger.debug("Creating placeholder thumbnail [{}] for file type {}", thumbnailFile.getAbsolutePath(), fileType);
-            BufferedImage image = new BufferedImage(50,65, BufferedImage.TYPE_INT_RGB);
+            int imageWidth=50, imageHeight = 65;
+            BufferedImage image = new BufferedImage(imageWidth,imageHeight, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setColor(Color.WHITE);
-            g.fillRect(0, 0, 50, 65);
+            g.fillRect(0, 0, imageWidth, imageHeight);
             g.setColor(Color.BLACK);
             g.setFont(new Font("sans-serif", Font.PLAIN, 12));
-            g.drawString(fileType, 14, 30);
+            int stringLen = (int) g.getFontMetrics().getStringBounds(fileType, g).getWidth();
+            int start = imageWidth/2 - stringLen/2;
+            g.drawString(fileType, start, imageHeight/2);
             ImageIOUtil.writeImage(image, thumbnailFile.getAbsolutePath(), 96);
         }
     }
@@ -121,8 +124,10 @@ public class Thumbnails extends ApplicationComponent {
             if (thumbnailGenerators.containsKey(fileType)) {
                 try {
                     thumbnailGenerators.get(fileType).generateThumbnail(sourceFilePath, thumbnailFile);
-                } catch (Exception ex) {
-                    createPlaceholderThumbnail(sourceFilePath,files,thumbnailFile);
+                } catch (Throwable err) {
+                    logger.debug("Error creating thumbnail: ", err.getMessage());
+                    logger.debug("Will try to create placeholder now");
+                    createPlaceholderThumbnail(sourceFilePath, files, thumbnailFile);
                 }
             } else {
                 logger.debug("Invalid file type for creating thumbnail: {}", fileType);

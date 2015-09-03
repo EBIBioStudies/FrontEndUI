@@ -22,22 +22,31 @@ var table = null;
 
     $(function() {
 
-        $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-image' src='../../assets/images/ajax-loader.gif'/></div>");
+        $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
         $(".file-link").on('mouseenter',function (e) {
+            $(".thumbnail-image", $(this)).data('isFocused', true);
             if (! $(this).data('thumbnail')) return;
+            if (!$(this).data("loaded")) {
+                $(".thumbnail-image", $(this)).attr("src",($(this).data('thumbnail')));
+                $(".thumbnail-loader", $(this)).show();
+            } else {
+                $(".thumbnail-image", $(this)).fadeIn("fast");
+            }
             $(".thumbnail-image", $(this)).one("load",function(){
                 $(this).css({"position":"absolute", "max-width":"150px"})
+                if($(this).data("isFocused")) {
+                    $(this).fadeIn("fast");
+                }
+                $(".thumbnail-loader",$(this).parent()).hide();
+                $(this).parent().parent().data("loaded",true);
             });
-            $(".thumbnail-image",$(this)).show();
-            $(".thumbnail-image", $(this))
-                .attr("src",($(this).data('thumbnail')))
-                .fadeIn("fast");
-
         });
 
         $(".file-link").on('mouseleave', function (e) {
-            $(".thumbnail-image", $(this)).hide()
+            $(".thumbnail-image", $(this)).hide();
+            $(".thumbnail-loader", $(this)).hide();
+            $(".thumbnail-image", $(this)).data('isFocused', false);
         });
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {

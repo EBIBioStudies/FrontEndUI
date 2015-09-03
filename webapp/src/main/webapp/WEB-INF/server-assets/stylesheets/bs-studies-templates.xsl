@@ -323,7 +323,7 @@
                                 <xsl:if test="$isImage">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pFiles/@accession,'/',$vName)"/>
                                 </xsl:if>
-                                <span class="thumbnail icon icon-functional" data-icon="4" title="Click to download">
+                                <span class="thumbnail icon icon-functional" data-icon="4">
                                     <xsl:if test="not($isImage)">
                                         <xsl:attribute name="class" select="('invisible')"/>
                                     </xsl:if>

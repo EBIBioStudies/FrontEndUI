@@ -1,6 +1,10 @@
 package uk.ac.ebi.arrayexpress.components.thumbnails;
 
+import com.twelvemonkeys.image.ResampleOp;
+
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,9 +21,12 @@ public class ImageThumbnail implements IThumbnail{
 
     @Override
     public void generateThumbnail(String sourceFilePath, File thumbnailFile) throws IOException{
-        net.coobird.thumbnailator.Thumbnails.of(sourceFilePath)
-                .size(200, 200)
-                .outputFormat("png")
-                .toFile(thumbnailFile);
+        File sourceFile = new File(sourceFilePath);
+        BufferedImage input = ImageIO.read(sourceFile); // Image to resample
+        BufferedImageOp resampler = new ResampleOp(200,200, ResampleOp.FILTER_LANCZOS); // A good default filter, see class documentation for more info
+        BufferedImage output = resampler.filter(input, null);
+        if (!ImageIO.write(output, "png", thumbnailFile)) {
+            throw new IOException("Cannot write thumbnail");
+        }
     }
 }
