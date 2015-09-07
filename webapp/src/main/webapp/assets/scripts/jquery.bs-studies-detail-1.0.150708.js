@@ -119,9 +119,9 @@ var table = null;
     function downloadFiles(files) {
         var html = '';
         if (files.length==1) {
-            html += '<form method="GET" action="' + "/files/" + $('.accessionNumber').text() + '/' + files[0]+'" />';
+            html += '<form method="GET" action="' + "../../files/" + $('.accessionNumber').text() + '/' + files[0]+'" />';
         } else {
-            html += '<form method="POST" action="' + "/files/" + $('.accessionNumber').text() + '/zip">';
+            html += '<form method="POST" action="' + "../../files/" + $('.accessionNumber').text() + '/zip">';
             $(files).each( function(i,v) {
                 html += '<input type="hidden" name="files" value="'+v+'"/>'
             });
