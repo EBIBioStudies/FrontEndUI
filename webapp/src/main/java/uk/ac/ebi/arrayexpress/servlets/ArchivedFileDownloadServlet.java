@@ -88,7 +88,7 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
             return false;
         }
 
-        public RandomAccessFile getRandomAccessFile() throws IOException {
+        public DataInput getRandomAccessFile() throws IOException {
             throw new IllegalArgumentException("Method not supported");
         }
 

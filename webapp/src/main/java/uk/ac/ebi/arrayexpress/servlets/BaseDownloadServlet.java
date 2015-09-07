@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
+import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
@@ -67,7 +68,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
 
         public boolean isRandomAccessSupported();
 
-        public RandomAccessFile getRandomAccessFile() throws IOException;
+        public DataInput getRandomAccessFile() throws IOException;
 
         public InputStream getInputStream() throws IOException;
 
@@ -90,6 +91,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
 
         IDownloadFile downloadFile = null;
         try {
+            doBeforeDownloadFileFromRequest(request, response);
             downloadFile = getDownloadFileFromRequest(request, response, getUserIds(authUserName));
             if (null != downloadFile) {
                 verifyFile(downloadFile, response);
@@ -101,6 +103,8 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
                 }
                 logger.debug("Download of [{}] completed", downloadFile.getName());
             }
+            doAfterDownloadFileFromRequest(request, response);
+
         } catch (DownloadServletException x) {
             logger.error(x.getMessage());
         } catch (Exception x) {
@@ -116,6 +120,15 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
             }
         }
     }
+
+    // This method will be called before sending the file. Added to set up and clean the zipped archive.
+    protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
+    }
+
+    // This method will be called after sending the file. Added to set up and clean the zipped archive.
+    protected void doAfterDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
+    }
+
 
     protected abstract IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
@@ -372,7 +385,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
 
         // Send requested file (part(s)) to client ------------------------------------------------
 
-        try (RandomAccessFile input = downloadFile.getRandomAccessFile();
+        try (InputStream input = downloadFile.getInputStream();
              ServletOutputStream output = response.getOutputStream()) {
 
             if (ranges.isEmpty() || ranges.get(0) == full) {
@@ -488,30 +501,24 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
      * @param length Length of the byte range.
      * @throws IOException If something fails at I/O level.
      */
-    private void copy(RandomAccessFile input, OutputStream output, long start, long length)
+    private void copy(InputStream input, OutputStream output, long start, long length)
             throws IOException {
         byte[] buffer = new byte[TRANSFER_BUFFER_SIZE];
         int read;
 
-        if (input.length() == length) {
-            // Write full range
-            while ((read = input.read(buffer)) > 0) {
-                output.write(buffer, 0, read);
-            }
-        } else {
-            // Write partial range
-            input.seek(start);
-            long toRead = length;
+        // Write partial range
+        input.skip(start);
+        long toRead = length;
 
-            while ((read = input.read(buffer)) > 0) {
-                if ((toRead -= read) > 0) {
-                    output.write(buffer, 0, read);
-                } else {
-                    output.write(buffer, 0, (int) toRead + read);
-                    break;
-                }
+        while ((read = input.read(buffer)) > 0) {
+            if ((toRead -= read) > 0) {
+                output.write(buffer, 0, read);
+            } else {
+                output.write(buffer, 0, (int) toRead + read);
+                break;
             }
         }
+
     }
 
     /**

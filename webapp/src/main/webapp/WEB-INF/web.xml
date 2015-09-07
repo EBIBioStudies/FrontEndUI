@@ -28,6 +28,11 @@
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.FileDownloadServlet</servlet-class>
     </servlet>
     <servlet>
+        <description>Zip Download Servlet</description>
+        <servlet-name>ZipDownloadServlet</servlet-name>
+        <servlet-class>uk.ac.ebi.arrayexpress.servlets.ZipDownloadServlet</servlet-class>
+    </servlet>
+    <servlet>
         <description>Thumbnail Servlet</description>
         <servlet-name>ThumbnailServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.ThumbnailServlet</servlet-class>
@@ -77,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>FlatFileTransformationServlet</servlet-name>
         <url-pattern>/servlets/fftransform/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ZipDownloadServlet</servlet-name>
+        <url-pattern>/servlets/download/zip/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FileDownloadServlet</servlet-name>

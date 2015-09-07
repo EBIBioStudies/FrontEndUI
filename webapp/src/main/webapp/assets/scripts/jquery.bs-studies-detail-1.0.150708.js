@@ -78,7 +78,7 @@ var table = null;
         $("#download-selected-files").on( 'click', function () {
             // select all checked input boxes and get the href in the links contained in their siblings
             var files = $.map($('a',$('input[checked]', table.cells().nodes()).parent().next()), function (v) {
-                return $(v).attr('href');
+                return $(v).data('name');
             });
             downloadFiles(files);
         });
@@ -117,14 +117,20 @@ var table = null;
     });
 
     function downloadFiles(files) {
-        $(files).each( function(i,v) {
-            var ifr=$('<iframe/>', {
-                id:'MainPopupIframe',
-                src:v,
-                style:'display:none'
+        var html = '';
+        if (files.length==1) {
+            html += '<form method="GET" action="' + "/files/" + $('.accessionNumber').text() + '/' + files[0]+'" />';
+        } else {
+            html += '<form method="POST" action="' + "/files/" + $('.accessionNumber').text() + '/zip">';
+            $(files).each( function(i,v) {
+                html += '<input type="hidden" name="files" value="'+v+'"/>'
             });
-            $('body').append(ifr);
-         });
+            html += '</form>';
+        }
+
+        var submissionForm = $(html);
+        $('body').append(submissionForm);
+        $(submissionForm).submit();
     }
 
     function updateSelectedFiles()

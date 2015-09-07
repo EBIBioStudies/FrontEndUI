@@ -319,7 +319,7 @@
                                 </xsl:call-template>
                             </a>
                             <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv')"/>
-                            <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}" class="file-link">
+                            <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}" data-name="{$vName}" class="file-link">
                                 <xsl:if test="$isImage">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pFiles/@accession,'/',$vName)"/>
                                 </xsl:if>
