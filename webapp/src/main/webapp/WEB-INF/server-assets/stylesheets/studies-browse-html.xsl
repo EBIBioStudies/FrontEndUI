@@ -37,7 +37,7 @@
     <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:variable name="vSearchMode" select="$keywords != ''"/>
-    <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
+    <xsl:variable name="vQueryString" select="fn:concat('?', $query-string)"/>
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
     <xsl:variable name="vTotal" select="xs:integer(search:getQueryInfoParameter($queryid,'total'))"/>
 
@@ -203,7 +203,7 @@
                 </xsl:if>
             </div>
             <div class="browse-study-title">
-                <xsl:variable name="linkPositionParameter" select="if ($vSearchMode) then concat('&amp;n=',$pPosition) else ''"/>
+                <xsl:variable name="linkPositionParameter" select="concat('&amp;n=',$pPosition)"/>
                 <a href="{$context-path}/studies/{accession}/{$vQueryString}{$linkPositionParameter}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>

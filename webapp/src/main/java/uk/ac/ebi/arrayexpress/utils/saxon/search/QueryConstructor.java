@@ -30,7 +30,7 @@ public class QueryConstructor implements IQueryConstructor {
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
         BooleanQuery result = new BooleanQuery();
         for (Map.Entry<String, String[]> queryItem : querySource.entrySet()) {
-            if (env.fields.containsKey(queryItem.getKey()) && queryItem.getValue().length > 0) {
+            if (env.fields.containsKey(queryItem.getKey()) && queryItem.getValue()!=null && queryItem.getValue().length > 0) {
                 QueryParser parser = new EnhancedQueryParser(env, queryItem.getKey(), env.indexAnalyzer);
                 parser.setDefaultOperator(QueryParser.Operator.OR);
                 for (String value : queryItem.getValue()) {
