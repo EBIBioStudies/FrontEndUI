@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -39,23 +40,19 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String ROOTPATH = "ram://virtual";
     private FileSystemManager fsManager;
-    private FileObject zipFile;
-    private String accession;
 
     @Override
     protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
-
         // set filename and accession
         String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
-        accession = requestArgs[0];
+        String accession = requestArgs[0];
 
         String[] filenames = request.getParameterMap().get("files");
         Files files = getComponent(Files.class);
         byte[] buffer = new byte[1024];
-
         try {
             fsManager = VFS.getManager();
-            zipFile = fsManager.resolveFile(ROOTPATH + "/" + accession + ".zip");
+            FileObject zipFile = fsManager.resolveFile(ROOTPATH + "/" + accession + "." + UUID.randomUUID() + ".zip");
             logger.info("Creating zip file {} for accession [{}] files: {}", zipFile.getName(), accession, filenames);
             zipFile.createFile();
             try (ZipOutputStream zos = new ZipOutputStream(zipFile.getContent().getOutputStream())) {
@@ -74,6 +71,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                 }
             }
             zipFile.close();
+            request.setAttribute("zipFile", zipFile);
         } catch (IOException e) {
             throw  new DownloadServletException(e);
         }
@@ -82,8 +80,11 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
     @Override
     protected void doAfterDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
         try {
-            zipFile.delete();
-            logger.info("Zip file {} for accession [{}] deleted", zipFile.getName(), accession);
+            if (request.getAttribute("zipFile")!=null) {
+                FileObject zipFile = (FileObject) request.getAttribute("zipFile");
+                zipFile.delete();
+                logger.info("Zip file {} deleted", zipFile.getName());
+            }
         } catch (FileSystemException e) {
             throw  new DownloadServletException(e);
         }
@@ -94,41 +95,30 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             , HttpServletResponse response
             , List<String> userIDs
     ) throws DownloadServletException {
-        String accession = "";
-        String name = "";
-        IDownloadFile file = null;
+        // set filename and accession
+        String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
+        String accession = requestArgs[0];
 
-        try {
-
-            file = getZippedFiles(request, response, accession, name);
-
-        } catch (DownloadServletException x) {
-            throw x;
-        } catch (Exception x) {
-            throw new DownloadServletException(x);
-        }
-        return file;
-    }
-
-    private IDownloadFile getZippedFiles(HttpServletRequest request, HttpServletResponse response, String accession, String name) throws IOException, DownloadServletException {
-        logger.info("Requested download of accession [{}] files: {}", accession, request.getParameterMap().get("files"));
-
-        IDownloadFile zipfile = new RAMZipFile(zipFile);
+        String[] filenames = request.getParameterMap().get("files");
+        logger.info("Requested download of accession [{}] files: {}", accession, filenames);
+        IDownloadFile zipfile = new RAMZipFile((FileObject) request.getAttribute("zipFile"),accession);
         return zipfile;
     }
 
     protected final class RAMZipFile implements IDownloadFile {
         private final FileObject fileObject;
+        private String accession;
 
-        public RAMZipFile(FileObject fileObject) {
+        public RAMZipFile(FileObject fileObject, String accession) {
             if (null == fileObject) {
                 throw new IllegalArgumentException("FileObject cannot be null");
             }
             this.fileObject = fileObject;
+            this.accession = accession;
         }
 
         public String getName() {
-            return fileObject.getName().getBaseName();
+            return accession + ".zip";
         }
 
         public String getPath() {
@@ -145,12 +135,8 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         }
 
         public long getLastModified() {
-            try {
-                return fileObject.getContent().getLastModifiedTime();
-            } catch (FileSystemException e) {
-                e.printStackTrace();
-            }
-            return 0;
+            // last modified makes part of the etag so return length instead in order to support resumes
+            return getLength();
         }
 
         public boolean canDownload() {

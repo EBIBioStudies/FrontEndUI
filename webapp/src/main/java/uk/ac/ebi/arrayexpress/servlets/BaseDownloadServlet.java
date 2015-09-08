@@ -103,8 +103,6 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
                 }
                 logger.debug("Download of [{}] completed", downloadFile.getName());
             }
-            doAfterDownloadFileFromRequest(request, response);
-
         } catch (DownloadServletException x) {
             logger.error(x.getMessage());
         } catch (Exception x) {
@@ -117,6 +115,11 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
         } finally {
             if (null != downloadFile) {
                 downloadFile.close();
+            }
+            try {
+                doAfterDownloadFileFromRequest(request, response);
+            } catch (DownloadServletException e) {
+                throw new ServletException(e);
             }
         }
     }
@@ -297,7 +300,6 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
         // Prepare some variables. The full Range represents the complete file
         Range full = new Range(0, length - 1, length);
         List<Range> ranges = new ArrayList<>();
-
         // Validate and process Range and If-Range headers
         String range = request.getHeader("Range");
         if (range != null) {
