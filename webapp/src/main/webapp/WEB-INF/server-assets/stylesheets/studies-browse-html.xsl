@@ -85,9 +85,14 @@
         <xsl:variable name="vPage" select="if ($page and $page castable as xs:integer) then $page cast as xs:integer else 1" as="xs:integer"/>
         <xsl:variable name="vPageSize" select="if ($pagesize and $pagesize castable as xs:integer) then $pagesize cast as xs:integer else 25" as="xs:integer"/>
 
-        <xsl:variable name="vFrom" as="xs:integer" select="xs:integer(search:getQueryInfoParameter($queryid,'from'))" />
-        <xsl:variable name="vTo" as="xs:integer" select="xs:integer(search:getQueryInfoParameter($queryid,'to'))" />
+        <xsl:variable name="vFromNode"  select="search:getQueryInfoParameter($queryid,'from')" />
+        <xsl:variable name="vFrom" as="xs:integer" select="if ($vFromNode) then xs:integer($vFromNode) else 0" />
+        <xsl:variable name="vToNode"  select="search:getQueryInfoParameter($queryid,'to')" />
+        <xsl:variable name="vTo" as="xs:integer" select="if ($vToNode) then xs:integer($vToNode) else 0" />
         <xsl:choose>
+            <xsl:when test="not($vFromNode)">
+                <xsl:call-template name="browse-error"/>
+            </xsl:when>
             <xsl:when test="$vTotal&gt;0">
                 <section class="grid_18 alpha search-title">
                     <xsl:if test="$vSearchMode">
@@ -312,7 +317,6 @@
     -->
 
     <xsl:template name="browse-no-results">
-
         <section class="grid_18 alpha">
             <h2 class="alert">We’re sorry that we couldn’t find any matching studies</h2>
             <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
@@ -342,5 +346,19 @@
             </div>
         </aside>
 
+    </xsl:template>
+
+    <xsl:template name="browse-error">
+
+        <section class="grid_18 alpha">
+            <h2 class="alert">Yikes! Looks like we are overloaded.</h2>
+            <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> resulted in an error.
+                Our servers may be busy. Please try again later and <a href="#" class="feedback">contact us</a> if the error persists.</p>
+        </section>
+        <aside class="grid_6 omega shortcuts" id="search-extras">
+            <div id="ebi_search_results">
+                <h3>More data from EMBL-EBI</h3>
+            </div>
+        </aside>
     </xsl:template>
 </xsl:stylesheet>

@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class QueryPool {
     //private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final static int MAX_NUMBER_OF_QUERIES = 100;
+    private final static int MAX_NUMBER_OF_QUERIES = 1000;
 
     private AtomicInteger queryId;
 
