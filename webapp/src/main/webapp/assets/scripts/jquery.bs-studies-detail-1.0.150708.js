@@ -175,8 +175,13 @@ var table = null;
             scrollTop: $(href).offset().top
         }, 200);
 
-        $(href).next().next().animate({opacity:0}, 'slow', function(){
-            $(href).next().next().animate({opacity:1},'slow');
+        $(href).next().next().animate({opacity:0.8}, 200, function(){
+            $(href).next().next().css('background-color','yellow');
+                $(href).next().next().animate({opacity:0.4}, 400, function(){
+                    $(href).next().next().css('background-color','lightgray');
+                    $(href).next().next().animate({opacity:1},600);
+                    $(href).next().next().css('background-color','transparent');
+            })
         });
 
     });
