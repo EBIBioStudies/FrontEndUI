@@ -164,6 +164,23 @@ var table = null;
             "autoWidth" : false
         } );
     }
+
+    $('.org-link').click( function() {
+        var href = $(this).attr('href');
+        if (!$(href).is(':visible')) {
+            $('#hidden-orgs').find('a.show-more').click()
+        }
+
+        $('html, body').animate({
+            scrollTop: $(href).offset().top
+        }, 200);
+
+        $(href).next().next().animate({opacity:0}, 'slow', function(){
+            $(href).next().next().animate({opacity:1},'slow');
+        });
+
+    });
+
     $('#right-column-expander').click( function() {
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
         $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
@@ -172,3 +189,4 @@ var table = null;
     });
 
 })(window.jQuery);
+

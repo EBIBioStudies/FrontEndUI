@@ -194,7 +194,7 @@
                             <xsl:variable name="vAffiliation" select="$vUniqueRefs/orgs/org[@acc=$vAffiliationId]"/>
                             <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1 and $vAffiliation">
                                 <sup>
-                                    <a>
+                                    <a class="org-link">
                                         <xsl:attribute name="href" select="fn:concat('#affiliation',fn:count($vAffiliation/preceding-sibling::org) + 1)"></xsl:attribute>
                                         <xsl:value-of select="fn:count($vAffiliation/preceding-sibling::org) + 1"/>
                                     </a>
@@ -206,7 +206,7 @@
                         </xsl:for-each>
                         <xsl:if test="fn:count($vUniqueRefs/orgs/org)>0">
                             <xsl:variable name="vSize" select="fn:count($vUniqueRefs/orgs/org)"/>
-                            <p class="orgs">
+                            <p class="orgs"  id="hidden-orgs" >
                                 <xsl:for-each select="$vUniqueRefs/orgs/org[fn:position() = (1 to 10)]">
                                     <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
                                         <span class="ae-detail-affilliation"><xsl:attribute name="id" select="fn:concat('affiliation',position())"></xsl:attribute></span>
@@ -214,11 +214,13 @@
                                                 <xsl:value-of select="position()"/>
                                         </sup>
                                     </xsl:if>
-                                    <xsl:call-template name="highlight">
-                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                        <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
-                                        <xsl:with-param name="pText" select="."/>
-                                    </xsl:call-template>
+                                    <span class="org-name">
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                            <xsl:with-param name="pText" select="."/>
+                                        </xsl:call-template>
+                                    </span>
                                     <xsl:if test="$vSize &gt; 10">
                                         <xsl:text>, </xsl:text>
                                     </xsl:if>
@@ -227,16 +229,18 @@
                                     <span class="hidden-values" size="{$vSize - 10}">
                                         <xsl:for-each select="$vUniqueRefs/orgs/org[fn:position() = (11 to $vSize)]">
                                             <xsl:if test="fn:count($vUniqueRefs/orgs/org) > 1">
-                                                <span class="ae-detail-affilliation"><xsl:attribute name="id" select="fn:concat('affiliation',position())"></xsl:attribute></span>
+                                                <span class="ae-detail-affilliation"><xsl:attribute name="id" select="fn:concat('affiliation',position()+10)"></xsl:attribute></span>
                                                 <sup>
                                                     <xsl:value-of select="position()+10"/>
                                                 </sup>
                                             </xsl:if>
-                                            <xsl:call-template name="highlight">
-                                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                                <xsl:with-param name="pText" select="."/>
-                                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
-                                            </xsl:call-template>
+                                            <span class="org-name">
+                                                <xsl:call-template name="highlight">
+                                                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                                    <xsl:with-param name="pText" select="."/>
+                                                    <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                                </xsl:call-template>
+                                            </span>
                                             <xsl:if test="fn:position() != fn:last()">
                                                 <xsl:text>, </xsl:text>
                                             </xsl:if>

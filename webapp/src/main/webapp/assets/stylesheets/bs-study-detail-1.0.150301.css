@@ -217,6 +217,7 @@ a.file-link {
     border: 1px solid #888;
     box-shadow: 3px 3px 5px #AAA;
     background-color: white;
+    z-index: 1;
 }
 
 .file-link {
