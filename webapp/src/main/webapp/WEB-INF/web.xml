@@ -151,6 +151,10 @@
     <listener>
         <listener-class>uk.ac.ebi.arrayexpress.BSInterfaceApplication</listener-class>
     </listener>
+    <listener>
+        <display-name>ImageIO service provider loader/unloader</display-name>
+        <listener-class>com.twelvemonkeys.servlet.image.IIOProviderContextListener</listener-class>
+    </listener>
     <!--
     <security-constraint>
         <web-resource-collection>
