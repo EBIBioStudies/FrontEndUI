@@ -20,6 +20,8 @@ package uk.ac.ebi.arrayexpress.servlets;
 import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.ebi.arrayexpress.components.Studies;
+import uk.ac.ebi.arrayexpress.components.Users;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
@@ -89,11 +91,19 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
             , User authenticatedUser
     ) throws ServletException, IOException {
         logRequest(logger, request, requestType);
-
         IDownloadFile downloadFile = null;
         try {
             doBeforeDownloadFileFromRequest(request, response);
-            downloadFile = getDownloadFileFromRequest(request, response, authenticatedUser );
+
+            Studies studies = getComponent(Studies.class);
+            String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
+            String accession = requestArgs[0];
+            if (!studies.isAccessible(accession, authenticatedUser)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                throw new DownloadServletException("Null file requested to download");
+            }
+
+            downloadFile = getDownloadFileFromRequest(request, response, authenticatedUser);
             if (null != downloadFile) {
                 verifyFile(downloadFile, response);
 

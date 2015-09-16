@@ -33,12 +33,14 @@ import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.arrayexpress.utils.search.EFOExpandedHighlighter;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -162,15 +164,15 @@ public class Querier {
             // if page is from search results, get the document at nth position in the search results
             // and store the previous and next result as well. Otherwise, return the whole result set
             if (params.containsKey("n") || params.get("path-info")[0].contains("detail")) {
-               matchingNodes.add(getSingleDocument(params, hits, leafReader));
+                NodeInfo nodeInfo = getSingleDocument(params, hits, leafReader);
+                if(nodeInfo!=null) matchingNodes.add(nodeInfo);
             } else {
                 ScoreDoc [] scoreDocs = hits.scoreDocs;
                 for (int i = from - 1; i < to; i++) {
                     try {
-                        matchingNodes.add(
-                                Application.getAppComponent(SaxonEngine.class)
-                                        .buildDocument(leafReader.document(scoreDocs[i].doc).get("xml"))
-                        );
+                        NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class)
+                                .buildDocument(leafReader.document(scoreDocs[i].doc).get("xml"));
+                        if(nodeInfo!=null) matchingNodes.add(nodeInfo);
                     } catch (SaxonException e) {
                         e.printStackTrace();
                     }
@@ -214,20 +216,48 @@ public class Querier {
         int position = params.containsKey("n") ? Integer.parseInt( params.get("n")[0]) - 1 : 0;
         ScoreDoc[] scoreDocs = hits.scoreDocs;
 
+        try {
+            NodeInfo ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
+            params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
+            params.put("accessionIndex", new String[]{"" + position});
 
-        NodeInfo ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
-        params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
-        params.put("accessionIndex", new String[]{"" + position});
+            if (position > 0) {
+                NodeInfo prev = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position - 1].doc).get("xml"));
+                params.put("previousAccession", new String[]{prev.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
+            }
+            if (position < hits.totalHits - 1) {
+                NodeInfo next = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position + 1].doc).get("xml"));
+                params.put("nextAccession", new String[]{next.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
+            }
+            return ni;
 
-        if (position > 0) {
-            NodeInfo prev = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position - 1].doc).get("xml"));
-
-            params.put("previousAccession", new String[]{prev.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            logger.warn("Trying to load an inaccessible document");
+            return null;
         }
-        if (position < hits.totalHits - 1) {
-            NodeInfo next = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position + 1].doc).get("xml"));
-            params.put("nextAccession", new String[]{next.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
+    }
+
+    public boolean isAccessible(String accession, User user) {
+        try {
+            Map<String, String[]> querySource = new HashMap<>();
+            querySource.put("accession", new String[]{accession});
+            if (user!=null) {
+                querySource.put("allow", user.getAllow());
+                querySource.put("deny", user.getDeny());
+            } else {
+                querySource.put("allow", new String[]{"public"});
+            }
+            QueryConstructor qc = new QueryConstructor();
+            Query query = qc.construct(this.env, querySource);
+            query = qc.getAccessControlledQuery(query, this.env, querySource);
+            try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
+                IndexSearcher searcher = new IndexSearcher(reader);
+                TopDocs hits = searcher.search(query, Integer.MAX_VALUE);
+                return hits != null && hits.totalHits == 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return ni;
+        return false;
     }
 }

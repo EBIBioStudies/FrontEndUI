@@ -155,19 +155,6 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
                                     + "] were not determined");
                 }
 
-                // TODO: Handle user auth
-                /*
-                if (!(null != userIDs && (0 == userIDs.size() || users.isAccessible(accession, userIDs)))) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                    throw new DownloadServletException(
-                            "Data from ["
-                                    + accession
-                                    + "] is not accessible for the user with id(s) ["
-                                    + StringTools.arrayToString(userIDs.toArray(new String[userIDs.size()]), ", ")
-                                    + "]"
-                    );
-                }*/
-
                 logger.debug("Will be serving archive [{}]", archLocation);
                 file = new ArchivedDownloadFile(new File(files.getRootFolder(), archLocation), fileName);
 

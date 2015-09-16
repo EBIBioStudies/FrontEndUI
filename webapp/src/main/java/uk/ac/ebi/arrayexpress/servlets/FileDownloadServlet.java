@@ -25,6 +25,9 @@ import org.apache.commons.vfs2.util.RandomAccessMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
+import uk.ac.ebi.arrayexpress.components.Studies;
+import uk.ac.ebi.arrayexpress.components.Users;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.Querier;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +59,7 @@ public class FileDownloadServlet extends BaseDownloadServlet {
                 accession = requestArgs[0];
                 name = requestArgs[1];
             }
+
             file = getSingleFile(request, response, accession, name);
         } catch (DownloadServletException x) {
             throw x;

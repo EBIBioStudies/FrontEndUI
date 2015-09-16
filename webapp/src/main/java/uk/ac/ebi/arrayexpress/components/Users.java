@@ -37,163 +37,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Users extends ApplicationComponent implements XMLDocumentSource {
+public class Users extends ApplicationComponent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final static String MAP_USERS_FOR_ACCESSION = "users-for-accession";
 
     private AuthenticationHelper authHelper;
-    private StoredDocument document;
-    private MapEngine.JointValueMap userMap;
-
-    private SaxonEngine saxon;
     private SearchEngine search;
-
-    public final String INDEX_ID = "users";
-
-    public enum UserSource {
-        AE1, AE2;
-
-        public String getStylesheetName() {
-            switch (this) {
-                case AE1:
-                    return "preprocess-users-ae1-xml.xsl";
-                case AE2:
-                    return "preprocess-users-ae2-xml.xsl";
-            }
-            return null;
-        }
-    }
 
     public Users() {
     }
 
     @Override
     public void initialize() throws Exception {
-        /*
-        this.saxon = getComponent(SaxonEngine.class);
         this.search = getComponent(SearchEngine.class);
-        this.document = new StoredDocument(
-                new File(getPreferences().getString("bs.users.persistence-location")),
-                "users"
-        );
-
-        this.userMap = new MapEngine.JointValueMap(MAP_USERS_FOR_ACCESSION);
-
-        MapEngine maps = getComponent(MapEngine.class);
-        maps.registerMap(this.userMap);
-//        maps.registerMap(new MapEngine.SimpleValueMap(Studies.MAP_EXPERIMENTS_FOR_USER));
-
-        updateIndex();
-
-
-        this.saxon.registerDocumentSource(this);
-        */
         this.authHelper = new AuthenticationHelper();
     }
 
     @Override
     public void terminate() throws Exception {
-    }
-
-    @Override
-    public String getURI() {
-        return "users.xml";
-    }
-
-    @Override
-    public synchronized NodeInfo getRootNode() throws IOException {
-        return document.getRootNode();
-    }
-
-    @Override
-    public synchronized void setRootNode(NodeInfo rootNode) throws IOException, SaxonException {
-        if (null != rootNode) {
-            this.document = new StoredDocument(rootNode,
-                    new File(getPreferences().getString("bs.users.persistence-location")));
-            updateIndex();
-        } else {
-            this.logger.error("User information NOT updated, NULL document passed");
-        }
-    }
-
-    public void registerUserMap(MapEngine.IValueMap map) {
-        this.userMap.addMap(map);
-    }
-
-    public void clearUserMap(String name) {
-        MapEngine.IValueMap map = this.userMap.getMap(name);
-        if (null != map) {
-            map.clearValues();
-        } else {
-            logger.error("Map [{}] not found", name);
-        }
-    }
-
-    public void setUserMapping(String name, String accession, Object ids) {
-        MapEngine.IValueMap map = this.userMap.getMap(name);
-        if (null != map) {
-            map.setValue(accession, ids);
-        } else {
-            logger.error("Map [{}] not found", name);
-        }
-    }
-
-
-    public boolean isAccessible(String accession, List<String> userIds) throws IOException {
-        @SuppressWarnings("unchecked")
-        Set<String> ids = (Set<String>) this.userMap.getValue(accession);
-        for (String userId : userIds) {
-            if (isPrivilegedByID(userId) || (null != ids && ids.contains(userId)))
-                return true;
-        }
-        return false;
-    }
-
-    public void update(String xmlString, UserSource source) throws IOException, InterruptedException {
-        try {
-            NodeInfo update = this.saxon.transform(xmlString, source.getStylesheetName(), null);
-            if (null != update) {
-                new DocumentUpdater(this, update).update();
-            }
-        } catch (SaxonException x) {
-            throw new RuntimeException(x);
-        }
-    }
-
-    private void updateIndex() throws IOException {
-        try {
-            this.search.getController().index(INDEX_ID, document);
-        } catch (Exception x) {
-            throw new RuntimeException(x);
-        }
-    }
-
-    public boolean isPrivilegedByName(String name) throws IOException {
-        /*
-        name = StringEscapeUtils.escapeXml(name);
-        try {
-            return ((BooleanValue) saxon.evaluateXPathSingle(
-                    getRootNode()
-                    , "(/users/user[name = '" + name + "']/is_privileged = true())"
-            )).effectiveBooleanValue();
-        } catch (XPathException x) {
-            throw new RuntimeException(x);
-        }*/
-        //TODO: check privilege
-        return true;
-    }
-
-    public boolean isPrivilegedByID(String id) throws IOException {
-        id = StringEscapeUtils.escapeXml(id);
-        try {
-            return ((BooleanValue) saxon.evaluateXPathSingle(
-                    getRootNode()
-                    , "(/users/user[id = '" + id + "']/is_privileged = true())"
-            )).effectiveBooleanValue();
-        } catch (XPathException x) {
-            throw new RuntimeException(x);
-        }
     }
 
     public User login(String username, String password) throws IOException {
@@ -218,9 +79,9 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
         return user;
     }
 
-    @SuppressWarnings("unchecked")
+    //TODO: handle password flow
     public String remindPassword(String nameOrEmail, String accession) throws IOException {
-        nameOrEmail = StringEscapeUtils.escapeXml(nameOrEmail);
+       /* nameOrEmail = StringEscapeUtils.escapeXml(nameOrEmail);
         accession = null != accession ? accession.toUpperCase() : "";
 
         try {
@@ -286,8 +147,8 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
 
         } catch (XPathException x) {
             throw new RuntimeException(x);
-        }
-
+        }*/
+        return null;
     }
 
 }

@@ -73,7 +73,7 @@ public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSou
         );
 
         maps.registerMap(new MapEngine.SimpleValueMap(MAP_ARRAY_LEGACY_ID));
-        users.registerUserMap(new MapEngine.SimpleValueMap(INDEX_ID));
+        //users.registerUserMap(new MapEngine.SimpleValueMap(INDEX_ID));
 
         updateIndex();
         updateMaps();
@@ -126,7 +126,7 @@ public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSou
         this.logger.debug("Updating maps for arrays");
 
         maps.clearMap(MAP_ARRAY_LEGACY_ID);
-        users.clearUserMap(INDEX_ID);
+        //users.clearUserMap(INDEX_ID);
 
         try {
             List<Item> documentNodes = saxon.evaluateXPath(getRootNode(),
@@ -147,7 +147,7 @@ public class ArrayDesigns extends ApplicationComponent implements XMLDocumentSou
                         for (Item userId : userIds) {
                             stringSet.add(userId.getStringValue());
                         }
-                        users.setUserMapping(INDEX_ID, accession, stringSet);
+                        //users.setUserMapping(INDEX_ID, accession, stringSet);
                     }
                 } catch (XPathException x) {
                     this.logger.error("Caught an exception:", x);

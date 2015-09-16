@@ -84,4 +84,13 @@ public class DetailTest {
     }
     */
 
+    @Test
+    public void testDownloadSelection() {
+        driver.get(baseUrl + "/studies/S-EPMC2685405");
+        driver.findElement(By.cssSelector("#select-all-files")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#download-selected-files")));
+        assertEquals("Download all 10", driver.findElement(By.cssSelector("#download-selected-files")).getText());
+    }
+
 }

@@ -18,11 +18,14 @@
 package uk.ac.ebi.arrayexpress.components;
 
 import net.sf.saxon.om.NodeInfo;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.FileTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.Querier;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -186,6 +189,12 @@ public class Studies extends ApplicationComponent  {
             throw new RuntimeException(x);
         }
     }
+
+    public boolean isAccessible(String accession, User authenticatedUser) {
+        Querier querier = new Querier(this.search.getController().getEnvironment(INDEX_ID));
+        return querier.isAccessible(accession,authenticatedUser);
+    }
+
 
 //    private void updateMaps() throws IOException {
 //        this.logger.debug("Updating maps for studies");

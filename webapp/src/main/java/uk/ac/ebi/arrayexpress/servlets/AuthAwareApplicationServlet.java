@@ -43,7 +43,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
     private final static String AE_LOGIN_USER_COOKIE = "AeLoggedUser";
     private final static String AE_LOGIN_TOKEN_COOKIE = "AeLoginToken";
 
-    private static class AuthApplicationServletException extends ServletException {
+    protected static class AuthApplicationServletException extends ServletException {
         private static final long serialVersionUID = 1030249369830812548L;
 
         public AuthApplicationServletException(Throwable x) {
