@@ -17,11 +17,14 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.WildcardQuery;
 
 import java.util.Map;
 
@@ -52,5 +55,35 @@ public class QueryConstructor implements IQueryConstructor {
         QueryParser parser = new EnhancedQueryParser(env, env.defaultField, env.indexAnalyzer);
         parser.setDefaultOperator(QueryParser.Operator.AND);
         return parser.parse(queryString);
+    }
+
+    @Override
+    public Query getAccessControlledQuery(Query query, IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
+        // empty query returns everything
+        if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
+            Term term = new Term("title", "*");
+            query = new WildcardQuery(term);
+        }
+
+        BooleanQuery queryWithAccessControl = new BooleanQuery();
+        queryWithAccessControl.add(query, BooleanClause.Occur.MUST);
+
+        if (querySource.containsKey("allow") && querySource.get("allow").length>0) {
+            QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
+            parser.setDefaultOperator(QueryParser.Operator.OR);
+            String access = StringUtils.join(querySource.get("allow"), " ").replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1");
+            Query allowQuery = parser.parse(access);
+            queryWithAccessControl.add(allowQuery, BooleanClause.Occur.MUST);
+        }
+
+        if (querySource.containsKey("deny") && querySource.get("deny").length>0) {
+            QueryParser parser = new EnhancedQueryParser(env, "deny", env.indexAnalyzer);
+            parser.setDefaultOperator(QueryParser.Operator.AND);
+            String access = StringUtils.join(querySource.get("deny"), " ").replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1");
+            Query allowQuery = parser.parse(access);
+            queryWithAccessControl.add(allowQuery, BooleanClause.Occur.MUST);
+        }
+
+        return queryWithAccessControl;
     }
 }

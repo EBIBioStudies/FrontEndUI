@@ -18,6 +18,7 @@
 package uk.ac.ebi.arrayexpress.servlets;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.fg.saxon.functions.HTTPStatusException;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class QueryServlet extends AuthAwareApplicationServlet {
@@ -54,7 +57,7 @@ public class QueryServlet extends AuthAwareApplicationServlet {
             HttpServletRequest request
             , HttpServletResponse response
             , RequestType requestType
-            , String authUserName
+            , User authenticatedUser
     ) throws ServletException, IOException {
         RegexHelper PARSE_ARGUMENTS_REGEX = new RegexHelper("/([^/]+)/([^/]+)/([^/]+)$", "i");
 
@@ -114,8 +117,13 @@ public class QueryServlet extends AuthAwareApplicationServlet {
             HttpServletRequestParameterMap params = new HttpServletRequestParameterMap(request);
 
             // to make sure nobody sneaks in the other value w/o proper authentication
-            params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
-            params.put("username", authUserName);
+            if (authenticatedUser!=null) {
+                params.put("username", authenticatedUser.getUsername());
+                params.put("allow", authenticatedUser.getAllow());
+                params.put("deny", authenticatedUser.getDeny());
+            } else {
+                params.put("allow", AE_PUBLIC_ACCESS);
+            }
 
             // migration rudiment - show only "visible" i.e. overlapping experiments from AE2
             params.put("visible", "true");

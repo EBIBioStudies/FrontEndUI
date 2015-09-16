@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
 import uk.ac.ebi.arrayexpress.components.Users;
 import uk.ac.ebi.arrayexpress.utils.CookieMap;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -67,7 +68,6 @@ public class AuthServlet extends ApplicationServlet {
         String userAgent = request.getHeader("User-Agent");
 
         Users users = getComponent(Users.class);
-        String token = "";
         boolean isLoginSuccessful = false;
         if (null != email) {
             String message = users.remindPassword(StringUtils.trimToEmpty(email), StringUtils.trimToEmpty(accession));
@@ -75,20 +75,15 @@ public class AuthServlet extends ApplicationServlet {
                 setCookie(response, AE_AUTH_MESSAGE_COOKIE, message, null);
             }
         } else {
-            token = users.hashLogin(
-                    username
-                    , password
-                    , request.getRemoteAddr().concat(null != userAgent ? userAgent : "unknown")
-            );
-
+            User authenticatedUser = users.login(username, password);
+            isLoginSuccessful = authenticatedUser!=null;
             // 31,557,600 is a standard year in seconds
             Integer maxAge = "on".equals(remember) ? 31557600 : null;
-            isLoginSuccessful = !"".equals(token);
 
             if (isLoginSuccessful) {
                 logger.debug("Successfully authenticated user [{}]", username);
                 setCookie(response, AE_USERNAME_COOKIE, username, maxAge);
-                setCookie(response, AE_TOKEN_COOKIE, token, maxAge);
+                setCookie(response, AE_TOKEN_COOKIE, authenticatedUser.getHashedPassword() , maxAge);
             } else {
                 setCookie(response, AE_AUTH_USERNAME_COOKIE, username, null);
                 setCookie(response, AE_AUTH_MESSAGE_COOKIE, "Incorrect user name or password", null);
@@ -111,7 +106,8 @@ public class AuthServlet extends ApplicationServlet {
 
             PrintWriter out = response.getWriter();
             try {
-                out.print(token);
+                // TODO: check what this does
+                // out.print(token);
             } catch (Exception x) {
                 throw new RuntimeException(x);
             }

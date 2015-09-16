@@ -21,6 +21,7 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -85,14 +86,14 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
             HttpServletRequest request
             , HttpServletResponse response
             , RequestType requestType
-            , String authUserName
+            , User authenticatedUser
     ) throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
         IDownloadFile downloadFile = null;
         try {
             doBeforeDownloadFileFromRequest(request, response);
-            downloadFile = getDownloadFileFromRequest(request, response, getUserIds(authUserName));
+            downloadFile = getDownloadFileFromRequest(request, response, authenticatedUser );
             if (null != downloadFile) {
                 verifyFile(downloadFile, response);
 
@@ -136,7 +137,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
     protected abstract IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
             , HttpServletResponse response
-            , List<String> authUserIDs
+            , User authenticatedUser
     ) throws DownloadServletException;
 
     private void verifyFile(IDownloadFile file, HttpServletResponse response)

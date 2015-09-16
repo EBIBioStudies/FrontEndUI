@@ -17,7 +17,14 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.WildcardQuery;
 import uk.ac.ebi.arrayexpress.utils.LRUMap;
 
 import java.io.IOException;
@@ -58,6 +65,7 @@ public class QueryPool {
         if (null != queryExpander) {
             info.setQuery(queryExpander.expandQuery(env, info));
         }
+        info.setQuery(queryConstructor.getAccessControlledQuery(info.getQuery(), env, queryParams));
 
         Integer id;
         this.queries.put(id = this.queryId.addAndGet(1), info);

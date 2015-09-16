@@ -20,11 +20,16 @@ package uk.ac.ebi.arrayexpress.servlets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
+import uk.ac.ebi.arrayexpress.components.Users;
+import uk.ac.ebi.arrayexpress.utils.CookieMap;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,12 +38,10 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
     private static final long serialVersionUID = -82727624065665432L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final static String[] AE_PUBLIC_ACCESS = new String[] {"public"};
 
     private final static String AE_LOGIN_USER_COOKIE = "AeLoggedUser";
     private final static String AE_LOGIN_TOKEN_COOKIE = "AeLoginToken";
-
-    private final static List<String> AE_PUBLIC_ACCESS = Arrays.asList("1");
-    private final static List<String> AE_UNRESTRICTED_ACCESS = new ArrayList<>();
 
     private static class AuthApplicationServletException extends ServletException {
         private static final long serialVersionUID = 1030249369830812548L;
@@ -52,83 +55,41 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
             HttpServletRequest request
             , HttpServletResponse response
             , RequestType requestType
-            , String authUserName
+            , User authUser
     ) throws ServletException, IOException;
 
     protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
             throws ServletException, IOException {
-        if (!checkAuthCookies(request)) {
+        User authenticatedUser = getAuthenticatedUser(request);
+        if (authenticatedUser == null) {
             invalidateAuthCookies(response);
         }
-        String authUserName = getAuthUserName(request);
-
-        doAuthenticatedRequest(request, response, requestType, authUserName);
-    }
-
-    private boolean checkAuthCookies(HttpServletRequest request) throws ServletException {
-//        try {
-//            CookieMap cookies = new CookieMap(request.getCookies());
-//            String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
-//            if (null != userName) {
-//                userName = URLDecoder.decode(userName, "UTF-8");
-//            }
-//            String token = cookies.getCookieValue(AE_LOGIN_TOKEN_COOKIE);
-//            String userAgent = request.getHeader("User-Agent");
-//            Users users = (Users) getComponent("Users");
-//            return users.verifyLogin(
-//                    userName
-//                    , token
-//                    , request.getRemoteAddr().concat(
-//                            userAgent != null ? userAgent : "unknown"
-//                    )
-//            );
-//        } catch (Exception x) {
-//            throw new AuthApplicationServletException(x);
-//        }
-        return false;
+        doAuthenticatedRequest(request, response, requestType, authenticatedUser);
     }
 
     private void invalidateAuthCookies(HttpServletResponse response) {
         // deleting user cookie
-//        Cookie userCookie = new Cookie(AE_LOGIN_USER_COOKIE, "");
-//        userCookie.setPath("/");
-//        userCookie.setMaxAge(0);
-//
-//        response.addCookie(userCookie);
+        Cookie userCookie = new Cookie(AE_LOGIN_USER_COOKIE, "");
+        userCookie.setPath("/");
+        userCookie.setMaxAge(0);
+
+        response.addCookie(userCookie);
     }
 
-    protected String getAuthUserName(HttpServletRequest request) throws ServletException {
-//        if (checkAuthCookies(request)) {
-//            try {
-//                String userName = new CookieMap(request.getCookies()).getCookieValue(AE_LOGIN_USER_COOKIE);
-//                if (null != userName) {
-//                    return URLDecoder.decode(userName, "UTF-8");
-//                }
-//            } catch (Exception x) {
-//                throw new AuthApplicationServletException(x);
-//            }
-//        }
-        return null;
+    protected User getAuthenticatedUser(HttpServletRequest request) throws ServletException {
+        try {
+            CookieMap cookies = new CookieMap(request.getCookies());
+            String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
+            if (null != userName) {
+                userName = URLDecoder.decode(userName, "UTF-8");
+            }
+            //TODO: token is hashed password for now. Check if it should be replaced
+            String token = cookies.getCookieValue(AE_LOGIN_TOKEN_COOKIE);
+            Users users = getComponent(Users.class);
+            return users.checkAccess(userName, token);
+        } catch (Exception x) {
+            throw new AuthApplicationServletException(x);
+        }
     }
 
-    protected List<String> getUserIds(String userName) throws ServletException {
-//        if (null == userName) {
-            return AE_PUBLIC_ACCESS;
-//        }
-//        try {
-//            userName = URLDecoder.decode(userName, "UTF-8");
-//            Users users = (Users) getComponent("Users");
-//
-//            if (users.isPrivilegedByName(userName)) {
-//                return AE_UNRESTRICTED_ACCESS;
-//            } else {
-//                List<String> userIds = users.getUserIDs(userName);
-//                // so we allow public access as well
-//                userIds.addAll(AE_PUBLIC_ACCESS);
-//                return userIds;
-//            }
-//        } catch (Exception x) {
-//            throw new AuthApplicationServletException(x);
-//        }
-    }
 }

@@ -59,6 +59,9 @@
             <persistence-location>${sys:java.io.tmpdir}/bs-news.xml</persistence-location>
         </news>
         -->
+        <users>
+            <authentication-url>${interface.application.pref.users.authentication.url}</authentication-url>
+        </users>
         <files>
             <list-all-command>${interface.application.pref.studies.files.list-all}</list-all-command>
             <get-md5-base64-encoded-command>openssl md5 -binary ${arg.file} | openssl base64</get-md5-base64-encoded-command>
@@ -101,12 +104,13 @@
                defaultAnalyzer="uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer"
                searchSnippetFragmentSize="300">
             <document path="/studies/study" defaultField="keywords" idField="accession">
-                <field name="keywords" type="string" path="string-join( ( .//text()[not(ancestor::accession  or ancestor::releasedate or ancestor::title or ancestor::author or ancestor::file or ancestor::link or ancestor::section[@type='Author'] or ancestor::attribute[@name='affiliation'])] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name ) | .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
+                <field name="keywords" type="string" path="string-join( ( .//text()[not(ancestor::accession or ancestor::access or ancestor::releasedate or ancestor::title or ancestor::author or ancestor::file or ancestor::link or ancestor::section[@type='Author'] or ancestor::attribute[@name='affiliation'])] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name ) | .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
                 <field name="title" title="by Accession" type="string" path="title" analyze="true" store="true" escape="false" expand="false" docValueType="sorted" boost="2.0"/>
                 <field name="authors" title="by Authors" type="string" path="string-join(.//author, ', ')" analyze="true" store="true" escape="false" expand="false" docValueType="sorted"  />
                 <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" />
                 <field name="release_date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" />
                 <field name="public" type="boolean" path="true()"/>
+                <field name="access" type="string" path="access" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.AccessFieldAnalyzer" store="false" escape="true" expand="false" />
                 <field name="files"  title="Number of Files" type="long" path="@files" store="true" docValueType="numeric" />
                 <field name="links" title="Number of Links" type="long" path="@links" store="true" docValueType="numeric"  />
                 <!--

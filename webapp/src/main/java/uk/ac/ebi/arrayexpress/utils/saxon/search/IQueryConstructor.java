@@ -26,4 +26,6 @@ public interface IQueryConstructor {
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException;
 
     public Query construct(IndexEnvironment env, String queryString) throws ParseException;
+
+    public Query getAccessControlledQuery(Query query, IndexEnvironment env, Map<String, String[]> querySource) throws ParseException;
 }

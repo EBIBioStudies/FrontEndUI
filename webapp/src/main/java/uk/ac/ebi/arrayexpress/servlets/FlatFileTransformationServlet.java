@@ -29,6 +29,7 @@ import uk.ac.ebi.arrayexpress.utils.io.FilteringIllegalHTMLCharactersReader;
 import uk.ac.ebi.arrayexpress.utils.io.SmartUTF8CharsetDecoder;
 import uk.ac.ebi.arrayexpress.utils.io.UnescapingXMLNumericReferencesReader;
 import uk.ac.ebi.arrayexpress.utils.saxon.FlatFileXMLReader;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
             HttpServletRequest request
             , HttpServletResponse response
             , RequestType requestType
-            , String authUserName
+            , User authenticatedUser
     ) throws ServletException, IOException {
         RegexHelper PARSE_ARGUMENTS_REGEX = new RegexHelper("/([^/]+)/([^/]+)/([^/]+)/([^/]+)$", "i");
 
@@ -77,7 +78,7 @@ public class FlatFileTransformationServlet extends AuthAwareApplicationServlet {
         params.put("filename", fileName);
 
         // to make sure nobody sneaks in the other value w/o proper authentication
-        params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
+        //params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
 
         InputStream in = null;
         PrintWriter out = null;

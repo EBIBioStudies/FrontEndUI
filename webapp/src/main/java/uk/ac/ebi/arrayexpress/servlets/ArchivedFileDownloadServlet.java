@@ -25,6 +25,7 @@ import uk.ac.ebi.arrayexpress.components.Files;
 import uk.ac.ebi.arrayexpress.components.Users;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -105,7 +106,7 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
         }
     }
 
-    protected IDownloadFile getDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response, List<String> userIDs)
+    protected IDownloadFile getDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response, User authenticatedUser)
             throws DownloadServletException {
         RegexHelper PARSE_ARGUMENTS_REGEX = new RegexHelper("/([^/]+)/([^/]+)/([^/]+)$", "i");
         String[] requestArgs = PARSE_ARGUMENTS_REGEX.match(request.getRequestURL().toString());
@@ -154,6 +155,8 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
                                     + "] were not determined");
                 }
 
+                // TODO: Handle user auth
+                /*
                 if (!(null != userIDs && (0 == userIDs.size() || users.isAccessible(accession, userIDs)))) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN);
                     throw new DownloadServletException(
@@ -163,7 +166,7 @@ public class ArchivedFileDownloadServlet extends BaseDownloadServlet {
                                     + StringTools.arrayToString(userIDs.toArray(new String[userIDs.size()]), ", ")
                                     + "]"
                     );
-                }
+                }*/
 
                 logger.debug("Will be serving archive [{}]", archLocation);
                 file = new ArchivedDownloadFile(new File(files.getRootFolder(), archLocation), fileName);

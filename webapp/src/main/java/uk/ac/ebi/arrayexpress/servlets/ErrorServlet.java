@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.HttpServletRequestParameterMap;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +46,7 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
             HttpServletRequest request
             , HttpServletResponse response
             , RequestType requestType
-            , String authUserName
+            , User authenticatedUser
     ) throws ServletException, IOException {
         logRequest(logger, request, requestType);
 
@@ -57,8 +58,9 @@ public class ErrorServlet extends AuthAwareApplicationServlet {
 
             HttpServletRequestParameterMap params = new HttpServletRequestParameterMap(request);
             params.put("original-request-uri", (String) request.getAttribute("javax.servlet.error.request_uri"));
-            params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
+            /*params.put("userid", StringTools.listToString(getUserIds(authUserName), " OR "));
             params.put("username", authUserName);
+            */
 
             SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
             NodeInfo source = saxonEngine.getAppDocument().getRootNode();

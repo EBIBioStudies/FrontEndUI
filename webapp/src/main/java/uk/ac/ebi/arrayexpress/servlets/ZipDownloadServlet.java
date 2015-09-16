@@ -25,6 +25,7 @@ import org.apache.commons.vfs2.util.RandomAccessMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,7 +94,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
     protected IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
             , HttpServletResponse response
-            , List<String> userIDs
+            , User authenticatedUser
     ) throws DownloadServletException {
         // set filename and accession
         String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");

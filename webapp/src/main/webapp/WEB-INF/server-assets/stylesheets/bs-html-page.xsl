@@ -231,17 +231,14 @@
                                  add them here, and give them a class of "functional". Remember: you'll need a class of "last" for
                                  whichever one will show up last...
                                  For example: -->
-                                <!--
-                                <li class="functional last">
+                                <li class="functional">
                                     <a href="#" class="icon icon-functional login" data-icon="l">
                                         <xsl:choose>
-                                            <xsl:when test="$userid = '1'">Login</xsl:when>
-                                            <xsl:when test="fn:exists($username)">Logout [<xsl:value-of select="$username"/>]</xsl:when>
-                                            <xsl:otherwise>Logout</xsl:otherwise>
+                                            <xsl:when test="$username">Logout [<xsl:value-of select="$username"/>]</xsl:when>
+                                            <xsl:otherwise>Login</xsl:otherwise>
                                         </xsl:choose>
                                     </a>
                                 </li>
-                                -->
                                 <li class="functional last">
                                     <a href="#" class="icon icon-static feedback" data-icon="\">Feedback</a>
                                 </li>
@@ -290,9 +287,8 @@
                             <input class="submit" type="submit" value="Send"/>
                         </form>
                     </section>
-                    <!--
                     <section id="ae-login" style="display:none">
-                        <h3>ArrayExpress submitter/reviewer login<a id="ae-login-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
+                        <h3>BioStudies submitter/reviewer login<a id="ae-login-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
                         <form id="ae-login-form" method="post" action="{$secure-host}{$context-path}/auth">
                             <fieldset>
                                 <label for="ae-user-field">User name</label>
@@ -324,7 +320,6 @@
                             <input class="submit" type="submit" value="Send"/>
                         </form>
                     </section>
-                    -->
                 </div>
                 <footer>
                     <!-- Optional local footer (insert citation / project-specific copyright / etc here -->

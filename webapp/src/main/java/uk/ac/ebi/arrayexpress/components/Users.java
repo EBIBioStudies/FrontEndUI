@@ -22,12 +22,14 @@ import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.AuthenticationHelper;
+import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +70,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
 
     @Override
     public void initialize() throws Exception {
+        /*
         this.saxon = getComponent(SaxonEngine.class);
         this.search = getComponent(SearchEngine.class);
         this.document = new StoredDocument(
@@ -83,8 +86,10 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
 
         updateIndex();
 
-        this.authHelper = new AuthenticationHelper();
+
         this.saxon.registerDocumentSource(this);
+        */
+        this.authHelper = new AuthenticationHelper();
     }
 
     @Override
@@ -165,6 +170,7 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
     }
 
     public boolean isPrivilegedByName(String name) throws IOException {
+        /*
         name = StringEscapeUtils.escapeXml(name);
         try {
             return ((BooleanValue) saxon.evaluateXPathSingle(
@@ -173,7 +179,9 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
             )).effectiveBooleanValue();
         } catch (XPathException x) {
             throw new RuntimeException(x);
-        }
+        }*/
+        //TODO: check privilege
+        return true;
     }
 
     public boolean isPrivilegedByID(String id) throws IOException {
@@ -188,64 +196,26 @@ public class Users extends ApplicationComponent implements XMLDocumentSource {
         }
     }
 
-    public List<String> getUserIDs(String name) throws IOException {
-        name = StringEscapeUtils.escapeXml(name);
-        try {
-            List idNodes = this.saxon.evaluateXPath(
-                    getRootNode()
-                    , "/users/user[name = '" + name + "']/id"
-            );
-
-            ArrayList<String> ids = new ArrayList<>(idNodes.size());
-            for (Object node : idNodes) {
-                ids.add(((Item) node).getStringValue());
-            }
-
-            return ids;
-        } catch (XPathException x) {
-            throw new RuntimeException(x);
-        }
+    public User login(String username, String password) throws IOException {
+        return checkAccess(username, this.authHelper.generateHash(password));
     }
 
-    private List<String> getUserPasswords(String name) throws IOException {
-        name = StringEscapeUtils.escapeXml(name);
-        try {
-            List passwordNodes = this.saxon.evaluateXPath(
-                    getRootNode()
-                    , "/users/user[name = '" + name + "']/password"
-            );
-
-            ArrayList<String> passwords = new ArrayList<>(passwordNodes.size());
-            for (Object node : passwordNodes) {
-                passwords.add(((Item) node).getStringValue());
-            }
-            return passwords;
-
-        } catch (XPathException x) {
-            throw new RuntimeException(x);
+    public User checkAccess(String username, String passwordHash) throws IOException {
+        if (username==null || passwordHash ==null) return null;
+        String response = this.authHelper.sendAuthenticationRequest(username
+                                    , passwordHash
+                                    , getPreferences().getString("bs.users.authentication-url")  );
+        String [] lines = response.split("\n");
+        if (lines.length<3 || !"Status: OK".equalsIgnoreCase(lines[0])) {
+            return null;
         }
-    }
 
-    public String hashLogin(String username, String password, String suffix) throws IOException {
-        if (null != username && null != password && null != suffix) {
-            List<String> userPasswords = getUserPasswords(username);
-            for (String userPassword : userPasswords)
-                if (password.equals(userPassword)) {
-                    return this.authHelper.generateHash(username, password, suffix);
-                }
-        }
-        return "";
-    }
-
-    public boolean verifyLogin(String username, String hash, String suffix) throws IOException {
-        if (null != username && null != hash && null != suffix) {
-            List<String> userPasswords = getUserPasswords(username);
-            for (String userPassword : userPasswords)
-                if (this.authHelper.verifyHash(hash, username, userPassword, suffix)) {
-                    return true;
-                }
-        }
-        return false;
+        User user = new User();
+       user.setUsername(username);
+       user.setHashedPassword(passwordHash);
+       user.setAllow(StringUtils.split(StringUtils.split(lines[1], ':')[1].trim(), ','));
+       user.setDeny(StringUtils.split(StringUtils.split(lines[2], ':')[1].trim(), ','));
+        return user;
     }
 
     @SuppressWarnings("unchecked")

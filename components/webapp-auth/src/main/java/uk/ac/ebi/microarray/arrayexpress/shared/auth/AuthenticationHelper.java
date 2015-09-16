@@ -17,89 +17,61 @@
 
 package uk.ac.ebi.microarray.arrayexpress.shared.auth;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthenticationHelper {
-    // embedded encoder class
-    private final ModifiedBase64Encoder encoder = new ModifiedBase64Encoder();
 
-    public boolean verifyHash(String hash, String username, String password, String suffix) {
-        String computedHash = generateHash(username, password, suffix);
-        return (null != hash && hash.equals(computedHash));
-    }
-
-    public String generateHash(String username, String password, String suffix) {
-        String hash = null;
+    public String sendAuthenticationRequest(String username, String passwordHash, String endPoint) throws IOException {
+        String responseString = null;
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(endPoint);
+        httpPost.setHeader("Access-Control-Allow-Credentials","true");
+        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        nvps.add(new BasicNameValuePair("login", username));
+        nvps.add(new BasicNameValuePair("hash", passwordHash));
+        httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+        CloseableHttpResponse response = httpclient.execute(httpPost);
         try {
-            MessageDigest digest = MessageDigest.getInstance("sha-512");
-            byte[] hashBytes = digest.digest(
-                    new StringBuilder()
-                            .append(username)
-                            .append(password)
-                            .append(suffix)
-                            .toString()
-                            .getBytes()
-            );
-            hash = new String(encoder.encode(hashBytes));
-        } catch (NoSuchAlgorithmException x) {
-            //
+            responseString = EntityUtils.toString(response.getEntity());
+        } finally {
+            response.close();
         }
-        return hash;
+        return responseString;
+    }
+    private String toHexStr(byte[] dgst) {
+        if (dgst == null)
+            return "";
+        StringBuilder sb = new StringBuilder();
+        for (byte b : dgst) {
+            int hxd = (b >> 4) & 0x0F;
+            sb.append((char) (hxd >= 10 ? ('A' + (hxd - 10)) : ('0' + hxd)));
+            hxd = b & 0x0F;
+            sb.append((char) (hxd >= 10 ? ('A' + (hxd - 10)) : ('0' + hxd)));
+        }
+        return sb.toString();
     }
 
-    private static class ModifiedBase64Encoder {
-        // Mapping table from 6-bit nibbles to Base64 characters.
-        private char[] map1 = new char[64];
-
-        public ModifiedBase64Encoder() {
-            int i = 0;
-            for (char c = 'A'; c <= 'Z'; c++) map1[i++] = c;
-            for (char c = 'a'; c <= 'z'; c++) map1[i++] = c;
-            for (char c = '0'; c <= '9'; c++) map1[i++] = c;
-            map1[i++] = '*';
-            map1[i] = '-';
+    public String generateHash(String password) {
+        MessageDigest sha1 = null;
+        try {
+            sha1 = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-
-        /**
-         * Encodes a byte array into Base64 format.
-         * No blanks or line breaks are inserted.
-         *
-         * @param in an array containing the data bytes to be encoded.
-         * @return A character array with the Base64 encoded data.
-         */
-        public char[] encode(byte[] in) {
-            return encode(in, in.length);
-        }
-
-        /**
-         * Encodes a byte array into Base64 format.
-         * No blanks or line breaks are inserted.
-         *
-         * @param in   an array containing the data bytes to be encoded.
-         * @param iLen number of bytes to process in <code>in</code>.
-         * @return A character array with the Base64 encoded data.
-         */
-        public char[] encode(byte[] in, int iLen) {
-            int oDataLen = (iLen * 4 + 2) / 3;       // output length without padding
-            int oLen = ((iLen + 2) / 3) * 4;         // output length including padding
-            char[] out = new char[oLen];
-            int ip = 0;
-            int op = 0;
-            while (ip < iLen) {
-                int i0 = in[ip++] & 0xff;
-                int i1 = ip < iLen ? in[ip++] & 0xff : 0;
-                int i2 = ip < iLen ? in[ip++] & 0xff : 0;
-                int o0 = i0 >>> 2;
-                int o1 = ((i0 & 3) << 4) | (i1 >>> 4);
-                int o2 = ((i1 & 0xf) << 2) | (i2 >>> 6);
-                int o3 = i2 & 0x3F;
-                out[op++] = map1[o0];
-                out[op++] = map1[o1];
-                out[op++] = (op < oDataLen) ? map1[o2] : '.';
-                out[op++] = (op < oDataLen) ? map1[o3] : '.';
-            }
-            return out;
-        }
+        return toHexStr(sha1.digest(password.getBytes()));
     }
+
 }

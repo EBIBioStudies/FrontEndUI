@@ -105,15 +105,9 @@ public class Querier {
         Map<String, String[]> params = queryInfo.getParams();
         String sortBy =  (params.containsKey("sortby")) ? params.get("sortby")[0] : null;
 
-        // empty query returns everything
-        if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
-            if (sortBy==null) {
-                sortBy = "release_date";
-                params.put("sortby", new String[]{"release_date"});
-            }
-            logger.info("Empty search, returning all documents");
-            Term term = new Term("title", "*");
-            query = new WildcardQuery(term);
+        if (sortBy==null) {
+            sortBy = "release_date";
+            params.put("sortby", new String[]{"release_date"});
         }
 
         SortField.Type sortFieldType = (sortBy != null && !"relevance".equalsIgnoreCase(sortBy)) ?
