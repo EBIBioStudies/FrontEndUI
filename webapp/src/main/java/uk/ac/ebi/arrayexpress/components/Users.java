@@ -17,24 +17,16 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.Item;
-import net.sf.saxon.om.NodeInfo;
-import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.value.BooleanValue;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.*;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.AuthenticationHelper;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Users extends ApplicationComponent {
@@ -72,10 +64,13 @@ public class Users extends ApplicationComponent {
         }
 
         User user = new User();
-       user.setUsername(username);
-       user.setHashedPassword(passwordHash);
-       user.setAllow(StringUtils.split(StringUtils.split(lines[1], ':')[1].trim(), ','));
-       user.setDeny(StringUtils.split(StringUtils.split(lines[2], ':')[1].trim(), ','));
+        user.setUsername(username);
+        user.setHashedPassword(passwordHash);
+        Set<String> allowSet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[1], ':')[1].trim().replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1"), ',')));
+        Set<String> denySet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[2], ':')[1].trim().replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1"), ',')));
+        allowSet.removeAll(denySet);
+        user.setAllow(allowSet.toArray(new String[allowSet.size()]));
+        user.setDeny(denySet.toArray(new String[denySet.size()]));
         return user;
     }
 

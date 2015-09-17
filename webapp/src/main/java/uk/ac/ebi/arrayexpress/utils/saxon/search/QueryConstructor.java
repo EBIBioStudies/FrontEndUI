@@ -71,17 +71,17 @@ public class QueryConstructor implements IQueryConstructor {
         if (querySource.containsKey("allow") && querySource.get("allow").length>0) {
             QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.OR);
-            String access = StringUtils.join(querySource.get("allow"), " ").replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1");
-            Query allowQuery = parser.parse(access);
-            queryWithAccessControl.add(allowQuery, BooleanClause.Occur.MUST);
+            String access = StringUtils.join(querySource.get("allow"), " ");
+            Query q = parser.parse(access);
+            queryWithAccessControl.add(q, BooleanClause.Occur.MUST);
         }
 
         if (querySource.containsKey("deny") && querySource.get("deny").length>0) {
-            QueryParser parser = new EnhancedQueryParser(env, "deny", env.indexAnalyzer);
+            QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.AND);
-            String access = StringUtils.join(querySource.get("deny"), " ").replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1");
-            Query allowQuery = parser.parse(access);
-            queryWithAccessControl.add(allowQuery, BooleanClause.Occur.MUST);
+            String access = StringUtils.join(querySource.get("deny"), " ");
+            Query q = parser.parse(access);
+            queryWithAccessControl.add(q, BooleanClause.Occur.MUST_NOT);
         }
 
         return queryWithAccessControl;
