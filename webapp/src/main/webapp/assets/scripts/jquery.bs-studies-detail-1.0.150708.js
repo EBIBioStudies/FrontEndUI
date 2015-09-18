@@ -21,6 +21,7 @@ var table = null;
         throw "jQuery not loaded";
 
     $(function() {
+        $('input:checkbox').prop('checked', false);
 
         $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered

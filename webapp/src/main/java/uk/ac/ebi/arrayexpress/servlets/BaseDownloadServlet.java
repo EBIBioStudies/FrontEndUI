@@ -114,8 +114,6 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
                 }
                 logger.debug("Download of [{}] completed", downloadFile.getName());
             }
-        } catch (DownloadServletException x) {
-            logger.error(x.getMessage());
         } catch (Exception x) {
             if (x.getClass().getName().equals("org.apache.catalina.connector.ClientAbortException")) {
                 // generate log entry for client abortion
