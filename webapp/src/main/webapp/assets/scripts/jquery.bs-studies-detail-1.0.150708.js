@@ -25,30 +25,11 @@ var table = null;
 
         $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
-        $(".file-link").on('mouseenter',function (e) {
-            $(".thumbnail-image", $(this)).data('isFocused', true);
-            if (! $(this).data('thumbnail')) return;
-            if (!$(this).data("loaded")) {
-                $(".thumbnail-image", $(this)).attr("src",($(this).data('thumbnail')));
-                $(".thumbnail-loader", $(this)).show();
-            } else {
-                $(".thumbnail-image", $(this)).fadeIn("fast");
-            }
-            $(".thumbnail-image", $(this)).one("load",function(){
-                $(this).css({"position":"absolute", "max-width":"150px"})
-                if($(this).data("isFocused")) {
-                    $(this).fadeIn("fast");
-                }
-                $(".thumbnail-loader",$(this).parent()).hide();
-                $(this).parent().parent().data("loaded",true);
-            });
-        });
+        $(".file-link").on('mouseenter',function() { showThumbnail($(this)); });
+        $(".file-link").on('mouseleave', function() { hideThumbnail($(this)); });
+        $(".file-link").prev().on('mouseenter',function() { showThumbnail($(this).next()); });
+        $(".file-link").prev().on('mouseleave', function() { hideThumbnail($(this).next()); });
 
-        $(".file-link").on('mouseleave', function (e) {
-            $(".thumbnail-image", $(this)).hide();
-            $(".thumbnail-loader", $(this)).hide();
-            $(".thumbnail-image", $(this)).data('isFocused', false);
-        });
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {
             "scrollX": true,
@@ -116,6 +97,33 @@ var table = null;
         redrawTable();
         updateSelectedFiles();
     });
+
+    function showThumbnail(fileLink) {
+        $(".thumbnail-image", $(fileLink)).data('isFocused', true);
+        if (! $(fileLink).data('thumbnail')) return;
+        if (!$(fileLink).data("loaded")) {
+            $(".thumbnail-image", $(fileLink)).attr("src",($(fileLink).data('thumbnail')));
+            $(".thumbnail-loader", $(fileLink)).show();
+        } else {
+            $(".thumbnail-image", $(fileLink)).fadeIn("fast");
+        }
+        $(".thumbnail-image", $(fileLink)).one("load",function(){
+            $(this).css({"position":"absolute", "max-width":"150px"})
+            if($(this).data("isFocused")) {
+                $(this).fadeIn("fast");
+            }
+            $(".thumbnail-loader",$(this).parent()).hide();
+            $(this).parent().parent().data("loaded",true);
+        });
+    }
+
+    function hideThumbnail(fileLink) {
+        $(".thumbnail-image", $(fileLink)).hide();
+        $(".thumbnail-loader", $(fileLink)).hide();
+        $(".thumbnail-image", $(fileLink)).data('isFocused', false);
+    }
+
+
 
     function downloadFiles(files) {
         var html = '';
