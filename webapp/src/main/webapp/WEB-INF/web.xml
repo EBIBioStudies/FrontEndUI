@@ -58,6 +58,11 @@
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.AuthServlet</servlet-class>
     </servlet>
     <servlet>
+        <description>Logout Servlet</description>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>uk.ac.ebi.arrayexpress.servlets.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
         <description>HTTP Proxy Servlet</description>
         <servlet-name>HttpProxyServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.HttpProxyServlet</servlet-class>
@@ -110,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HttpProxyServlet</servlet-name>

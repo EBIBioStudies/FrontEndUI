@@ -63,6 +63,7 @@
         var $status = $(options.status);
         var $status_text = $("<span class='alert'/>").appendTo($status);
         var $forgot = $(options.forgot).first();
+        var $logout_form = $window.find("form").first().next();
         var $forgot_form = $window.find("form").last();
         var $email = $forgot_form.find("input[name='e']").first();
         var $accession = $forgot_form.find("input[name='a']").first();
@@ -120,8 +121,7 @@
         }
 
         function doLogout() {
-            clearCookies();
-            doReload();
+            $logout_form.submit();
         }
 
         function doReload() {

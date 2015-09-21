@@ -17,6 +17,8 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +27,21 @@ import uk.ac.ebi.microarray.arrayexpress.shared.auth.AuthenticationHelper;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Users extends ApplicationComponent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
+    private final Cache<Object, Object> passwordCache;
 
     private AuthenticationHelper authHelper;
     private SearchEngine search;
 
     public Users() {
+        // TODO: move password cache timeout to config file
+        passwordCache = CacheBuilder.newBuilder()
+                .expireAfterAccess(60, TimeUnit.MINUTES)
+                .build();
     }
 
     @Override
@@ -53,8 +58,22 @@ public class Users extends ApplicationComponent {
         return checkAccess(username, this.authHelper.generateHash(password));
     }
 
+    public void logout(String username) {
+        passwordCache.invalidate(username);
+    }
+
     public User checkAccess(String username, String passwordHash) throws IOException {
         if (username==null || passwordHash ==null) return null;
+
+        // if password is found in the cache, use it
+        User user =  (User) passwordCache.getIfPresent(username);
+        if (user!=null && username.equalsIgnoreCase(user.getUsername()) && passwordHash.equalsIgnoreCase(user.getHashedPassword())) {
+            logger.debug("Found authentication for user [{}] in local cache",username);
+            return user;
+        }
+
+        // send request to backend for authentication
+        logger.debug("Trying to authenticate user [{}] remotely",username);
         String response = this.authHelper.sendAuthenticationRequest(username
                                     , passwordHash
                                     , getPreferences().getString("bs.users.authentication-url")  );
@@ -63,7 +82,7 @@ public class Users extends ApplicationComponent {
             return null;
         }
 
-        User user = new User();
+        user = new User();
         user.setUsername(username);
         user.setHashedPassword(passwordHash);
         Set<String> allowSet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[1], ':')[1].trim().replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1"), ',')));
@@ -71,6 +90,7 @@ public class Users extends ApplicationComponent {
         allowSet.removeAll(denySet);
         user.setAllow(allowSet.toArray(new String[allowSet.size()]));
         user.setDeny(denySet.toArray(new String[denySet.size()]));
+        passwordCache.put(username, user);
         return user;
     }
 

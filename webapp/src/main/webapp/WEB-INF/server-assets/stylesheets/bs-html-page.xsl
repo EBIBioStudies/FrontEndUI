@@ -306,6 +306,8 @@
                             <div class="ae-login-status" style="display:none"/>
                             <!--div id="ae-login-forgot"><a href="#">Forgot user name or password?</a></div-->
                         </form>
+                        <form id="ae-logout-form" method="post" action="{$secure-host}{$context-path}/logout">
+                        </form>
                         <form id="ae-forgot-form" method="post" action="{$secure-host}{$context-path}/auth">
                             <fieldset>
                                 <label for="ae-name-email-field">User name or email address</label>
