@@ -400,6 +400,86 @@
     </xsl:template>
 
     <xsl:template name="study-links">
+    <xsl:param name="pQueryId"/>
+    <xsl:param name="pNodes"/>
+    <xsl:call-template name="widget">
+    <xsl:with-param name="pName" select="'Linked information'"/>
+    <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+    <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
+    <xsl:with-param name="pIconType" select="'x'"/>
+    <xsl:with-param name="pClass" select="('left')"/>
+    <xsl:with-param name="pContent">
+        <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
+        <table class="stripe compact hover links-list" cellspacing="0" width="100%" id="links-table" >
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <xsl:for-each select="$vColumns">
+                        <th>
+                            <xsl:value-of select="."/>
+                        </th>
+                    </xsl:for-each>
+                </tr>
+            </thead>
+            <tbody>
+                <xsl:for-each select="$pNodes">
+                    <xsl:variable name="aFile" select="."/>
+                    <tr>
+                        <td>
+                            <xsl:call-template name="highlight-reference">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pType" select="attribute[@name='Type']/value"/>
+                                <xsl:with-param name="pText" select="if (attribute[fn:lower-case(@name)='description']) then attribute[fn:lower-case(@name)='description']/value else @url"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                            </xsl:call-template>
+                        </td>
+                        <td>
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pText" select="ae:getTitleFor(attribute[@name='Type']/value)" />
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                            </xsl:call-template>
+                        </td>
+                        <xsl:for-each select="$vColumns">
+                            <xsl:variable name="vColumnName" select="."/>
+                            <xsl:variable name="vColumn" select="$aFile/attribute[@name=$vColumnName]"/>
+                            <td>
+                                <xsl:choose>
+                                    <xsl:when test="fn:exists($vColumn/url)">
+                                        <xsl:variable name="text">
+                                            <xsl:value-of select="$vColumn/value" disable-output-escaping="yes"/>
+                                        </xsl:variable>
+                                        <a href="{$vColumn/url}" target="_blank">
+                                            <xsl:call-template name="highlight">
+                                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                                <xsl:with-param name="pText" select="$text"/>
+                                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                            </xsl:call-template>
+                                        </a>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:variable name="text">
+                                            <xsl:value-of select="$vColumn/value" disable-output-escaping="yes"/>
+                                        </xsl:variable>
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pText" select="$text"/>
+                                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                        </xsl:call-template>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </td>
+                        </xsl:for-each>
+                    </tr>
+                </xsl:for-each>
+            </tbody>
+        </table>
+    </xsl:with-param>
+    </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="study-links-old">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:call-template name="widget">
@@ -686,6 +766,9 @@
             <xsl:when test="fn:lower-case($pType) = 'chebi'">
                 <xsl:value-of select="'ChEBI'"/>
             </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'ega'">
+                <xsl:value-of select="'EGA'"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$pType"/>
             </xsl:otherwise>
@@ -731,6 +814,9 @@
             </xsl:when>
             <xsl:when test="fn:lower-case($pType) = 'chebi'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/chebi/searchId.do?chebiId=', fn:replace($pId, '[:]', '%3A'))"/>
+            </xsl:when>
+            <xsl:when test="fn:lower-case($pType) = 'ega'">
+                <xsl:value-of select="fn:concat('https://ega.crg.eu/datasets/', $pId)"/>
             </xsl:when>
         </xsl:choose>
     </xsl:function>

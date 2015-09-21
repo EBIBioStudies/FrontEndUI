@@ -14,15 +14,18 @@
  * limitations under the License.
  *
  */
-var table = null;
+var filesTable = null;
+var linksTable = null;
 
 (function($, undefined) {
     if($ == undefined)
         throw "jQuery not loaded";
 
     $(function() {
+        //turn off all selected files
         $('input:checkbox').prop('checked', false);
 
+        //setup thumbnails
         $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
         $(".file-link").on('mouseenter',function() { showThumbnail($(this)); });
@@ -37,6 +40,7 @@ var table = null;
         });
         $(".ae-section-files").hide();
 
+        // handle file selection
         $("#file-list tbody").on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
             if ( $(this).hasClass('selected')) {
@@ -59,7 +63,7 @@ var table = null;
 
         $("#download-selected-files").on( 'click', function () {
             // select all checked input boxes and get the href in the links contained in their siblings
-            var files = $.map($('a',$('input[checked]', table.cells().nodes()).parent().next()), function (v) {
+            var files = $.map($('a',$('input[checked]', filesTable.cells().nodes()).parent().next()), function (v) {
                 return $(v).data('name');
             });
             downloadFiles(files);
@@ -68,17 +72,17 @@ var table = null;
         $("#select-all-files").on ('click', function () {
             var isChecked = $(this).is(':checked');
             if (!isChecked) {
-                $('input[type="checkbox"]', table.cells().nodes()).removeAttr('checked');
-                $('input[type="checkbox"]', table.cells().nodes()).parent().parent().removeClass('selected');
+                $('input[type="checkbox"]', filesTable.cells().nodes()).removeAttr('checked');
+                $('input[type="checkbox"]', filesTable.cells().nodes()).parent().parent().removeClass('selected');
             } else {
-                $('input[type="checkbox"]', table.cells().nodes()).attr('checked', 'checked');
-                $('input[type="checkbox"]', table.cells().nodes()).parent().parent().addClass('selected');
+                $('input[type="checkbox"]', filesTable.cells().nodes()).attr('checked', 'checked');
+                $('input[type="checkbox"]', filesTable.cells().nodes()).parent().parent().addClass('selected');
             }
             updateSelectedFiles();
         });
 
         $(window).resize(function () {
-            redrawTable();
+            redrawTables();
         });
 
         $(".toggle-files").on ('click', function () {
@@ -94,7 +98,7 @@ var table = null;
         });
 
         // draw the main file table
-        redrawTable();
+        redrawTables();
         updateSelectedFiles();
     });
 
@@ -144,9 +148,9 @@ var table = null;
 
     function updateSelectedFiles()
     {
-        if (!table || !table.rows() || !table.rows().eq(0) ) return;
-        var totalRows = table.rows().eq(0).length;
-        var selectedRows = $('input:checked', table.cells().nodes()).length;
+        if (!filesTable || !filesTable.rows() || !filesTable.rows().eq(0) ) return;
+        var totalRows = filesTable.rows().eq(0).length;
+        var selectedRows = $('input:checked', filesTable.cells().nodes()).length;
         $("#selected-file-text").text( (selectedRows == 0 ? 'No ' : selectedRows) +' file'+(selectedRows>1 ? 's':'')+' selected');
         if (selectedRows==0) {
             $('#download-selected-files').hide();
@@ -162,13 +166,22 @@ var table = null;
 
     }
 
-    function redrawTable() {
-        if(table!=null) table.destroy()
-        table = $("#file-list").DataTable( {
+    function redrawTables() {
+        if(filesTable!=null) filesTable.destroy()
+        filesTable = $("#file-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "scrollX": true,
             "columnDefs": [  { "targets": [0], "searchable": false, "orderable": false, "visible": true}],
             "order": [[ 1, "asc" ]],
+            "dom":"lfrtpi",
+            "autoWidth" : false
+        } );
+
+        if(linksTable!=null) linksTable.destroy()
+        linksTable = $("#links-table").DataTable( {
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "scrollX": true,
+            "order": [[ 0, "asc" ]],
             "dom":"lfrtpi",
             "autoWidth" : false
         } );
@@ -199,7 +212,7 @@ var table = null;
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
         $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
         $(this).attr('title', $(this).attr('data-icon')=='u' ? 'Click to expand' : 'Click to collapse')
-        redrawTable();
+        redrawTables();
     });
 
 })(window.jQuery);
