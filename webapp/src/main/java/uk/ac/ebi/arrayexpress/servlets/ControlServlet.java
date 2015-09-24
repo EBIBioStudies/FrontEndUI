@@ -26,6 +26,7 @@ import uk.ac.ebi.arrayexpress.components.Studies;
 import uk.ac.ebi.arrayexpress.components.Thumbnails;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -109,7 +110,7 @@ public class ControlServlet extends ApplicationServlet {
 
         } catch (SchedulerException x) {
             logger.error("Jobs controller threw an exception", x);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             logger.error("Controller threw an exception", e);
         }
     }

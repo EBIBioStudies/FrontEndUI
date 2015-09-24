@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.ac.ebi.biostudies.BSInterfaceTestApplication;
 
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 @Category(IntegrationTest.class)
@@ -53,9 +54,9 @@ public class DetailTest {
         int linkCount = Integer.parseInt(linkCountText.substring(0, linkCountText.indexOf(" ")));
         driver.findElement(By.cssSelector(".browse-study-title a")).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".links")));
-        int linkCountOnDetails = driver.findElements(By.cssSelector(".links a")).size() - 2; // removing shoe more/less links
-        assertEquals(linkCount, linkCountOnDetails);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#links-table_info")));
+        String linkCountOnDetails = driver.findElement(By.cssSelector("#links-table_info")).getText(); // removing shoe more/less links
+        assertTrue(linkCountOnDetails.endsWith(linkCount+ " entries"));
     }
 
     @Test

@@ -17,18 +17,27 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
+import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.trans.XPathException;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.FileTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
+import uk.ac.ebi.arrayexpress.utils.saxon.Document;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.Indexer;
+import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Querier;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
+import javax.xml.transform.Source;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -152,14 +161,45 @@ public class Studies extends ApplicationComponent  {
         }
     }
 
-    public void updateFromXMLFile(String xmlFileName) throws IOException, InterruptedException {
+    public void updateFromXMLFile(String xmlFileName) throws IOException, InterruptedException, XPathException, IndexerException, SaxonException {
         if (xmlFileName == null) {
             xmlFileName = "studies.xml";
         }
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
-            update(FileTools.readXMLStringFromFile(new File(sourceLocation, xmlFileName)));
+            File xmlFile = new File(sourceLocation, xmlFileName);
+            if (xmlFile.length() > 50*1024*1024) { // Updates the index one study at a time for large files
+                updateFromXMLFile(xmlFile);
+            } else {
+                update(FileTools.readXMLStringFromFile(xmlFile));
+            }
+
+        }
+    }
+
+    // Updates the index one study at a time
+    public void updateFromXMLFile(File xmlFile) throws IOException, InterruptedException, SaxonException, XPathException, IndexerException {
+        String sourceLocation = getPreferences().getString("bs.studies.source-location");
+        if (isNotBlank(sourceLocation)) {
+            logger.info("Reload of experiment data from [{}] requested", sourceLocation);
+            Indexer indexer = new Indexer(this.search.getController().getEnvironment(INDEX_ID), saxon);
+            NodeInfo document = this.saxon.buildDocument(xmlFile);
+            List<Item> documentNodes = this.saxon.evaluateXPath(document, "//submission");
+            int i =0;
+            for (Item node : documentNodes) {
+                StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
+                sb.append(saxon.serializeDocument((Source) node, true));
+                sb.append("</submissions></pmdocument>");
+                NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
+                NodeInfo updateXml = this.saxon.transform(
+                        submissionDocument
+                        , "preprocess-studies-xml.xsl"
+                        , null
+                );
+                indexer.index(updateXml);
+                logger.info("Indexing document {}",++i);
+            }
         }
     }
 

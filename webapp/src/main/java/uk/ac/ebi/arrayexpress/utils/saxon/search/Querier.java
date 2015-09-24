@@ -105,11 +105,12 @@ public class Querier {
     public List<NodeInfo> query(QueryInfo queryInfo) throws ParseException, IOException, SaxonException {
         Query query = queryInfo.getQuery();
         Map<String, String[]> params = queryInfo.getParams();
+        boolean queryIsEmpty = params.containsKey("queryIsEmpty");
         String sortBy =  (params.containsKey("sortby")) ? params.get("sortby")[0] : null;
 
-        if (sortBy==null) {
-            sortBy = "release_date";
-            params.put("sortby", new String[]{"release_date"});
+        if (sortBy==null ) {
+            sortBy = queryIsEmpty ? "release_date" : "relevance";
+            params.put("sortby", new String[]{sortBy});
         }
 
         SortField.Type sortFieldType = (sortBy != null && !"relevance".equalsIgnoreCase(sortBy)) ?

@@ -25,6 +25,7 @@ import net.sf.saxon.jaxp.TransformerImpl;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.sxpath.IndependentContext;
 import net.sf.saxon.sxpath.XPathEvaluator;
 import net.sf.saxon.sxpath.XPathExpression;
@@ -32,6 +33,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.tree.tiny.TinyBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.LRUMap;
@@ -41,6 +43,8 @@ import uk.ac.ebi.arrayexpress.utils.saxon.XMLDocumentSource;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 import uk.ac.ebi.fg.saxon.functions.*;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -214,6 +218,15 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
             StringReader reader = new StringReader(xml);
             Configuration config = trFactory.getConfiguration();
             return config.buildDocument(new StreamSource(reader));
+        } catch (XPathException x) {
+            throw new SaxonException(x);
+        }
+    }
+
+    public NodeInfo buildDocument(File file) throws SaxonException {
+        try {
+            Configuration config = trFactory.getConfiguration();
+            return config.buildDocument(new StreamSource(file));
         } catch (XPathException x) {
             throw new SaxonException(x);
         }

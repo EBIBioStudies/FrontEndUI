@@ -242,12 +242,12 @@ public class SearchTest {
 
     @Test
     public void testLargeIndex() throws Exception{
-
+        int totalDocs = 10000;
         driver.get(baseUrl + "/clear-index");
         StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
-        for (int doc = 0; doc <= 200000; doc++) {
+        for (int doc = 0; doc <= totalDocs; doc++) {
             sb.append(TestUtils.getTestSubmission(doc));
-            if (doc%10000==0) {
+            if (doc!=0 && doc%10000==0) {
                 sb.append("</submissions></pmdocument>");
                 String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
                 File file = new File(sourceLocation, "temp-test-study.xml");
@@ -259,7 +259,7 @@ public class SearchTest {
         }
         driver.get(baseUrl + "/studies/");
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
-        assertTrue(pages.endsWith("Showing 1 - 25 of 200001 studies"));
+        assertTrue(pages.endsWith("Showing 1 - 25 of " + (totalDocs+1) +" studies"));
         driver.get(baseUrl + "/clear-index");
         driver.get(baseUrl + "/reload-xml");
     }

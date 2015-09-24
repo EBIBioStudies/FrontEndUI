@@ -54,12 +54,12 @@ public class Indexer {
         this.saxon = saxon;
     }
 
-    public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
+    public List<NodeInfo> index(NodeInfo documentNode) throws IndexerException, InterruptedException {
         try {
             try (IndexWriter w = createIndex(this.env.indexDirectory, this.env.indexAnalyzer)) {
                 //setDocumentHash(document.getHash());
 
-                List<Item> documentNodes = saxon.evaluateXPath(document.getRootNode(), this.env.indexDocumentPath);
+                List<Item> documentNodes = saxon.evaluateXPath(documentNode, this.env.indexDocumentPath);
                 List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
 
                 for (Item node : documentNodes) {
@@ -111,6 +111,12 @@ public class Indexer {
         } catch (IOException | XPathException | SaxonException x) {
             throw new IndexerException(x);
         }
+    }
+
+
+
+    public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
+        return index(document.getRootNode());
     }
 
     private void addXMLField(Document d, Item node) throws SaxonException {

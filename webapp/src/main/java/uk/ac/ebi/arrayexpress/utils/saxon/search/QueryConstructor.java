@@ -63,6 +63,7 @@ public class QueryConstructor implements IQueryConstructor {
         if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
             Term term = new Term("title", "*");
             query = new WildcardQuery(term);
+            querySource.put("queryIsEmpty",new String[]{"true"});
         }
 
         BooleanQuery queryWithAccessControl = new BooleanQuery();
