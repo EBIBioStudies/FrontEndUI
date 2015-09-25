@@ -108,6 +108,11 @@
         <xsl:param name="pPath" as="xs:string"/>
         <xsl:value-of select="fn:replace($pPath, fn:concat('^', $vRoot), '')"/>
     </xsl:function>
+
+    <xsl:function name="ae:isRootFile" as="xs:boolean">
+        <xsl:param name="pRow"/>
+        <xsl:value-of select="not(fn:contains($pRow/col[8], '/Files/'))"/>
+    </xsl:function>
     
     <xsl:template match="table">
         <files root="{$vRoot}">
@@ -124,7 +129,7 @@
                         group="{ae:getGroup($vFolder)}"
                         access="{ae:getAccess($vFolder)}"
                         lastmodified="{ae:getModifyDate($vFolder)}">
-                        <xsl:for-each select="fn:current-group()[not(ae:isFolder(.))]">
+                        <xsl:for-each select="fn:current-group()[not(ae:isFolder(.) or ae:isRootFile(.))]">
                             <file
                                 name="{ae:getName(.)}"
                                 extension="{ae:getExtension(.)}"
@@ -133,7 +138,7 @@
                                 access="{ae:getAccess(.)}"
                                 size="{ae:getSize(.)}"
                                 lastmodified="{ae:getModifyDate(.)}"
-                                location="{ae:getName(.)}"/>
+                                location="Files/{ae:getName(.)}"/>
                         </xsl:for-each>
                     </folder>
                 </xsl:if>    
