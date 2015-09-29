@@ -89,7 +89,7 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
         return this.environment.get(indexId);
     }
 
-    public void index(String indexId, Document document) throws IndexerException, InterruptedException {
+    public void index(String indexId, Document document) throws IndexerException, InterruptedException, IOException {
         this.logger.info("Started indexing for index id [{}]", indexId);
         getEnvironment(indexId).setDocumentInfo(
                 document.getHash()

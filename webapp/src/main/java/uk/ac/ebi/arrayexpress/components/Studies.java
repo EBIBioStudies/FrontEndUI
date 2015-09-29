@@ -36,7 +36,6 @@ import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 import javax.xml.transform.Source;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;

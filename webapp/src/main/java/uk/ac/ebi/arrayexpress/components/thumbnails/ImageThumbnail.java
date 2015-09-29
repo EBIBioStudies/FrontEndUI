@@ -22,11 +22,17 @@ public class ImageThumbnail implements IThumbnail{
     @Override
     public void generateThumbnail(String sourceFilePath, File thumbnailFile) throws IOException{
         File sourceFile = new File(sourceFilePath);
-        BufferedImage input = ImageIO.read(sourceFile); // Image to resample
-        BufferedImageOp resampler = new ResampleOp(200,200, ResampleOp.FILTER_LANCZOS); // A good default filter, see class documentation for more info
-        BufferedImage output = resampler.filter(input, null);
-        if (!ImageIO.write(output, "png", thumbnailFile)) {
-            throw new IOException("Cannot write thumbnail");
+        BufferedImage input = ImageIO.read(sourceFile);
+        float height = (float) input.getHeight(), width = (float) input.getWidth();
+        if (width > 200 || height>200) {
+            float inverseAspectRatio = height / width;
+            BufferedImageOp resampler = new ResampleOp(200, Math.round(inverseAspectRatio * 200), ResampleOp.FILTER_LANCZOS);
+            BufferedImage output = resampler.filter(input, null);
+            if (!ImageIO.write(output, "png", thumbnailFile)) {
+                throw new IOException("Cannot write thumbnail");
+            }
+        } else {
+            ImageIO.write(input, "png", thumbnailFile);
         }
     }
 }
