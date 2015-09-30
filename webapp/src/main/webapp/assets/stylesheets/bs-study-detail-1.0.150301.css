@@ -182,10 +182,10 @@ span.icon.icon-functional:before{
     vertical-align: text-bottom;
 }
 
-.ae-section-files {
+.ae-section-files, .ae-section-links {
     margin: 10px 0px;
 }
-.ae-section-file-title
+.ae-section-file-title, .ae-section-link-title
 {
     color: #6BA8C5;
     font-size: 110%;

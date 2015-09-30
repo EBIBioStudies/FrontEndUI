@@ -39,6 +39,12 @@ var linksTable = null;
             "dom":"t"
         });
         $(".ae-section-files").hide();
+        $(".link-list:not(#link-list)").DataTable( {
+            "scrollX": true,
+            "dom":"t"
+        });
+        $(".ae-section-links").hide();
+
 
         // handle file selection
         $("#file-list tbody").on( 'click', 'tr', function () {
@@ -93,6 +99,18 @@ var linksTable = null;
             } else {
                 section.hide();
                 $(this).text('show files in this section')
+            }
+
+        });
+
+        $(".toggle-links").on ('click', function () {
+            var section = $(this).first().next();
+            if (section.css('display')=='none') {
+                section.show();
+                $(this).text('hide links in this section')
+            } else {
+                section.hide();
+                $(this).text('show links in this section')
             }
 
         });
@@ -178,7 +196,7 @@ var linksTable = null;
         } );
 
         if(linksTable!=null) linksTable.destroy()
-        linksTable = $("#links-table").DataTable( {
+        linksTable = $("#link-list").DataTable( {
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "scrollX": true,
             "order": [[ 0, "asc" ]],

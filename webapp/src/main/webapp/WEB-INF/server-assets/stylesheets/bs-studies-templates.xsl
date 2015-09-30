@@ -137,19 +137,29 @@
                                     </xsl:call-template>
                                 </a>
                                 <xsl:text>)</xsl:text>
-                                <xsl:if test="fn:count(.//file)>0">
-                                    <br/>
-                                    <a class="show-more toggle-files">show files in this section</a>
-                                    <div class="ae-section-files">
-                                        <xsl:call-template name="file-table">
-                                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                                            <xsl:with-param name="pNodes" select=".//file"/>
-                                            <xsl:with-param name="pFiles" select="$vFiles"/>
-                                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                                        </xsl:call-template>
-                                    </div>
-                                </xsl:if>
                             </xsl:for-each>
+                            <xsl:if test="fn:count(.//file)>0">
+                                <a class="show-more toggle-files">show files in this section</a>
+                                <div class="ae-section-files">
+                                    <xsl:call-template name="file-table">
+                                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                                        <xsl:with-param name="pNodes" select=".//file"/>
+                                        <xsl:with-param name="pFiles" select="$vFiles"/>
+                                        <xsl:with-param name="pBasePath" select="$context-path"/>
+                                    </xsl:call-template>
+                                </div>
+                            </xsl:if>
+                            <br/>
+                            <xsl:if test="fn:exists(.//link)">
+                                <a class="show-more toggle-links">show links in this section</a>
+                                <div class="ae-section-links">
+                                    <div class="ae-section-file-title">Links</div>
+                                    <xsl:call-template name="link-table">
+                                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                                        <xsl:with-param name="pNodes" select="$pNodes//link"/>
+                                    </xsl:call-template>
+                                </div>
+                            </xsl:if>
                         </xsl:with-param>
                         <xsl:with-param name="pClass" select="('left')"/>
                     </xsl:call-template>
@@ -402,15 +412,30 @@
     <xsl:template name="study-links">
     <xsl:param name="pQueryId"/>
     <xsl:param name="pNodes"/>
-    <xsl:call-template name="widget">
-    <xsl:with-param name="pName" select="'Linked information'"/>
-    <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
-    <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
-    <xsl:with-param name="pIconType" select="'x'"/>
-    <xsl:with-param name="pClass" select="('left')"/>
-    <xsl:with-param name="pContent">
+        <xsl:if test="fn:count($pNodes)>0">
+            <xsl:call-template name="widget">
+            <xsl:with-param name="pName" select="'Linked information'"/>
+            <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+            <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
+            <xsl:with-param name="pIconType" select="'x'"/>
+            <xsl:with-param name="pClass" select="('left')"/>
+            <xsl:with-param name="pContent">
+                <xsl:call-template name="link-table">
+                    <xsl:with-param name="pNodes" select="$pNodes"/>
+                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                    <xsl:with-param name="elementId" select="'link-list'"/> <!-- as in a list of links, not a linked list -->
+                </xsl:call-template>
+            </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="link-table">
+        <xsl:param name="pQueryId"/>
+        <xsl:param name="pNodes"/>
+        <xsl:param name="elementId" select="fn:concat('link-table-',../position())"/>
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[fn:lower-case(@name)!='type' and fn:lower-case(@name)!='description']/@name)"/>
-        <table class="stripe compact hover links-list" cellspacing="0" width="100%" id="links-table" >
+        <table class="stripe compact hover link-list" cellspacing="0" width="100%" id="{$elementId}" >
             <thead>
                 <tr>
                     <th>Name</th>
@@ -476,8 +501,6 @@
                 </xsl:for-each>
             </tbody>
         </table>
-    </xsl:with-param>
-    </xsl:call-template>
     </xsl:template>
 
     <xsl:template name="study-funding">
@@ -519,6 +542,17 @@
                             <xsl:with-param name="pNodes" select="$pNodes//file"/>
                             <xsl:with-param name="pFiles" select="$vFiles"/>
                             <xsl:with-param name="pBasePath" select="$context-path"/>
+                        </xsl:call-template>
+                    </div>
+                </xsl:if>
+                <br/>
+                <xsl:if test="fn:exists($pNodes//link)">
+                    <a class="show-more toggle-links">show links in this section</a>
+                    <div class="ae-section-links">
+                        <div class="ae-section-link-title">Links</div>
+                        <xsl:call-template name="link-table">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select="$pNodes//link"/>
                         </xsl:call-template>
                     </div>
                 </xsl:if>
