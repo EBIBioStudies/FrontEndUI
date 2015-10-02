@@ -63,9 +63,9 @@
                 <!--/xsl:if-->
             </xsl:for-each>
             <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:apply-templates select=".//subsections" mode="section"/>
+            <xsl:apply-templates select="subsections" mode="section"/>
             <xsl:apply-templates select="$vFiles/files" mode="files"/>
-            <xsl:apply-templates select="//links[not(ancestor::subsections)]" mode="links"/>
+            <xsl:apply-templates select=".//links[not(ancestor::subsections)]" mode="links"/>
         </study>
     </xsl:template>
 
