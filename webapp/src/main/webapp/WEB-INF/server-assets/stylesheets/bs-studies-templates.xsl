@@ -81,24 +81,41 @@
         <xsl:param name="pNodes"/>
         <xsl:param name="vFiles"/>
         <xsl:for-each select="$pNodes">
-            <xsl:call-template name="section">
-                <xsl:with-param name="pName" select="@type"/>
-                <xsl:with-param name="pContent">
-                    <xsl:value-of select="./*[not(fn:name()='file')]"/>
-                </xsl:with-param>
-                <xsl:with-param name="pClass" select="('left')"/>
-            </xsl:call-template>
-            <xsl:if test="fn:count(.//file)>0">
-                <a class="show-more toggle-files">show files in this section</a>
-                <div class="ae-section-files">
-                    <xsl:call-template name="file-table">
-                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pNodes" select=".//file"/>
-                        <xsl:with-param name="pFiles" select="$vFiles"/>
-                        <xsl:with-param name="pBasePath" select="$context-path"/>
-                    </xsl:call-template>
-                </div>
-            </xsl:if>
+            <div class="subsection">
+                <xsl:call-template name="section">
+                    <xsl:with-param name="pName" select="@type"/>
+                    <xsl:with-param name="pContent">
+                        <xsl:value-of select="./*[not(fn:name()='file' or fn:name()='link' or fn:name()='attribute')]"/>
+                        <xsl:call-template name="study-attributes">
+                            <xsl:with-param name="pNodes" select="attribute"/>
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                        </xsl:call-template>
+                    </xsl:with-param>
+                    <xsl:with-param name="pClass" select="('left')"/>
+                </xsl:call-template>
+                <xsl:if test="fn:count(.//file)>0">
+                    <a class="show-more toggle-files">show files in this section</a>
+                    <div class="ae-section-files">
+                        <xsl:call-template name="file-table">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select=".//file"/>
+                            <xsl:with-param name="pFiles" select="$vFiles"/>
+                            <xsl:with-param name="pBasePath" select="$context-path"/>
+                        </xsl:call-template>
+                    </div>
+                </xsl:if>
+                <xsl:if test="fn:exists(.//link)">
+                    <xsl:if test="fn:exists(.//file)"><br/></xsl:if>
+                    <a class="show-more toggle-links">show links in this section</a>
+                    <div class="ae-section-links">
+                        <div class="ae-section-file-title">Links</div>
+                        <xsl:call-template name="link-table">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select=".//link"/>
+                        </xsl:call-template>
+                    </div>
+                </xsl:if>
+            </div>
         </xsl:for-each>
     </xsl:template>
 

@@ -154,7 +154,7 @@
                     </xsl:call-template>
                     <xsl:call-template name="study-subsections">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
-                        <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)!='funding' and fn:lower-case(@type)!='publication' and fn:lower-case(@type)!='author' and fn:lower-case(@type)!='organization']"/>
+                        <xsl:with-param name="pNodes" select=".//section[fn:lower-case(@type)!='funding' and fn:lower-case(@type)!='publication' and fn:lower-case(@type)!='author' and fn:lower-case(@type)!='organization']"/>
                         <xsl:with-param name="vFiles" select="$vFiles"/>
                     </xsl:call-template>
                     <xsl:call-template name="study-funding">

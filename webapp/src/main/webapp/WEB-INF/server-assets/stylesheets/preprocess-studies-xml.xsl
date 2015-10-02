@@ -37,36 +37,33 @@
         </studies>
     </xsl:template>
 
-    <xsl:template match="submission/section[1]">
-        <xsl:variable name="vAccession" select="../@acc"/>
-        <xsl:variable name="vPhysicalFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
-        <xsl:variable name="vFiles">
-            <files>
-                <xsl:for-each select="//file[not(ancestor::subsections)]">
-                    <xsl:variable name="vName" select="fn:replace(path, '.+/([^/]+)$', '$1')"/>
-                    <xsl:if test="$vPhysicalFiles/file[@name=$vName]">
-                        <xsl:copy-of select="."/>
-                    </xsl:if>
-                </xsl:for-each>
-            </files>
-        </xsl:variable>
+    <xsl:template match="submission">
         <study files="{fn:count(.//file)}"
                links="{fn:count(.//link)}">
-            <accession><xsl:value-of select="$vAccession"/></accession>
-            <access><xsl:value-of select="fn:replace(../@access,';',' ')"/></access>
-            <releasedate>2015-02-01</releasedate>
-            <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
-                <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
-                <author index="{fn:position()}">
-                    <xsl:value-of select="attributes/attribute[fn:lower-case(name)='name']/value"/>
-                </author>
-                <!--/xsl:if-->
-            </xsl:for-each>
-            <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:apply-templates select="subsections" mode="section"/>
-            <xsl:apply-templates select="$vFiles/files" mode="files"/>
-            <xsl:apply-templates select=".//links[not(ancestor::subsections)]" mode="links"/>
+                <xsl:apply-templates/>
         </study>
+    </xsl:template>
+
+    <xsl:template match="submission/section[1]">
+        <xsl:variable name="vAccession" select="../@acc"/>
+        <accession><xsl:value-of select="$vAccession"/></accession>
+        <access><xsl:value-of select="fn:replace(../@access,';',' ')"/></access>
+        <releasedate>2015-02-01</releasedate>
+        <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
+            <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
+            <author index="{fn:position()}">
+                <xsl:value-of select="attributes/attribute[fn:lower-case(name)='name']/value"/>
+            </author>
+            <!--/xsl:if-->
+        </xsl:for-each>
+        <xsl:apply-templates select="attributes" mode="attributes"/>
+        <xsl:apply-templates select="subsections/section" mode="section"/>
+        <xsl:apply-templates select=".//files[not(ancestor::subsections)]" mode="files"/>
+        <xsl:apply-templates select=".//links[not(ancestor::subsections)]" mode="links"/>
+    </xsl:template>
+
+    <xsl:template match="submission/section[position()>1]">
+        <xsl:apply-templates select="." mode="section"/>
     </xsl:template>
 
     <xsl:template match="*" mode="copy">
@@ -130,9 +127,9 @@
                 </attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:copy-of select="./*[not(name()='files' or name()='links')]"/>
-            <xsl:apply-templates select=".//files" mode="files"/>
-            <xsl:apply-templates select=".//links" mode="links"/>
+            <xsl:copy-of select="./*[not(name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
+            <xsl:apply-templates select=".//file" mode="files"/>
+            <xsl:apply-templates select=".//link" mode="links"/>
         </section>
     </xsl:template>
 

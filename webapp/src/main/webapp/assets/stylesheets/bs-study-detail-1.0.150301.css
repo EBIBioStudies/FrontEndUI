@@ -227,3 +227,8 @@ a.file-link {
 th.filesize {
     width:55px;
 }
+
+.subsection {
+    padding-left: 10px;
+    border-left: 2px solid #D4D4D4;
+}
