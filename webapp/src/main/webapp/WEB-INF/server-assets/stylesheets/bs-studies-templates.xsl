@@ -360,7 +360,7 @@
                             </a>
 
                         </td>
-                        <td class="align-right">
+                        <td class="align-right" data-order="{$vFile/@size}">
                             <xsl:call-template name="file-size">
                                 <xsl:with-param name="size" select="$vFile/@size"/>
                             </xsl:call-template>
