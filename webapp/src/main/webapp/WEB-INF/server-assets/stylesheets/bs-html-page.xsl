@@ -32,6 +32,7 @@
     <xsl:param name="query-string"/>
     <xsl:param name="userid"/>
     <xsl:param name="username"/>
+    <xsl:param name="project"/>
 
     <xsl:output omit-xml-declaration="yes" method="html" indent="no" encoding="UTF-8"/>
 
@@ -172,7 +173,7 @@
                         <!-- NB: if you do not have a local-search, delete the following div, and drop the class="grid_12 alpha" class from local-title above -->
                         <xsl:if test="$pIsSearchVisible">
                             <div class="grid_12 omega">
-                                <form id="local-search" name="local-search" action="{$context-path}/search" method="get">
+                                <form id="local-search" name="local-search"  action="{$context-path}/search" method="get">
                                     <fieldset>
                                         <div class="left">
                                             <label>
@@ -187,6 +188,12 @@
                                                     href="{$context-path}/search?query=cancer">cancer</a>,
                                                 <a href="{$context-path}/search?query=PMC516016">PMC516016</a>
                                             </span>
+                                            <xsl:if test="$project!=''">
+                                                <span class="examples project">
+                                                    <input type="checkbox" checked="checked" id="search-in-project" />Search in <xsl:value-of select="$project"/> only
+                                                    <input type="hidden" id="project" value="{$project}" />
+                                                </span>
+                                            </xsl:if>
                                         </div>
                                         <div class="right">
                                             <input type="submit" value="Search" class="submit"/>

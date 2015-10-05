@@ -862,3 +862,8 @@ p.center {
     -ms-user-select: none;
     user-select: none;
 }
+
+.project {
+    float:right;
+    padding-top: 3px;
+}

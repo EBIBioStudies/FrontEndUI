@@ -37,6 +37,11 @@
         <from>^/search/?$</from>
         <to type="redirect" last="true">%{context-path}/studies/</to>
     </rule>
+    <rule>
+        <condition type="query-string" operator="greater"/>
+        <from>^/search/([^/]+)/?$</from>
+        <to type="redirect" last="true">%{context-path}/$1/studies/search.html?%{query-string}</to>
+    </rule>
 
     <!-- studies browser/search -->
     <rule>
@@ -181,53 +186,53 @@
 
     <!-- control links -->
     <rule>
-        <from>^/reload-efo$</from>
+        <from>^/admin/reload-efo$</from>
         <to type="forward" last="true">/servlets/control/reload-efo</to>
     </rule>
     <rule>
-        <from>^/update-efo$</from>
+        <from>^/admin/update-efo$</from>
         <to type="forward" last="true">/servlets/control/update-efo</to>
     </rule>
     <rule>
-        <from>^/delete/([^/]+)/?$</from>
+        <from>^/admin/delete/([^/]+)/?$</from>
         <set type="parameter" name="accession">$1</set>
         <to type="forward" last="true">/servlets/control/delete</to>
     </rule>
     <rule>
-        <from>^/reload-xml/([^/]+)/?$</from>
+        <from>^/admin/reload-xml/([^/]+)/?$</from>
         <set type="parameter" name="xmlFilePath">$1</set>
         <to type="forward" last="true">/servlets/control/reload-xml</to>
     </rule>
     <rule>
-        <from>^/reload-xml/?$</from>
+        <from>^/admin/reload-xml/?$</from>
         <to type="forward" last="true">/servlets/control/reload-xml</to>
     </rule>
     <rule>
-        <from>^/clear-index$</from>
+        <from>^/admin/clear-index$</from>
         <to type="forward" last="true">/servlets/control/clear-index</to>
     </rule>
     <rule>
-        <from>^/clear-thumbnails$</from>
+        <from>^/admin/clear-thumbnails$</from>
         <to type="forward" last="true">/servlets/control/clear-thumbnails</to>
     </rule>
     <rule>
-        <from>^/rescan-files$</from>
+        <from>^/admin/rescan-files$</from>
         <to type="forward" last="true">/servlets/control/rescan-files</to>
     </rule>
     <rule>
-        <from>^/consistency-check$</from>
+        <from>^/admin/consistency-check$</from>
         <to type="forward" last="true">/servlets/control/check-experiments</to>
     </rule>
     <rule>
-        <from>^/check-files$</from>
+        <from>^/admin/check-files$</from>
         <to type="forward" last="true">/servlets/control/check-files</to>
     </rule>
     <rule>
-        <from>^/test-email$</from>
+        <from>^/admin/test-email$</from>
         <to type="forward" last="true">/servlets/control/test-email</to>
     </rule>
     <rule>
-        <from>^/restart-app$</from>
+        <from>^/admin/restart-app$</from>
         <to type="forward" last="true">/servlets/control/restart</to>
     </rule>
 
@@ -235,5 +240,12 @@
     <rule>
         <from>^/test[.]html?$</from>
         <to type="forward" last="true">/servlets/query/-/test/html</to>
+    </rule>
+
+    <!-- this has to be the last rule so that /admin/ can work -->
+    <rule>
+        <from>^/([^/]+)/studies/search[.]html?$</from>
+        <set type="parameter" name="project">$1</set>
+        <to type="forward" last="true">/servlets/query/studies/browse/html</to>
     </rule>
 </urlrewrite>

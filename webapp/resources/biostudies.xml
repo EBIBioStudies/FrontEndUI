@@ -111,6 +111,7 @@
                 <field name="release_date" title="by Release Date" type="string" path="releasedate" analyze="true" store="false" escape="false" expand="false" docValueType="sorted" />
                 <field name="public" type="boolean" path="true()"/>
                 <field name="access" type="string" path="access" analyze="true" analyzer="uk.ac.ebi.arrayexpress.utils.search.AccessFieldAnalyzer" store="false" escape="true" expand="false" />
+                <field name="project" type="string" path="project" analyze="true" store="false" escape="true" expand="false" />
                 <field name="files"  title="Number of Files" type="long" path="@files" store="true" docValueType="numeric" />
                 <field name="links" title="Number of Links" type="long" path="@links" store="true" docValueType="numeric"  />
                 <!--

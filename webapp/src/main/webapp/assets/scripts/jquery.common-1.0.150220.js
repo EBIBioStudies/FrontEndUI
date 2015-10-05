@@ -426,6 +426,12 @@
             }
         ).focus(autoCompleteFixSet).blur(autoCompleteFixUnset).removeAttr('autocomplete');
 
+        $("#local-search").on('submit', function() {
+            if ($("#project") && $("#search-in-project").is(':checked')) {
+                $(this).attr('action',  $(this).attr('action')+"/"+$("#project").val());
+            }
+        });
+
         // attach titles to highlight classes
         var $data = $("#ae-content");
         $data.find(".text-hit").attr("title", "This is exact string matched for input query terms");

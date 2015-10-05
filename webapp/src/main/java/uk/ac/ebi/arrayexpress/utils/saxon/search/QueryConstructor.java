@@ -33,6 +33,7 @@ public class QueryConstructor implements IQueryConstructor {
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
         BooleanQuery result = new BooleanQuery();
         for (Map.Entry<String, String[]> queryItem : querySource.entrySet()) {
+            if (queryItem.getKey().equalsIgnoreCase("project")) continue;
             if (env.fields.containsKey(queryItem.getKey()) && queryItem.getValue()!=null && queryItem.getValue().length > 0) {
                 QueryParser parser = new EnhancedQueryParser(env, queryItem.getKey(), env.indexAnalyzer);
                 parser.setDefaultOperator(QueryParser.Operator.OR);
@@ -84,6 +85,14 @@ public class QueryConstructor implements IQueryConstructor {
             Query q = parser.parse(access);
             queryWithAccessControl.add(q, BooleanClause.Occur.MUST_NOT);
         }
+
+        if (querySource.containsKey("project")) {
+            QueryParser parser = new EnhancedQueryParser(env, "project", env.indexAnalyzer);
+            parser.setDefaultOperator(QueryParser.Operator.AND);
+            Query q = parser.parse(querySource.get("project")[0]);
+            queryWithAccessControl.add(q, BooleanClause.Occur.MUST);
+        }
+
 
         return queryWithAccessControl;
     }

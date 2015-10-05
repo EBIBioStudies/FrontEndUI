@@ -48,6 +48,7 @@
         <xsl:variable name="vAccession" select="../@acc"/>
         <accession><xsl:value-of select="$vAccession"/></accession>
         <access><xsl:value-of select="fn:replace(../@access,';',' ')"/></access>
+        <project><xsl:value-of select="../@project"/></project>
         <releasedate>2015-02-01</releasedate>
         <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
             <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->

@@ -54,9 +54,9 @@ public class DetailTest {
         int linkCount = Integer.parseInt(linkCountText.substring(0, linkCountText.indexOf(" ")));
         driver.findElement(By.cssSelector(".browse-study-title a")).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#links-table_info")));
-        String linkCountOnDetails = driver.findElement(By.cssSelector("#links-table_info")).getText(); // removing shoe more/less links
-        assertTrue(linkCountOnDetails.endsWith(linkCount+ " entries"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#link-list_info")));
+        String linkCountOnDetails = driver.findElement(By.cssSelector("#link-list_info")).getText(); // removing shoe more/less links
+        assertEquals("Showing 1 to 5 of " + linkCount + " entries", linkCountOnDetails);
     }
 
     @Test
