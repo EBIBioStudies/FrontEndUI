@@ -24,7 +24,6 @@ var linksTable = null;
     $(function() {
         //turn off all selected files
         $('input:checkbox:not(#search-in-project)').prop('checked', false);
-
         //setup thumbnails
         $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
@@ -118,6 +117,20 @@ var linksTable = null;
         // draw the main file table
         redrawTables();
         updateSelectedFiles();
+
+        // draw subsection and hide them
+        $(".indented-section").parent().prev().prepend('<span class="toggle-section icon icon-functional padded-gray-icon" data-icon="u" title="Click to expand"/>')
+        $(".indented-section").hide();
+        $('.toggle-section').on('click', function() {
+            var indented_section = $(this).parent().next().children().first();
+            if ( indented_section.css('display') == 'none') {
+                $(this).attr('data-icon','w');
+                indented_section.show();
+            } else {
+                $(this).attr('data-icon','u');
+                indented_section.hide();
+            }
+        })
     });
 
     function showThumbnail(fileLink) {

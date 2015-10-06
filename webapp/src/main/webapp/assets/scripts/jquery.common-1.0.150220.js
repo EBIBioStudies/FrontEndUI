@@ -432,6 +432,11 @@
             }
         });
 
+        $('.examples a').on('click', function(e, v) {
+            $('#local-searchbox').val($(this).text());
+            $('#local-search').submit()
+        });
+
         // attach titles to highlight classes
         var $data = $("#ae-content");
         $data.find(".text-hit").attr("title", "This is exact string matched for input query terms");

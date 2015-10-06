@@ -128,9 +128,10 @@
                 </attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:copy-of select="./*[not(name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
-            <xsl:apply-templates select=".//file" mode="files"/>
-            <xsl:apply-templates select=".//link" mode="links"/>
+            <xsl:copy-of select="./*[not(name()='section' or name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
+            <xsl:apply-templates select="section" mode="section"/>
+            <xsl:apply-templates select="file|files/file" mode="files"/>
+            <xsl:apply-templates select="link|links/table/link" mode="links"/>
         </section>
     </xsl:template>
 

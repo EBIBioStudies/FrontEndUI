@@ -228,7 +228,11 @@ th.filesize {
     width:55px;
 }
 
-.subsection {
+.toggle-section {
+    cursor: pointer;
+}
+
+.indented-section{
     padding-left: 10px;
     border-left: 2px solid #D4D4D4;
 }

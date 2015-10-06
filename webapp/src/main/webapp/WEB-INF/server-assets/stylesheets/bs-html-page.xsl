@@ -184,9 +184,8 @@
                                                 </input>
                                             </label>
                                             <!-- Include some example searchterms - keep them short and few! -->
-                                            <span class="examples">Examples: <a
-                                                    href="{$context-path}/search?query=cancer">cancer</a>,
-                                                <a href="{$context-path}/search?query=PMC516016">PMC516016</a>
+                                            <span class="examples">Examples: <a href="#">cancer</a>,
+                                                <a href="#">PMC516016</a>
                                             </span>
                                             <xsl:if test="$project!=''">
                                                 <span class="examples project">
