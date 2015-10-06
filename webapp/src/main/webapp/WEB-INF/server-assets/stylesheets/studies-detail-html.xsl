@@ -54,16 +54,12 @@
                 <link rel="stylesheet" href="{$context-path}/assets/stylesheets/jquery.dataTables.css" type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
-                <xsl:if test="$project!=''">
-                    <a href="{$context-path}{$projectLink}/studies/"><xsl:value-of select="$project"/></a>
-                    >
-                </xsl:if>
                 <xsl:choose>
                     <xsl:when test="$keywords != ''">
                         <a href="{$context-path}{$projectLink}/studies/search.html?query={$keywords}">Studies matching "<xsl:value-of select="$keywords"/>"</a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <a href="{$context-path}{$projectLink}/studies/">Studies</a>
+                        <a href="{$context-path}{$projectLink}/studies/"><xsl:value-of select="if ($project='') then 'Studies' else $project "/></a>
                     </xsl:otherwise>
                 </xsl:choose>
                 >
