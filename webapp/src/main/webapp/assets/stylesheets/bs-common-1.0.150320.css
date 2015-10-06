@@ -867,3 +867,10 @@ p.center {
     float:right;
     padding-top: 3px;
 }
+
+.project-banner {
+    background-color: white;
+}
+.project-banner img{
+    padding: 10px 0px 0px 5px;
+}

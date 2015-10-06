@@ -66,13 +66,6 @@
         <to type="forward" last="true">/servlets/query/studies/browse/html</to>
     </rule>
 
-    <!-- study view -->
-    <rule>
-        <from>^/studies/([^/]+)/?$</from>
-        <set type="parameter" name="accession">$1</set>
-        <to type="forward" last="true">/servlets/query/studies/detail/html</to>
-    </rule>
-
     <!-- study files -->
     <!--
     <rule>
@@ -243,9 +236,26 @@
     </rule>
 
     <!-- this has to be the last rule so that /admin/ can work -->
+    <!-- study view -->
+    <rule>
+        <from>^/studies/([^/]+)/?$</from>
+        <set type="parameter" name="accession">$1</set>
+        <to type="forward" last="true">/servlets/query/studies/detail/html</to>
+    </rule>
     <rule>
         <from>^/([^/]+)/studies/search[.]html?$</from>
         <set type="parameter" name="project">$1</set>
         <to type="forward" last="true">/servlets/query/studies/browse/html</to>
+    </rule>
+    <rule>
+        <from>^/([^/]+)/studies/?$</from>
+        <set type="parameter" name="project">$1</set>
+        <to type="forward" last="true">/servlets/query/studies/browse/html</to>
+    </rule>
+    <rule>
+        <from>^/([^/]+)/studies/([^/]+)/?$</from>
+        <set type="parameter" name="accession">$2</set>
+        <set type="parameter" name="project">$1</set>
+        <to type="forward" last="true">/servlets/query/studies/detail/html</to>
     </rule>
 </urlrewrite>

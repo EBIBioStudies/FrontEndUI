@@ -190,7 +190,7 @@
                                             </span>
                                             <xsl:if test="$project!=''">
                                                 <span class="examples project">
-                                                    <input type="checkbox" checked="checked" id="search-in-project" />Search in <xsl:value-of select="$project"/> only
+                                                    <input type="checkbox" checked="true" id="search-in-project" />Search in <xsl:value-of select="$project"/> only
                                                     <input type="hidden" id="project" value="{$project}" />
                                                 </span>
                                             </xsl:if>
@@ -257,7 +257,9 @@
                         <!-- /local-nav -->
                     </div>
                 </header>
-
+                <xsl:if test="$project">
+                    <div class="project-banner"><img src="{$context-path}/assets/images/{lower-case($project)}.png"/></div>
+                </xsl:if>
                 <div id="content" role="main" class="grid_24 clearfix">
                     <!-- If you require a breadcrumb trail, its root should be your service.
      	                 You don't need a breadcrumb trail on the homepage of your service... -->

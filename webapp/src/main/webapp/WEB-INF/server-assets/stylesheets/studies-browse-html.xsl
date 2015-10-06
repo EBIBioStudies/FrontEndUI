@@ -40,6 +40,7 @@
     <xsl:variable name="vQueryString" select="fn:concat('?', $query-string)"/>
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
     <xsl:variable name="vTotal" select="xs:integer(search:getQueryInfoParameter($queryid,'total'))"/>
+    <xsl:variable name="projectLink" select="if ($project!='') then concat('/',$project) else '' "/>
 
     <xsl:template match="/">
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
@@ -209,7 +210,7 @@
             </div>
             <div class="browse-study-title">
                 <xsl:variable name="linkPositionParameter" select="concat('&amp;n=',$pPosition)"/>
-                <a href="{$context-path}/studies/{accession}/{$vQueryString}{$linkPositionParameter}">
+                <a href="{$context-path}{$projectLink}/studies/{accession}/{$vQueryString}{$linkPositionParameter}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pFieldName" select="'title'"/>

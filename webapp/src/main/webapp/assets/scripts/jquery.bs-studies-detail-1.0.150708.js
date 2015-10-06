@@ -23,7 +23,7 @@ var linksTable = null;
 
     $(function() {
         //turn off all selected files
-        $('input:checkbox').prop('checked', false);
+        $('input:checkbox:not(#search-in-project)').prop('checked', false);
 
         //setup thumbnails
         $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");

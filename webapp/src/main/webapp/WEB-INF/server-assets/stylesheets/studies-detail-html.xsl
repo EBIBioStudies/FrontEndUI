@@ -33,6 +33,7 @@
     <xsl:variable name="vAccessionNumber" select="search:getQueryInfoParameter($queryid,'accessionNumber')"/>
     <xsl:variable name="vAccession" select="if ($vAccessionNumber) then fn:upper-case($vAccessionNumber) else fn:upper-case($accession)"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
+    <xsl:variable name="projectLink" select="if ($project!='') then concat('/',$project) else '' "/>
 
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-studies-templates.xsl"/>
@@ -53,12 +54,16 @@
                 <link rel="stylesheet" href="{$context-path}/assets/stylesheets/jquery.dataTables.css" type="text/css"/>
             </xsl:with-param>
             <xsl:with-param name="pBreadcrumbTrail">
+                <xsl:if test="$project!=''">
+                    <a href="{$context-path}{$projectLink}/studies/"><xsl:value-of select="$project"/></a>
+                    >
+                </xsl:if>
                 <xsl:choose>
                     <xsl:when test="$keywords != ''">
-                        <a href="{$context-path}/studies/search.html?query={$keywords}">Studies matching "<xsl:value-of select="$keywords"/>"</a>
+                        <a href="{$context-path}{$projectLink}/studies/search.html?query={$keywords}">Studies matching "<xsl:value-of select="$keywords"/>"</a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <a href="{$context-path}/studies/">Studies</a>
+                        <a href="{$context-path}{$projectLink}/studies/">Studies</a>
                     </xsl:otherwise>
                 </xsl:choose>
                 >
@@ -68,12 +73,12 @@
                     <xsl:variable name="nextAccession" select="search:getQueryInfoParameter($queryid,'nextAccession')"/>
                     <xsl:variable name="accessionIndex" select="xs:integer(search:getQueryInfoParameter($queryid,'accessionIndex'))"/>
                     <xsl:if test="$previousAccession">
-                        <a href="{$context-path}/studies/{$previousAccession}/{fn:replace($vQueryString,'n=\d+',concat('n=',$accessionIndex))}">
+                        <a href="{$context-path}{$projectLink}/studies/{$previousAccession}/{fn:replace($vQueryString,'n=\d+',concat('n=',$accessionIndex))}">
                             <span class="icon icon-functional" data-icon="&lt;"></span>Previous
                         </a>
                     </xsl:if>
                     <xsl:if test="$nextAccession">
-                        <a href="{$context-path}/studies/{$nextAccession}/{fn:replace($vQueryString,'n=\d+',concat('n=',$accessionIndex+2))}">
+                        <a href="{$context-path}{$projectLink}/studies/{$nextAccession}/{fn:replace($vQueryString,'n=\d+',concat('n=',$accessionIndex+2))}">
                             Next<span class="icon icon-functional" data-icon="&gt;"></span>
                         </a>
                     </xsl:if>
