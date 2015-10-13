@@ -158,7 +158,7 @@
         </plugins>
     </build>
     <modules>
-        <module>components/indexer</module>
+        <module>components/FrontEndIndexer</module>
         <module>components/webapp-auth</module>
         <module>components/jobs-controller</module>
         <module>components/saxon-engine</module>

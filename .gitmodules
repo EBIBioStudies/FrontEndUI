@@ -1,0 +1,3 @@
+[submodule "components/FrontEndIndexer"]
+	path = components/FrontEndIndexer
+	url = git@github.com:EBIBioStudies/FrontEndIndexer.git
