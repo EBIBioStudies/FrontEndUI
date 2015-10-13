@@ -164,7 +164,7 @@ public class Querier {
 
             // if page is from search results, get the document at nth position in the search results
             // and store the previous and next result as well. Otherwise, return the whole result set
-            if (params.containsKey("n") || params.get("path-info")[0].contains("detail")) {
+            if (params.get("path-info")[0].contains("detail")) {
                 NodeInfo nodeInfo = getSingleDocument(params, hits, leafReader);
                 if(nodeInfo!=null) matchingNodes.add(nodeInfo);
             } else {
@@ -214,8 +214,15 @@ public class Querier {
     }
 
     private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, IndexReader leafReader) throws IOException, SaxonException {
-        int position = params.containsKey("n") ? Integer.parseInt( params.get("n")[0]) - 1 : 0;
         ScoreDoc[] scoreDocs = hits.scoreDocs;
+        int position = -1;
+        for (int i = 0; i < scoreDocs.length; i++) {
+            if (leafReader.document(scoreDocs[i].doc).get("accession").equalsIgnoreCase(params.get("accessionNumber")[0])) {
+                position=i;
+                break;
+            }
+        }
+
 
         try {
             NodeInfo ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));

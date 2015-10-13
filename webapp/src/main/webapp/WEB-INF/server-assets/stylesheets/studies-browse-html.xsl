@@ -209,8 +209,7 @@
                 </xsl:if>
             </div>
             <div class="browse-study-title">
-                <xsl:variable name="linkPositionParameter" select="concat('&amp;n=',$pPosition)"/>
-                <a href="{$context-path}{$projectLink}/studies/{accession}/{$vQueryString}{$linkPositionParameter}">
+                <a href="{$context-path}{$projectLink}/studies/{accession}/{$vQueryString}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pFieldName" select="'title'"/>

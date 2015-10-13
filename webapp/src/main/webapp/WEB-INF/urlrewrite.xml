@@ -239,7 +239,7 @@
     <!-- study view -->
     <rule>
         <from>^/studies/([^/]+)/?$</from>
-        <set type="parameter" name="accession">$1</set>
+        <set type="parameter" name="accessionNumber">$1</set>
         <to type="forward" last="true">/servlets/query/studies/detail/html</to>
     </rule>
     <rule>
@@ -254,7 +254,7 @@
     </rule>
     <rule>
         <from>^/([^/]+)/studies/([^/]+)/?$</from>
-        <set type="parameter" name="accession">$2</set>
+        <set type="parameter" name="accessionNumber">$2</set>
         <set type="parameter" name="project">$1</set>
         <to type="forward" last="true">/servlets/query/studies/detail/html</to>
     </rule>
