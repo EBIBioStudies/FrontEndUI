@@ -58,7 +58,6 @@ public class Configuration {
 
     private void readConfiguration(HierarchicalConfiguration config) {
         List indexList = config.configurationsAt("index");
-
         for (Object conf : indexList) {
             HierarchicalConfiguration indexConfig = (HierarchicalConfiguration) conf;
             String indexId = indexConfig.getString("[@id]");

@@ -11,8 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.ac.ebi.biostudies.BSInterfaceTestApplication;
 
-import static com.thoughtworks.selenium.SeleneseTestNgHelper.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+
 
 @Category(IntegrationTest.class)
 public class BrowseTest {

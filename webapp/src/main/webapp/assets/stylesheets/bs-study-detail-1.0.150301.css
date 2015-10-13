@@ -232,7 +232,8 @@ th.filesize {
     cursor: pointer;
 }
 
-.indented-section{
+.indented-section, .has-child-section{
     padding-left: 10px;
     border-left: 2px solid #D4D4D4;
 }
+

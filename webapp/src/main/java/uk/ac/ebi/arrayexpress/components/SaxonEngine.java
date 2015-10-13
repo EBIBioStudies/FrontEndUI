@@ -60,6 +60,11 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private TransformerFactoryImpl trFactory;
+
+    public XPathEvaluator getxPathEvaluator() {
+        return xPathEvaluator;
+    }
+
     private XPathEvaluator xPathEvaluator;
     private Map<String, Templates> templatesCache = new Hashtable<>();
     private Map<String, XMLDocumentSource> documentSources = new Hashtable<>();

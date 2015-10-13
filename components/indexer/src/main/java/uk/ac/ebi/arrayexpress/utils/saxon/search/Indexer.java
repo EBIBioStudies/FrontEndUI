@@ -17,12 +17,17 @@
 
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
+import net.sf.saxon.TransformerFactoryImpl;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.sxpath.XPathEvaluator;
+import net.sf.saxon.sxpath.XPathExpression;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
@@ -30,11 +35,12 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.arrayexpress.components.SaxonEngine;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,24 +49,29 @@ import java.util.Map;
 
 public class Indexer {
     protected final static String DOCID_FIELD = "docId";
-
+    public static final String XML_STRING_ENCODING = "UTF-8";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private XPathEvaluator xPathEvaluator;
+    private TransformerFactoryImpl trFactory;
+
     private final IndexEnvironment env;
-    private final SaxonEngine saxon;
     private static Map<String,IndexWriter> indexWriters  = new HashMap<>();
 
-    public Indexer(IndexEnvironment env, SaxonEngine saxon) throws IOException {
-        this.env = env;
-        this.saxon = saxon;
+
+    public Indexer(String indexId, XPathEvaluator xPathEvaluator) throws IOException {
+        this.env = new IndexEnvironment(indexId);
+        this.xPathEvaluator = xPathEvaluator;
         if (!indexWriters.containsKey(env.indexId)) {
             indexWriters.put(env.indexId, createOrAppendIndex(this.env.indexDirectory, this.env.indexAnalyzer));
         }
+        trFactory = (TransformerFactoryImpl) TransformerFactoryImpl.newInstance();
+
     }
 
     public List<NodeInfo> index(NodeInfo documentNode) throws IndexerException, InterruptedException {
         try {
-            List<Item> documentNodes = saxon.evaluateXPath(documentNode, this.env.indexDocumentPath);
+            List<Item> documentNodes = evaluateXPath(documentNode, this.env.indexDocumentPath);
             List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
             IndexWriter w = indexWriters.get(env.indexId);
             for (Item node : documentNodes) {
@@ -70,7 +81,7 @@ public class Indexer {
 
                 for (IndexEnvironment.FieldInfo field : this.env.fields.values()) {
                     try {
-                        List<Item> values = saxon.evaluateXPath((NodeInfo) node, field.path);
+                        List<Item> values = evaluateXPath((NodeInfo) node, field.path);
                         for (Item v : values) {
                             if ("long".equals(field.type)) {
                                 addLongField(d, field.name, v, field.shouldStore);
@@ -108,25 +119,19 @@ public class Indexer {
             w.commit();
 
             return indexedNodes;
-        } catch (IOException | XPathException | SaxonException x) {
+        } catch (IOException | XPathException x) {
             throw new IndexerException(x);
         }
     }
 
-
-
-    public List<NodeInfo> index(uk.ac.ebi.arrayexpress.utils.saxon.Document document) throws IndexerException, InterruptedException {
-        return index(document.getRootNode());
-    }
-
-    private void addXMLField(Document d, Item node) throws SaxonException {
+    private void addXMLField(Document d, Item node) throws IndexerException {
         FieldType fieldType = new FieldType();
         fieldType.setOmitNorms(true);
         fieldType.setIndexOptions(IndexOptions.NONE);
         fieldType.setStored(true);
         fieldType.setTokenized(false);
         fieldType.freeze();
-        Field field =new Field("xml", saxon.serializeDocument((NodeInfo)node) , fieldType );
+        Field field =new Field("xml", serializeDocument((NodeInfo)node) , fieldType );
         d.add(field);
     }
 
@@ -168,7 +173,7 @@ public class Indexer {
             boolValue = ((BooleanValue) value).getBooleanValue();
         } else {
             String stringValue = value.getStringValue();
-            boolValue = StringTools.stringToBoolean(stringValue);
+            boolValue = stringValue.equalsIgnoreCase("true") ? true : false;
         }
 
         document.add(new StringField(name, null == boolValue ? "" : boolValue.toString(), Field.Store.NO));
@@ -199,4 +204,25 @@ public class Indexer {
         document.add(field);
     }
 
+    public List<Item> evaluateXPath(NodeInfo node, String xpath) throws XPathException {
+        XPathExpression xpe = xPathEvaluator.createExpression(xpath);
+        return xpe.evaluate(xpe.createDynamicContext(node));
+    }
+
+    public String serializeDocument(Source source) throws IndexerException {
+        try (ByteArrayOutputStream outStream = new ByteArrayOutputStream()) {
+            Transformer transformer = trFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "no");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.ENCODING, XML_STRING_ENCODING);
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+
+            transformer.transform(source, new StreamResult(outStream));
+            return outStream.toString(XML_STRING_ENCODING);
+        } catch (TransformerException | IOException x) {
+            throw new IndexerException(x);
+        }
+    }
 }

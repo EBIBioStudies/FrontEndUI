@@ -20,10 +20,8 @@ package uk.ac.ebi.arrayexpress.components;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 import uk.ac.ebi.arrayexpress.utils.FileTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.*;
@@ -182,7 +180,7 @@ public class Studies extends ApplicationComponent  {
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
-            Indexer indexer = new Indexer(this.search.getController().getEnvironment(INDEX_ID), saxon);
+            Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
             NodeInfo document = this.saxon.buildDocument(xmlFile);
             List<Item> documentNodes = this.saxon.evaluateXPath(document, "//submission");
             int i =0;

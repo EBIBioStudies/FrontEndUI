@@ -49,7 +49,7 @@ public class IndexTest {
 
     @Test
     public void testAddAndUpdateIndex() throws Exception{
-        driver.get(baseUrl + "/clear-index");
+        driver.get(baseUrl + "/admin/clear-index");
 
         // add a document
         StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
@@ -58,7 +58,7 @@ public class IndexTest {
         String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
         File file = new File(sourceLocation, "temp-test-study.xml");
         FileUtils.writeStringToFile(file, sb.toString());
-        driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
+        driver.get(baseUrl + "/admin/reload-xml/temp-test-study.xml");
         file.delete();
 
         driver.get(baseUrl + "/");
@@ -66,18 +66,18 @@ public class IndexTest {
 
         file = new File(sourceLocation, "temp-test-study.xml");
         FileUtils.writeStringToFile(file, StringUtils.replaceOnce(sb.toString(), "<value>Test Document 0</value>", "<value>Updated Test Document 0</value>"));
-        driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
+        driver.get(baseUrl + "/admin/reload-xml/temp-test-study.xml");
         file.delete();
         driver.get(baseUrl + "/studies/TEST-0");
         assertEquals("Updated Test Document 0",driver.findElement(By.cssSelector("#ae-detail-title")).getText());
-        driver.get(baseUrl + "/clear-index");
-        driver.get(baseUrl + "/reload-xml");
+        driver.get(baseUrl + "/admin/clear-index");
+        driver.get(baseUrl + "/admin/reload-xml");
     }
 
 
     @Test
     public void testDeleteDocument() throws Exception{
-        driver.get(baseUrl + "/clear-index");
+        driver.get(baseUrl + "/admin/clear-index");
 
         // add a document
         StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
@@ -89,12 +89,12 @@ public class IndexTest {
         driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
         file.delete();
 
-        driver.get(baseUrl + "/delete/TEST-0");
-        driver.get(baseUrl + "/studies");
+        driver.get(baseUrl + "/admin/delete/TEST-0");
+        driver.get(baseUrl + "/admin/studies");
         assertEquals("We’re sorry that we couldn’t find any matching studies", driver.findElement(By.cssSelector("h2.alert")).getText());
 
-        driver.get(baseUrl + "/clear-index");
-        driver.get(baseUrl + "/reload-xml");
+        driver.get(baseUrl + "/admin/clear-index");
+        driver.get(baseUrl + "/admin/reload-xml");
     }
 
 }

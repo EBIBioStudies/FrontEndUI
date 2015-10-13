@@ -85,6 +85,9 @@
                 <xsl:with-param name="pName" select="@type"/>
                 <xsl:with-param name="pContent">
                     <div>
+                        <xsl:if test="descendant::section">
+                            <xsl:attribute name="class" select="('has-child-section')"/>
+                        </xsl:if>
                         <xsl:if test="ancestor::section">
                             <xsl:attribute name="class" select="('indented-section')"/>
                         </xsl:if>

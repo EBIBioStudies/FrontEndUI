@@ -83,7 +83,7 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
 
     public IndexEnvironment getEnvironment(String indexId) {
         if (!this.environment.containsKey(indexId)) {
-            this.environment.put(indexId, new IndexEnvironment(config.getIndexConfig(indexId)));
+            this.environment.put(indexId, new IndexEnvironment(indexId));
         }
 
         return this.environment.get(indexId);
@@ -93,20 +93,20 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
         this.logger.info("Started indexing for index id [{}]", indexId);
         getEnvironment(indexId).setDocumentInfo(
                 document.getHash()
-                , new Indexer(getEnvironment(indexId), saxon).index(document)
+                , new Indexer(indexId, saxon.getxPathEvaluator()).index(document.getRootNode())
         );
         this.logger.info("Indexing for index id [{}] completed", indexId);
     }
 
     public void clearIndex(String indexId) throws IndexerException, InterruptedException, IOException {
         this.logger.info("Clearing index for index id [{}]", indexId);
-        new Indexer(getEnvironment(indexId), saxon).clearIndex();
+        new Indexer(indexId, saxon.getxPathEvaluator()).clearIndex();
         this.logger.info("Indexfor index id [{}] cleared", indexId);
     }
 
     public void delete(String indexId, String accession) throws IndexerException, InterruptedException, IOException {
         this.logger.info("Deleting {} from index id [{}]", accession, indexId);
-        new Indexer(getEnvironment(indexId), saxon).delete(accession);
+        new Indexer(indexId, saxon.getxPathEvaluator()).delete(accession);
         this.logger.info("Document {} deleted", accession);
     }
 

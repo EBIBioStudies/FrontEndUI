@@ -18,7 +18,9 @@
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
+import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.store.Directory;
@@ -27,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,8 @@ import java.util.Map;
 public class IndexEnvironment {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    // source index configuration (will be eventually removed)
+    public static Configuration configuration = null;
+
     public HierarchicalConfiguration indexConfig;
 
     // index configuration, parsed
@@ -85,10 +89,27 @@ public class IndexEnvironment {
     public String documentHashCode;
     //public List<NodeInfo> documentNodes;
 
-    public IndexEnvironment(HierarchicalConfiguration indexConfig) {
-        this.indexConfig = indexConfig;
+
+    public static Configuration getConfiguration() {
+        if (configuration==null) {
+            XMLConfiguration.setDefaultListDelimiter('\uffff');
+            XMLConfiguration xmlConfig = new XMLConfiguration();
+            InputStream prefStream = Indexer.class.getResourceAsStream("/indices.xml");
+            try {
+                xmlConfig.load(prefStream);
+            } catch (ConfigurationException e) {
+                e.printStackTrace();
+            }
+            configuration = new Configuration(xmlConfig);
+        }
+        return configuration;
+    }
+
+    public IndexEnvironment(String indexId) {
+        this.indexConfig = getConfiguration().getIndexConfig(indexId);
         populateIndexConfiguration();
     }
+
 
     public void setDocumentInfo(String documentHashCode, List<NodeInfo> documentNodes) {
         this.documentHashCode = documentHashCode;

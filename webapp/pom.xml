@@ -118,6 +118,26 @@
                 <webapp.log.appender.ref>console</webapp.log.appender.ref>
             </properties>
         </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <interface.application.webxml.security.transport.guarantee>CONFIDENTIAL</interface.application.webxml.security.transport.guarantee>
+
+                <interface.application.link.atlas.base.url>/gxa/</interface.application.link.atlas.base.url>
+                <interface.application.link.atlas.exp_query.url>${interface.application.link.atlas.base.url}experiments/</interface.application.link.atlas.exp_query.url>
+
+                <interface.application.link.news_xml.url>ae-news.xml</interface.application.link.news_xml.url>
+                <interface.application.link.links_xml.url>ae-links.xml</interface.application.link.links_xml.url>
+
+                <interface.application.pref.studies.source.location>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/xml/</interface.application.pref.studies.source.location>
+                <interface.application.pref.studies.reload.schedule>0 0/15 * * * ?</interface.application.pref.studies.reload.schedule>
+                <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
+                <interface.application.pref.restart.command>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/restart-nowait</interface.application.pref.restart.command>
+                <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
+                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-dev/checkAccess</interface.application.pref.users.authentication.url>
+            </properties>
+
+        </profile>
     </profiles>
 
     <developers>
@@ -307,6 +327,10 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>biostudies-ui-jobs-controller</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>biostudies-indexer</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
