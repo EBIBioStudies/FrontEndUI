@@ -121,13 +121,15 @@ var linksTable = null;
         // draw subsection and hide them
         $(".indented-section").parent().prev().prepend('<span class="toggle-section icon icon-functional padded-gray-icon" data-icon="u" title="Click to expand"/>')
         $(".indented-section").hide();
-        $('.toggle-section').on('click', function() {
-            var indented_section = $(this).parent().next().children().first();
+
+        $('.toggle-section').parent().css('cursor','pointer');
+        $('.toggle-section').parent().on('click', function() {
+            var indented_section = $(this).next().children().first();
             if ( indented_section.css('display') == 'none') {
-                $(this).attr('data-icon','w');
+                $(this).children().first().attr('data-icon','w');
                 indented_section.show();
             } else {
-                $(this).attr('data-icon','u');
+                $(this).children().first().attr('data-icon','u');
                 indented_section.hide();
             }
         })
