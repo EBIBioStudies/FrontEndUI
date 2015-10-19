@@ -141,6 +141,7 @@
     position: absolute;
     width: 93% !important;
     left: 28px;
+    z-index: 99999;
 }
 #select-all-files-header {
     text-align: left;
@@ -237,3 +238,9 @@ th.filesize {
     border-left: 2px solid #D4D4D4;
 }
 
+.truncated {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

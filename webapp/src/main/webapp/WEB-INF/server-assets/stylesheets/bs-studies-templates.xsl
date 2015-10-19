@@ -719,7 +719,7 @@
         <xsl:variable name="vUrl" select="ae:getUrlFor($pType, $pText, $pUrl)"/>
         <xsl:choose>
             <xsl:when test="$vUrl != ''">
-                <a href="{$vUrl}" target="_blank">
+                <a href="{$vUrl}" target="_blank" title="{$vUrl}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
                         <xsl:with-param name="pCallHighlightingFunction" select="$pCallHighlightingFunction"/>
@@ -832,7 +832,7 @@
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/chebi/searchId.do?chebiId=', fn:replace($pId, '[:]', '%3A'))"/>
             </xsl:when>
             <xsl:when test="$type = 'ega'">
-                <xsl:value-of select="fn:concat('https://ega.crg.eu/datasets/', $pId)"/>
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ega/datasets/', $pId)"/>
             </xsl:when>
             <xsl:when test="fn:starts-with($pUrl,'http:') or fn:starts-with($pUrl,'https:') or fn:starts-with($pUrl,'ftp:')">
                 <xsl:value-of select="$pUrl"/>

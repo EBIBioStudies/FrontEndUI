@@ -19,7 +19,10 @@ package uk.ac.ebi.arrayexpress.components;
 
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.pattern.NameTest;
+import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
@@ -166,12 +169,7 @@ public class Studies extends ApplicationComponent  {
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
             File xmlFile = new File(sourceLocation, xmlFileName);
-            if (xmlFile.length() > 50*1024*1024) { // Updates the index one study at a time for large files
-                updateFromXMLFile(xmlFile);
-            } else {
-                update(FileTools.readXMLStringFromFile(xmlFile));
-            }
-
+            updateFromXMLFile(xmlFile);
         }
     }
 
@@ -185,6 +183,11 @@ public class Studies extends ApplicationComponent  {
             List<Item> documentNodes = this.saxon.evaluateXPath(document, "//submission");
             int i =0;
             for (Item node : documentNodes) {
+                if (this.saxon.evaluateXPath((NodeInfo)node, "@delete").size()>0) {
+                    System.out.println(this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
+                    this.search.getController().delete(INDEX_ID, this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
+                    continue;
+                }
                 StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
                 sb.append(saxon.serializeDocument((Source) node, true));
                 sb.append("</submissions></pmdocument>");

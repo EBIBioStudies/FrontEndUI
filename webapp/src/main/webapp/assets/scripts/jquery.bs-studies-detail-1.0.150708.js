@@ -227,7 +227,7 @@ var linksTable = null;
         }
 
         $('html, body').animate({
-            scrollTop: $(href).offset().top
+            scrollTop: $(href).offset().top -10
         }, 200);
 
         $(href).next().next().animate({opacity:0.8}, 200, function(){
