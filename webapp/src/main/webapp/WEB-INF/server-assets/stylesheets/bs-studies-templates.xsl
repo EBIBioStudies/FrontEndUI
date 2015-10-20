@@ -79,7 +79,6 @@
     <xsl:template name="study-subsections">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
-        <xsl:param name="vFiles"/>
         <xsl:for-each select="$pNodes">
             <xsl:call-template name="section">
                 <xsl:with-param name="pName" select="@type"/>
@@ -100,7 +99,6 @@
                         <xsl:if test="count(section)>0">
                                 <xsl:call-template name="study-subsections">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                    <xsl:with-param name="vFiles" select="$vFiles"/>
                                     <xsl:with-param name="pNodes" select="section"/>
                                 </xsl:call-template>
                         </xsl:if>
@@ -112,8 +110,8 @@
                                 <xsl:call-template name="file-table">
                                     <xsl:with-param name="pQueryId" select="$queryid"/>
                                     <xsl:with-param name="pNodes" select="file"/>
-                                    <xsl:with-param name="pFiles" select="$vFiles"/>
                                     <xsl:with-param name="pBasePath" select="$context-path"/>
+                                    <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
                                 </xsl:call-template>
                             </div>
                         </xsl:if>
@@ -139,9 +137,7 @@
 
     <xsl:template name="study-publications">
         <xsl:param name="pQueryId"/>
-        <xsl:param name="pTitle"/>
         <xsl:param name="pNodes"/>
-        <xsl:param name="vFiles"/>
         <xsl:for-each-group select="$pNodes" group-by="fn:lower-case(@type)">
             <xsl:choose>
                 <xsl:when test="fn:current-grouping-key()='publication'">
@@ -174,13 +170,14 @@
                                 <xsl:text>)</xsl:text>
                             </xsl:for-each>
                             <xsl:if test="fn:count(.//file)>0">
+                                <br/>
                                 <a class="show-more toggle-files">show files in this section</a>
                                 <div class="ae-section-files">
                                     <xsl:call-template name="file-table">
                                         <xsl:with-param name="pQueryId" select="$queryid"/>
                                         <xsl:with-param name="pNodes" select=".//file"/>
-                                        <xsl:with-param name="pFiles" select="$vFiles"/>
                                         <xsl:with-param name="pBasePath" select="$context-path"/>
+                                        <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
                                     </xsl:call-template>
                                 </div>
                             </xsl:if>
@@ -303,8 +300,8 @@
     <xsl:template name="study-files">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
-        <xsl:param name="pFiles"/>
         <xsl:param name="pBasePath"/>
+        <xsl:param name="pAccession"/>
         <xsl:if test="fn:count($pNodes)>0">
             <xsl:call-template name="widget">
                 <xsl:with-param name="pTitleClass" select="'ae-detail-files-title'"/>
@@ -315,9 +312,9 @@
                     <xsl:call-template name="file-table">
                         <xsl:with-param name="pNodes" select="$pNodes"/>
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        <xsl:with-param name="pFiles" select="$pFiles"/>
                         <xsl:with-param name="pBasePath" select="$pBasePath"/>
                         <xsl:with-param name="elementId" select="'file-list'"/>
+                        <xsl:with-param name="pAccession" select="$pAccession"/>
                     </xsl:call-template>
                     <span id="selected-file-text"/> <a id="download-selected-files">Download all</a><br/><br/>
                 </xsl:with-param>
@@ -327,9 +324,10 @@
 
     <xsl:template name="file-table"><xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
-        <xsl:param name="pFiles"/>
         <xsl:param name="pBasePath"/>
         <xsl:param name="elementId" select="fn:concat('file-table-',../position())"/>
+        <xsl:param name="pAccession"/>
+
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
         <table class="stripe compact hover file-list" cellspacing="0" width="100%" id="{$elementId}" >
             <thead>
@@ -352,7 +350,6 @@
                 <xsl:for-each select="$pNodes">
                     <xsl:variable name="aFile" select="."/>
                     <xsl:variable name="vName" select="@name"/>
-                    <xsl:variable name="vFile" select="$pFiles/file[@name=$vName]"/>
                     <tr>
                         <xsl:if test="$elementId='file-list'">
                             <td class="disable-select">
@@ -360,7 +357,7 @@
                             </td>
                         </xsl:if>
                         <td class="file-list-file-name">
-                            <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}">
+                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}">
                                 <xsl:call-template name="highlight">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                     <xsl:with-param name="pText" select="$vName"/>
@@ -368,9 +365,9 @@
                                 </xsl:call-template>
                             </a>
                             <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv')"/>
-                            <a href="{$pBasePath}/files/{$pFiles/@accession}/{$vName}" data-name="{$vName}" class="file-link">
+                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}" data-name="{$vName}" class="file-link">
                                 <xsl:if test="$isImage">
-                                    <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pFiles/@accession,'/',$vName)"/>
+                                    <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vName)"/>
                                 </xsl:if>
                                 <span class="thumbnail icon icon-functional" data-icon="4">
                                     <xsl:if test="not($isImage)">
@@ -380,9 +377,9 @@
                             </a>
 
                         </td>
-                        <td class="align-right" data-order="{$vFile/@size}">
+                        <td class="align-right" data-order="{@size}">
                             <xsl:call-template name="file-size">
-                                <xsl:with-param name="size" select="$vFile/@size"/>
+                                <xsl:with-param name="size" select="@size"/>
                             </xsl:call-template>
                         </td>
                         <xsl:for-each select="$vColumns">
@@ -541,7 +538,6 @@
     <xsl:template name="study-funding">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
-        <xsl:param name="vFiles" select="''"/>
         <xsl:call-template name="section">
             <xsl:with-param name="pName" select="'Funding'"/>
             <xsl:with-param name="pClass" select="('ae-detail-funding-list')"/>
@@ -575,7 +571,7 @@
                         <xsl:call-template name="file-table">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pNodes" select="$pNodes//file"/>
-                            <xsl:with-param name="pFiles" select="$vFiles"/>
+                            <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
                             <xsl:with-param name="pBasePath" select="$context-path"/>
                         </xsl:call-template>
                     </div>
@@ -601,7 +597,6 @@
         <xsl:param name="pClass" as="xs:string*" select="''"/>
         <xsl:param name="queryid" select="''"/>
         <xsl:param name="pNodes" select="''"/>
-        <xsl:param name="vFiles"/>
         <xsl:param name="context-path" select="''"/>
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <xsl:if test="fn:exists($pName) and fn:matches($pName,'[^\s*]')">

@@ -17,25 +17,14 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.VFS;
-import org.apache.commons.vfs2.util.RandomAccessMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
-import uk.ac.ebi.arrayexpress.components.Studies;
-import uk.ac.ebi.arrayexpress.components.Users;
-import uk.ac.ebi.arrayexpress.utils.saxon.search.Querier;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class FileDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909737571L;
@@ -45,6 +34,7 @@ public class FileDownloadServlet extends BaseDownloadServlet {
     protected IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
             , HttpServletResponse response
+            , String relativePath
             , User authenticatedUser
     ) throws DownloadServletException {
         String accession = "";
@@ -60,7 +50,7 @@ public class FileDownloadServlet extends BaseDownloadServlet {
                 name = requestArgs[1];
             }
 
-            file = getSingleFile(request, response, accession, name);
+            file = getSingleFile(request, response, relativePath, name);
         } catch (DownloadServletException x) {
             throw x;
         } catch (Exception x) {
@@ -69,31 +59,11 @@ public class FileDownloadServlet extends BaseDownloadServlet {
         return file;
     }
 
-    private IDownloadFile getSingleFile(HttpServletRequest request, HttpServletResponse response, String accession, String name) throws IOException, DownloadServletException {
+    private IDownloadFile getSingleFile(HttpServletRequest request, HttpServletResponse response, String relativePath, String name) throws IOException, DownloadServletException {
         IDownloadFile file;
-        logger.info("Requested download of [" + name + "], accession [" + accession + "]");
+        logger.info("Requested download of [" + name + "], path [" + relativePath + "]");
         Files files = getComponent(Files.class);
-        if (!files.doesExist(accession, name)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            throw new DownloadServletException(
-                    "File [" + name + "], accession [" + accession + "] is not in files.xml");
-        } else {
-            String location = files.getLocation(accession, name);
-            // finally if there is no accession or location determined at the stage - panic
-            if ("".equals(location) || "".equals(accession)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                throw new DownloadServletException(
-                        "Either accession ["
-                                + String.valueOf(accession)
-                                + "] or location ["
-                                + String.valueOf(location)
-                                + "] were not determined");
-            }
-
-
-            logger.debug("Will be serving file [{}]", location);
-            file = new RegularDownloadFile(new File(files.getRootFolder(), location));
-        }
+        file = new RegularDownloadFile(new File(files.getRootFolder(), relativePath+"/Files/"+name));
         return file;
     }
 

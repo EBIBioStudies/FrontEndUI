@@ -39,7 +39,9 @@
 
     <xsl:template match="submission">
         <study files="{fn:count(.//file)}"
-               links="{fn:count(.//link)}">
+               links="{fn:count(.//link)}"
+               relPath="{@relPath}"
+                >
                 <xsl:apply-templates/>
         </study>
     </xsl:template>
@@ -136,7 +138,7 @@
     </xsl:template>
 
     <xsl:template match="file" mode="files">
-        <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}">
+        <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}">
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>

@@ -198,7 +198,10 @@ public class Studies extends ApplicationComponent  {
                         , null
                 );
                 indexer.index(updateXml);
-                logger.info("Indexing document {}",++i);
+                logger.info("Indexing document {}", ++i);
+                Document savedDocument = new StoredDocument(updateXml.getDocumentRoot(),
+                        new File(getPreferences().getString("bs.studies.persistence-location")));
+
             }
         }
     }
@@ -230,9 +233,13 @@ public class Studies extends ApplicationComponent  {
         }
     }
 
-    public boolean isAccessible(String accession, User authenticatedUser) {
+    // returns null is document is not accessible
+    public String getRelativePath(String accession, User authenticatedUser) throws SaxonException, XPathException {
         Querier querier = new Querier(this.search.getController().getEnvironment(INDEX_ID));
-        return querier.isAccessible(accession,authenticatedUser);
+        String xml = querier.getDocumentXml(accession, authenticatedUser);
+        if (xml==null) return null;
+        NodeInfo documentNode = saxon.buildDocument(xml);
+        return saxon.evaluateXPathSingleAsString(documentNode, "/study/@relPath");
     }
 
 

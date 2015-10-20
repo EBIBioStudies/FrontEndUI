@@ -25,12 +25,12 @@ import org.apache.commons.vfs2.util.RandomAccessMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
+import uk.ac.ebi.arrayexpress.components.Studies;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -43,11 +43,10 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
     private FileSystemManager fsManager;
 
     @Override
-    protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
+    protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response, String relativePath) throws DownloadServletException {
         // set filename and accession
         String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
         String accession = requestArgs[0];
-
         String[] filenames = request.getParameterMap().get("files");
         Files files = getComponent(Files.class);
         byte[] buffer = new byte[1024];
@@ -58,17 +57,15 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             zipFile.createFile();
             try (ZipOutputStream zos = new ZipOutputStream(zipFile.getContent().getOutputStream())) {
                 for (String filename : filenames) {
-                    if (files.doesExist(accession, filename)) {
-                        ZipEntry entry = new ZipEntry(filename);
-                        zos.putNextEntry(entry);
-                        FileInputStream fin = new FileInputStream(files.getRootFolder() + files.getLocation(accession, filename));
-                        int length;
-                        while ((length = fin.read(buffer)) > 0) {
-                            zos.write(buffer, 0, length);
-                        }
-                        fin.close();
-                        zos.closeEntry();
+                    ZipEntry entry = new ZipEntry(filename);
+                    zos.putNextEntry(entry);
+                    FileInputStream fin = new FileInputStream(files.getRootFolder() + "/" + relativePath+"/Files/"+filename );
+                    int length;
+                    while ((length = fin.read(buffer)) > 0) {
+                        zos.write(buffer, 0, length);
                     }
+                    fin.close();
+                    zos.closeEntry();
                 }
             }
             zipFile.close();
@@ -94,7 +91,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
     protected IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
             , HttpServletResponse response
-            , User authenticatedUser
+            , String relativePath, User authenticatedUser
     ) throws DownloadServletException {
         // set filename and accession
         String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");

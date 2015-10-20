@@ -93,17 +93,17 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
         logRequest(logger, request, requestType);
         IDownloadFile downloadFile = null;
         try {
-            doBeforeDownloadFileFromRequest(request, response);
-
             Studies studies = getComponent(Studies.class);
             String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
             String accession = requestArgs[0];
-            if (!studies.isAccessible(accession, authenticatedUser)) {
+            String relativePath = studies.getRelativePath(accession, authenticatedUser);
+            if (relativePath==null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                throw new DownloadServletException("Null file requested to download");
+                throw new DownloadServletException("File does not exist or user does not have the rights to download it.");
             }
 
-            downloadFile = getDownloadFileFromRequest(request, response, authenticatedUser);
+            doBeforeDownloadFileFromRequest(request, response, relativePath);
+            downloadFile = getDownloadFileFromRequest(request, response, relativePath, authenticatedUser);
             if (null != downloadFile) {
                 verifyFile(downloadFile, response);
 
@@ -134,7 +134,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
     }
 
     // This method will be called before sending the file. Added to set up and clean the zipped archive.
-    protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
+    protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response, String relativePath) throws DownloadServletException {
     }
 
     // This method will be called after sending the file. Added to set up and clean the zipped archive.
@@ -145,7 +145,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
     protected abstract IDownloadFile getDownloadFileFromRequest(
             HttpServletRequest request
             , HttpServletResponse response
-            , User authenticatedUser
+            , String relativePath, User authenticatedUser
     ) throws DownloadServletException;
 
     private void verifyFile(IDownloadFile file, HttpServletResponse response)

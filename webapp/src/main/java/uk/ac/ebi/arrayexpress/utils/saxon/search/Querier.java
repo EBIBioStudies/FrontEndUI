@@ -245,7 +245,7 @@ public class Querier {
         }
     }
 
-    public boolean isAccessible(String accession, User user) {
+    public String getDocumentXml(String accession, User user) {
         try {
             Map<String, String[]> querySource = new HashMap<>();
             querySource.put("accession", new String[]{accession});
@@ -261,11 +261,13 @@ public class Querier {
             try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
                 IndexSearcher searcher = new IndexSearcher(reader);
                 TopDocs hits = searcher.search(query, Integer.MAX_VALUE);
-                return hits != null && hits.totalHits == 1;
+                if (hits != null && hits.totalHits == 1) {
+                    return reader.document(hits.scoreDocs[0].doc).get("xml");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }
