@@ -37,11 +37,6 @@
         <servlet-name>ThumbnailServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.ThumbnailServlet</servlet-class>
     </servlet>
-    <!--servlet>
-        <description>Archived File Download Servlet</description>
-        <servlet-name>ArchivedFileDownloadServlet</servlet-name>
-        <servlet-class>uk.ac.ebi.arrayexpress.servlets.ArchivedFileDownloadServlet</servlet-class>
-    </servlet-->
     <servlet>
         <description>Control Servlet</description>
         <servlet-name>ControlServlet</servlet-name>
@@ -99,10 +94,6 @@
     <servlet-mapping>
         <servlet-name>ThumbnailServlet</servlet-name>
         <url-pattern>/servlets/thumbnail/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ArchivedFileDownloadServlet</servlet-name>
-        <url-pattern>/servlets/archdownload/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ControlServlet</servlet-name>

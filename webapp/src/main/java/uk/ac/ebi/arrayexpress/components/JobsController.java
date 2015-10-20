@@ -47,8 +47,6 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         this.scheduler = new StdSchedulerFactory().getScheduler();
 
         // add jobs
-        addJob("rescan-files", RescanFilesJob.class);
-        addJob("check-files", CheckFilesJob.class);
         addJob("check-experiments", CheckExperimentsJob.class);
         addJob("reload-xml", ReloadStudiesJob.class);
         addJob("reload-efo", ReloadOntologyJob.class);
@@ -57,7 +55,7 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         // schedule jobs
         //scheduleJob("rescan-files", "bs.files.rescan");
         //scheduleJob("check-files", "bs.files.check");
-        scheduleJob("reload-xml", "bs.studies.reload");
+        //scheduleJob("reload-xml", "bs.studies.reload");
         scheduleJob("update-efo", "bs.efo.update");
 
         startScheduler();

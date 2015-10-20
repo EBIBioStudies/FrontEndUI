@@ -60,26 +60,14 @@ public class ThumbnailServlet extends AuthAwareApplicationServlet {
         if (relativePath==null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 throw new IOException("File [" + name + "], accession [" + accession + "] is not present");
-        } else {
-            String location = files.getLocation(accession, name);
-            // finally if there is no accession or location determined at the stage - panic
-            if ("".equals(location) || "".equals(accession)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                throw new ServletException(
-                        "Either accession ["
-                                + String.valueOf(accession)
-                                + "] or location ["
-                                + String.valueOf(location)
-                                + "] were not determined");
-            }
-
-            try { 
-                thumbnails.sendThumbnail(response, location);
-            } catch (Exception ex) {
-                logger.warn("Could not generate thumbnail. User might have moved their mouse too fast. "+ ex.getMessage());
-            }
-
         }
+        try {
+            thumbnails.sendThumbnail(response, relativePath);
+        } catch (Exception ex) {
+            logger.warn("Could not generate thumbnail. User might have moved their mouse too fast. "+ ex.getMessage());
+        }
+
+
 
     }
 
