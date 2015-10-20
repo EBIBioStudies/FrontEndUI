@@ -1,7 +1,6 @@
 package uk.ac.ebi.biostudies.test.integration;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class SearchTest {
         driver = new HtmlUnitDriver();
         ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
-        driver.get(baseUrl + "/admin/reload-xml");
+        driver.get(baseUrl + "/admin/reload-xml/test.xml");
     }
 
     @Before
@@ -48,7 +47,7 @@ public class SearchTest {
 
     @Test
     public void testPageStats() {
-        driver.get(baseUrl + "/studies/search.html?query=cancer");
+        driver.get(baseUrl + "/studies");
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
         assertTrue(pages.startsWith("Showing 1"));
     }
@@ -61,7 +60,7 @@ public class SearchTest {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ac_inner")));
         //checking only the first suggestion with more than two words
-        assertEquals("DNA assay", driver.findElements(By.cssSelector(".ac_inner li")).get(3).getText());
+        assertTrue(driver.findElements(By.cssSelector(".ac_inner li")).get(3).getText().startsWith("DNA"));
 
     }
 
@@ -219,7 +218,7 @@ public class SearchTest {
 
     @Test
     public void testPaging() throws Exception{
-        driver.get(baseUrl + "/studies/search.html?query=cancer");
+        driver.get(baseUrl + "/studies");
         driver.findElement(By.linkText("2")).click();
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
         assertTrue(pages.startsWith("Showing 26"));
@@ -236,32 +235,29 @@ public class SearchTest {
         driver.get(baseUrl + "/studies/");
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("h2.alert")));
-        driver.get(baseUrl + "/admin/reload-xml");
+        driver.get(baseUrl + "/admin/reload-xml/test.xml");
         assertTrue(true);
     }
 
     @Test
     public void testLargeIndex() throws Exception{
-        int totalDocs = 10000;
+        int totalDocs = 100;
         driver.get(baseUrl + "/admin/clear-index");
         StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
         for (int doc = 0; doc <= totalDocs; doc++) {
             sb.append(TestUtils.getTestSubmission(doc));
-            if (doc!=0 && doc%10000==0) {
-                sb.append("</submissions></pmdocument>");
-                String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
-                File file = new File(sourceLocation, "temp-test-study.xml");
-                FileUtils.writeStringToFile(file, sb.toString());
-                driver.get(baseUrl + "/admin/reload-xml/temp-test-study.xml");
-                file.delete();
-                sb = new StringBuffer("<pmdocument><submissions>");
-            }
         }
+        sb.append("</submissions></pmdocument>");
+        String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
+        File file = new File(sourceLocation, "temp-test-study.xml");
+        FileUtils.writeStringToFile(file, sb.toString());
+        driver.get(baseUrl + "/admin/reload-xml/temp-test-study.xml");
+        file.delete();
         driver.get(baseUrl + "/studies/");
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
         assertTrue(pages.endsWith("Showing 1 - 25 of " + (totalDocs+1) +" studies"));
         driver.get(baseUrl + "/admin/clear-index");
-        driver.get(baseUrl + "/admin/reload-xml");
+        driver.get(baseUrl + "/admin/reload-xml/test.xml");
     }
 
 }

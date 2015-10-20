@@ -421,6 +421,8 @@
         <xsl:param name="size"/>
         <span class="ae-file-size">
             <xsl:choose>
+                <xsl:when test="$size=''">
+                </xsl:when>
                 <xsl:when test="$size &gt;= 1073741824">
                     <xsl:value-of select="format-number($size div 1073741824,'#,###')"/>
                     <xsl:text> GB</xsl:text>

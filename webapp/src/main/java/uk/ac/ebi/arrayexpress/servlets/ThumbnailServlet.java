@@ -53,16 +53,13 @@ public class ThumbnailServlet extends AuthAwareApplicationServlet {
         } catch (Exception e) {
             throw new ServletException(e);
         }
-
-        Files files = getComponent(Files.class);
         Thumbnails thumbnails = getComponent(Thumbnails.class);
-
         if (relativePath==null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 throw new IOException("File [" + name + "], accession [" + accession + "] is not present");
         }
         try {
-            thumbnails.sendThumbnail(response, relativePath);
+            thumbnails.sendThumbnail(response, relativePath, name);
         } catch (Exception ex) {
             logger.warn("Could not generate thumbnail. User might have moved their mouse too fast. "+ ex.getMessage());
         }

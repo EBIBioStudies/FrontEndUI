@@ -34,28 +34,28 @@ public class DetailTest {
     @Test
     public void testFileCount() {
         // store file and link count on the search page
-        driver.get(baseUrl + "/studies/search.html?query=S-EPMC3315455");
+        driver.get(baseUrl + "/studies/search.html?sortby=files&sortorder=descending");
         String fileCountText = driver.findElement(By.cssSelector(".browse-study-release-files")).getText();
         int fileCount = Integer.parseInt(fileCountText.substring(0, fileCountText.indexOf(" ")));
-        driver.findElement(By.cssSelector(".browse-study-title a")).click();
+        driver.findElements(By.cssSelector(".browse-study-title a")).get(0).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#file-list_info")));
         String filesCountOnDetails = driver.findElement(By.cssSelector("#file-list_info")).getText();
-        assertEquals( "Showing 1 to 5 of "+fileCount+" entries", filesCountOnDetails);
+        assertEquals( "Showing 1 to "+(fileCount<5?fileCount:5)+" of "+(fileCount)+" entries", filesCountOnDetails);
     }
 
 
     @Test
     public void testLinkCount() {
         // store file and link count on the search page
-        driver.get(baseUrl + "/studies/search.html?query=S-EPMC2685405");
+        driver.get(baseUrl + "/studies/search.html?sortby=links&sortorder=descending");
         String linkCountText = driver.findElement(By.cssSelector(".browse-study-release-links")).getText();
         int linkCount = Integer.parseInt(linkCountText.substring(0, linkCountText.indexOf(" ")));
-        driver.findElement(By.cssSelector(".browse-study-title a")).click();
+        driver.findElements(By.cssSelector(".browse-study-title a")).get(0).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#link-list_info")));
         String linkCountOnDetails = driver.findElement(By.cssSelector("#link-list_info")).getText(); // removing shoe more/less links
-        assertEquals("Showing 1 to 5 of " + linkCount + " entries", linkCountOnDetails);
+        assertEquals("Showing 1 to "+(linkCount < 5 ? linkCount:5)+" of " + linkCount + " entries", linkCountOnDetails);
     }
 
     @Test
@@ -86,11 +86,15 @@ public class DetailTest {
 
     @Test
     public void testDownloadSelection() {
-        driver.get(baseUrl + "/studies/S-EPMC2685405");
-        driver.findElement(By.cssSelector("#select-all-files")).click();
+        driver.get(baseUrl + "/studies/search.html?sortby=files&sortorder=descending");
+        String fileCountText = driver.findElement(By.cssSelector(".browse-study-release-files")).getText();
+        int fileCount = Integer.parseInt(fileCountText.substring(0, fileCountText.indexOf(" ")));
+        driver.findElements(By.cssSelector(".browse-study-title a")).get(0).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#select-all-files")));
+        driver.findElement(By.cssSelector("#select-all-files")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#download-selected-files")));
-        assertEquals("Download all 10", driver.findElement(By.cssSelector("#download-selected-files")).getText());
+        assertEquals("Download all "+fileCount, driver.findElement(By.cssSelector("#download-selected-files")).getText());
     }
 
 }

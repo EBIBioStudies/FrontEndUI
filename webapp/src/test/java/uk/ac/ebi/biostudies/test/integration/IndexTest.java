@@ -71,7 +71,7 @@ public class IndexTest {
         driver.get(baseUrl + "/studies/TEST-0");
         assertEquals("Updated Test Document 0",driver.findElement(By.cssSelector("#ae-detail-title")).getText());
         driver.get(baseUrl + "/admin/clear-index");
-        driver.get(baseUrl + "/admin/reload-xml");
+        driver.get(baseUrl + "/admin/reload-xml/test.xml");
     }
 
 
@@ -94,7 +94,7 @@ public class IndexTest {
         assertEquals("We’re sorry that we couldn’t find any matching studies", driver.findElement(By.cssSelector("h2.alert")).getText());
 
         driver.get(baseUrl + "/admin/clear-index");
-        driver.get(baseUrl + "/admin/reload-xml");
+        driver.get(baseUrl + "/admin/reload-xml/test.xml");
     }
 
 }

@@ -79,12 +79,12 @@ public class Thumbnails extends ApplicationComponent {
         FileDeleteStrategy.FORCE.delete(new File(getThumbnailsFolder()));
     }
 
-    public void sendThumbnail(HttpServletResponse response, String relativePath) throws IOException {
+    public void sendThumbnail(HttpServletResponse response, String relativePath, String name) throws IOException {
         Files files = getComponent(Files.class);
-        File thumbnail = new File(getThumbnailsFolder()+relativePath+".thumbnail.png");
+        File thumbnail = new File(getThumbnailsFolder()+"/"+relativePath+"/"+name+".thumbnail.png");
 
         if (!thumbnail.exists()) {
-            createThumbnail(files.getRootFolder() + relativePath, files, thumbnail);
+            createThumbnail(files.getRootFolder() + "/"+ relativePath+"/Files/"+name, files, thumbnail);
         }
         FileInputStream in = new FileInputStream(thumbnail);
         try {
