@@ -137,8 +137,8 @@ public class Studies extends ApplicationComponent  {
 //        return this.arrays.getObject().get();
 //    }
 
+    // Creates a new document from a string and indexes it. Not being used now as it does a bulk operation
     public void update(String xmlString) throws IOException, InterruptedException {
-//        boolean success = false;
         try {
             NodeInfo updateXml = this.saxon.transform(
                     xmlString
@@ -149,19 +149,13 @@ public class Studies extends ApplicationComponent  {
                 Document document = new StoredDocument(updateXml.getDocumentRoot(),
                         new File(getPreferences().getString("bs.studies.persistence-location")));
                 updateIndex(document);
-//                new DocumentUpdater(this, updateXml).update();
-//                buildSpeciesArrays();
-//                success = true;
             }
         } catch (SaxonException x) {
             throw new RuntimeException(x);
-//        } finally {
-//            sourceInformation.setOutcome(success);
-//            events.addEvent(sourceInformation);
         }
     }
 
-    public void updateFromXMLFile(String xmlFileName) throws IOException, InterruptedException, XPathException, IndexerException, SaxonException {
+    public void updateFromXMLFile(String xmlFileName, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, XPathException, IndexerException, SaxonException {
         if (xmlFileName == null) {
             xmlFileName = "studies.xml";
         }
@@ -169,12 +163,12 @@ public class Studies extends ApplicationComponent  {
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
             File xmlFile = new File(sourceLocation, xmlFileName);
-            updateFromXMLFile(xmlFile);
+            updateFromXMLFile(xmlFile, deleteFileAfterProcessing);
         }
     }
 
     // Updates the index one study at a time
-    public void updateFromXMLFile(File xmlFile) throws IOException, InterruptedException, SaxonException, XPathException, IndexerException {
+    public void updateFromXMLFile(File xmlFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, XPathException, IndexerException {
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
@@ -199,10 +193,13 @@ public class Studies extends ApplicationComponent  {
                 );
                 indexer.index(updateXml);
                 logger.info("Indexing document {}", ++i);
-                Document savedDocument = new StoredDocument(updateXml.getDocumentRoot(),
-                        new File(getPreferences().getString("bs.studies.persistence-location")));
-
+                // uncomment to save the last processed study
+                // Document savedDocument = new StoredDocument(updateXml.getDocumentRoot(),
+                //     new File(getPreferences().getString("bs.studies.persistence-location")));
             }
+        }
+        if (deleteFileAfterProcessing) {
+            xmlFile.delete();
         }
     }
 

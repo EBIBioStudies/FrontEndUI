@@ -70,7 +70,7 @@ public class ControlServlet extends ApplicationServlet {
                     ) {
                 getComponent(JobsController.class).executeJob(command);
             } else if ("reload-xml".equals(command)) {
-                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"));
+                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"),Boolean.parseBoolean(request.getParameter("delete")));
             } else if ("clear-index".equals(command)) {
                 getComponent(Studies.class).clearIndex();
             } else if ("delete".equals(command)) {
