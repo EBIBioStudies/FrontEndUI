@@ -891,7 +891,7 @@ p.center {
 }
 
 .project-logo {
-    display: table-cell;
+    /* display: table-cell; */
 }
 .project-logo img{
     height: 50px !important;
