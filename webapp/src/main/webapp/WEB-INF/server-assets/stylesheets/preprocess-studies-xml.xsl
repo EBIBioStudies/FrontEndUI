@@ -41,6 +41,7 @@
         <study files="{fn:count(.//file)}"
                links="{fn:count(.//link)}"
                relPath="{@relPath}"
+               type="{section[1]/@type}"
                 >
                 <xsl:apply-templates/>
         </study>
@@ -50,7 +51,7 @@
         <xsl:variable name="vAccession" select="../@acc"/>
         <accession><xsl:value-of select="$vAccession"/></accession>
         <access><xsl:value-of select="fn:replace(../@access,';',' ')"/></access>
-        <project><xsl:value-of select="../@project"/></project>
+        <project><xsl:value-of select="../attributes/attribute[fn:lower-case(name)='project']/value"/></project>
         <releasedate>2015-02-01</releasedate>
         <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
             <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
@@ -102,8 +103,8 @@
     </xsl:template>
 
     <xsl:template match="valqual" mode="attribute">
-        <xsl:element name="{@name}">
-            <xsl:value-of select="text()"/>
+        <xsl:element name="{name}">
+            <xsl:value-of select="value"/>
         </xsl:element>
     </xsl:template>
 

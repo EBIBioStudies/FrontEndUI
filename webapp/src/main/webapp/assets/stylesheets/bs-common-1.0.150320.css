@@ -869,8 +869,35 @@ p.center {
 }
 
 .project-banner {
-    background-color: white;
+    background-color: #EEEEEE;
 }
 .project-banner img{
-    padding: 10px 0px 0px 5px;
+}
+
+.project-text{
+    vertical-align: middle;
+    color: #777;
+    display: table-cell;
+}
+.project-title{
+    font-size: 150%;
+    color: #555;
+}
+.project-description{
+}
+
+.no-border {
+    border: 0px !important;
+}
+
+.project-logo {
+    display: table-cell;
+}
+.project-logo img{
+    height: 50px !important;
+    padding-right:5px;
+}
+.project-banner-content {
+    padding: 10px;
+    display: table;
 }

@@ -175,32 +175,41 @@ public class Studies extends ApplicationComponent  {
             Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
             NodeInfo document = this.saxon.buildDocument(xmlFile);
             List<Item> documentNodes = this.saxon.evaluateXPath(document, "//submission");
-            int i =0;
+            int i=0;
             for (Item node : documentNodes) {
-                if (this.saxon.evaluateXPath((NodeInfo)node, "@delete").size()>0) {
-                    System.out.println(this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
-                    this.search.getController().delete(INDEX_ID, this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
-                    continue;
-                }
-                StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
-                sb.append(saxon.serializeDocument((Source) node, true));
-                sb.append("</submissions></pmdocument>");
-                NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
-                NodeInfo updateXml = this.saxon.transform(
-                        submissionDocument
-                        , "preprocess-studies-xml.xsl"
-                        , null
-                );
-                indexer.index(updateXml);
-                logger.info("Indexing document {}", ++i);
-                // uncomment to save the last processed study
-                // Document savedDocument = new StoredDocument(updateXml.getDocumentRoot(),
-                //     new File(getPreferences().getString("bs.studies.persistence-location")));
+                logger.info("Processing document {}", ++i);
+                processSubmissionNode(indexer, (Source) node);
             }
         }
         if (deleteFileAfterProcessing) {
             xmlFile.delete();
         }
+    }
+
+    private void processSubmissionNode(Indexer indexer, Source node) throws XPathException, IndexerException, InterruptedException, IOException, SaxonException {
+
+        // handel deletion
+        if (this.saxon.evaluateXPath((NodeInfo)node, "@delete").size()>0) {
+            System.out.println(this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
+            this.search.getController().delete(INDEX_ID, this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
+            return;
+        }
+
+
+        // handel indexing
+        StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
+        sb.append(saxon.serializeDocument(node, true));
+        sb.append("</submissions></pmdocument>");
+        NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
+        NodeInfo updateXml = this.saxon.transform(
+                submissionDocument
+                , "preprocess-studies-xml.xsl"
+                , null
+        );
+        indexer.index(updateXml);
+        // uncomment to save the last processed study
+        Document savedDocument = new StoredDocument(updateXml.getDocumentRoot(),
+            new File(getPreferences().getString("bs.studies.persistence-location")));
     }
 
     private void updateIndex(Document document) throws IOException {

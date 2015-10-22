@@ -155,17 +155,23 @@
         <display-name>ImageIO service provider loader/unloader</display-name>
         <listener-class>com.twelvemonkeys.servlet.image.IIOProviderContextListener</listener-class>
     </listener>
-    <!--
-    <security-constraint>
+    <!--security-constraint>
         <web-resource-collection>
             <web-resource-name>secured</web-resource-name>
-            <url-pattern>/auth</url-pattern>
+            <url-pattern>/admin/*</url-pattern>
         </web-resource-collection>
-        <user-data-constraint>
-            <transport-guarantee>${interface.application.webxml.security.transport.guarantee}</transport-guarantee>
-        </user-data-constraint>
+        <auth-constraint>
+            <role-name>biostudies-admin</role-name>
+            <!- Needs the following two entries in conf/tomcat-users.xml
+                    <role rolename="biostudies-admin"/>
+                    <user username="biostudies-admin" password="biostudies-admin" roles="biostudies-admin"/>
+             ->
+        </auth-constraint>
     </security-constraint>
-    -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Authentication required</realm-name>
+    </login-config-->
     <session-config>
         <session-timeout>1</session-timeout>
     </session-config>

@@ -209,7 +209,14 @@
                 </xsl:if>
             </div>
             <div class="browse-study-title">
-                <a href="{$context-path}{$projectLink}/studies/{accession}/{$vQueryString}">
+                <xsl:variable name="titleLink" select="if (fn:lower-case(@type)='project') then fn:concat($context-path,'/',accession,'/studies/') else fn:concat($context-path,$projectLink,'/studies/',accession,'/',$vQueryString)"/>
+                <xsl:variable name="accession" select="search:getQueryInfoParameter($queryid,'accessions')[$pPosition - $pFrom + 1]"/>
+                <xsl:if test="lower-case(@type)='project'">
+                    <a class="no-border" href="{$titleLink}">
+                        <img class="project-logo" src="{$context-path}/files/{fn:replace(fn:replace(lower-case($accession),'&#x00ab;',''),'&#x00bb;','')}/logo.png"/>
+                    </a>
+                </xsl:if>
+                <a href="{$titleLink}">
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pFieldName" select="'title'"/>
@@ -220,7 +227,7 @@
                     <xsl:call-template name="highlight">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pFieldName" select="'accession'"/>
-                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'accessions')[$pPosition - $pFrom + 1]"/>
+                        <xsl:with-param name="pText" select="$accession"/>
                     </xsl:call-template>
                 </span>
             </div>

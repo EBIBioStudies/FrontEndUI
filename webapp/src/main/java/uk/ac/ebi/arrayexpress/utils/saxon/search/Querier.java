@@ -20,6 +20,7 @@ package uk.ac.ebi.arrayexpress.utils.saxon.search;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.pattern.NameTest;
 import net.sf.saxon.s9api.Axis;
+import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.type.Type;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -183,6 +184,32 @@ public class Querier {
 
             logger.info("Search completed {}", matchingNodes.size());
 
+
+            if (params.containsKey("project")) {
+                Map<String, String[]> querySource = new HashMap<>();
+                querySource.put("accession", params.get("project"));
+                QueryConstructor qc = new QueryConstructor();
+                Query projectQuery = qc.construct(this.env, querySource);
+                projectQuery = qc.getAccessControlledQuery(projectQuery, this.env, querySource);
+                TopDocs results = searcher.search(projectQuery, 1);
+                if (results != null && results.totalHits == 1) {
+                    SaxonEngine saxon =  Application.getAppComponent(SaxonEngine.class);
+                    NodeInfo projectXML = saxon.buildDocument(reader.document(results.scoreDocs[0].doc).get("xml"));
+                    try {
+                        params.put("project-title", new String[] {
+                                saxon.evaluateXPathSingleAsString(projectXML, "study/title")});
+                        params.put("project-description", new String[] {
+                                saxon.evaluateXPathSingleAsString(projectXML,
+                                        "study/attribute[lower-case(@name)='description']/value")});
+                        params.put("project-url", new String[] {
+                                saxon.evaluateXPathSingleAsString(projectXML,
+                                        "study/attribute[lower-case(@name)='url']/value")});
+                    } catch (XPathException e) {
+                        throw new SaxonException(e);
+                    }
+                }
+            }
+
             return matchingNodes;
         }
     }
@@ -260,7 +287,7 @@ public class Querier {
             query = qc.getAccessControlledQuery(query, this.env, querySource);
             try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
                 IndexSearcher searcher = new IndexSearcher(reader);
-                TopDocs hits = searcher.search(query, Integer.MAX_VALUE);
+                TopDocs hits = searcher.search(query, 1);
                 if (hits != null && hits.totalHits == 1) {
                     return reader.document(hits.scoreDocs[0].doc).get("xml");
                 }

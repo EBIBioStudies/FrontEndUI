@@ -33,6 +33,9 @@
     <xsl:param name="userid"/>
     <xsl:param name="username"/>
     <xsl:param name="project"/>
+    <xsl:param name="project-title" select="''"/>
+    <xsl:param name="project-description" select="''"/>
+    <xsl:param name="project-url" select="''"/>
 
     <xsl:output omit-xml-declaration="yes" method="html" indent="no" encoding="UTF-8"/>
 
@@ -255,10 +258,22 @@
                         </nav>
                         <!-- /local-nav -->
                     </div>
+                    <xsl:if test="$project">
+                        <div class="project-banner clearfix">
+                            <span class="project-banner-content">
+                                <div class="project-logo">
+                                    <a class="no-border" href="{$project-url}" target="_blank">
+                                    <img src="{$context-path}/files/{lower-case($project)}/logo.png"/></a>
+                                </div>
+                                <div class="project-text">
+                                    <span class="project-title"><xsl:value-of select="$project-title"/></span>
+                                    <br/>
+                                    <span class="project-description"><xsl:value-of select="$project-description"/></span>
+                                </div>
+                            </span>
+                        </div>
+                    </xsl:if>
                 </header>
-                <xsl:if test="$project">
-                    <div class="project-banner"><img src="{$context-path}/assets/images/{lower-case($project)}.png"/></div>
-                </xsl:if>
                 <div id="content" role="main" class="grid_24 clearfix">
                     <!-- If you require a breadcrumb trail, its root should be your service.
      	                 You don't need a breadcrumb trail on the homepage of your service... -->

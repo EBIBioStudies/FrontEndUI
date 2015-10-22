@@ -357,7 +357,7 @@
                             </td>
                         </xsl:if>
                         <td class="file-list-file-name">
-                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}">
+                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}" title="{$vName}">
                                 <xsl:call-template name="highlight">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                     <xsl:with-param name="pText" select="$vName"/>
