@@ -266,8 +266,6 @@
                                     <img src="{$context-path}/files/{lower-case($project)}/logo.png"/></a>
                                 </div>
                                 <div class="project-text">
-                                    <span class="project-title"><xsl:value-of select="$project-title"/></span>
-                                    <br/>
                                     <span class="project-description"><xsl:value-of select="$project-description"/></span>
                                 </div>
                             </span>

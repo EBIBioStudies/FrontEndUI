@@ -184,33 +184,38 @@ public class Querier {
 
             logger.info("Search completed {}", matchingNodes.size());
 
-
-            if (params.containsKey("project")) {
-                Map<String, String[]> querySource = new HashMap<>();
-                querySource.put("accession", params.get("project"));
-                QueryConstructor qc = new QueryConstructor();
-                Query projectQuery = qc.construct(this.env, querySource);
-                projectQuery = qc.getAccessControlledQuery(projectQuery, this.env, querySource);
-                TopDocs results = searcher.search(projectQuery, 1);
-                if (results != null && results.totalHits == 1) {
-                    SaxonEngine saxon =  Application.getAppComponent(SaxonEngine.class);
-                    NodeInfo projectXML = saxon.buildDocument(reader.document(results.scoreDocs[0].doc).get("xml"));
-                    try {
-                        params.put("project-title", new String[] {
-                                saxon.evaluateXPathSingleAsString(projectXML, "study/title")});
-                        params.put("project-description", new String[] {
-                                saxon.evaluateXPathSingleAsString(projectXML,
-                                        "study/attribute[lower-case(@name)='description']/value")});
-                        params.put("project-url", new String[] {
-                                saxon.evaluateXPathSingleAsString(projectXML,
-                                        "study/attribute[lower-case(@name)='url']/value")});
-                    } catch (XPathException e) {
-                        throw new SaxonException(e);
-                    }
-                }
-            }
+            addProjectParameters(params, reader, searcher);
 
             return matchingNodes;
+        }
+    }
+
+    private void addProjectParameters(Map<String, String[]> params, IndexReader reader, IndexSearcher searcher) throws ParseException, IOException, SaxonException {
+        if (params.containsKey("project")) {
+            Map<String, String[]> querySource = new HashMap<>();
+            querySource.put("accession", params.get("project"));
+            QueryConstructor qc = new QueryConstructor();
+            Query projectQuery = qc.construct(this.env, querySource);
+            projectQuery = qc.getAccessControlledQuery(projectQuery, this.env, querySource);
+            TopDocs results = searcher.search(projectQuery, 1);
+            if (results != null && results.totalHits == 1) {
+                SaxonEngine saxon =  Application.getAppComponent(SaxonEngine.class);
+                NodeInfo projectXML = saxon.buildDocument(reader.document(results.scoreDocs[0].doc).get("xml"));
+                try {
+                    params.put("project-title", new String[] {
+                            saxon.evaluateXPathSingleAsString(projectXML, "study/title")});
+                    params.put("project-description", new String[] {
+                            saxon.evaluateXPathSingleAsString(projectXML,
+                                    "study/attribute[lower-case(@name)='description']/value")});
+                    params.put("project-url", new String[] {
+                            saxon.evaluateXPathSingleAsString(projectXML,
+                                    "study/attribute[lower-case(@name)='url']/value")});
+                } catch (XPathException e) {
+                    throw new SaxonException(e);
+                }
+            } else {
+                params.remove("project" );
+            }
         }
     }
 

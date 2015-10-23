@@ -879,6 +879,7 @@ p.center {
     vertical-align: middle;
     color: #777;
     display: table-cell;
+    padding-left: 10px;
 }
 .project-title{
     font-size: 150%;
