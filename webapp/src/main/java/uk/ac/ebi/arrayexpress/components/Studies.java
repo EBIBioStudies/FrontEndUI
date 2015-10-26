@@ -17,26 +17,27 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
-import net.sf.saxon.pattern.NameTest;
-import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.FileTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.*;
 import uk.ac.ebi.arrayexpress.utils.saxon.Document;
+import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
+import uk.ac.ebi.arrayexpress.utils.saxon.StoredDocument;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Indexer;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.IndexerException;
 import uk.ac.ebi.arrayexpress.utils.saxon.search.Querier;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
+import javax.xml.stream.*;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.Source;
-import java.io.File;
-import java.io.IOException;
+import javax.xml.transform.TransformerException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -60,7 +61,6 @@ public class Studies extends ApplicationComponent  {
 //    private Users users;
 //    private Events events;
     private Autocompletion autocompletion;
-
     public final String INDEX_ID = "studies";
 
     @Override
@@ -137,8 +137,8 @@ public class Studies extends ApplicationComponent  {
 //        return this.arrays.getObject().get();
 //    }
 
-    // Creates a new document from a string and indexes it. Not being used now as it does a bulk operation
-    public void update(String xmlString) throws IOException, InterruptedException {
+    // Creates a new document from a string, saves it, and indexes it.
+    public synchronized void update(String xmlString) throws IOException, InterruptedException {
         try {
             NodeInfo updateXml = this.saxon.transform(
                     xmlString
@@ -155,50 +155,98 @@ public class Studies extends ApplicationComponent  {
         }
     }
 
-    public void updateFromXMLFile(String xmlFileName, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, XPathException, IndexerException, SaxonException {
+    public synchronized void updateFromXMLFile(String xmlFileName, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, TransformerException, IndexerException, SaxonException, XMLStreamException {
         if (xmlFileName == null) {
             xmlFileName = "studies.xml";
         }
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
-            logger.info("Reload of experiment data from [{}] requested", sourceLocation);
             File xmlFile = new File(sourceLocation, xmlFileName);
             updateFromXMLFile(xmlFile, deleteFileAfterProcessing);
         }
     }
 
     // Updates the index one study at a time
-    public void updateFromXMLFile(File xmlFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, XPathException, IndexerException {
+    public synchronized void updateFromXMLFile(File xmlFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
             Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
-            NodeInfo document = this.saxon.buildDocument(xmlFile);
-            List<Item> documentNodes = this.saxon.evaluateXPath(document, "//submission");
-            int i=0;
-            for (Item node : documentNodes) {
-                logger.info("Processing document {}", ++i);
-                processSubmissionNode(indexer, (Source) node);
-            }
+            XMLEventReader reader = XMLInputFactory.newInstance().createXMLEventReader(
+                    new InputStreamReader(
+                            new FileInputStream(xmlFile), "UTF-8")
+            );
+            XMLEventWriter writer = null;
+            StringWriter buffer = null;
+            XMLOutputFactory outputFactory = XMLOutputFactory.newFactory();
+            XMLEvent xmlEvent = reader.nextEvent(); // Advance to statements element
+            List<Source> submissionQueue = new ArrayList<>();
+            int count = 0;
+            do {
+                if(writer!=null) writer.add(xmlEvent);
+                if (xmlEvent.isStartElement()
+                        && "submission".equalsIgnoreCase(((StartElement)xmlEvent).getName().getLocalPart())) {
+                    buffer = new StringWriter();
+                    writer = outputFactory.createXMLEventWriter(buffer);
+                    writer.add(xmlEvent);
+                }
+                else if(xmlEvent.isEndElement()
+                        && "submission".equalsIgnoreCase(((EndElement)xmlEvent).getName().getLocalPart())) {
+                    writer.flush();
+                    writer.close();
+                    submissionQueue.add(saxon.buildDocument(buffer.toString()));
+                    if (++count % 1000 ==0 ) {
+                        logger.info("Queued {} submissions for processing", submissionQueue.size());
+                        processSubmissionQueue(indexer, submissionQueue);
+                        submissionQueue.clear();
+                    }
+                    writer = null;
+                    buffer = null;
+                }
+                xmlEvent = reader.nextEvent();
+            } while (!xmlEvent.isEndDocument());
+
+            logger.info("Queued {} submissions for processing", submissionQueue.size());
+            processSubmissionQueue(indexer, submissionQueue);
         }
+        autocompletion.rebuild();
         if (deleteFileAfterProcessing) {
             xmlFile.delete();
         }
     }
 
-    private void processSubmissionNode(Indexer indexer, Source node) throws XPathException, IndexerException, InterruptedException, IOException, SaxonException {
+    private void processSubmissionQueue(Indexer indexer, List<Source> submissions) throws XPathException, IndexerException, InterruptedException, IOException, SaxonException {
+        int count = 0;
+        StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
+        String deleteAccession = null;
+        for (Source node:submissions) {
+            deleteAccession =  (this.saxon.evaluateXPath((NodeInfo) node, "@delete").size() > 0)
+                ? this.saxon.evaluateXPath((NodeInfo) node, "@acc").get(0).getStringValue()
+                : null;
+            if (deleteAccession==null) {
+                count++;
+                sb.append(saxon.serializeDocument(node, true));
+            }
+            if (count % 1000==0 || deleteAccession!=null) {
+                sb.append("</submissions></pmdocument>");
+                NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
+                NodeInfo updateXml = this.saxon.transform(
+                        submissionDocument
+                        , "preprocess-studies-xml.xsl"
+                        , null
+                );
+                indexer.index(updateXml);
+                sb = new StringBuilder("<pmdocument><submissions>");
+                logger.info("Processed {}/{} submissions", count , submissions.size());
+            }
 
-        // handel deletion
-        if (this.saxon.evaluateXPath((NodeInfo)node, "@delete").size()>0) {
-            System.out.println(this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
-            this.search.getController().delete(INDEX_ID, this.saxon.evaluateXPath((NodeInfo)node, "@acc").get(0).getStringValue());
-            return;
+            if (deleteAccession!=null) {
+                this.search.getController().delete(INDEX_ID, deleteAccession);
+                logger.info("Delete submission {} ", deleteAccession);
+            }
         }
 
-
-        // handel indexing
-        StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
-        sb.append(saxon.serializeDocument(node, true));
+        // index unprocessed list
         sb.append("</submissions></pmdocument>");
         NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
         NodeInfo updateXml = this.saxon.transform(
@@ -207,9 +255,8 @@ public class Studies extends ApplicationComponent  {
                 , null
         );
         indexer.index(updateXml);
-        // uncomment to save the last processed study
-        Document savedDocument = new StoredDocument(updateXml.getDocumentRoot(),
-            new File(getPreferences().getString("bs.studies.persistence-location")));
+        logger.info("Processed {}/{} submissions", count, submissions.size());
+
     }
 
     private void updateIndex(Document document) throws IOException {

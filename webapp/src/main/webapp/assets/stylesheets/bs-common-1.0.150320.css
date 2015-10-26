@@ -893,7 +893,8 @@ p.center {
 }
 
 .project-logo {
-    /* display: table-cell; */
+    padding-right:15px;
+    height: 50px;
 }
 .project-logo img{
     height: 50px !important;
