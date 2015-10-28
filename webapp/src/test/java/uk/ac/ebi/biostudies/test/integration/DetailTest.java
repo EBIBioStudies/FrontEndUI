@@ -12,6 +12,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.ac.ebi.biostudies.BSInterfaceTestApplication;
 
+import java.util.List;
+import java.util.Scanner;
+
 import static junit.framework.TestCase.assertEquals;
 
 @Category(IntegrationTest.class)
@@ -50,12 +53,28 @@ public class DetailTest {
         // store file and link count on the search page
         driver.get(baseUrl + "/studies/search.html?sortby=links&sortorder=descending");
         String linkCountText = driver.findElement(By.cssSelector(".browse-study-release-links")).getText();
-        int linkCount = Integer.parseInt(linkCountText.substring(0, linkCountText.indexOf(" ")));
+        int expectedLinkCount = Integer.parseInt(linkCountText.substring(0, linkCountText.indexOf(" ")));
         driver.findElements(By.cssSelector(".browse-study-title a")).get(0).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#link-list_info")));
-        String linkCountOnDetails = driver.findElement(By.cssSelector("#link-list_info")).getText(); // removing shoe more/less links
-        assertEquals("Showing 1 to "+(linkCount < 5 ? linkCount:5)+" of " + linkCount + " entries", linkCountOnDetails);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".dataTables_info")));
+        List<WebElement> elements = driver.findElements(By.cssSelector(".dataTables_info"));
+        int actualLinkCount =0;
+
+        for(WebElement we: elements) {
+            if(we.getAttribute("id").startsWith("link-list")) {
+                Scanner scanner = new Scanner(we.getText());
+                int links = 0;
+                while (scanner.hasNext()) {
+                    if(scanner.hasNextInt()) {
+                        links = scanner.nextInt();
+                    } else {
+                        scanner.next();
+                    }
+                }
+                actualLinkCount+= links;
+            }
+        }
+        assertEquals(expectedLinkCount, actualLinkCount);
     }
 
     @Test

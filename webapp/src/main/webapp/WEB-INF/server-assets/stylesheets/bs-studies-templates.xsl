@@ -445,22 +445,26 @@
 
     <xsl:template name="study-links">
     <xsl:param name="pQueryId"/>
-    <xsl:param name="pNodes"/>
-        <xsl:if test="fn:count($pNodes)>0">
-            <xsl:call-template name="widget">
-            <xsl:with-param name="pName" select="'Linked information'"/>
-            <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
-            <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
-            <xsl:with-param name="pIconType" select="'x'"/>
-            <xsl:with-param name="pClass" select="('left')"/>
-            <xsl:with-param name="pContent">
-                <xsl:call-template name="link-table">
-                    <xsl:with-param name="pNodes" select="$pNodes"/>
-                    <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                    <xsl:with-param name="elementId" select="'link-list'"/> <!-- as in a list of links, not a linked list -->
+    <xsl:param name="pTables"/>
+        <xsl:if test="fn:count($pTables)>0">
+            <xsl:for-each select="$pTables">
+                <xsl:variable name="pNodes" select=".//link"/>
+                <xsl:call-template name="widget">
+                <xsl:with-param name="pName" select="concat('Linked information: Table ',position())"/>
+                <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+                <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
+                <xsl:with-param name="pIconType" select="'x'"/>
+                <xsl:with-param name="pClass" select="('left')"/>
+                <xsl:with-param name="pContent">
+                    <xsl:call-template name="link-table">
+                        <xsl:with-param name="pNodes" select="$pNodes"/>
+                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                        <xsl:with-param name="pClass" select="('link-widget')"/>
+                        <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
+                    </xsl:call-template>
+                </xsl:with-param>
                 </xsl:call-template>
-            </xsl:with-param>
-            </xsl:call-template>
+            </xsl:for-each>
         </xsl:if>
     </xsl:template>
 
@@ -468,8 +472,9 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:param name="elementId" select="fn:concat('link-table-',../position())"/>
+        <xsl:param name="pClass" select="''"/>
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[fn:lower-case(@name)!='type' and fn:lower-case(@name)!='description']/@name)"/>
-        <table class="stripe compact hover link-list" cellspacing="0" width="100%" id="{$elementId}" >
+        <table class="stripe compact hover link-list {$pClass}" cellspacing="0" width="100%" id="{$elementId}" >
             <thead>
                 <tr>
                     <th>Name</th>

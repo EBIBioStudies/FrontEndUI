@@ -244,3 +244,7 @@ th.filesize {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.ae-detail-links-title:not(:first-child) {
+    padding-top:25px;
+}

@@ -63,7 +63,7 @@
         <xsl:apply-templates select="attributes" mode="attributes"/>
         <xsl:apply-templates select="subsections/section" mode="section"/>
         <xsl:apply-templates select=".//files[not(ancestor::subsections)]" mode="files"/>
-        <xsl:apply-templates select=".//links[not(ancestor::subsections)]" mode="links"/>
+        <xsl:apply-templates select=".//table[not(ancestor::subsections)]" mode="tables"/>
     </xsl:template>
 
     <xsl:template match="submission/section[position()>1]">
@@ -89,6 +89,7 @@
     <xsl:template match="text()|@*" mode="section"/>
     <xsl:template match="text()|@*" mode="files"/>
     <xsl:template match="text()|@*" mode="links"/>
+    <xsl:template match="text()|@*" mode="tables"/>
 
     <xsl:template match="attribute[fn:lower-case(name)='title']" mode="attributes">
         <title>
@@ -142,6 +143,12 @@
         <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}">
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
+    </xsl:template>
+
+    <xsl:template match="table" mode="tables">
+        <table>
+            <xsl:apply-templates select="link" mode="links"/>
+        </table>
     </xsl:template>
 
     <xsl:template match="link" mode="links">

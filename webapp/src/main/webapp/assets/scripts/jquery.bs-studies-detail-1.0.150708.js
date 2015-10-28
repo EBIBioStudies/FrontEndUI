@@ -15,7 +15,7 @@
  *
  */
 var filesTable = null;
-var linksTable = null;
+var linksTable = [];
 
 (function($, undefined) {
     if($ == undefined)
@@ -38,10 +38,10 @@ var linksTable = null;
             "dom":"t"
         });
         $(".ae-section-files").hide();
-        $(".link-list:not(#link-list)").DataTable( {
+        /*$(".link-list:not(.link-widget)").DataTable( {
             "scrollX": true,
             "dom":"t"
-        });
+        });*/
         $(".ae-section-links").hide();
 
 
@@ -210,14 +210,20 @@ var linksTable = null;
             "autoWidth" : false
         } );
 
-        if(linksTable!=null) linksTable.destroy()
-        linksTable = $("#link-list").DataTable( {
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-            "scrollX": true,
-            "order": [[ 0, "asc" ]],
-            "dom":"lfrtpi",
-            "autoWidth" : false
-        } );
+        $(linksTable).each(function() {
+            this.destroy();
+        });
+        linksTable=[];
+        linksTable.push(
+            $(".link-widget").DataTable( {
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                "scrollX": true,
+                "order": [[ 0, "asc" ]],
+                "dom":"lfrtpi",
+                "autoWidth" : false
+                }
+            )
+        );
     }
 
     $('.org-link').click( function() {
