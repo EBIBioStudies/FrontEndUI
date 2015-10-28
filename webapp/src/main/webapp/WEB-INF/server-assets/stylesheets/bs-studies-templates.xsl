@@ -445,26 +445,25 @@
 
     <xsl:template name="study-links">
     <xsl:param name="pQueryId"/>
-    <xsl:param name="pTables"/>
-        <xsl:if test="fn:count($pTables)>0">
-            <xsl:for-each select="$pTables">
-                <xsl:variable name="pNodes" select=".//link"/>
+    <xsl:param name="pLinks"/>
+        <xsl:if test="fn:count($pLinks)>0">
+            <xsl:for-each-group select="$pLinks" group-by="if (exists(attribute[fn:lower-case(@name)='type'])) then ae:getTitleFor(attribute[fn:lower-case(@name)='type']) else 'External Links'">
                 <xsl:call-template name="widget">
-                <xsl:with-param name="pName" select="concat('Linked information: Table ',position())"/>
+                <xsl:with-param name="pName" select="concat('Linked information: ',fn:current-grouping-key())"/>
                 <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
                 <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
                 <xsl:with-param name="pIconType" select="'x'"/>
                 <xsl:with-param name="pClass" select="('left')"/>
                 <xsl:with-param name="pContent">
                     <xsl:call-template name="link-table">
-                        <xsl:with-param name="pNodes" select="$pNodes"/>
+                        <xsl:with-param name="pNodes" select="current-group()"/>
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
                         <xsl:with-param name="pClass" select="('link-widget')"/>
                         <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
                     </xsl:call-template>
                 </xsl:with-param>
                 </xsl:call-template>
-            </xsl:for-each>
+            </xsl:for-each-group>
         </xsl:if>
     </xsl:template>
 
