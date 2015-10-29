@@ -248,3 +248,53 @@ th.filesize {
 .ae-detail-links-title:not(:first-child) {
     padding-top:25px;
 }
+
+.link-filters {
+    display: inline-block;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+input.link-filter {
+    display: none;
+}
+
+.link-filter-label {
+    color: #807878;
+    padding: 2px 4px;
+    border: 1px solid #ddd;
+    background-color: #EEEEEE;
+    font-size: 11px;
+    border-left: none;
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+}
+
+.link-filter-label:nth-child(2) {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    border-left: 1px solid #ddd;
+}
+
+
+input.link-filter:checked + label {
+    background-color: #6BA8C5;
+    border-color: #6BA8C5;
+    border-right: 1px solid #ddd;
+    color: white;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+}
+
+.link-filter-label:last-child {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+input.link-filter:checked + label:last-child {
+    border-right: 1px solid #6BA8C5;
+}
+
+
+
+
+
+

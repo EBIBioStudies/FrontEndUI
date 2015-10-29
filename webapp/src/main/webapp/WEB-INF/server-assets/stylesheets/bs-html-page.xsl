@@ -192,7 +192,7 @@
                                             </span>
                                             <xsl:if test="$project!=''">
                                                 <span class="examples project">
-                                                    <input type="checkbox" checked="true" id="search-in-project" />Search in <xsl:value-of select="$project"/> only
+                                                    <input type="checkbox" checked="true" id="search-in-project" class="do-not-clear"/>Search in <xsl:value-of select="$project"/> only
                                                     <input type="hidden" id="project" value="{$project}" />
                                                 </span>
                                             </xsl:if>
