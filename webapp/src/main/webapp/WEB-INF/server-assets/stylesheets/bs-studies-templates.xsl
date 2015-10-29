@@ -447,23 +447,28 @@
     <xsl:param name="pQueryId"/>
     <xsl:param name="pLinks"/>
         <xsl:if test="fn:count($pLinks)>0">
-            <xsl:for-each-group select="$pLinks" group-by="if (exists(attribute[fn:lower-case(@name)='type'])) then ae:getTitleFor(attribute[fn:lower-case(@name)='type']) else 'External Links'">
-                <xsl:call-template name="widget">
+            <xsl:call-template name="widget">
                 <xsl:with-param name="pName" select="concat('Linked information: ',fn:current-grouping-key())"/>
                 <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
                 <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
                 <xsl:with-param name="pIconType" select="'x'"/>
                 <xsl:with-param name="pClass" select="('left')"/>
                 <xsl:with-param name="pContent">
+                    Types:
+                    <div class="link-filters">
+                        <xsl:for-each-group select="$pLinks" group-by="ae:getTitleFor(attribute[@name='Type']/value)">
+                                <input type="checkbox" class="link-filter do-not-clear" checked="checked" id="{current-grouping-key()}"/>
+                                <label class="link-filter-label no-select" for="{current-grouping-key()}"><xsl:value-of select="current-grouping-key()"/></label>
+                        </xsl:for-each-group>
+                    </div>
                     <xsl:call-template name="link-table">
-                        <xsl:with-param name="pNodes" select="current-group()"/>
+                        <xsl:with-param name="pNodes" select="$pLinks"/>
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
                         <xsl:with-param name="pClass" select="('link-widget')"/>
                         <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
                     </xsl:call-template>
                 </xsl:with-param>
-                </xsl:call-template>
-            </xsl:for-each-group>
+            </xsl:call-template>
         </xsl:if>
     </xsl:template>
 
@@ -783,6 +788,9 @@
             </xsl:when>
             <xsl:when test="$type = 'ega'">
                 <xsl:value-of select="'EGA'"/>
+            </xsl:when>
+            <xsl:when test="$type=''">
+                <xsl:value-of select="'External'"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$pType"/>

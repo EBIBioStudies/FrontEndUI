@@ -23,7 +23,7 @@ var linksTable = [];
 
     $(function() {
         //turn off all selected files
-        $('input:checkbox:not(#search-in-project)').prop('checked', false);
+        $('input:checkbox:not(.do-not-clear)').prop('checked', false);
         //setup thumbnails
         $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
@@ -133,6 +133,16 @@ var linksTable = [];
                 indented_section.hide();
             }
         })
+
+        // add link type filters
+        $(".link-filter").on('change', function() {
+            var filters = $(".link-filter:checked").map(function() { return this.id}).get();
+            if (filters.length==0) {
+                /*$(this).attr('checked','checked');                return;*/
+                filters = ['^$']
+            }
+            linksTable[0].column(1).search(filters.join('|'),true, false).draw()
+        });
     });
 
     function showThumbnail(fileLink) {
