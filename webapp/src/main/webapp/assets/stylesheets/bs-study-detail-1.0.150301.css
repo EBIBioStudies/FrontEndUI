@@ -250,13 +250,18 @@ th.filesize {
 }
 
 .link-filters {
-    display: inline-block;
+    display: block;
     padding-bottom: 10px;
-    text-align: center;
+    line-height: 22px;
 }
 
 input.link-filter {
     display: none;
+}
+
+.no-wrap {
+    display: inline-block;
+    white-space: inherit;
 }
 
 .link-filter-label {
@@ -264,9 +269,26 @@ input.link-filter {
     padding: 2px 4px;
     border: 1px solid #ddd;
     background-color: #EEEEEE;
-    font-size: 11px;
+    font-size: 12px;
     border-left: none;
-    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+}
+
+input.link-filter + label > span:before {
+    content : '✗';
+    padding-right:3px;
+    font-size:14px;
+}
+
+input.link-filter + label > span {
+    white-space: nowrap;
+    display: inline-block;
+    padding-right:3px;
+}
+
+input.link-filter:checked + label > span:before {
+    content : '✓';
+    font-size:14px;
+    padding-right:4px;
 }
 
 .link-filter-label:nth-child(2) {
@@ -281,7 +303,6 @@ input.link-filter:checked + label {
     border-color: #6BA8C5;
     border-right: 1px solid #ddd;
     color: white;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
 }
 
 .link-filter-label:last-child {

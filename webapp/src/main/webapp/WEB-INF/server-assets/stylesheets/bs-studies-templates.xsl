@@ -454,11 +454,11 @@
                 <xsl:with-param name="pIconType" select="'x'"/>
                 <xsl:with-param name="pClass" select="('left')"/>
                 <xsl:with-param name="pContent">
-                    Types:
                     <div class="link-filters">
+                        Type Filter:
                         <xsl:for-each-group select="$pLinks" group-by="ae:getTitleFor(attribute[@name='Type']/value)">
                                 <input type="checkbox" class="link-filter do-not-clear" checked="checked" id="{current-grouping-key()}"/>
-                                <label class="link-filter-label no-select" for="{current-grouping-key()}"><xsl:value-of select="current-grouping-key()"/></label>
+                                <label class="link-filter-label no-select" for="{current-grouping-key()}"><span class="checkmark"><xsl:value-of select="current-grouping-key()"/></span></label>
                         </xsl:for-each-group>
                     </div>
                     <xsl:call-template name="link-table">

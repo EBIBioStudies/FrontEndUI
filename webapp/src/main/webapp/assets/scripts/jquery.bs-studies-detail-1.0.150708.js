@@ -136,7 +136,7 @@ var linksTable = [];
 
         // add link type filters
         $(".link-filter").on('change', function() {
-            var filters = $(".link-filter:checked").map(function() { return this.id}).get();
+            var filters = $(".link-filter:checked").map(function() { return '^'+this.id+'$'}).get();
             if (filters.length==0) {
                 /*$(this).attr('checked','checked');                return;*/
                 filters = ['^$']
