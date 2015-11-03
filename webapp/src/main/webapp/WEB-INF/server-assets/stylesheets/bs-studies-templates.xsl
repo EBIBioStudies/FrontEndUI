@@ -447,28 +447,32 @@
     <xsl:param name="pQueryId"/>
     <xsl:param name="pLinks"/>
         <xsl:if test="fn:count($pLinks)>0">
-            <xsl:call-template name="widget">
-                <xsl:with-param name="pName" select="concat('Linked information: ',fn:current-grouping-key())"/>
-                <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
-                <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
-                <xsl:with-param name="pIconType" select="'x'"/>
-                <xsl:with-param name="pClass" select="('left')"/>
-                <xsl:with-param name="pContent">
-                    <div class="link-filters">
-                        Type Filter:
-                        <xsl:for-each-group select="$pLinks" group-by="ae:getTitleFor(attribute[@name='Type']/value)">
-                                <input type="checkbox" class="link-filter do-not-clear" checked="checked" id="{current-grouping-key()}"/>
-                                <label class="link-filter-label no-select" for="{current-grouping-key()}"><span class="checkmark"><xsl:value-of select="current-grouping-key()"/></span></label>
-                        </xsl:for-each-group>
-                    </div>
-                    <xsl:call-template name="link-table">
-                        <xsl:with-param name="pNodes" select="$pLinks"/>
-                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        <xsl:with-param name="pClass" select="('link-widget')"/>
-                        <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
-                    </xsl:call-template>
-                </xsl:with-param>
-            </xsl:call-template>
+            <xsl:variable name="totalTables" select="count(fn:distinct-values($pLinks/string-join(attribute/@name,' | ')))"/>
+            <xsl:for-each-group select="$pLinks" group-by="string-join(attribute/@name,' | ')">
+                <xsl:variable name="tableNumber" select="position()"/>
+                <xsl:call-template name="widget">
+                    <xsl:with-param name="pName" select="concat('Linked information', if ($totalTables>1) then concat(': Table ',$tableNumber) else '')"/>
+                    <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+                    <xsl:with-param name="pIconClass" select="'icon icon-generic padded-gray-icon'"/>
+                    <xsl:with-param name="pIconType" select="'x'"/>
+                    <xsl:with-param name="pClass" select="('left')"/>
+                    <xsl:with-param name="pContent">
+                        <div class="link-filters">
+                            Type Filter:
+                            <xsl:for-each-group select="current-group()" group-by="ae:getTitleFor(attribute[@name='Type']/value)">
+                                    <input type="checkbox" class="link-filter do-not-clear" checked="checked" id="{current-grouping-key()}" data-position="{$tableNumber}" />
+                                    <label class="link-filter-label no-select" for="{current-grouping-key()}"><span class="checkmark"><xsl:value-of select="current-grouping-key()"/></span></label>
+                            </xsl:for-each-group>
+                        </div>
+                        <xsl:call-template name="link-table">
+                            <xsl:with-param name="pNodes" select="current-group()"/>
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                            <xsl:with-param name="pClass" select="('link-widget')"/>
+                            <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
+                        </xsl:call-template>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:for-each-group>
         </xsl:if>
     </xsl:template>
 

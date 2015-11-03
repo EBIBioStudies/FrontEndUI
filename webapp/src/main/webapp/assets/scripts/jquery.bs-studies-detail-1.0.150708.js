@@ -141,7 +141,7 @@ var linksTable = [];
                 /*$(this).attr('checked','checked');                return;*/
                 filters = ['^$']
             }
-            linksTable[0].column(1).search(filters.join('|'),true, false).draw()
+            linksTable[$(this).data('position')-1].column(1).search(filters.join('|'),true, false).draw()
         });
     });
 
@@ -224,16 +224,17 @@ var linksTable = [];
             this.destroy();
         });
         linksTable=[];
-        linksTable.push(
-            $(".link-widget").DataTable( {
-                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-                "scrollX": true,
-                "order": [[ 0, "asc" ]],
-                "dom":"lfrtpi",
-                "autoWidth" : false
-                }
-            )
-        );
+        $(".link-widget").each( function(){
+            linksTable.push($(this).DataTable( {
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        "scrollX": true,
+                        "order": [[ 0, "asc" ]],
+                        "dom":"lfrtpi",
+                        "autoWidth" : false
+                    }
+                )
+            );
+        });
     }
 
     $('.org-link').click( function() {

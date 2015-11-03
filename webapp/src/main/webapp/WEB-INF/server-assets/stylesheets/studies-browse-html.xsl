@@ -199,12 +199,12 @@
                 </span>
                 <xsl:if test="@files != '0'">
                     <span class="browse-study-release-files">
-                            <xsl:value-of select="@files"/><xsl:text> data files</xsl:text>
+                            <xsl:value-of select="@files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (@files>1) then 's' else ''" />
                     </span>
                 </xsl:if>
                 <xsl:if test="@links != '0'">
                     <span class="browse-study-release-links">
-                        <xsl:value-of select="@links"/><xsl:text> links</xsl:text>
+                        <xsl:value-of select="@links"/><xsl:text> link</xsl:text><xsl:value-of select="if (@links>1) then 's' else ''" />
                     </span>
                 </xsl:if>
             </div>
