@@ -68,14 +68,14 @@
                 <interface.application.link.news_xml.url>ae-news.xml</interface.application.link.news_xml.url>
                 <interface.application.link.links_xml.url>ae-links.xml</interface.application.link.links_xml.url>
 
-                <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/wwwdev/adm/</interface.application.pref.studies.source.location>
-                <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/wwwdev/adm/submission</interface.application.pref.studies.files.location>
+                <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/beta/adm/</interface.application.pref.studies.source.location>
+                <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/beta/adm/submission</interface.application.pref.studies.files.location>
                 <interface.application.pref.studies.reload.schedule>0 0/15 * * * ?</interface.application.pref.studies.reload.schedule>
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
 
                 <interface.application.pref.restart.command>/nfs/public/rw/webadmin/tomcat/bases/fg/tc-fg-biostudies-dev/restart-nowait</interface.application.pref.restart.command>
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
-                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-dev/checkAccess</interface.application.pref.users.authentication.url>
+                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-beta/checkAccess</interface.application.pref.users.authentication.url>
             </properties>
         </profile>
         <profile>

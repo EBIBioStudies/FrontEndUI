@@ -262,6 +262,7 @@ var linksTable = [];
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
         $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
         $(this).attr('title', $(this).attr('data-icon')=='u' ? 'Click to expand' : 'Click to collapse')
+        $("table.dataTable tbody td a").css("max-width", $(this).attr('data-icon')=='u' ? '200px' : '600px')
         redrawTables();
     });
 
