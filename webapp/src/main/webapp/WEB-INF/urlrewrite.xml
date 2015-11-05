@@ -26,6 +26,11 @@
         <from>^/$</from>
         <to type="forward" last="true">/servlets/query/-/home/html</to>
     </rule>
+    <!-- ftp message page -->
+    <rule>
+        <from>^/zipftp/$</from>
+        <to type="forward" last="true">/servlets/query/-/zipftp/html</to>
+    </rule>
 
     <!-- search page -->
     <rule>

@@ -39,8 +39,9 @@ import java.util.zip.ZipOutputStream;
 public class ZipDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909737571L;
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
-    private static final String ROOTPATH = "ram://virtual";
+    private static final String VIRTUAL_ROOT = "ram://virtual";
     private FileSystemManager fsManager;
+    private static final int MB = 1024*1024;
 
     @Override
     protected void doBeforeDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response, String relativePath) throws DownloadServletException {
@@ -49,10 +50,16 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         String accession = requestArgs[0];
         String[] filenames = request.getParameterMap().get("files");
         Files files = getComponent(Files.class);
-        byte[] buffer = new byte[1024];
+        long fileSizeSum = 0;
+        for (String filename : filenames) {
+           fileSizeSum += new File(files.getRootFolder() + "/" + relativePath+"/Files/"+filename).length();
+        }
+        boolean isLargeFile = fileSizeSum > 10*MB;
+
+        byte[] buffer = new byte[10*MB];
         try {
             fsManager = VFS.getManager();
-            FileObject zipFile = fsManager.resolveFile(ROOTPATH + "/" + accession + "." + UUID.randomUUID() + ".zip");
+            FileObject zipFile = fsManager.resolveFile( ( isLargeFile ? files.getFtpFolder() : VIRTUAL_ROOT)+ "/" + accession + "." + UUID.randomUUID() + ".zip");
             logger.info("Creating zip file {} for accession [{}] files: {}", zipFile.getName(), accession, filenames);
             zipFile.createFile();
             try (ZipOutputStream zos = new ZipOutputStream(zipFile.getContent().getOutputStream())) {
@@ -70,6 +77,9 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             }
             zipFile.close();
             request.setAttribute("zipFile", zipFile);
+            if (isLargeFile) {
+                request.setAttribute("isLargeFile",true);
+            }
         } catch (IOException e) {
             throw  new DownloadServletException(e);
         }
@@ -78,7 +88,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
     @Override
     protected void doAfterDownloadFileFromRequest(HttpServletRequest request, HttpServletResponse response) throws DownloadServletException {
         try {
-            if (request.getAttribute("zipFile")!=null) {
+            if (request.getAttribute("zipFile")!=null && request.getAttribute("isLargeFile")==null) {
                 FileObject zipFile = (FileObject) request.getAttribute("zipFile");
                 zipFile.delete();
                 logger.info("Zip file {} deleted", zipFile.getName());
@@ -99,8 +109,20 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
 
         String[] filenames = request.getParameterMap().get("files");
         logger.info("Requested download of accession [{}] files: {}", accession, filenames);
-        IDownloadFile zipfile = new RAMZipFile((FileObject) request.getAttribute("zipFile"),accession);
-        return zipfile;
+        if (request.getAttribute("zipFile")!=null) {
+            IDownloadFile zipfile = new RAMZipFile((FileObject) request.getAttribute("zipFile"), accession);
+            if (request.getAttribute("isLargeFile")!=null) {
+                try {
+                    String referer = request.getHeader("referer");
+                    response.sendRedirect("/zipftp/?ftpurl=" + getComponent(Files.class).getFtpURL()+ zipfile.getPath());
+                } catch (IOException e) {
+                    throw new DownloadServletException(e);
+                }
+                return null;
+            }
+            return zipfile;
+        }
+        return null;
     }
 
     protected final class RAMZipFile implements IDownloadFile {
@@ -120,7 +142,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         }
 
         public String getPath() {
-            return null;
+            return fileObject.getName().getBaseName();
         }
 
         public long getLength() {

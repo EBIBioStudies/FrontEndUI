@@ -17,36 +17,36 @@
 
 package uk.ac.ebi.arrayexpress.components;
 
-import net.sf.saxon.om.Item;
-import net.sf.saxon.om.NodeInfo;
-import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.value.BooleanValue;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
-import uk.ac.ebi.arrayexpress.utils.saxon.StoredDocument;
-import uk.ac.ebi.arrayexpress.utils.saxon.XMLDocumentSource;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class Files extends ApplicationComponent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String rootFolder;
+    private String ftpFolder;
+    private String ftpURL;
+
     public Files() {
     }
+
     public synchronized String getRootFolder() {
         return this.rootFolder;
+    }
+
+    public synchronized String getFtpFolder() {
+        return this.ftpFolder;
+    }
+
+    public synchronized String getFtpURL() {
+        return this.ftpURL;
     }
 
     @Override
     public void initialize() throws Exception {
         this.rootFolder = getPreferences().getString("bs.studies.files-location");
+        this.ftpFolder = getPreferences().getString("bs.studies.ftp-location");
+        this.ftpURL = getPreferences().getString("bs.studies.ftp-url");
     }
 
     @Override

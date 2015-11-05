@@ -51,12 +51,14 @@ public class JobsController extends ApplicationComponent implements IJobsControl
         addJob("reload-xml", ReloadStudiesJob.class);
         addJob("reload-efo", ReloadOntologyJob.class);
         addJob("update-efo", UpdateOntologyJob.class);
+        addJob("delete-zipftp-files", DeleteZipFTPFilesJob.class);
 
         // schedule jobs
         //scheduleJob("rescan-files", "bs.files.rescan");
         //scheduleJob("check-files", "bs.files.check");
         scheduleJob("reload-xml", "bs.studies.reload");
         scheduleJob("update-efo", "bs.efo.update");
+        scheduleJob("delete-zipftp-files", "bs.files.zipftp.delete");
 
         startScheduler();
     }

@@ -175,15 +175,14 @@ var linksTable = [];
     function downloadFiles(files) {
         var html = '';
         if (files.length==1) {
-            html += '<form method="GET" action="' + "../../files/" + $('.accessionNumber').text() + '/' + files[0]+'" />';
+            html += '<form method="GET" target="_blank" action="' + ($('#project')!=null ? '../' :'') + "../../files/" + $('.accessionNumber').text() + '/' + files[0]+'" />';
         } else {
-            html += '<form method="POST" action="' + "../../files/" + $('.accessionNumber').text() + '/zip">';
+            html += '<form method="POST" target="_blank" action="'+ ($('#project')!=null ? '../' :'') + "../../files/" + $('.accessionNumber').text() + '/zip?'+location.search+'">';
             $(files).each( function(i,v) {
                 html += '<input type="hidden" name="files" value="'+v+'"/>'
             });
             html += '</form>';
         }
-
         var submissionForm = $(html);
         $('body').append(submissionForm);
         $(submissionForm).submit();
