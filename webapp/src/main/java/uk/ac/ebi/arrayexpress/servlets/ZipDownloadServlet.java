@@ -114,7 +114,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             if (request.getAttribute("isLargeFile")!=null) {
                 try {
                     String referer = request.getHeader("referer");
-                    response.sendRedirect("/zipftp/?ftpurl=" + getComponent(Files.class).getFtpURL()+ zipfile.getPath());
+                    response.sendRedirect(request.getContextPath()+ "/zipftp/?ftpurl=" + getComponent(Files.class).getFtpURL()+ zipfile.getPath());
                 } catch (IOException e) {
                     throw new DownloadServletException(e);
                 }
