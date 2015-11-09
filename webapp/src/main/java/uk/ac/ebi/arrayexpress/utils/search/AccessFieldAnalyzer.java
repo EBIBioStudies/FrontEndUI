@@ -26,15 +26,15 @@ import org.apache.lucene.analysis.util.CharTokenizer;
 public final class AccessFieldAnalyzer extends Analyzer {
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
-        Tokenizer source = new ExperimentTextTokenizer();
+        Tokenizer source = new AccessFieldAnalyzerTextTokenizer();
         TokenStream filter = new ASCIIFoldingFilter(source);
         return new TokenStreamComponents(source, filter);
     }
 
-    private static class ExperimentTextTokenizer extends CharTokenizer {
+    private static class AccessFieldAnalyzerTextTokenizer extends CharTokenizer {
         @Override
         protected boolean isTokenChar(int c) {
-            return Character.isLetter(c) | Character.isDigit(c) | ('~' == c);
+            return Character.isLetter(c) | Character.isDigit(c) ;
         }
 
         @Override

@@ -127,13 +127,13 @@ public class Querier {
             else
                 params.put("sortorder", new String[]{"descending"});
         }
-        boolean reverse =  ("descending".equalsIgnoreCase(params.get("sortorder")[0]) ? true : false);
+        boolean shouldReverse =  ("descending".equalsIgnoreCase(params.get("sortorder")[0]) ? true : false);
 
         // relevance should by default be descending
         if (sortBy ==null || "relevance".equalsIgnoreCase(sortBy) ) {
-            reverse = !reverse;
+            shouldReverse = !shouldReverse;
         }
-        SortField sortField = new SortField(sortBy, sortFieldType  , reverse);
+        SortField sortField = new SortField(sortBy, sortFieldType, shouldReverse);
         Sort sort = new Sort( sortField );
 
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
@@ -141,7 +141,7 @@ public class Querier {
             IndexSearcher searcher = new IndexSearcher(reader);
 
             logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
-                    query.toString(), sort, reverse);
+                    query.toString(), sort, shouldReverse);
 
 
             TopDocs hits = searcher.search(

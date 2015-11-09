@@ -42,10 +42,7 @@
                links="{fn:count(.//link)}"
                relPath="{@relPath}"
                type="{lower-case(if (section[1]/@type='') then 'study' else section[1]/@type)}"
-                >
-            <xsl:if test="fn:exists(@rtime)">
-                <xsl:attribute name="releaseTime"><xsl:value-of select="@rtime"/></xsl:attribute>
-            </xsl:if>
+               releaseTime="{if (exists(@rtime)) then @rtime else 9999999999}"> <!-- Keeping a future date for unreleased submissions -->
             <xsl:if test="fn:exists(@ctime)">
                 <xsl:attribute name="creationTime"><xsl:value-of select="@ctime"/></xsl:attribute>
             </xsl:if>
@@ -56,7 +53,7 @@
     <xsl:template match="submission/section[1]">
         <xsl:variable name="vAccession" select="../@acc"/>
         <accession><xsl:value-of select="$vAccession"/></accession>
-        <access><xsl:value-of select="fn:replace(../@access,';',' ')"/></access>
+        <access><xsl:value-of select="fn:replace(fn:replace(../@access,';',' '),'~','')"/></access>
         <project><xsl:value-of select="../attributes/attribute[fn:lower-case(name)='attachto']/value"/></project>
         <releasedate><xsl:value-of select="../attributes/attribute[fn:lower-case(name)='releasedate']/value"/></releasedate>
         <title>

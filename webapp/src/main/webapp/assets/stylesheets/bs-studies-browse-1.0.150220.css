@@ -49,11 +49,6 @@
     font-size: 120%;
 }
 
-.browse-study-release-date
-{
-    color: #999;
-    /* padding-left: 1em; */
-}
 .browse-study-accession {
     font-size: 70%;
     padding: 5px;
@@ -68,16 +63,6 @@
     content: ']';
 }
 
-.browse-study-release-files,.browse-study-release-links {
-    color: #999;
-    border-radius: 2px;
-}
-
-.browse-study-release-files:before,.browse-study-release-links:before {
-    content: ' \25AA';
-    color: #6BA8C5;
-    padding: 10px;
-}
 #ae-studies-browse-sort-by {
     float: right;
     padding: 8px;

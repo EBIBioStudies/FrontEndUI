@@ -54,7 +54,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         for (String filename : filenames) {
            fileSizeSum += new File(files.getRootFolder() + "/" + relativePath+"/Files/"+filename).length();
         }
-        boolean isLargeFile = fileSizeSum > 10*MB;
+        boolean isLargeFile = fileSizeSum > 512*MB;  // Threshold for large files which will be available only on ftp
 
         byte[] buffer = new byte[10*MB];
         try {

@@ -913,3 +913,19 @@ p.center {
     -ms-user-select: none;
     user-select: none;
 }
+
+.private-study-icon {
+    color: #6BA8C5;
+    font-size: 10pt;
+}
+
+
+.study-meta-data{
+    color: #999;
+}
+
+.study-meta-data:not(:first-child):before  {
+    content: ' \25AA';
+    color: #6BA8C5;
+    padding: 10px;
+}

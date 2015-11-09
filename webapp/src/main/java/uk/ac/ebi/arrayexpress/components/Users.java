@@ -85,8 +85,8 @@ public class Users extends ApplicationComponent {
         user = new User();
         user.setUsername(username);
         user.setHashedPassword(passwordHash);
-        Set<String> allowSet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[1], ':')[1].trim().replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1"), ',')));
-        Set<String> denySet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[2], ':')[1].trim().replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1"), ',')));
+        Set<String> allowSet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[1], ':')[1].trim().replaceAll("~", ""), ';')));
+        Set<String> denySet = new HashSet<>(Arrays.asList(StringUtils.split(StringUtils.split(lines[2], ':')[1].trim().replaceAll("~", ""), ';')));
         allowSet.removeAll(denySet);
         user.setAllow(allowSet.toArray(new String[allowSet.size()]));
         user.setDeny(denySet.toArray(new String[denySet.size()]));

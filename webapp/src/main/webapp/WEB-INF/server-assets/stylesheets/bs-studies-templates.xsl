@@ -36,7 +36,7 @@
         <xsl:variable name="vDates" select="submissiondate | lastupdatedate | releasedate"/>
         <xsl:variable name="vAccession" select="accession"/>
         <xsl:choose>
-            <xsl:when test="$pIsGoogleBot">
+            <xsl:when test="$pIsGoogleBot and fn:exists(@releaseTime) ">
                 <xsl:call-template name="section">
                     <xsl:with-param name="pName" select="'Released on'"/>
                     <xsl:with-param name="pContent">
@@ -50,16 +50,21 @@
             <xsl:otherwise>
                 <div id="ae-detail-release-date">
                     <xsl:choose>
-                        <xsl:when test="fn:exists(@releaseTime) and @releaseTime!=''">
+                        <xsl:when test="@releaseTime!=9999999999">
                             <text>Released </text><xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@releaseTime))"/>
                         </xsl:when>
-                        <xsl:when test="not(fn:exists(@releaseTime)) or @releaseTime='' and (fn:exists(@creationTime) and @creationTime!='')">
-                            <text>Created </text><xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@creationTime))"/>
-                        </xsl:when>
+                        <xsl:otherwise>
+                            <span class="study-meta-data">Unreleased</span>
+                            <span class="study-meta-data">Created <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@creationTime))"/></span>
+                        </xsl:otherwise>
                     </xsl:choose>
+                    <xsl:if test="not(contains(concat(' ',lower-case(access),' '),' public '))">
+                        <span class="study-meta-data" data-icon="L">&#x1f512; private</span>
+                    </xsl:if>
                 </div>
             </xsl:otherwise>
         </xsl:choose>
+
     </xsl:template>
 
     <xsl:template name="study-attributes">
