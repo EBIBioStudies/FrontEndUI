@@ -41,9 +41,15 @@
         <study files="{fn:count(.//file)}"
                links="{fn:count(.//link)}"
                relPath="{@relPath}"
-               type="{section[1]/@type}"
+               type="{lower-case(if (section[1]/@type='') then 'study' else section[1]/@type)}"
                 >
-                <xsl:apply-templates/>
+            <xsl:if test="fn:exists(@rtime)">
+                <xsl:attribute name="releaseTime"><xsl:value-of select="@rtime"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="fn:exists(@ctime)">
+                <xsl:attribute name="creationTime"><xsl:value-of select="@ctime"/></xsl:attribute>
+            </xsl:if>
+            <xsl:apply-templates/>
         </study>
     </xsl:template>
 
@@ -53,6 +59,16 @@
         <access><xsl:value-of select="fn:replace(../@access,';',' ')"/></access>
         <project><xsl:value-of select="../attributes/attribute[fn:lower-case(name)='attachto']/value"/></project>
         <releasedate><xsl:value-of select="../attributes/attribute[fn:lower-case(name)='releasedate']/value"/></releasedate>
+        <title>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='title'])">
+                    <xsl:value-of select="fn:replace(attributes/attribute[fn:lower-case(normalize-space(name))='title']/value, '[.]\s*$', '')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='title']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </title>
         <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
             <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
             <author index="{fn:position()}">
@@ -88,12 +104,6 @@
     <xsl:template match="text()|@*" mode="attribute"/>
     <xsl:template match="text()|@*" mode="section"/>
     <xsl:template match="text()|@*" mode="files"/>
-
-    <xsl:template match="attribute[fn:lower-case(name)='title']" mode="attributes">
-        <title>
-            <xsl:value-of select="fn:replace(value, '[.]\s*$', '')"/>
-        </title>
-    </xsl:template>
 
     <xsl:template match="attribute" mode="attributes">
         <attribute name="{name}">

@@ -49,7 +49,14 @@
             </xsl:when>
             <xsl:otherwise>
                 <div id="ae-detail-release-date">
-                <xsl:text>Released </xsl:text><xsl:value-of select="ae:formatDate(./releasedate)"/>
+                    <xsl:choose>
+                        <xsl:when test="fn:exists(@releaseTime) and @releaseTime!=''">
+                            <text>Released </text><xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@releaseTime))"/>
+                        </xsl:when>
+                        <xsl:when test="not(fn:exists(@releaseTime)) or @releaseTime='' and (fn:exists(@creationTime) and @creationTime!='')">
+                            <text>Created </text><xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@creationTime))"/>
+                        </xsl:when>
+                    </xsl:choose>
                 </div>
             </xsl:otherwise>
         </xsl:choose>

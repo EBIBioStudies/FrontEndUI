@@ -24,6 +24,7 @@
 
     <rule>
         <from>^/$</from>
+        <set type="parameter" name="type">Study</set>
         <to type="forward" last="true">/servlets/query/-/home/html</to>
     </rule>
     <!-- ftp message page -->

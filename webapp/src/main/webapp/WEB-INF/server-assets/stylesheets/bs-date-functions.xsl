@@ -132,8 +132,12 @@
 
     <xsl:function name="ae:formatDateGoogle" as="xs:string">
         <xsl:param name="pDate"/>
-
         <xsl:value-of select="fn:format-date(xs:date($pDate), '[D1] [MNn] [Y0001]', 'en', (), ())"/>
+    </xsl:function>
+
+    <xsl:function name="ae:unixTimeToDate" as="xs:dateTime">
+        <xsl:param name="pTime"  />
+        <xsl:value-of select='xs:dateTime("1970-01-01T00:00:00") + number($pTime) * xs:dayTimeDuration("PT01S")'/>
     </xsl:function>
 
     <xsl:function name="ae:formatDateShort" as="xs:string">

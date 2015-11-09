@@ -195,7 +195,8 @@
         <li class="browse-study">
             <div>
                 <span class="browse-study-release-date">
-                    <xsl:value-of select="ae:formatDateLong(releasedate)"/>
+                    <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(
+                        if (fn:exists(@releaseTime) and @releaseTime!='') then @releaseTime else @creationTime))"/>
                 </span>
                 <xsl:if test="@files != '0'">
                     <span class="browse-study-release-files">

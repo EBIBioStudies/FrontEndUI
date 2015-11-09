@@ -62,7 +62,7 @@ public class QueryConstructor implements IQueryConstructor {
     public Query getAccessControlledQuery(Query query, IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
         // empty query returns everything
         if (query instanceof BooleanQuery && ((BooleanQuery) query).clauses().isEmpty()) {
-            Term term = new Term("title", "*");
+            Term term = new Term("id", "*");
             query = new WildcardQuery(term);
             querySource.put("queryIsEmpty",new String[]{"true"});
         }
