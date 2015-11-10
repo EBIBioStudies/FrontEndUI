@@ -330,7 +330,7 @@
         <section class="grid_18 alpha">
             <h2 class="alert">We’re sorry that we couldn’t find any matching studies</h2>
             <xsl:if test="exists($keywords) and $keywords!=''">
-                <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span>returned no results.</p>
+                <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
             </xsl:if>
             <!-- TODO:
             <h3>Did you mean...</h3>
