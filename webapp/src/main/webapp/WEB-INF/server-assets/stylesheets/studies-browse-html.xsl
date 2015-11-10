@@ -329,7 +329,9 @@
     <xsl:template name="browse-no-results">
         <section class="grid_18 alpha">
             <h2 class="alert">We’re sorry that we couldn’t find any matching studies</h2>
-            <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
+            <xsl:if test="exists($keywords) and $keywords!=''">
+                <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span>returned no results.</p>
+            </xsl:if>
             <!-- TODO:
             <h3>Did you mean...</h3>
             <ul>
@@ -362,8 +364,10 @@
 
         <section class="grid_18 alpha">
             <h2 class="alert">Yikes! Looks like we are overloaded.</h2>
-            <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> resulted in an error.
-                Our servers may be busy. Please try again later and <a href="#" class="feedback">contact us</a> if the error persists.</p>
+            <xsl:if test="exists($keywords) and $keywords!=''">
+                <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> resulted in an error.</p>
+            </xsl:if>
+             <p>Our servers may be busy. Please try again later and <a href="#" class="feedback">contact us</a> if the error persists.</p>
         </section>
         <aside class="grid_6 omega shortcuts" id="search-extras">
             <div id="ebi_search_results">

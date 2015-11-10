@@ -70,7 +70,7 @@ public class QueryConstructor implements IQueryConstructor {
         BooleanQuery queryWithAccessControl = new BooleanQuery();
         queryWithAccessControl.add(query, BooleanClause.Occur.MUST);
 
-        if (querySource.containsKey("allow") && querySource.get("allow").length>0) {
+        if (querySource.containsKey("allow") && querySource.get("allow")!=null && querySource.get("allow").length>0) {
             QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.OR);
             String access = StringUtils.join(querySource.get("allow"), " ");
@@ -78,7 +78,7 @@ public class QueryConstructor implements IQueryConstructor {
             queryWithAccessControl.add(q, BooleanClause.Occur.MUST);
         }
 
-        if (querySource.containsKey("deny") && querySource.get("deny").length>0) {
+        if (querySource.containsKey("deny") && querySource.get("deny")!=null && querySource.get("deny").length>0) {
             QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.AND);
             String access = StringUtils.join(querySource.get("deny"), " ");

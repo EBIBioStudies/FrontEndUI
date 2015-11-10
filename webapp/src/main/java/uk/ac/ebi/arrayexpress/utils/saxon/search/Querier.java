@@ -194,6 +194,8 @@ public class Querier {
         if (params.containsKey("project")) {
             Map<String, String[]> querySource = new HashMap<>();
             querySource.put("accession", params.get("project"));
+            querySource.put("allow", params.get("allow"));
+            querySource.put("deny", params.get("deny"));
             QueryConstructor qc = new QueryConstructor();
             Query projectQuery = qc.construct(this.env, querySource);
             projectQuery = qc.getAccessControlledQuery(projectQuery, this.env, querySource);
