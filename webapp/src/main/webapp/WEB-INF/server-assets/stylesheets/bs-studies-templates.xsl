@@ -171,15 +171,17 @@
                                         <xsl:text>]</xsl:text>
                                     </xsl:with-param>
                                 </xsl:call-template>
-                                <xsl:text>&#160;(PMCID: </xsl:text>
-                                <a href="http://europepmc.org/articles/{attribute[fn:lower-case(@name)='pmcid']}" target="_blank">
-                                    <xsl:call-template name="highlight">
-                                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                        <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
-                                        <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
-                                    </xsl:call-template>
-                                </a>
-                                <xsl:text>)</xsl:text>
+                                <xsl:if test="exists(attribute[fn:lower-case(@name)='pmcid'])">
+                                    <xsl:text>&#160;(PMCID: </xsl:text>
+                                    <a href="http://europepmc.org/articles/{attribute[fn:lower-case(@name)='pmcid']}" target="_blank">
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                            <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
+                                        </xsl:call-template>
+                                    </a>
+                                    <xsl:text>)</xsl:text>
+                                </xsl:if>
                             </xsl:for-each>
                             <xsl:if test="fn:count(.//file)>0">
                                 <br/>
