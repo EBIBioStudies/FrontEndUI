@@ -91,8 +91,9 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
             highlighter.setTextFragmenter( fragmentOnly
                     ? new SimpleSpanFragmenter(scorer, this.env.searchSnippetFragmentSize)
                     : new NullFragmenter());
-            String str = highlighter.getBestFragment(this.env.indexAnalyzer, "".equals(fieldName) ? this.env.defaultField : fieldName, text);
-
+            String str = highlighter.getBestFragment(this.env.indexAnalyzer, "".equals(fieldName)
+                                    ? this.env.defaultField
+                                    : fieldName, text).replaceAll(closeMark+" "+openMark," ");
             return null != str ? str : text;
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
