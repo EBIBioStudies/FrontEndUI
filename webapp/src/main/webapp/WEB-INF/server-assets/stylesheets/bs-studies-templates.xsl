@@ -828,6 +828,9 @@
             <xsl:when test="$type = 'gen'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ena/data/view/', $pId)"/>
             </xsl:when>
+            <xsl:when test="$type = 'arrayexpress files'">
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
+            </xsl:when>
             <xsl:when test="$type = 'arrayexpress'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
             </xsl:when>
@@ -848,6 +851,9 @@
             </xsl:when>
             <xsl:when test="$type = 'refseq'">
                 <xsl:value-of select="fn:concat('http://www.ncbi.nlm.nih.gov/nuccore/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="$type = 'geo'">
+                <xsl:value-of select="fn:concat('http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'doi'">
                 <xsl:value-of select="fn:concat('http://dx.doi.org/', $pId)"/>

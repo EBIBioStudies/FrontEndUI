@@ -93,8 +93,8 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
                     : new NullFragmenter());
             String str = highlighter.getBestFragment(this.env.indexAnalyzer, "".equals(fieldName)
                                     ? this.env.defaultField
-                                    : fieldName, text).replaceAll(closeMark+" "+openMark," ");
-            return null != str ? str : text;
+                                    : fieldName, text);
+            return null != str ? str.replaceAll(closeMark+" "+openMark," ") : text;
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
         }
