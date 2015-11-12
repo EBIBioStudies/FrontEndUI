@@ -51,7 +51,7 @@ public class Thumbnails extends ApplicationComponent {
         registerThumbnailHandler(new PDFThumbnail());
         registerThumbnailHandler(new DOCXThumbnail());
         registerThumbnailHandler(new TXTThumbnail());
-
+        registerThumbnailHandler(new HTMLThumbnail());
     }
 
     private void registerThumbnailHandler(IThumbnail thumbnailHandler) {

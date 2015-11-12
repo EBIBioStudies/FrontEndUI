@@ -378,18 +378,13 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                 </xsl:call-template>
                             </a>
-                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv')"/>
-                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}" data-name="{$vName}" class="file-link">
-                                <xsl:if test="$isImage">
+                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv|html')"/>
+                            <xsl:if test="$isImage">
+                                <a href="{$pBasePath}/files/{$pAccession}/{$vName}" data-name="{$vName}" class="file-link">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vName)"/>
-                                </xsl:if>
-                                <span class="thumbnail icon icon-functional" data-icon="4">
-                                    <xsl:if test="not($isImage)">
-                                        <xsl:attribute name="class" select="('invisible')"/>
-                                    </xsl:if>
-                                </span>
-                            </a>
-
+                                <span class="thumbnail icon icon-functional" data-icon="4"></span>
+                                </a>
+                            </xsl:if>
                         </td>
                         <td class="align-right" data-order="{@size}">
                             <xsl:call-template name="file-size">
