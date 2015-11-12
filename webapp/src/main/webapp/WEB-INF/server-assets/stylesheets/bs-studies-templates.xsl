@@ -378,7 +378,7 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                 </xsl:call-template>
                             </a>
-                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv|html')"/>
+                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv|html|htm')"/>
                             <xsl:if test="$isImage">
                                 <a href="{$pBasePath}/files/{$pAccession}/{$vName}" data-name="{$vName}" class="file-link">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vName)"/>

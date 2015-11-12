@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class ImageThumbnail implements IThumbnail{
 
-    String[] supportedTypes = {"bmp","jpg","wbmp","jpeg","png","gif","tif","tiff","pdf","docx","txt","csv","html"};
+    String[] supportedTypes = {"bmp","jpg","wbmp","jpeg","png","gif","tif","tiff"};
     @Override
     public String[] getSupportedTypes() {
         return supportedTypes;
