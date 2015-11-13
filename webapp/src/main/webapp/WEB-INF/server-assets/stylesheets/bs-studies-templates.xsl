@@ -371,7 +371,7 @@
                             </td>
                         </xsl:if>
                         <td class="file-list-file-name">
-                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}" title="{$vName}">
+                            <a href="{$pBasePath}/files/{$pAccession}/{$vName}" title="{$vName}" target="_blank">
                                 <xsl:call-template name="highlight">
                                     <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                     <xsl:with-param name="pText" select="$vName"/>
@@ -380,7 +380,7 @@
                             </a>
                             <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv|html|htm')"/>
                             <xsl:if test="$isImage">
-                                <a href="{$pBasePath}/files/{$pAccession}/{$vName}" data-name="{$vName}" class="file-link">
+                                <a href="{$pBasePath}/files/{$pAccession}/{$vName}"  target="_blank"  data-name="{$vName}" class="file-link">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vName)"/>
                                 <span class="thumbnail icon icon-functional" data-icon="4"></span>
                                 </a>
