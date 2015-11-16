@@ -31,7 +31,6 @@
 
     <xsl:template name="study-status">
         <xsl:param name="pIsGoogleBot" as="xs:boolean"/>
-        <xsl:param name="pIsPrivate" as="xs:boolean"/>
 
         <xsl:variable name="vDates" select="submissiondate | lastupdatedate | releasedate"/>
         <xsl:variable name="vAccession" select="accession"/>
@@ -50,17 +49,14 @@
             <xsl:otherwise>
                 <div id="ae-detail-release-date">
                     <xsl:choose>
-                        <xsl:when test="@releaseTime!=9999999999">
+                        <xsl:when test="@releaseTime!=9999999999 and contains(concat(' ',lower-case(access),' '),' public ')">
                             <text>Released </text><xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@releaseTime))"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <span class="study-meta-data">Unreleased</span>
+                            <span class="study-meta-data" data-icon="L">&#x1f512; private</span>
                             <span class="study-meta-data">Created <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@creationTime))"/></span>
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:if test="not(contains(concat(' ',lower-case(access),' '),' public '))">
-                        <span class="study-meta-data" data-icon="L">&#x1f512; private</span>
-                    </xsl:if>
                 </div>
             </xsl:otherwise>
         </xsl:choose>

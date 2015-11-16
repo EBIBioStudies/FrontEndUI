@@ -191,24 +191,30 @@
         <xsl:param name="pTo"/>
         <xsl:param name="pPosition"/>
         <xsl:variable name="vAccession" select="accession"/>
+        <xsl:variable name="isPublic" select="@releaseTime!=9999999999 and contains(concat(' ',lower-case(access),' '),' public ')"/>
+        <xsl:variable name="isProject" select="fn:lower-case(@type)='project'"/>
         <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
         <li class="browse-study">
             <div>
-                <span class="study-meta-data">
-                    <xsl:value-of select="if (@releaseTime!=9999999999) then ae:formatDateLong(ae:unixTimeToDate(@releaseTime)) else 'Unreleased'"/>
-                </span>
-                <xsl:if test="@files != '0'">
-                    <span class="study-meta-data">
-                            <xsl:value-of select="@files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (@files>1) then 's' else ''" />
-                    </span>
-                </xsl:if>
-                <xsl:if test="@links != '0'">
-                    <span class="study-meta-data">
-                        <xsl:value-of select="@links"/><xsl:text> link</xsl:text><xsl:value-of select="if (@links>1) then 's' else ''" />
-                    </span>
-                </xsl:if>
-                <xsl:if test="not(contains(concat(' ',lower-case(access),' '),' public '))">
+                <xsl:if test="not($isPublic)">
                     <span class="study-meta-data" data-icon="L">&#x1f512; private</span>
+                </xsl:if>
+                <xsl:if test="not($isProject) and $isPublic ">
+                        <span class="study-meta-data">
+                            <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@releaseTime))"/>
+                        </span>
+                </xsl:if>
+                <xsl:if test="not($isProject)">
+                        <xsl:if test="@files != '0'">
+                            <span class="study-meta-data">
+                                <xsl:value-of select="@files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (@files>1) then 's' else ''" />
+                            </span>
+                        </xsl:if>
+                        <xsl:if test="@links != '0'">
+                            <span class="study-meta-data">
+                                <xsl:value-of select="@links"/><xsl:text> link</xsl:text><xsl:value-of select="if (@links>1) then 's' else ''" />
+                            </span>
+                        </xsl:if>
                 </xsl:if>
             </div>
             <div class="browse-study-title">

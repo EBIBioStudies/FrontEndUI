@@ -116,7 +116,6 @@
                 <div id="ae-detail">
                     <xsl:call-template name="study-status">
                         <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
-                        <xsl:with-param name="pIsPrivate" select="fn:false()"/>
                     </xsl:call-template>
                     <div class="persist-header">
                         <h4 id="ae-detail-title">
