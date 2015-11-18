@@ -2,6 +2,8 @@ package uk.ac.ebi.biostudies.utils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.Date;
+
 /**
  * Created by awais on 18/08/2015.
  */
@@ -10,7 +12,7 @@ public class TestUtils {
     public static String getTestSubmission(int doc) {
         StringBuffer sb = new StringBuffer();
         String docId = ""+doc;
-        sb.append(String.format("<submission acc=\"TEST-%s\" id=\"%s\" access=\"Public\">", docId, docId));
+        sb.append(String.format("<submission acc=\"TEST-%s\" id=\"%s\" access=\"Public\" rtime=\"%d\" ctime=\"%d\" >", docId, docId, new Date().getTime(), new Date().getTime()));
         sb.append(String.format("<section id=\"%s\" type=\"Study\">", docId));
         sb.append(String.format("<attributes><attribute><name>Title</name><value>Test Document %s</value></attribute>", docId));
         sb.append(String.format("<attribute><name>Description</name><value>Description for Test Document %s</value></attribute>", docId));

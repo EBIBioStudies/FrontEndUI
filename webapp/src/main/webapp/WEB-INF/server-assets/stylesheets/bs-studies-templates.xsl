@@ -863,4 +863,30 @@
             </xsl:when>
         </xsl:choose>
     </xsl:function>
+
+    <xsl:template name="study-suggestion">
+        <xsl:call-template name="widget">
+            <xsl:with-param name="pName" select="'Similar Studies'"/>
+            <xsl:with-param name="pTitleClass" select="'ae-detail-links-title'"/>
+            <xsl:with-param name="pIconClass" select="'icon icon-functional padded-gray-icon'"/>
+            <xsl:with-param name="pIconType" select="'O'"/>
+            <xsl:with-param name="pClass" select="('left')"/>
+            <xsl:with-param name="pContent">
+                <xsl:variable name="accessions" select="search:getQueryInfoParameter($queryid,'similarAccessions')"/>
+                <xsl:variable name="titles" select="search:getQueryInfoParameter($queryid,'similarTitles')"/>
+                <ul class="recommendations">
+                    <xsl:for-each select="$accessions">
+                        <xsl:variable name="index" select="position()"/>
+                        <xsl:variable name="accession" select="."/>
+                        <li class="browse-study-title">
+                            <a href="{$context-path}/studies/{$accession}/{$vQueryString}"><xsl:value-of select="$titles[$index]"/></a>
+                            <span class="browse-study-accession">
+                                <xsl:value-of select="$accession"/>
+                            </span>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
 </xsl:stylesheet>

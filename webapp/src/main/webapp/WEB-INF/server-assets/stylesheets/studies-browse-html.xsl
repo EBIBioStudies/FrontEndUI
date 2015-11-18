@@ -37,7 +37,7 @@
     <xsl:include href="bs-studies-templates.xsl"/>
 
     <xsl:variable name="vSearchMode" select="$keywords != ''"/>
-    <xsl:variable name="vQueryString" select="fn:concat('?', $query-string)"/>
+    <xsl:variable name="vQueryString" select="if ($query-string!='') then fn:concat('?', $query-string) else ''"/>
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
     <xsl:variable name="vTotal" select="xs:integer(search:getQueryInfoParameter($queryid,'total'))"/>
     <xsl:variable name="projectLink" select="if ($project!='') then concat('/',$project) else '' "/>
@@ -200,18 +200,18 @@
                     <span class="study-meta-data" data-icon="L">&#x1f512; private</span>
                 </xsl:if>
                 <xsl:if test="not($isProject) and $isPublic ">
-                        <span class="study-meta-data">
+                        <span class="study-meta-data browse-study-release-date">
                             <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@releaseTime))"/>
                         </span>
                 </xsl:if>
                 <xsl:if test="not($isProject)">
                         <xsl:if test="@files != '0'">
-                            <span class="study-meta-data">
+                            <span class="study-meta-data browse-study-release-files">
                                 <xsl:value-of select="@files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (@files>1) then 's' else ''" />
                             </span>
                         </xsl:if>
                         <xsl:if test="@links != '0'">
-                            <span class="study-meta-data">
+                            <span class="study-meta-data browse-study-release-links">
                                 <xsl:value-of select="@links"/><xsl:text> link</xsl:text><xsl:value-of select="if (@links>1) then 's' else ''" />
                             </span>
                         </xsl:if>

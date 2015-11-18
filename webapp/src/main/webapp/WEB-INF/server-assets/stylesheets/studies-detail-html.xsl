@@ -163,7 +163,7 @@
             <div id="ae-detail-right-column">
                 <span class="icon icon-functional padded-blue-icon" data-icon="u" id="right-column-expander" title="Click to expand"/>
                 <xsl:choose>
-                    <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0">
+                    <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0 and search:getQueryInfoParameter($queryid,'similarAccessions')=''">
                         <xsl:value-of select="'No data'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -177,6 +177,7 @@
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pLinks" select="descendant::link"/>
                         </xsl:call-template>
+                        <xsl:call-template name="study-suggestion"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </div>

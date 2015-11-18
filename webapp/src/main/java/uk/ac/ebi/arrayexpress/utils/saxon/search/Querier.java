@@ -22,8 +22,11 @@ import net.sf.saxon.pattern.NameTest;
 import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.type.Type;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.*;
+import org.apache.lucene.queries.mlt.MoreLikeThis;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.util.BytesRef;
@@ -33,7 +36,10 @@ import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
+import uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer;
 import uk.ac.ebi.arrayexpress.utils.search.EFOExpandedHighlighter;
+import uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer;
+import uk.ac.ebi.arrayexpress.utils.search.LowercaseAnalyzer;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import java.io.BufferedWriter;
@@ -166,7 +172,7 @@ public class Querier {
             // if page is from search results, get the document at nth position in the search results
             // and store the previous and next result as well. Otherwise, return the whole result set
             if (params.get("path-info")[0].contains("detail")) {
-                NodeInfo nodeInfo = getSingleDocument(params, hits, leafReader);
+                NodeInfo nodeInfo = getSingleDocument(params, hits, leafReader, searcher);
                 if(nodeInfo!=null) matchingNodes.add(nodeInfo);
             } else {
                 ScoreDoc [] scoreDocs = hits.scoreDocs;
@@ -247,7 +253,7 @@ public class Querier {
         params.put("fragments", snippets.toArray(new String[snippets.size()]));
     }
 
-    private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, IndexReader leafReader) throws IOException, SaxonException {
+    private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, IndexReader leafReader, IndexSearcher searcher) throws IOException, SaxonException, ParseException {
         ScoreDoc[] scoreDocs = hits.scoreDocs;
         int position = -1;
         for (int i = 0; i < scoreDocs.length; i++) {
@@ -256,10 +262,9 @@ public class Querier {
                 break;
             }
         }
-
-
+        NodeInfo ni = null;
         try {
-            NodeInfo ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
+            ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
             params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
             params.put("accessionIndex", new String[]{"" + position});
 
@@ -271,11 +276,34 @@ public class Querier {
                 NodeInfo next = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position + 1].doc).get("xml"));
                 params.put("nextAccession", new String[]{next.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
             }
-            return ni;
+
+            getSimilarStudies(params, hits.scoreDocs[position], leafReader, searcher);
 
         } catch (ArrayIndexOutOfBoundsException ex) {
             logger.warn("Trying to load an inaccessible document");
-            return null;
+        }
+
+        return ni;
+    }
+
+    private void getSimilarStudies(Map<String, String[]> params, ScoreDoc scoreDoc, IndexReader leafReader, IndexSearcher searcher) throws ParseException, IOException {
+        int maxHits = 3;
+        MoreLikeThis mlt = new MoreLikeThis(leafReader);
+        mlt.setFieldNames(new String[]{"keywords"});
+        mlt.setAnalyzer(this.env.indexAnalyzer);
+        QueryConstructor qc = new QueryConstructor();
+        Query mltQuery = qc.construct(this.env,mlt.like( scoreDoc.doc).toString().replaceAll(":-",":")
+                + " NOT type:project NOT accession:"+params.get("accessionNumber")[0]);// remove projects and self
+        TopDocs mltDocs = searcher.search( qc.getAccessControlledQuery(mltQuery, this.env, params) , maxHits);
+        String[] titles = new String[mltDocs.scoreDocs.length];
+        String[] accessions = new String[mltDocs.scoreDocs.length];
+        for (int i = 0; i < mltDocs.scoreDocs.length; i++) {
+            accessions[i]= leafReader.document(mltDocs.scoreDocs[i].doc).get("accession");
+            titles[i] = leafReader.document(mltDocs.scoreDocs[i].doc).get("title");
+        }
+        if (mltDocs.totalHits>0) {
+            params.put("similarTitles", titles);
+            params.put("similarAccessions", accessions);
         }
     }
 

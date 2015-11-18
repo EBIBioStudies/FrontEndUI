@@ -37,7 +37,7 @@ public class SearchTest {
         driver = new HtmlUnitDriver();
         ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
-        driver.get(baseUrl + "/admin/reload-xml/test.xml");
+        driver.get(baseUrl + "/admin/reload-xml");
     }
 
     @Before
@@ -172,7 +172,7 @@ public class SearchTest {
     }
 
     @Test
-    public void testLinks() throws Exception{
+    public void testLinksAscendingSort() throws Exception{
         driver.get(baseUrl + "/studies/search.html?query=cancer");
         new Select(driver.findElement(By.id("studies-browse-sorter"))).selectByVisibleText("Links");
         driver.findElement(By.cssSelector(".studies-browse-sort-order-right")).click();
@@ -235,7 +235,7 @@ public class SearchTest {
         driver.get(baseUrl + "/studies/");
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("h2.alert")));
-        driver.get(baseUrl + "/admin/reload-xml/test.xml");
+        driver.get(baseUrl + "/admin/reload-xml/");
         assertTrue(true);
     }
 
@@ -244,7 +244,7 @@ public class SearchTest {
         int totalDocs = 100;
         driver.get(baseUrl + "/admin/clear-index");
         StringBuffer sb = new StringBuffer("<pmdocument><submissions>");
-        for (int doc = 0; doc <= totalDocs; doc++) {
+        for (int doc = 1; doc <= totalDocs; doc++) {
             sb.append(TestUtils.getTestSubmission(doc));
         }
         sb.append("</submissions></pmdocument>");
@@ -255,9 +255,9 @@ public class SearchTest {
         file.delete();
         driver.get(baseUrl + "/studies/");
         String pages = driver.findElement(By.cssSelector(".ae-stats")).getText();
-        assertTrue(pages.endsWith("Showing 1 - 25 of " + (totalDocs+1) +" studies"));
+        assertTrue(pages.endsWith("Showing 1 - 25 of " + (totalDocs) +" results"));
         driver.get(baseUrl + "/admin/clear-index");
-        driver.get(baseUrl + "/admin/reload-xml/test.xml");
+        driver.get(baseUrl + "/admin/reload-xml");
     }
 
 }
