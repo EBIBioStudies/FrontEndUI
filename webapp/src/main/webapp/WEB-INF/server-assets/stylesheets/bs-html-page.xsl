@@ -180,7 +180,7 @@
                                     <fieldset>
                                         <div class="left">
                                             <label>
-                                                <input type="text" name="query" id="local-searchbox">
+                                                <input type="search" name="query" id="local-searchbox">
                                                     <xsl:if test="$keywords != ''">
                                                         <xsl:attribute name="value" select="$keywords"/>
                                                     </xsl:if>
