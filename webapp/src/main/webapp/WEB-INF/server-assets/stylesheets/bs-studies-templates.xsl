@@ -319,16 +319,16 @@
                 <xsl:with-param name="pIconType" select="'='"/>
                 <xsl:with-param name="pName" select="'Download data files'"/>
                 <xsl:with-param name="pContent">
-                    <div id="list-loader" >Loading...<img src="{$pBasePath}/assets/images/ajax-loader.gif"/></div>
-                    <div id="file-list-widget">
-                    <xsl:call-template name="file-table">
-                        <xsl:with-param name="pNodes" select="$pNodes"/>
-                        <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        <xsl:with-param name="pBasePath" select="$pBasePath"/>
-                        <xsl:with-param name="elementId" select="'file-list'"/>
-                        <xsl:with-param name="pAccession" select="$pAccession"/>
-                    </xsl:call-template>
-                    <span id="selected-file-text"/> <a id="download-selected-files">Download all</a><br/><br/>
+                    <div class="list-loader" >Loading...</div>
+                    <div class="list-content">
+                        <xsl:call-template name="file-table">
+                            <xsl:with-param name="pNodes" select="$pNodes"/>
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                            <xsl:with-param name="pBasePath" select="$pBasePath"/>
+                            <xsl:with-param name="elementId" select="'file-list'"/>
+                            <xsl:with-param name="pAccession" select="$pAccession"/>
+                        </xsl:call-template>
+                        <span id="selected-file-text"/> <a id="download-selected-files">Download all</a><br/><br/>
                     </div>
                 </xsl:with-param>
             </xsl:call-template>
@@ -453,6 +453,7 @@
 
     <xsl:template name="study-links">
     <xsl:param name="pQueryId"/>
+    <xsl:param name="pBasePath"/>
     <xsl:param name="pLinks"/>
         <xsl:if test="fn:count($pLinks)>0">
             <xsl:variable name="totalTables" select="count(fn:distinct-values($pLinks/string-join(attribute/@name,' | ')))"/>
@@ -465,19 +466,22 @@
                     <xsl:with-param name="pIconType" select="'x'"/>
                     <xsl:with-param name="pClass" select="('left')"/>
                     <xsl:with-param name="pContent">
-                        <div class="link-filters">
-                            Type Filter:
-                            <xsl:for-each-group select="current-group()" group-by="ae:getTitleFor(attribute[@name='Type']/value)">
-                                    <input type="checkbox" class="link-filter do-not-clear" checked="checked" id="{current-grouping-key()}" data-position="{$tableNumber}" />
-                                    <label class="link-filter-label no-select" for="{current-grouping-key()}"><span class="checkmark"><xsl:value-of select="current-grouping-key()"/></span></label>
-                            </xsl:for-each-group>
+                        <div class="list-loader" >Loading...</div>
+                        <div class="list-content">
+                            <div class="link-filters">
+                                Type Filter:
+                                <xsl:for-each-group select="current-group()" group-by="ae:getTitleFor(attribute[@name='Type']/value)">
+                                        <input type="checkbox" class="link-filter do-not-clear" checked="checked" id="{current-grouping-key()}" data-position="{$tableNumber}" />
+                                        <label class="link-filter-label no-select" for="{current-grouping-key()}"><span class="checkmark"><xsl:value-of select="current-grouping-key()"/></span></label>
+                                </xsl:for-each-group>
+                            </div>
+                            <xsl:call-template name="link-table">
+                                <xsl:with-param name="pNodes" select="current-group()"/>
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pClass" select="('link-widget')"/>
+                                <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
+                            </xsl:call-template>
                         </div>
-                        <xsl:call-template name="link-table">
-                            <xsl:with-param name="pNodes" select="current-group()"/>
-                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                            <xsl:with-param name="pClass" select="('link-widget')"/>
-                            <xsl:with-param name="elementId" select="concat('link-list-',position())"/>
-                        </xsl:call-template>
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:for-each-group>

@@ -114,8 +114,11 @@
     color: #466B7D !important;
 }
 
-#file-list-widget{
+.list-content{
     display: none;
+}
+.list-loader{
+    color: #999;
 }
 
 #filter-file-name {

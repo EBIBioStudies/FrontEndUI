@@ -116,6 +116,7 @@ var linksTable = [];
 
         // draw the main file table
         redrawTables();
+        redrawTables(); // needed to adjust the column width. TODO: Find a better solution
         updateSelectedFiles();
 
         // draw subsection and hide them
@@ -217,9 +218,7 @@ var linksTable = [];
             "order": [[ 1, "asc" ]],
             "dom":"lfrtpi",
             "autoWidth" : false
-        } );
-        $("#file-list-widget").show()
-        $("#list-loader").hide();
+        });
         $(linksTable).each(function() {
             this.destroy();
         });
@@ -235,6 +234,8 @@ var linksTable = [];
                 )
             );
         });
+        $(".list-content").show()
+        $(".list-loader").hide();
     }
 
     $('.org-link').click( function() {

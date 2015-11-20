@@ -176,6 +176,7 @@
                         <xsl:call-template name="study-links">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pLinks" select="descendant::link"/>
+                            <xsl:with-param name="pBasePath" select="$context-path"/>
                         </xsl:call-template>
                         <xsl:call-template name="study-suggestion"/>
                     </xsl:otherwise>
