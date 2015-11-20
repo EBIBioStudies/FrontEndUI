@@ -319,7 +319,7 @@
                 <xsl:with-param name="pIconType" select="'='"/>
                 <xsl:with-param name="pName" select="'Download data files'"/>
                 <xsl:with-param name="pContent">
-                    <div id="list-loader" >Loading...<img src="../../assets/images/ajax-loader.gif"/></div>
+                    <div id="list-loader" >Loading...<img src="{$pBasePath}/assets/images/ajax-loader.gif"/></div>
                     <div id="file-list-widget">
                     <xsl:call-template name="file-table">
                         <xsl:with-param name="pNodes" select="$pNodes"/>
