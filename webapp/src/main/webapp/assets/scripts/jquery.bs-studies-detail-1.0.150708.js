@@ -218,7 +218,8 @@ var linksTable = [];
             "dom":"lfrtpi",
             "autoWidth" : false
         } );
-
+        $("#file-list-widget").show()
+        $("#list-loader").hide();
         $(linksTable).each(function() {
             this.destroy();
         });

@@ -292,8 +292,11 @@ public class Querier {
         mlt.setFieldNames(new String[]{"keywords"});
         mlt.setAnalyzer(this.env.indexAnalyzer);
         QueryConstructor qc = new QueryConstructor();
-        Query mltQuery = qc.construct(this.env,mlt.like( scoreDoc.doc).toString().replaceAll(":-",":")
-                + " NOT type:project NOT accession:"+params.get("accessionNumber")[0]);// remove projects and self
+        String likeQuery = mlt.like( scoreDoc.doc).toString().replaceAll(":-",":").replaceAll("keywords: "," ");
+        if (likeQuery.endsWith("keywords:")) likeQuery = likeQuery.substring(0,likeQuery.length()-9);
+        Query mltQuery = qc.construct(this.env,likeQuery
+                + " NOT type:project NOT accession:"
+                +params.get("accessionNumber")[0]);// remove projects and self
         TopDocs mltDocs = searcher.search( qc.getAccessControlledQuery(mltQuery, this.env, params) , maxHits);
         String[] titles = new String[mltDocs.scoreDocs.length];
         String[] accessions = new String[mltDocs.scoreDocs.length];

@@ -319,6 +319,8 @@
                 <xsl:with-param name="pIconType" select="'='"/>
                 <xsl:with-param name="pName" select="'Download data files'"/>
                 <xsl:with-param name="pContent">
+                    <div id="list-loader" >Loading...<img src="../../assets/images/ajax-loader.gif"/></div>
+                    <div id="file-list-widget">
                     <xsl:call-template name="file-table">
                         <xsl:with-param name="pNodes" select="$pNodes"/>
                         <xsl:with-param name="pQueryId" select="$pQueryId"/>
@@ -327,6 +329,7 @@
                         <xsl:with-param name="pAccession" select="$pAccession"/>
                     </xsl:call-template>
                     <span id="selected-file-text"/> <a id="download-selected-files">Download all</a><br/><br/>
+                    </div>
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>

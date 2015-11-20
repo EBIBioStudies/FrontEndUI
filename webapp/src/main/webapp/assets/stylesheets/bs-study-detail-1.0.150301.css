@@ -114,7 +114,8 @@
     color: #466B7D !important;
 }
 
-#file-list{
+#file-list-widget{
+    display: none;
 }
 
 #filter-file-name {
