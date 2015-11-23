@@ -40,7 +40,7 @@
             $(this).data('authors',$(this).html());
             var values = $(this).html().split(',');
             $(this).html('<span class="authors">'+values.slice(0,showSize).join(',')+'</span>');
-            if (values.length < showSize) return;
+            if (values.length <= showSize) return;
             $(this).append(
                 $('<span>, <a class="show-more">show ' + (values.length - showSize) +' more</a></span>')
                 .click( function() {
