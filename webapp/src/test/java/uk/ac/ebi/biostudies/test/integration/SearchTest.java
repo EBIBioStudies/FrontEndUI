@@ -1,5 +1,9 @@
 package uk.ac.ebi.biostudies.test.integration;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.gargoylesoftware.htmlunit.html.HtmlSearchInput;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -34,10 +38,9 @@ public class SearchTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        driver = new HtmlUnitDriver();
-        ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
+        driver = new HtmlUnitDriver( BrowserVersion.FIREFOX_38 , true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
-        driver.get(baseUrl + "/admin/reload-xml");
+        //driver.get(baseUrl + "/admin/reload-xml");
     }
 
     @Before
@@ -52,15 +55,17 @@ public class SearchTest {
         assertTrue(pages.startsWith("Showing 1"));
     }
 
+    
     @Test
     public void testAutoComplete() throws Exception{
-        driver.get(baseUrl + "/studies/search.html?query=cancer");
-        driver.findElement(By.id("local-searchbox")).clear();
-        driver.findElement(By.id("local-searchbox")).sendKeys("dna");
+        driver.get(baseUrl + "/studies/");
+        WebElement searchBox = . driver.findElement (By.id("local-searchbox"));
+        searchBox.click();
+        searchBox.sendKeys("dna");
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ac_inner")));
-        //checking only the first suggestion with more than two words
-        assertTrue(driver.findElements(By.cssSelector(".ac_inner li")).get(3).getText().startsWith("DNA"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated (By.cssSelector(".ac_inner")));
+        List<WebElement> we = driver.findElements(By.cssSelector(".ac_inner li"));
+        assertTrue(we.get(3).getText().startsWith("DNA"));
 
     }
 

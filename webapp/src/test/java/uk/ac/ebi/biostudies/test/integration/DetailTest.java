@@ -1,5 +1,6 @@
 package uk.ac.ebi.biostudies.test.integration;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,8 +26,7 @@ public class DetailTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        driver = new HtmlUnitDriver();
-        ((HtmlUnitDriver) driver).setJavascriptEnabled(true);
+        driver = new HtmlUnitDriver( BrowserVersion.FIREFOX_38 , true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
     }
 

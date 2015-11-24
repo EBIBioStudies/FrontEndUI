@@ -74,7 +74,7 @@
             <!--/xsl:if-->
         </xsl:for-each>
         <xsl:apply-templates select="attributes" mode="attributes"/>
-        <xsl:apply-templates select="subsections/section" mode="section"/>
+        <xsl:apply-templates select="section | subsections/section" mode="section"/>
         <xsl:apply-templates select=".//files[not(ancestor::subsections)]" mode="files"/>
         <xsl:apply-templates select=".//links[not(ancestor::subsections)]" mode="links"/>
     </xsl:template>
@@ -137,9 +137,9 @@
                 </attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
-            <xsl:copy-of select="./*[not(name()='section' or name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
-            <xsl:apply-templates select="section" mode="section"/>
-            <xsl:apply-templates select="file|files/file" mode="files"/>
+            <xsl:copy-of select="./*[not(name()='section' or name()='subsections' or name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
+            <xsl:apply-templates select="section | subsections/section" mode="section"/>
+            <xsl:apply-templates select="file|files/table/file|files/file" mode="files"/>
             <xsl:apply-templates select="link|links/table/link|links/link" mode="links"/>
         </section>
     </xsl:template>

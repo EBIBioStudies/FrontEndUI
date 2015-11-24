@@ -85,6 +85,7 @@ public class Indexer {
 
     public List<NodeInfo> index(NodeInfo documentNode) throws IndexerException, InterruptedException {
         try {
+            //logger.debug( serializeDocument(documentNode));
             List<Item> documentNodes = evaluateXPath(documentNode, this.env.indexDocumentPath);
             List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
             IndexWriter w = indexWriters.get(env.indexId);

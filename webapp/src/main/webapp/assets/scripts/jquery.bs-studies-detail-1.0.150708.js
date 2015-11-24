@@ -38,10 +38,10 @@ var linksTable = [];
             "dom":"t"
         });
         $(".ae-section-files").hide();
-        /*$(".link-list:not(.link-widget)").DataTable( {
+        $(".link-list:not(.link-widget)").DataTable( {
             "scrollX": true,
             "dom":"t"
-        });*/
+        });
         $(".ae-section-links").hide();
 
 
