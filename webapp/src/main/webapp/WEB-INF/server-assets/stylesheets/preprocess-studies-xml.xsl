@@ -38,11 +38,13 @@
     </xsl:template>
 
     <xsl:template match="submission">
+        <xsl:variable name="vAccess" select="fn:replace(fn:replace(@access,';',' '),'~','')"/>
+        <xsl:variable name="vNow"  select="ae:now()"/>
         <study files="{fn:count(.//file)}"
                links="{fn:count(.//link)}"
                relPath="{@relPath}"
                type="{lower-case(if (section[1]/@type='') then 'study' else section[1]/@type)}"
-               releaseTime="{if (exists(@rtime)) then @rtime else 9999999999}"> <!-- Keeping a future date for unreleased submissions -->
+               releaseTime="{if (exists(@rtime)) then @rtime else if (fn:contains(lower-case($vAccess),'public')) then ae:now() else 9999999999}"> <!-- Keeping a future date for unreleased submissions -->
             <xsl:if test="fn:exists(@ctime)">
                 <xsl:attribute name="creationTime"><xsl:value-of select="@ctime"/></xsl:attribute>
             </xsl:if>
@@ -159,6 +161,12 @@
     <xsl:function name="ae:fixRetrievedDateTimeFormat">
         <xsl:param name="pInvalidDateTime"/>
         <xsl:value-of select="fn:replace($pInvalidDateTime,'T(\d{1,2})[:-](\d{1,2})[:-](\d{1,2})', 'T$1:$2:$3')"/>
+    </xsl:function>
+
+    <xsl:function name="ae:now">
+        <xsl:variable name="epoch" select="xs:dateTime('1970-01-01T00:00:00Z')"/>
+        <xsl:variable name="diff"  select="current-dateTime() - $epoch"/>
+        <xsl:sequence select="format-number(round(number($diff div xs:dayTimeDuration('PT1S'))),'############')"/>
     </xsl:function>
 
 </xsl:stylesheet>
