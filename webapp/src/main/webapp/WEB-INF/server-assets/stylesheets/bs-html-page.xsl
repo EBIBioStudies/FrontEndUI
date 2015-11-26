@@ -165,11 +165,7 @@
                         <div id="local-title">
                             <xsl:attribute name="class">logo-title<xsl:if test="$pIsSearchVisible"> grid_12 alpha</xsl:if></xsl:attribute>
                             <!-- <img class="svg" src="{$context-path}/assets/images/ae-logo-64.svg" width="64" height="64" alt="AE"/> -->
-                            <span>
-                                <h1>
-                                    <a href="{$context-path}/" title="Back to BioStudies homepage">BioStudies<sup class="beta">β</sup></a>
-                                </h1>
-                            </span>
+                            <a href="{$context-path}/" title="Back to BioStudies homepage"><img src="{$context-path}/assets/images/logo.png"/></a>
                         </div>
                         <!-- /local-title -->
                         <!-- local-search -->

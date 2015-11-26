@@ -126,12 +126,6 @@ ul#secondary-nav li.active > a {
     margin-right: -3px;
 }
 
-.beta {
-    font-size: 60%;
-    margin-left: 5px;
-    color: #94d7f6;
-}
-
 .hidden-values {
     display: none;
 }
@@ -928,4 +922,8 @@ p.center {
     content: ' \25AA';
     color: #6BA8C5;
     padding: 10px;
+}
+
+div#local-title > a > img {
+    height:70px;
 }
