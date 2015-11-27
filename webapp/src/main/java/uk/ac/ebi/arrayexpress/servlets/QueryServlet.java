@@ -136,6 +136,7 @@ public class QueryServlet extends AuthAwareApplicationServlet {
                 Integer queryId = search.getController().addQuery(index, params);
                 params.put("queryid", String.valueOf(queryId));
                 Source source = search.getController().search(queryId);
+                //System.out.println(saxonEngine.serializeDocument(source));
                 if (!saxonEngine.transform(source, stylesheetName, params, new StreamResult(out))) {
                     throw new Exception("Transformation returned an error");
                 }

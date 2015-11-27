@@ -42,7 +42,7 @@
         <guice.version>3.0</guice.version>
         <guava.version>18.0</guava.version>
         <saxon.version>9.6.0-4</saxon.version>
-        <lucene.version>5.2.1</lucene.version>
+        <lucene.version>5.3.1</lucene.version>
 
         <!-- http://colorschemedesigner.com/csd-3.5/#3s61Ts4rGw0w0 -->
         <color.p1>#17668C</color.p1>
@@ -61,8 +61,8 @@
         <color.b4>#47CE82</color.b4>
         <color.b5>#6BCE96</color.b5>
         <color.c1>#DD831B</color.c1>
-        <color.c2>#A57339</color.c2>
-        <color.c3>#8F5109</color.c3>
+        <color.c2>#8F5109</color.c2>
+        <color.c3>#A57339</color.c3>
         <color.c4>#EEA551</color.c4>
         <color.c5>#EEB97B</color.c5>
     </properties>

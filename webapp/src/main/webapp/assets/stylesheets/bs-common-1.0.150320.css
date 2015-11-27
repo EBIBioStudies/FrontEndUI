@@ -927,3 +927,17 @@ p.center {
 div#local-title > a > img {
     height:70px;
 }
+
+.browse-study-accession {
+    font-size: 70%;
+    padding: 5px;
+    color: rgb(107, 168, 197);
+    white-space: nowrap;
+}
+
+.browse-study-accession:before {
+    content: '[';
+}
+.browse-study-accession:after {
+    content: ']';
+}

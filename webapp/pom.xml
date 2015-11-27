@@ -133,7 +133,7 @@
                 <interface.application.link.news_xml.url>ae-news.xml</interface.application.link.news_xml.url>
                 <interface.application.link.links_xml.url>ae-links.xml</interface.application.link.links_xml.url>
 
-                <interface.application.pref.studies.source.location>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/xml/</interface.application.pref.studies.source.location>
+                <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/dev/adm/updates</interface.application.pref.studies.source.location>
                 <interface.application.pref.studies.reload.schedule>0 0/15 * * * ?</interface.application.pref.studies.reload.schedule>
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
                 <interface.application.pref.restart.command>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/restart-nowait</interface.application.pref.restart.command>

@@ -178,12 +178,16 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
     public Source search(Integer queryId) throws ParseException, IOException, SaxonException {
         QueryInfo queryInfo = this.queryPool.getQueryInfo(queryId);
         Querier querier = new Querier( getEnvironment(queryInfo.getIndexId()));
-        StringBuilder sb = new StringBuilder("<studies>");
         List<NodeInfo> results = querier.query(queryInfo);
+        long total = queryInfo.getParams().containsKey("total") ?
+                    Long.parseLong(queryInfo.getParams().get("total")[0])
+                    : 0;
+        StringBuilder sb = new StringBuilder( String.format("<studies total=\"%d\" >",total));
         for (NodeInfo node : results) {
             sb.append(saxon.serializeDocument(node,true));
         }
         sb.append("</studies>");
+        //logger.debug(sb.toString());
         return saxon.buildDocument(sb.toString());
     }
 

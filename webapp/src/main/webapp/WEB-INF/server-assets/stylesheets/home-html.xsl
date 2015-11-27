@@ -33,11 +33,16 @@
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail"/>
-            <xsl:with-param name="pExtraCSS"/>
             <xsl:with-param name="pBreadcrumbTrail"/>
             <xsl:with-param name="pEBISearchWidget"/>
-            <xsl:with-param name="pExtraJS"/>
+            <xsl:with-param name="pExtraJS">
+                <script src="{$context-path}/assets/scripts/jquery.bs-studies-home-1.0.151127.js" type="text/javascript"/>
+            </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
+            <xsl:with-param name="pExtraCSS">
+                <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-home-1.0.151126.css"
+                      type="text/css"/>
+            </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
 
@@ -49,79 +54,53 @@
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>
         <xsl:variable name="vNews" select="doc('news.xml')"/>
         -->
-
-        <section>
-            <xsl:attribute name="class">alpha intro
-                <xsl:choose>
-                    <xsl:when test="$vTotal > 0">grid_18</xsl:when>
-                    <xsl:otherwise>grid_24 omega</xsl:otherwise>
-                </xsl:choose>
-            </xsl:attribute>
-            <h2>BioStudies – database of biological studies</h2>
+        <section class="alpha intro grid_24">
+            <h2><img id="logo-icon" src="{$context-path}/assets/images/icon.png"/><span id="tagline">BioStudies – database of biological
+                studies</span>
+            </h2>
             <p class="justify">The BioStudies database holds descriptions of biological studies, links to data
                 from these studies in other databases at EMBL-EBI or outside, as well as data that do not fit in the
                 structured archives at EMBL-EBI. The database can accept a wide range of types of studies described
                 via a simple format. It also enables manuscript authors to submit supplementary information and link
-                to it from the publication.</p>
-            <p class="browse-link"><a href="{$context-path}/studies/" title="Browse BioStudies">Browse BioStudies</a></p>
+                to it from the publication.
+            </p>
         </section>
-
-        <xsl:if test="$vTotal > 0">
-            <aside class="grid_6 omega">
-                    <!-- <h3 class="icon icon-generic" data-icon="g">Statistics</h3> -->
-                    <xsl:if test="fn:string-length($vRetrieved) > 1">
-                        <h5>Updated <xsl:value-of select="ae:formatDateTime2($vRetrieved)"/></h5>
-                    </xsl:if>
-                    <ul>
-                        <li>
-                            <a href="{$context-path}/studies/" title="Browse BioStudies">
-                                <xsl:value-of
-                                        select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'studies' else 'study')"/>
-                            </a>
-                        </li>
-                        <!--
-                        <li><xsl:value-of select="ae:formatFileSize(fn:sum($vFiles/@size) cast as xs:integer)"/> of archived data</li>
-                        -->
-                    </ul>
-            </aside>
-        </xsl:if>
-        <!--
-        <div class="grid_24 alpha">
-            <xsl:if test="fn:count($vNews/news/item) > 0">
-                <section id="ae-news">
-                    <h3 class="icon icon-generic" data-icon="N">Latest News</h3>
-                    <xsl:for-each select="$vNews/news/item">
-                        <xsl:if test="fn:position() &lt; 3">
-                            <p class="news"><xsl:value-of select="ae:formatDateGoogle(date)"/> - <strong><xsl:value-of select="title"/></strong><br/>
-                                <xsl:copy-of select="summary/node()"/>
-                                <xsl:if test="fn:string-length(text) > 0">
-                                    <br/>
-                                    <a href="news.html#{fn:position()}">Read more...</a>
-                                </xsl:if>
-                            </p>
-                        </xsl:if>
-                    </xsl:for-each>
-                </section>
-            </xsl:if>
-            <section>
-                <div class="grid_8 alpha">
-                    <h3 class="icon icon-generic" data-icon="L">Links</h3>
-                    <p>Information about how to search ArrayExpress, understand search results, how to submit data and FAQ can be found in our <a href="{$context-path}/help/index.html">Help section</a>.</p>
-                    <p>Find out more about the <a href="/about/people/alvis-brazma">Functional Genomics group</a>.</p>
-                </div>
-                <div class="grid_8">
-                    <h3 class="icon icon-functional" data-icon="t">Tools and Access</h3>
-                    <p><a href="http://www.bioconductor.org/packages/release/bioc/html/ArrayExpress.html">ArrayExpress Bioconductor package</a>: an R package to access ArrayExpress and build data structures.</p>
-                    <p><a href="{$context-path}/help/programmatic_access.html">Programmatic access</a>: query and download data using web services or JSON.</p>
-                    <p><a href="ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/">FTP access</a>: data can be downloaded directly from our FTP site.</p>
-                </div>
-                <div class="grid_8 omega">
-                    <h3 class="icon icon-generic" data-icon="L">Related Projects</h3>
-                    <p>Discover up and down regulated genes in numerous experimental conditions in the <a href="${interface.application.link.atlas.base.url}">Expression Atlas</a>.</p>
-                    <p>Explore the <a href="/efo">Experimental Factor Ontology</a> used to support queries and annotation of ArrayExpress data.</p>
-                </div>
-            </section>
+        <div class="grid_24 intro" id="secondary">
+            <h2><a href="{$context-path}/studies/" title="Browse BioStudies"><span class="icon icon-functional home-icon" data-icon="1">
+                Browse</span>
+            </a></h2>
         </div>
-        -->
+        <div class="grid_24" id="tertiary">
+            <div class="grid_6" id="stats">
+                <h5>
+                    <a href="{$context-path}/studies/" title="Browse BioStudies">
+                        <span class="icon icon-functional home-icon-small" id="submissionsIcon" data-icon="D" />
+                        <xsl:value-of select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'submissions' else 'submission')"/>
+                    </a>
+                </h5>
+                <h5 id="projectCountStats" >
+                    <a href="{$context-path}/studies/?query=type:Project" title="Browse BioStudies">
+                        <span class="icon icon-functional home-icon-small" id="projectsIcon"  data-icon="A" />
+                        <span id="projectCount"/>
+                    </a>
+                </h5>
+                <h5 id="studyCountStats">
+                    <a href="{$context-path}/studies/?query=type:Study" title="Browse BioStudies">
+                        <span class="icon icon-functional home-icon-small" id="studiesIcon"  data-icon="b" />
+                        <span id="studyCount"/>
+                    </a>
+                </h5>
+            </div>
+            <div class="grid_18 alpha" id="latest">
+                <h5>
+                    <a href="#" title="Latest studies">
+                        <span class="icon icon-functional home-icon-small" id="latestIcon" data-icon="n" />Latest</a>
+                </h5>
+                <ul id="latestList">
+
+                </ul>
+            </div>
+
+        </div>
     </xsl:template>
 </xsl:stylesheet>
