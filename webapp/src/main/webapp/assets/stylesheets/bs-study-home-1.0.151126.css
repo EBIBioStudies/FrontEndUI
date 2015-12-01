@@ -16,9 +16,10 @@
  */
 #logo-icon {
     height: 55px;
-    padding-right: 5px;
     vertical-align: bottom;
-    /* z-index: 33; */
+    border: 2px solid white;
+    border-radius: 1000px;
+    box-shadow: 1px 1px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .home-icon:before {
