@@ -124,9 +124,10 @@ display: inline-block;padding: 8px 8px;color: #FFFFFF;text-shadow: 1px 1px 5px #
     content: 's';
     float: left;
     position: absolute;
-    margin-top: -53px;
     color: white;
     opacity: 0.1;
+    vertical-align: top;
+    line-height: 1;
 }
 
 #primary h2:before {
