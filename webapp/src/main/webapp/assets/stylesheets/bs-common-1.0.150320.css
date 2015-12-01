@@ -23,6 +23,11 @@
 
 #content section img {
     margin: 0
+;
+    border: 2px solid white;
+    border-radius: 1000px;
+    padding: 1px;
+    box-shadow: 1px 1px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 #content form {

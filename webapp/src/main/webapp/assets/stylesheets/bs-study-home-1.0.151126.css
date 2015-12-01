@@ -18,18 +18,20 @@
     height: 55px;
     padding-right: 5px;
     vertical-align: bottom;
+    /* z-index: 33; */
 }
 
 .home-icon:before {
     color: #FFFFFF !important;
-    font-size: 23pt !important;
+    font-size: 22pt !important;
     vertical-align: middle;
-    /* border: 2px solid #466B7D; */
+    border: 1px solid #466B7D;
     border-radius: 1000px;
     background: #466B7D;
-    padding: 13px;
+    padding: 14px;
     margin-right: 0px !important;
     vertical-align: initial;
+    box-shadow: inset 0 0 0 2px white;
 }
 
 .home-icon {
@@ -67,7 +69,7 @@
 }
 
 #tagline {
-display: inline-block;padding: 8px 8px;color: #6BA8C5;}
+display: inline-block;padding: 8px 8px;color: #FFFFFF;text-shadow: 1px 1px 5px #466B7D;}
 
 #secondary {
     padding-bottom:36px;
@@ -95,4 +97,65 @@ display: inline-block;padding: 8px 8px;color: #6BA8C5;}
     list-style: square;
     line-height: 24px;
     margin-left: 19px;
+}
+
+#primary h2{
+    background-color: rgb(107, 168, 197);
+    margin-top: 0px;
+    /* margin-bottom: 32px; */
+    padding: 50px;
+    vertical-align: middle;
+}
+
+#content {
+    padding:0px !important;
+}
+
+#primary:before, #primary:after,#primary h2:before, #primary h2:after   {
+    font-family: 'EBI-Conceptual';
+    color: #FFFFFF;
+    content: 'd';
+    display: block;
+    opacity: 0.2;
+}
+
+#primary:before {
+    font-size: 180px;
+    content: 's';
+    float: left;
+    position: absolute;
+    margin-top: -53px;
+    color: white;
+    opacity: 0.1;
+}
+
+#primary h2:before {
+    font-size: 230pt;
+    content: 'd';
+    float: left;
+    opacity: 0.05;
+    margin-top: -142px;
+    position: absolute;
+    margin-left: 23%;
+    text-align: left;
+}
+
+#primary h2:after {
+    font-size: 146pt;
+    content: 'b';
+    float: right;
+    margin-top: -102px;
+    position: absolute;
+    width: 97%;
+    text-align: right;
+}
+
+#primary:after {
+    font-family: 'EBI-Functional';
+    font-size: 138px;
+    content: 'A';
+    position: absolute;
+    margin-top: -286px;
+    margin-left: 65%;
+    opacity: 0.1;
 }

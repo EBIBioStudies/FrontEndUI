@@ -54,7 +54,7 @@
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>
         <xsl:variable name="vNews" select="doc('news.xml')"/>
         -->
-        <section class="alpha intro grid_24">
+        <section class="alpha intro grid_24" id="primary">
             <h2><img id="logo-icon" src="{$context-path}/assets/images/icon.png"/><span id="tagline">BioStudies – database of biological
                 studies</span>
             </h2>
