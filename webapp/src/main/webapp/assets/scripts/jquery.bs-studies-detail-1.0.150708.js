@@ -25,7 +25,7 @@ var linksTable = [];
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
         //setup thumbnails
-        $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='../../assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
+        $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='"+contextPath+"/assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
         $(".file-link").on('mouseenter',function() { showThumbnail($(this)); });
         $(".file-link").on('mouseleave', function() { hideThumbnail($(this)); });
