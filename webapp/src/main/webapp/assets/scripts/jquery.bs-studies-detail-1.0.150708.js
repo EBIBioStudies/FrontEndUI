@@ -15,7 +15,7 @@
  *
  */
 var filesTable = null;
-var linksTable = [];
+var linksTable = null;
 
 (function($, undefined) {
     if($ == undefined)
@@ -24,8 +24,6 @@ var linksTable = [];
     $(function() {
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
-        //setup thumbnails
-        $(".file-link").append("<div class='thumbnail-div'><img class='thumbnail-loader' src='"+contextPath+"/assets/images/ajax-loader.gif'/><img class='thumbnail-image' /></div>");
         // capture hover before datatable is rendered
         $(".file-link").on('mouseenter',function() { showThumbnail($(this)); });
         $(".file-link").on('mouseleave', function() { hideThumbnail($(this)); });
@@ -160,14 +158,14 @@ var linksTable = [];
             if($(this).data("isFocused")) {
                 $(this).fadeIn("fast");
             }
-            $(".thumbnail-loader",$(this).parent()).hide();
+            $(".thumbnail-loader",$(this).parent()).css('visibility','hidden');
             $(this).parent().parent().data("loaded",true);
         });
     }
 
     function hideThumbnail(fileLink) {
         $(".thumbnail-image", $(fileLink)).hide();
-        $(".thumbnail-loader", $(fileLink)).hide();
+        $(".thumbnail-loader", $(fileLink)).css('visibility','hidden');
         $(".thumbnail-image", $(fileLink)).data('isFocused', false);
     }
 
@@ -210,30 +208,37 @@ var linksTable = [];
     }
 
     function redrawTables() {
-        if(filesTable!=null) filesTable.destroy()
-        filesTable = $("#file-list").DataTable( {
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-            "scrollX": true,
-            "columnDefs": [  { "targets": [0], "searchable": false, "orderable": false, "visible": true}],
-            "order": [[ 1, "asc" ]],
-            "dom":"lfrtpi",
-            "autoWidth" : false
-        });
-        $(linksTable).each(function() {
-            this.destroy();
-        });
-        linksTable=[];
-        $(".link-widget").each( function(){
-            linksTable.push($(this).DataTable( {
+        if (filesTable == null) {
+            filesTable = $("#file-list").DataTable({
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                "columnDefs": [{"targets": [0], "searchable": false, "orderable": false, "visible": true}],
+                "order": [[1, "asc"]],
+                "dom": "rlftpi",
+                "scrollX" : "100%",
+                "processing": true,
+                "deferRender": true
+            });
+        } else {
+            filesTable.columns.adjust().draw();
+        }
+
+        if (linksTable == null) {
+            linksTable = [];
+            $(".link-widget").each(function () {
+                linksTable.push($(this).DataTable({
                         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-                        "scrollX": true,
-                        "order": [[ 0, "asc" ]],
-                        "dom":"lfrtpi",
-                        "autoWidth" : false
+                        "order": [[0, "asc"]],
+                        "dom": "lfrtpi"
                     }
-                )
-            );
-        });
+                    )
+                );
+            });
+        } else {
+            $(linksTable).each(function() {
+                this.columns.adjust().draw();
+            });
+        }
+
         $(".list-content").show()
         $(".list-loader").hide();
     }
@@ -264,7 +269,7 @@ var linksTable = [];
         $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
         $(this).attr('title', $(this).attr('data-icon')=='u' ? 'Click to expand' : 'Click to collapse')
         $("table.dataTable tbody td a").css("max-width", $(this).attr('data-icon')=='u' ? '200px' : '600px')
-        redrawTables();
+        redrawTables()
     });
 
 })(window.jQuery);

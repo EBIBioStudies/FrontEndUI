@@ -343,7 +343,7 @@
         <xsl:param name="pAccession"/>
 
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
-        <table class="stripe compact hover file-list" cellspacing="0" width="100%" id="{$elementId}" >
+        <table class="stripe compact hover file-list" style=" width: 100% " cellspacing="0" id="{$elementId}" >
             <thead>
                 <tr>
                     <xsl:if test="$elementId='file-list'">
@@ -382,7 +382,8 @@
                             <xsl:if test="$isImage">
                                 <a href="{$pBasePath}/files/{$pAccession}/{$vName}"  target="_blank"  data-name="{$vName}" class="file-link">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vName)"/>
-                                <span class="thumbnail icon icon-functional" data-icon="4"></span>
+                                    <span class="thumbnail icon icon-functional" data-icon="4"></span>
+                                    <div class="thumbnail-div"><img class="thumbnail-loader" src="{$pBasePath}/assets/images/ajax-loader.gif"/><img class="thumbnail-image"/></div>
                                 </a>
                             </xsl:if>
                         </td>

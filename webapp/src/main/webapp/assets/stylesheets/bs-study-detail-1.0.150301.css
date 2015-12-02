@@ -116,7 +116,9 @@
 
 .list-content{
     display: none;
+    width: 100%
 }
+
 .list-loader{
     color: #999;
 }
@@ -213,7 +215,7 @@ a.file-link {
 }
 
 .thumbnail-loader {
-    display: none;
+    visibility: hidden;
 }
 
 .thumbnail-image {
@@ -222,6 +224,8 @@ a.file-link {
     border: 1px solid #888;
     box-shadow: 3px 3px 5px #AAA;
     background-color: white;
+    position:absolute;
+    float:right;
     z-index: 1;
 }
 
@@ -278,7 +282,7 @@ input.link-filter {
 }
 
 input.link-filter + label > span:before {
-    content : '✗';
+    content : '\2717';
     padding-right:3px;
     font-size:14px;
 }
@@ -290,7 +294,7 @@ input.link-filter + label > span {
 }
 
 input.link-filter:checked + label > span:before {
-    content : '✓';
+    content : '\2713';
     font-size:14px;
     padding-right:4px;
 }
@@ -343,7 +347,9 @@ ul.recommendations li{
     content: ']';
 }
 
-
+.table-loader {
+    display:none;
+}
 
 
 
