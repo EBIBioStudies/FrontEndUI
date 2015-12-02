@@ -220,7 +220,7 @@ public class Studies extends ApplicationComponent  {
         StringBuilder sb = new StringBuilder("<pmdocument><submissions>");
         String deleteAccession = null;
         for (Source node:submissions) {
-            deleteAccession =  (this.saxon.evaluateXPath((NodeInfo) node, "@delete").size() > 0)
+            deleteAccession =  (this.saxon.evaluateXPath((NodeInfo) node, "submission/@delete").size() > 0)
                 ? this.saxon.evaluateXPath((NodeInfo) node, "@acc").get(0).getStringValue()
                 : null;
             if (deleteAccession==null) {
