@@ -32,13 +32,13 @@
         <interface.application.pref.feedback.recipients>awais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
         <interface.application.pref.remind.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
 
-        <interface.application.pref.studies.source.location>/nfs/public/rw/fg/biostudies/xml</interface.application.pref.studies.source.location>
+        <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/prod/adm/</interface.application.pref.studies.source.location>
         <interface.application.pref.studies.reload.schedule>0 0 6 * * ?</interface.application.pref.studies.reload.schedule>
 
         <interface.application.pref.efo.update.schedule>0 0 1 ? * SUN</interface.application.pref.efo.update.schedule>
 
         <interface.application.pref.studies.ftp.location>/nfs/ftp/pub/databases/biostudies/ftptemp</interface.application.pref.studies.ftp.location>
-        <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/dev/adm/submission</interface.application.pref.studies.files.location>
+        <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/prod/adm/submission</interface.application.pref.studies.files.location>
         <interface.application.pref.studies.ftp.url>ftp://ftp.ebi.ac.uk/pub/databases/biostudies/ftptemp/</interface.application.pref.studies.ftp.url>
         <interface.application.pref.studies.files.list-all>find ${interface.application.pref.studies.files.location} -regextype posix-egrep -mindepth 1 -maxdepth 3 -not -iname ".*" | grep 'Files' | tr "\n" "\0" | xargs -0 ls -L -dl -Q --time-style=long-iso</interface.application.pref.studies.files.list-all>
 
