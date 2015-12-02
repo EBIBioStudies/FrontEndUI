@@ -40,7 +40,7 @@
                     <xsl:with-param name="pName" select="'Released on'"/>
                     <xsl:with-param name="pContent">
                         <releasedate>
-                            <xsl:value-of select="(ae:formatDateGoogle(releasedate))"/>
+                            <xsl:value-of select="(ae:formatDateGoogle(ae:unixTimeToDate(@releaseTime)))"/>
                         </releasedate>
                     </xsl:with-param>
                     <xsl:with-param name="pClass" select="('left')"/>
