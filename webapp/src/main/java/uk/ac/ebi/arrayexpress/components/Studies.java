@@ -221,7 +221,7 @@ public class Studies extends ApplicationComponent  {
         String deleteAccession = null;
         for (Source node:submissions) {
             deleteAccession =  (this.saxon.evaluateXPath((NodeInfo) node, "submission/@delete").size() > 0)
-                ? this.saxon.evaluateXPath((NodeInfo) node, "@acc").get(0).getStringValue()
+                ? this.saxon.evaluateXPath((NodeInfo) node, "submission/@acc").get(0).getStringValue()
                 : null;
             if (deleteAccession==null) {
                 count++;
