@@ -25,10 +25,14 @@ var linksTable = null;
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
         // capture hover before datatable is rendered
-        $(".file-link").on('mouseenter',function() { showThumbnail($(this)); });
-        $(".file-link").on('mouseleave', function() { hideThumbnail($(this)); });
-        $(".file-link").prev().on('mouseenter',function() { showThumbnail($(this).next()); });
-        $(".file-link").prev().on('mouseleave', function() { hideThumbnail($(this).next()); });
+        $(".file-link").hover(
+            function () {showThumbnail($(this));},
+            function () {hideThumbnail($(this));}
+        );
+        $(".file-link").prev().hover(
+            function () {showThumbnail($(this).next());},
+            function () {hideThumbnail($(this).next());}
+        );
 
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {
@@ -142,6 +146,7 @@ var linksTable = null;
             }
             linksTable[$(this).data('position')-1].column(1).search(filters.join('|'),true, false).draw()
         });
+
     });
 
     function showThumbnail(fileLink) {
@@ -151,12 +156,12 @@ var linksTable = null;
             $(".thumbnail-image", $(fileLink)).attr("src",($(fileLink).data('thumbnail')));
             $(".thumbnail-loader", $(fileLink)).show();
         } else {
-            $(".thumbnail-image", $(fileLink)).fadeIn("fast");
+            $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 1});
         }
         $(".thumbnail-image", $(fileLink)).one("load",function(){
             $(this).css({"position":"absolute", "max-width":"150px"})
             if($(this).data("isFocused")) {
-                $(this).fadeIn("fast");
+                $(this).stop().animate({opacity: 1});
             }
             $(".thumbnail-loader",$(this).parent()).css('visibility','hidden');
             $(this).parent().parent().data("loaded",true);
@@ -164,7 +169,7 @@ var linksTable = null;
     }
 
     function hideThumbnail(fileLink) {
-        $(".thumbnail-image", $(fileLink)).hide();
+        $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 0});
         $(".thumbnail-loader", $(fileLink)).css('visibility','hidden');
         $(".thumbnail-image", $(fileLink)).data('isFocused', false);
     }
@@ -210,13 +215,11 @@ var linksTable = null;
     function redrawTables() {
         if (filesTable == null) {
             filesTable = $("#file-list").DataTable({
-                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
                 "columnDefs": [{"targets": [0], "searchable": false, "orderable": false, "visible": true}],
                 "order": [[1, "asc"]],
                 "dom": "rlftpi",
-                "scrollX" : "100%",
-                "processing": true,
-                "deferRender": true
+                "scrollX" : "100%"
             });
         } else {
             filesTable.columns.adjust().draw();
@@ -226,11 +229,11 @@ var linksTable = null;
             linksTable = [];
             $(".link-widget").each(function () {
                 linksTable.push($(this).DataTable({
-                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
                         "order": [[0, "asc"]],
-                        "dom": "lfrtpi"
-                    }
-                    )
+                        "dom": "lfrtpi",
+                        "scrollX" : "100%"
+                    })
                 );
             });
         } else {

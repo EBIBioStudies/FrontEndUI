@@ -18,14 +18,16 @@
 (function($, undefined) {
     if($ == undefined) throw "jQuery not loaded";
     $(function() {
-        $.getJSON( contextPath + "/servlets/query/-/home/json?type=Study", function( data ) {
+        $.getJSON( contextPath + "/servlets/query/-/home/json?type=Study&fo=1&pagesize=5", function( data ) {
             $('#studyCount').text(data.studies.total + (data.studies.total==1 ? ' study' : ' studies') );
-            $.each(data.studies.study.slice(0, 5), function(i,v) {
-                $('#latestList').append('<li><a href="studies/'+ v.accession+'">'+ v.title
-                    +'</a><span class="browse-study-accession">'+v.accession+'</span></li>')
-            });
-            $('#studyCountStats').fadeIn();
-            $('#latest').fadeIn();
+            if (data.studies.study) {
+                $.each(data.studies.study.slice(0, 5), function (i, v) {
+                    $('#latestList').append('<li><a href="studies/' + v.accession + '">' + v.title
+                        + '</a><span class="browse-study-accession">' + v.accession + '</span></li>')
+                });
+                $('#studyCountStats').fadeIn();
+                $('#latest').fadeIn();
+            }
         });
         $.getJSON( contextPath + "/servlets/query/-/home/json?type=Project", function( data ) {
             if (data.studies.total>0) {

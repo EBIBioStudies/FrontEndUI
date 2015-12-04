@@ -22,7 +22,9 @@ import net.sf.saxon.pattern.NameTest;
 import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.type.Type;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queries.mlt.MoreLikeThis;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -46,10 +48,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Querier {
 
@@ -178,8 +177,7 @@ public class Querier {
                 ScoreDoc [] scoreDocs = hits.scoreDocs;
                 for (int i = from - 1; i < to; i++) {
                     try {
-                        NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class)
-                                .buildDocument(leafReader.document(scoreDocs[i].doc).get("xml"));
+                        NodeInfo nodeInfo = getNodeInfo(leafReader.document(scoreDocs[i].doc), params);
                         if(nodeInfo!=null) matchingNodes.add(nodeInfo);
                     } catch (SaxonException e) {
                         e.printStackTrace();
@@ -194,6 +192,25 @@ public class Querier {
 
             return matchingNodes;
         }
+    }
+
+    private NodeInfo getNodeInfo(Document doc, Map<String, String[]> params) throws SaxonException {
+        NodeInfo nodeInfo = null;
+        if (!params.containsKey("fo")) {
+            nodeInfo= Application.getAppComponent(SaxonEngine.class).buildDocument(doc.get("xml"));
+        } else {
+            StringBuffer sb = new StringBuffer("<study>");
+            for (IndexableField field : doc.getFields()) {
+                String fieldName = field.name();
+                if (fieldName.equalsIgnoreCase("xml") || fieldName.equalsIgnoreCase("keywords")) continue;
+                sb.append("<").append(fieldName).append(">");
+                sb.append(StringEscapeUtils.escapeXml11(field.stringValue()));
+                sb.append("</").append(fieldName).append(">");
+            }
+            sb.append("</study>");
+            nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(sb.toString());
+        }
+        return nodeInfo;
     }
 
     private void addProjectParameters(Map<String, String[]> params, IndexReader reader, IndexSearcher searcher) throws ParseException, IOException, SaxonException {

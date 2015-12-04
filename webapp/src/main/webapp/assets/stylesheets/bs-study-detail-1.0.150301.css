@@ -219,7 +219,7 @@ a.file-link {
 }
 
 .thumbnail-image {
-    display: none;
+    opacity: 0;
     padding:2px;
     border: 1px solid #888;
     box-shadow: 3px 3px 5px #AAA;
