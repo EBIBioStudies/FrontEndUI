@@ -21,9 +21,13 @@ var linksTable = null;
     if($ == undefined)
         throw "jQuery not loaded";
 
+    var selectedFilesCount = 0;
+    var totalRows = $("#file-list tbody tr").length;
+
     $(function() {
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
+
         // capture hover before datatable is rendered
         $(".file-link").hover(
             function () {showThumbnail($(this));},
@@ -48,7 +52,7 @@ var linksTable = null;
 
 
         // handle file selection
-        $("#file-list tbody").on( 'click', 'tr', function () {
+        /*$("#file-list tbody").on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
             if ( $(this).hasClass('selected')) {
                 $('input[type="checkbox"]',$(this)).attr('checked','checked');
@@ -56,12 +60,12 @@ var linksTable = null;
                 $('input[type="checkbox"]',$(this)).removeAttr('checked');
             }
             updateSelectedFiles();
-        });
+        });*/
 
 
         $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
             $(this).toggleClass('selected');
-            updateSelectedFiles();
+            updateSelectedFiles($(this).hasClass('selected') ? 1: -1);
         });
 
         $("#file-list tbody tr td a").on( 'click', function () {
@@ -81,11 +85,13 @@ var linksTable = null;
             if (!isChecked) {
                 $('input[type="checkbox"]', filesTable.cells().nodes()).removeAttr('checked');
                 $('input[type="checkbox"]', filesTable.cells().nodes()).parent().parent().removeClass('selected');
+                selectedFilesCount = 0;
             } else {
                 $('input[type="checkbox"]', filesTable.cells().nodes()).attr('checked', 'checked');
                 $('input[type="checkbox"]', filesTable.cells().nodes()).parent().parent().addClass('selected');
+                selectedFilesCount = totalRows;
             }
-            updateSelectedFiles();
+            updateSelectedFiles(0);
         });
 
         $(window).resize(function () {
@@ -119,7 +125,7 @@ var linksTable = null;
         // draw the main file table
         redrawTables();
         redrawTables(); // needed to adjust the column width. TODO: Find a better solution
-        updateSelectedFiles();
+        updateSelectedFiles(0);
 
         // draw subsection and hide them
         $(".indented-section").parent().prev().prepend('<span class="toggle-section icon icon-functional padded-gray-icon" data-icon="u" title="Click to expand"/>')
@@ -192,20 +198,24 @@ var linksTable = null;
         $(submissionForm).submit();
     }
 
-    function updateSelectedFiles()
+    function updateSelectedFiles(inc)
     {
+
         if (!filesTable || !filesTable.rows() || !filesTable.rows().eq(0) ) return;
-        var totalRows = filesTable.rows().eq(0).length;
-        var selectedRows = $('input:checked', filesTable.cells().nodes()).length;
-        $("#selected-file-text").text( (selectedRows == 0 ? 'No ' : selectedRows) +' file'+(selectedRows>1 ? 's':'')+' selected');
-        if (selectedRows==0) {
+        selectedFilesCount += inc;
+        $("#selected-file-text").text( (selectedFilesCount == 0
+                ? 'No ' : selectedFilesCount)
+                +' file'+(selectedFilesCount>1 ? 's':'')+' selected');
+        if (selectedFilesCount==0) {
             $('#download-selected-files').hide();
         } else {
             $('#download-selected-files').show();
-            $('#download-selected-files').text('Download' + (selectedRows==2 ? ' both' : selectedRows>1 ? ' all '+selectedRows : ''));
+            $('#download-selected-files').text('Download' + (selectedFilesCount==2
+                    ? ' both'
+                    : selectedFilesCount>1 ? ' all '+selectedFilesCount : ''));
         }
 
-        if (selectedRows==totalRows)
+        if (selectedFilesCount==totalRows)
             $("#select-all-files").attr('checked', 'checked');
         else
             $("#select-all-files").removeAttr('checked');
