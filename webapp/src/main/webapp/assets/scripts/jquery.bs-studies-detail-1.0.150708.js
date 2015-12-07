@@ -128,17 +128,17 @@ var linksTable = null;
         updateSelectedFiles(0);
 
         // draw subsection and hide them
-        $(".indented-section").parent().prev().prepend('<span class="toggle-section icon icon-functional padded-gray-icon" data-icon="u" title="Click to expand"/>')
+        $(".indented-section").parent().prev().prepend('<span class="toggle-section fa fa-expand fa-icon" title="Click to expand"/>')
         $(".indented-section").hide();
 
         $('.toggle-section').parent().css('cursor','pointer');
         $('.toggle-section').parent().on('click', function() {
             var indented_section = $(this).next().children().first();
             if ( indented_section.css('display') == 'none') {
-                $(this).children().first().attr('data-icon','w');
+                $(this).children().first().toggleClass('fa-compress').toggleClass('fa-expand');
                 indented_section.show();
             } else {
-                $(this).children().first().attr('data-icon','u');
+                $(this).children().first().toggleClass('fa-compress').toggleClass('fa-expand');
                 indented_section.hide();
             }
         })
@@ -278,8 +278,8 @@ var linksTable = null;
 
     $('#right-column-expander').click( function() {
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
-        $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
-        $(this).attr('title', $(this).attr('data-icon')=='u' ? 'Click to expand' : 'Click to collapse')
+        $(this).toggleClass('fa-compress').toggleClass('fa-expand');
+        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to collapse')
         $("table.link-widget tbody td a").css("max-width", $(this).attr('data-icon')=='u' ? '200px' : '600px')
         redrawTables()
     });

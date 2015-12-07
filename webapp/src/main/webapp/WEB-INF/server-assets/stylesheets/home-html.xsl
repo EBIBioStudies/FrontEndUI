@@ -55,7 +55,7 @@
         <xsl:variable name="vNews" select="doc('news.xml')"/>
         -->
         <section class="alpha intro grid_24" id="primary">
-            <h2><img id="logo-icon" src="{$context-path}/assets/images/icon.png"/><span id="tagline">BioStudies – database of biological
+            <h2><span id="tagline">BioStudies – database of biological
                 studies</span>
             </h2>
             <p class="justify">The BioStudies database holds descriptions of biological studies, links to data

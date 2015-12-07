@@ -117,6 +117,10 @@
                     <xsl:call-template name="study-status">
                         <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
                     </xsl:call-template>
+                    <xsl:call-template name="study-download">
+                        <xsl:with-param name="pBasePath" select="$context-path"/>
+                        <xsl:with-param name="pAccession" select="$vAccession"/>
+                    </xsl:call-template>
                     <div class="persist-header">
                         <h4 id="ae-detail-title">
                             <xsl:call-template name="highlight">
@@ -161,7 +165,7 @@
                 </div>
             </div>
             <div id="ae-detail-right-column">
-                <span class="icon icon-functional padded-blue-icon" data-icon="u" id="right-column-expander" title="Click to expand"/>
+                <span class="fa fa-expand fa-icon fa-icon-large" id="right-column-expander" title="Click to expand"/>
                 <xsl:choose>
                     <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0 and search:getQueryInfoParameter($queryid,'similarAccessions')=''">
                         <xsl:value-of select="'No data'"/>

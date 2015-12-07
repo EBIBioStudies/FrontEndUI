@@ -43,27 +43,34 @@ public class FileDownloadServlet extends BaseDownloadServlet {
 
         try {
             String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
-            if (1 == requestArgs.length) { // name only passed
+            if (requestArgs.length == 1) { // name only passed
                 name = requestArgs[0];
-            } else if (2 == requestArgs.length) { // accession/name passed
+            } else if (requestArgs.length == 2) { // accession/name passed
                 accession = requestArgs[0];
                 name = requestArgs[1];
             }
 
-            file = getSingleFile(request, response, relativePath, name);
-        } catch (DownloadServletException x) {
-            throw x;
+            logger.info("Requested download of [" + name + "], path [" + relativePath + "]");
+            Files files = getComponent(Files.class);
+            File downloadFile = new File(files.getRootFolder(), relativePath+ "/Files/" +name);
+
+            if (downloadFile.exists()) {
+                file = new RegularDownloadFile(downloadFile);
+            } else if (name.equalsIgnoreCase(accession+".json") || name.equalsIgnoreCase(accession+".xml") || name.equalsIgnoreCase(accession+".pagetab.tsv") ) {
+                file = new RegularDownloadFile(new File(files.getRootFolder(), relativePath+ "/" +name));
+            } else {
+                throw new DownloadServletException("Could not open "+ downloadFile.getAbsolutePath() );
+            }
+
+            // Check if trying to download a src file
+            if (file==null) {
+                if (name.equalsIgnoreCase(accession+".json")) {
+                    file = new RegularDownloadFile(new File(files.getRootFolder(), relativePath+ "/" +name));
+                }
+            }
         } catch (Exception x) {
             throw new DownloadServletException(x);
         }
-        return file;
-    }
-
-    private IDownloadFile getSingleFile(HttpServletRequest request, HttpServletResponse response, String relativePath, String name) throws IOException, DownloadServletException {
-        IDownloadFile file;
-        logger.info("Requested download of [" + name + "], path [" + relativePath + "]");
-        Files files = getComponent(Files.class);
-        file = new RegularDownloadFile(new File(files.getRootFolder(), relativePath+"/Files/"+name));
         return file;
     }
 

@@ -62,7 +62,22 @@
         </xsl:choose>
 
     </xsl:template>
-
+    <xsl:template name="study-download">
+        <xsl:param name="pBasePath"/>
+        <xsl:param name="pAccession"/>
+        <div id="download-source">
+            <a href="{$pBasePath}/files/{$pAccession}/{$pAccession}.json" target="_blank" title="Download Study as JSON"
+               class="icon icon-functional source-icon source-icon-json" data-icon="=">JSON
+            </a>
+            <a href="{$pBasePath}/files/{$pAccession}/{$pAccession}.xml" target="_blank" title="Download Study as XML"
+               class="icon icon-functional source-icon source-icon-xml" data-icon="=">XML
+            </a>
+            <a href="{$pBasePath}/files/{$pAccession}/{$pAccession}.pagetab.tsv" target="_blank"
+               title="Download Study as PageTab" class="icon icon-functional source-icon source-icon-pagetab"
+               data-icon="=">PageTab
+            </a>
+        </div>
+    </xsl:template>
     <xsl:template name="study-attributes">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
@@ -88,7 +103,7 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:for-each select="$pNodes">
-            <xsl:variable name="vSectionTitle" select="if (fn:exists(attributes/attribute[lower-case(@name)='title'])) then attributes/attribute[lower-case(@name)='title']/value else if (exists(attribute[lower-case(@name)='title'])) then attribute[lower-case(@name)='title'] else @type"/>
+            <xsl:variable name="vSectionTitle" select="if (fn:exists(attributes/attribute[lower-case(@name)='title'])) then attributes/attribute[lower-case(@name)='title']/value else if (exists(attribute[lower-case(@name)='title'])) then attribute[lower-case(@name)='title'] else if (exists(@type)) then @type else 'Section'"/>
             <xsl:call-template name="section">
                 <xsl:with-param name="pName" select="$vSectionTitle"/>
                 <xsl:with-param name="pContent">

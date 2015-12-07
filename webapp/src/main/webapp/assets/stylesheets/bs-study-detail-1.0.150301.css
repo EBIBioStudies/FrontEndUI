@@ -77,6 +77,7 @@
 
 #ae-detail-release-date {
     color: #999;
+    float:left;
 }
 
 #ae-detail-title {
@@ -104,10 +105,15 @@
     color: #AAA;
 }
 
-.padded-blue-icon {
+.fa-icon {
     margin-right:5px;
-    color: #466B7D !important;
+    color: #6BA8C5 !important;
 }
+
+.fa-icon-large {
+    font-size: 16px;
+}
+
 
 .section-files-icon {
     margin-right:5px;
@@ -351,5 +357,34 @@ ul.recommendations li{
     display:none;
 }
 
+.source-icon {
+    font-size: 8pt;
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 3px;
+}
 
+.source-icon-json:before {
+    font-size: 5pt;
+}
 
+#download-source {
+    float: right;
+}
+
+.source-icon-json:before, .source-icon-json {
+    color: #FFFFFF !important;
+    background-color: #7882CE;
+    border: none !important;
+}
+
+.source-icon-xml:before, .source-icon-xml {
+    color: #FFFFFF !important;
+    background-color: #E4753D;
+    border: none !important;
+}
+.source-icon-pagetab:before, .source-icon-pagetab {
+    color: #FFFFFF !important;
+    background-color: #2BA35F;
+    border: none !important;
+}

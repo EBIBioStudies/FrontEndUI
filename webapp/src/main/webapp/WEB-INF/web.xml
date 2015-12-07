@@ -18,11 +18,6 @@
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.QueryServlet</servlet-class>
     </servlet>
     <servlet>
-        <description>Flat File Transformation Servlet</description>
-        <servlet-name>FlatFileTransformationServlet</servlet-name>
-        <servlet-class>uk.ac.ebi.arrayexpress.servlets.FlatFileTransformationServlet</servlet-class>
-    </servlet>
-    <servlet>
         <description>File Download Servlet</description>
         <servlet-name>FileDownloadServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.FileDownloadServlet</servlet-class>
@@ -78,10 +73,6 @@
     <servlet-mapping>
         <servlet-name>QueryServlet</servlet-name>
         <url-pattern>/servlets/query/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FlatFileTransformationServlet</servlet-name>
-        <url-pattern>/servlets/fftransform/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ZipDownloadServlet</servlet-name>
