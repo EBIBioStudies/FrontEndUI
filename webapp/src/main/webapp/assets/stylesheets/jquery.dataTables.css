@@ -77,8 +77,11 @@ table.dataTable tbody td a{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width:200px;
+  max-width: 100%;
   vertical-align: middle;
+}
+table.link-widget tbody td a {
+  max-width: 200px;
 }
 
 table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {

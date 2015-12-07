@@ -40,13 +40,13 @@ var linksTable = null;
 
         // create all sub-section file tables and hide them
         $(".file-list:not(#file-list)").DataTable( {
-            "scrollX": true,
-            "dom":"t"
+            "dom":"t",
+            "scrollX" : "100%"
         });
         $(".ae-section-files").hide();
         $(".link-list:not(.link-widget)").DataTable( {
-            "scrollX": true,
-            "dom":"t"
+            "dom":"t",
+            "scrollX" : "100%"
         });
         $(".ae-section-links").hide();
 
@@ -240,8 +240,7 @@ var linksTable = null;
             $(".link-widget").each(function () {
                 linksTable.push($(this).DataTable({
                         "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-                        "order": [[0, "asc"]],
-                        "dom": "lfrtpi",
+                        "dom": "rlftpi",
                         "scrollX" : "100%"
                     })
                 );
@@ -281,7 +280,7 @@ var linksTable = null;
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
         $(this).attr('data-icon', $(this).attr('data-icon')=='u' ? 'w': 'u' );
         $(this).attr('title', $(this).attr('data-icon')=='u' ? 'Click to expand' : 'Click to collapse')
-        $("table.dataTable tbody td a").css("max-width", $(this).attr('data-icon')=='u' ? '200px' : '600px')
+        $("table.link-widget tbody td a").css("max-width", $(this).attr('data-icon')=='u' ? '200px' : '600px')
         redrawTables()
     });
 

@@ -88,7 +88,7 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:for-each select="$pNodes">
-            <xsl:variable name="vSectionTitle" select="if (fn:exists(attributes/attribute[lower-case(@name)='title'])) then attributes/attribute[lower-case(@name)='title']/value else attribute[lower-case(@name)='title']"/>
+            <xsl:variable name="vSectionTitle" select="if (fn:exists(attributes/attribute[lower-case(@name)='title'])) then attributes/attribute[lower-case(@name)='title']/value else if (exists(attribute[lower-case(@name)='title'])) then attribute[lower-case(@name)='title'] else @type"/>
             <xsl:call-template name="section">
                 <xsl:with-param name="pName" select="$vSectionTitle"/>
                 <xsl:with-param name="pContent">
