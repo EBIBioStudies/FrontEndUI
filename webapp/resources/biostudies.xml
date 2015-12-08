@@ -12,6 +12,9 @@
             </smtp>
         </reports>
         <restart>${interface.application.pref.restart.command}</restart>
+        <admin>
+            <allow-list>${interface.application.pref.admin.allow-list}</allow-list>
+        </admin>
     </app>
     <bs>
         <feedback>

@@ -26,12 +26,14 @@ import uk.ac.ebi.arrayexpress.components.Studies;
 import uk.ac.ebi.arrayexpress.components.Thumbnails;
 import uk.ac.ebi.arrayexpress.utils.RegexHelper;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
-import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ControlServlet extends ApplicationServlet {
     private static final long serialVersionUID = -4509580274404536983L;
@@ -41,6 +43,21 @@ public class ControlServlet extends ApplicationServlet {
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
+        // Allow only ebi hosts and 127.0.0.1 to call the admin functions
+        // Doing it here because RemoteHostFilter doesn't seem to be working properly
+        // and we don't have access to the Apache server
+        try {
+            String hn = InetAddress.getByName(request.getRemoteHost()).getCanonicalHostName();
+            String patternString = getPreferences().getString("app.admin.allow-list");
+            Pattern allow = Pattern.compile(patternString);
+            Matcher matcher = allow.matcher(hn);
+            if(!matcher.matches()) {
+                return false;
+            }
+        } catch (Exception ex) {
+            return  false;
+        }
+
         return (requestType == RequestType.GET || requestType == RequestType.POST);
     }
 

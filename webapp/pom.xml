@@ -48,6 +48,7 @@
         <interface.application.google.analytics/>
         <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
         <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-dev/checkAccess</interface.application.pref.users.authentication.url>
+        <interface.application.pref.admin.allow-list>127\.0\.0\.1|.*\.ebi\.ac\.uk</interface.application.pref.admin.allow-list>
     </properties>
     <profiles>
         <profile>
