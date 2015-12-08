@@ -358,10 +358,14 @@ ul.recommendations li{
 }
 
 .source-icon {
-    font-size: 8pt;
-    padding: 1px 4px;
+    font-size: 9pt;
+    padding: 0px 5px 1px 5px;
     border-radius: 3px;
     margin-left: 3px;
+    font-family: Consolas, monospace,'Courier New';
+    text-align: center;
+    display: inline-block;
+    box-shadow: 1px 1px 3px #AAA;
 }
 
 .source-icon-json:before {
