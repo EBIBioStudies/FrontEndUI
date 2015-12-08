@@ -162,11 +162,13 @@ var linksTable = null;
             $(".thumbnail-image", $(fileLink)).attr("src",($(fileLink).data('thumbnail')));
             $(".thumbnail-loader", $(fileLink)).show();
         } else {
+            $(".thumbnail-image", $(fileLink)).css('visibility','visible');
             $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 1});
         }
         $(".thumbnail-image", $(fileLink)).one("load",function(){
             $(this).css({"position":"absolute", "max-width":"150px"})
             if($(this).data("isFocused")) {
+                $(this).css('visibility','visible');
                 $(this).stop().animate({opacity: 1});
             }
             $(".thumbnail-loader",$(this).parent()).css('visibility','hidden');
@@ -176,6 +178,7 @@ var linksTable = null;
 
     function hideThumbnail(fileLink) {
         $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 0});
+        $(".thumbnail-image", $(fileLink)).css('visibility','hidden');
         $(".thumbnail-loader", $(fileLink)).css('visibility','hidden');
         $(".thumbnail-image", $(fileLink)).data('isFocused', false);
     }
