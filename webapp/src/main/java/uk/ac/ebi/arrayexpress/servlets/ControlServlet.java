@@ -47,13 +47,16 @@ public class ControlServlet extends ApplicationServlet {
         // Doing it here because RemoteHostFilter doesn't seem to be working properly
         // and we don't have access to the Apache server
         try {
-            String hn = InetAddress.getByName(request.getRemoteHost()).getCanonicalHostName();
+            String ip = request.getRemoteHost();
+            String hn = InetAddress.getByName(ip).getCanonicalHostName();
             String patternString = getPreferences().getString("app.admin.allow-list");
             Pattern allow = Pattern.compile(patternString);
             Matcher matcher = allow.matcher(hn);
             if(!matcher.matches()) {
+                logger.warn("Rejecting admin URL request from {} {}",ip,hn);
                 return false;
             }
+            logger.warn("Accepting admin URL request from {} {}",ip,hn);
         } catch (Exception ex) {
             return  false;
         }
