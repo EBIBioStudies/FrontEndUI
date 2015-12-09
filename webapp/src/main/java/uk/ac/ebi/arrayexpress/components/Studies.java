@@ -199,7 +199,7 @@ public class Studies extends ApplicationComponent  {
                         logger.info("Processed {} submissions", count-1);
                         logger.info("Queued {} submissions for processing", submissionQueue.size());
                         try {
-                            if (count > 410999 && count <412000) processSubmissionQueue(indexer, submissionQueue);
+                            processSubmissionQueue(indexer, submissionQueue);
                         } catch (Exception ie) {
                             logger.error("Indexer threw an exception", ie);
                             logger.debug("Trying to index the rest of the submissions");
