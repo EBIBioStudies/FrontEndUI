@@ -365,7 +365,6 @@ ul.recommendations li{
     font-family: Consolas, monospace,'Courier New';
     text-align: center;
     display: inline-block;
-    box-shadow: 1px 1px 3px #AAA;
 }
 
 .source-icon-json:before {

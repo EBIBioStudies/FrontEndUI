@@ -196,8 +196,14 @@ public class Studies extends ApplicationComponent  {
                     writer.close();
                     submissionQueue.add(saxon.buildDocument(buffer.toString()));
                     if (++count % 1000 ==0 ) {
+                        logger.info("Processed {} submissions", count-1);
                         logger.info("Queued {} submissions for processing", submissionQueue.size());
-                        processSubmissionQueue(indexer, submissionQueue);
+                        try {
+                            if (count > 410999 && count <412000) processSubmissionQueue(indexer, submissionQueue);
+                        } catch (Exception ie) {
+                            logger.error("Indexer threw an exception", ie);
+                            logger.debug("Trying to index the rest of the submissions");
+                        }
                         submissionQueue.clear();
                     }
                     writer = null;
@@ -227,7 +233,7 @@ public class Studies extends ApplicationComponent  {
                 count++;
                 sb.append(saxon.serializeDocument(node, true));
             }
-            if (count % 1000==0 || deleteAccession!=null) {
+            if (count % 10000==0 || deleteAccession!=null) {
                 sb.append("</submissions></pmdocument>");
                 NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
                 NodeInfo updateXml = this.saxon.transform(

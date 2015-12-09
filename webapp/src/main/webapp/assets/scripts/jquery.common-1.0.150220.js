@@ -319,8 +319,8 @@
         var queryString = $.query.set("sortby", colname).set("sortorder", newOrder).toString();
         $column.attr("data-url",""+window.location.pathname + queryString);
         if (colname === sortby) {
-            $("a.aw-icon-angle-" + (sortorder=="ascending" ? "down" : "up")).attr("href",window.location.pathname + queryString);
-            $("a.aw-icon-angle-" + (sortorder=="ascending" ? "up" : "down")).attr("disabled","disabled");
+            $("a.fa-angle-" + (sortorder=="ascending" ? "down" : "up")).attr("href",window.location.pathname + queryString);
+            $("a.fa-angle-" + (sortorder=="ascending" ? "up" : "down")).attr("disabled","disabled");
             $column.attr("selected","selected");
         }
 

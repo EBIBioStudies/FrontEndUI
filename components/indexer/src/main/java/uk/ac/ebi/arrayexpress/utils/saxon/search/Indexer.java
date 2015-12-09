@@ -111,7 +111,8 @@ public class Indexer {
                             } else {
                                 addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
                                 if (!"none".equalsIgnoreCase(field.docValueType)) {
-                                    d.add( new SortedDocValuesField(field.name, new BytesRef(v.getStringValue().toLowerCase())));
+                                    String value = v.getStringValue().toLowerCase();
+                                    d.add( new SortedDocValuesField(field.name, new BytesRef(value.length()<256 ? value:value.substring(0,256))));
                                 }
                             }
                             if ( field.name.equalsIgnoreCase(env.idField)) {
@@ -127,7 +128,11 @@ public class Indexer {
                 addXMLField(d, node);
                 addDocIdField(d, idValue);
                 //logger.debug("Indexing document {} = {}", env.idField, idValue);
-                w.updateDocument(new Term("id", idValue), d);
+                try {
+                    w.updateDocument(new Term("id", idValue), d);
+                } catch (Exception e) {
+                    logger.error(" Error indexing " +d);
+                }
                 indexedNodes.add((NodeInfo) node);
             }
 

@@ -160,8 +160,8 @@
                                             </xsl:if>Links</option>
                                      </select>
                                     <span id="sorting-links">
-                                        <a class="studies-browse-sort-order-left aw-icon-angle-down"/>
-                                        <a class="studies-browse-sort-order-right aw-icon-angle-up"/>
+                                        <a class="studies-browse-sort-order-left fa fa-angle-down"/>
+                                        <a class="studies-browse-sort-order-right fa fa-angle-up"/>
                                     </span>
                                 </div>
                                 <div>
