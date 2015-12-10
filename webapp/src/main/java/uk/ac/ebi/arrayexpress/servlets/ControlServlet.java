@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,16 +47,10 @@ public class ControlServlet extends ApplicationServlet {
         // Doing it here because RemoteHostFilter doesn't seem to be working properly
         // and we don't have access to the Apache server
         try {
-            Enumeration<String> h = request.getHeaderNames();
-            while (h.hasMoreElements()) {
-                String name = h.nextElement();
-                Enumeration<String> e = request.getHeaders(name);
-                System.out.println("--- "+name +" ---");
-                while (e.hasMoreElements()) {
-                    System.out.println(e.nextElement());
-                }
+            String ip = request.getHeader("X-Cluster-Client-IP");
+            if (ip==null || ip.equalsIgnoreCase("")){
+                ip = request.getHeader("X-Forwarded-For");
             }
-            String ip = request.getRemoteHost();
             String hn = InetAddress.getByName(ip).getCanonicalHostName();
             String patternString = getPreferences().getString("app.admin.allow-list");
             Pattern allow = Pattern.compile(patternString);
