@@ -18,6 +18,7 @@
 package uk.ac.ebi.arrayexpress.utils.search;
 
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
 import org.apache.lucene.search.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,15 +65,16 @@ public final class EFOQueryExpander implements IQueryExpander {
         Query result;
 
         if (query instanceof BooleanQuery) {
-            result = new BooleanQuery();
+            BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
-            BooleanClause[] clauses = ((BooleanQuery) query).getClauses();
+            List<BooleanClause> clauses = ((BooleanQuery) query).clauses();
             for (BooleanClause c : clauses) {
-                ((BooleanQuery) result).add(
+                 builder.add(
                         expand(env, queryInfo, c.getQuery())
                         , c.getOccur()
                 );
             }
+            result = builder.build();
         } else if (query instanceof PrefixQuery || query instanceof WildcardQuery) {
             // we don't expand prefix or wildcard queries yet (because there are side-effects
             // we need to take care of first
@@ -90,27 +92,29 @@ public final class EFOQueryExpander implements IQueryExpander {
 
             if (env.fields.containsKey(field) && "string".equalsIgnoreCase(env.fields.get(field).type) && env.fields.get(field).shouldExpand) {
                 EFOExpansionTerms expansionTerms = lookup.getExpansionTerms(query);
+                if (100 < expansionTerms.efo.size() + expansionTerms.synonyms.size()
+                        && !queryInfo.getParams().containsKey("expand")) {
+                    queryInfo.getParams().put("tooManyExpansionTerms", new String[]{"true"});
+                } else if (0 != expansionTerms.efo.size() || 0 != expansionTerms.synonyms.size()) {
+                    BooleanQuery.Builder boolQueryBuilder = new BooleanQuery.Builder();
 
-                if (0 != expansionTerms.efo.size() || 0 != expansionTerms.synonyms.size()) {
-                    BooleanQuery boolQuery = new BooleanQuery();
-
-                    boolQuery.add(query, BooleanClause.Occur.SHOULD);
+                    boolQueryBuilder.add(query, BooleanClause.Occur.SHOULD);
 
                     for (String term : expansionTerms.synonyms) {
                         Query synonymPart = newQueryFromString(term.trim(), field);
                         if (!queryPartIsRedundant(query, synonymPart)) {
-                            boolQuery.add(synonymPart, BooleanClause.Occur.SHOULD);
+                            boolQueryBuilder.add(synonymPart, BooleanClause.Occur.SHOULD);
                             queryInfo.addToSynonymPartQuery(synonymPart);
                         }
                     }
 
                     for (String term : expansionTerms.efo) {
                         Query expansionPart = newQueryFromString(term.trim(), field);
-                        boolQuery.add(expansionPart, BooleanClause.Occur.SHOULD);
+                        boolQueryBuilder.add(expansionPart, BooleanClause.Occur.SHOULD);
                         queryInfo.addToEfoExpansionPartQuery(expansionPart);
                     }
 
-                    return boolQuery;
+                    return boolQueryBuilder.build();
                 }
             }
         }
@@ -153,11 +157,11 @@ public final class EFOQueryExpander implements IQueryExpander {
     public Query newQueryFromString(String text, String field) {
         if (text.contains(" ")) {
             String[] tokens = text.split("\\s+");
-            PhraseQuery q = new PhraseQuery();
+            PhraseQuery.Builder builder = new PhraseQuery.Builder();
             for (String token : tokens) {
-                q.add(new Term(field, token));
+                builder.add(new Term(field, token));
             }
-            return q;
+            return builder.build();
         } else {
             return new TermQuery(new Term(field, text));
         }

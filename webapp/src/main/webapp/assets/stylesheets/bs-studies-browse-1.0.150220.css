@@ -96,3 +96,23 @@ a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
 .search-authors {
     color: #666;
 }
+
+.message {
+    display: block;
+    padding: 10px;
+    background-color: #E1EDF3;
+    margin: 0px 10px 10px 10px;
+    border: 1px solid #6BA8C5;
+    border-radius: 3px;
+}
+
+.message .fa {
+    font-size: 12pt;
+    color: #6BA8C5;
+    vertical-align: middle;
+}
+
+a.expand-search {
+    border: none;
+    padding-right:5px;
+}

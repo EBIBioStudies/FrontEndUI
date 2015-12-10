@@ -29,8 +29,8 @@
     <xsl:param name="pagesize"/>
     <xsl:param name="sortby"/>
     <xsl:param name="sortorder"/>
-
     <xsl:param name="queryid"/>
+    <xsl:param name="tooManyExpansionTerms"/>
 
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-sort-studies.xsl"/>
@@ -90,6 +90,10 @@
         <xsl:variable name="vFrom" as="xs:integer" select="if ($vFromNode) then xs:integer($vFromNode) else 0" />
         <xsl:variable name="vToNode"  select="search:getQueryInfoParameter($queryid,'to')" />
         <xsl:variable name="vTo" as="xs:integer" select="if ($vToNode) then xs:integer($vToNode) else 0" />
+        <xsl:if test="$tooManyExpansionTerms='true'" >
+            <div class="message"><i class="fa fa-info-circle"></i> You query contains a general term which has too many synonyms and more specific terms in <a href="http://www.ebi.ac.uk/efo" target="_blank">EFO</a>.
+                <a class="expand-search" href="{$context-path}/search?query={$keywords}&amp;expand"><i class="fa fa-search-plus"></i></a><a href="{$context-path}/search?query={$keywords}&amp;expand">Click here to use the fully-expanded terms.</a> (It might be a bit slow)</div>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="not($vFromNode)">
                 <xsl:call-template name="browse-error"/>
