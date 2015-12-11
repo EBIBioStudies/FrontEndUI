@@ -19,7 +19,12 @@
     if($ == undefined) throw "jQuery not loaded";
     $(function() {
         $('#ftp-link').load('',$('#zip-file-form').serialize(),function(data) {
-            $(this).wrap('<a href="'+data+'">')
+            if(data.indexOf('ftp') == 0) {
+                $(this).wrap('<a href="'+data+'">')
+            } else {
+                $(this).html('An error occured while preparing the archive. Please try again later.<br/> If the problem persists, please use the feedback form to report it.');
+            }
+
         });
      });
 })(window.jQuery);
