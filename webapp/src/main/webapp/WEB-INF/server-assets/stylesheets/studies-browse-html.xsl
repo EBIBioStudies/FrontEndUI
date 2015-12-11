@@ -91,8 +91,10 @@
         <xsl:variable name="vToNode"  select="search:getQueryInfoParameter($queryid,'to')" />
         <xsl:variable name="vTo" as="xs:integer" select="if ($vToNode) then xs:integer($vToNode) else 0" />
         <xsl:if test="$tooManyExpansionTerms='true'" >
-            <div class="message"><i class="fa fa-info-circle"></i> You query contains a general term which has too many synonyms and more specific terms in <a href="http://www.ebi.ac.uk/efo" target="_blank">EFO</a>.
-                <a class="expand-search" href="{$context-path}/search?query={$keywords}&amp;expand"><i class="fa fa-search-plus"></i></a><a href="{$context-path}/search?query={$keywords}&amp;expand">Click here to use the fully-expanded terms.</a> (It might be a bit slow)</div>
+            <div class="message"><i class="fa fa-info-circle"></i> You query contains a term which has too many synonyms and more specific phrases in <a href="http://www.ebi.ac.uk/efo" target="_blank">EFO</a>. The results shown below do not include those expanded terms. <br/>
+                <xsl:variable name="searchLink" select="if ($project!='') then concat($context-path,$projectLink,'/studies/search.html?query=',$keywords,'&amp;expand')
+                    else concat($context-path,'/search?query=',$keywords,'&amp;expand')" />
+                <a class="expand-search" href=""><i class="fa fa-search-plus"></i></a><a href="{$searchLink}">Click here to search using all the expanded terms.</a> (It might be a bit slow)</div>
         </xsl:if>
         <xsl:choose>
             <xsl:when test="not($vFromNode)">

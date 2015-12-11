@@ -98,12 +98,13 @@ a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
 }
 
 .message {
-    display: block;
+    display: table;
     padding: 10px;
     background-color: #E1EDF3;
-    margin: 0px 10px 10px 10px;
-    border: 1px solid #6BA8C5;
+    margin: 0px auto 10px auto;
+    border: 1px solid #466B7D;
     border-radius: 3px;
+    text-align: center;
 }
 
 .message .fa {
