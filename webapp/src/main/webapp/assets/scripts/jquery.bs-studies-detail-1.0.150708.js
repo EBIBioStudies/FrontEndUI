@@ -74,7 +74,7 @@ var linksTable = null;
 
         $("#download-selected-files").on( 'click', function () {
             // select all checked input boxes and get the href in the links contained in their siblings
-            var files = $.map($('a',$('input[checked]', filesTable.cells().nodes()).parent().next()), function (v) {
+            var files = $.map($('input.selected', filesTable.column(0).nodes()), function (v) {
                 return $(v).data('name');
             });
             downloadFiles(files);
