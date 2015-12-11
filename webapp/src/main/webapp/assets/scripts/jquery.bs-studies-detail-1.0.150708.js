@@ -188,9 +188,13 @@ var linksTable = null;
     function downloadFiles(files) {
         var html = '';
         if (files.length==1) {
-            html += '<form method="GET" target="_blank" action="' + ($('#project').length>0 ? '../' :'') + "../../files/" + $('.accessionNumber').text() + '/' + files[0]+'" />';
+            html += '<form method="GET" target="_blank" action="'
+                + contextPath + "/files/"
+                + $('.accessionNumber').text() + '/' + files[0]+'" />';
         } else {
-            html += '<form method="POST" target="_blank" action="'+ ($('#project').length>0 ? '../' :'') + "../../files/" + $('.accessionNumber').text() + '/zip'+location.search+'">';
+            html += '<form method="POST" target="_blank" action="'
+                + contextPath + "/files/"
+                + $('.accessionNumber').text() + '/zip'+location.search+'">';
             $(files).each( function(i,v) {
                 html += '<input type="hidden" name="files" value="'+v+'"/>'
             });
