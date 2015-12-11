@@ -27,6 +27,7 @@ public class IndexTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception{
         driver = new HtmlUnitDriver();
+        ((HtmlUnitDriver)driver).setJavascriptEnabled(true);
         baseUrl = new BSInterfaceTestApplication().getPreferences().getString("bs.test.integration.server.url");
     }
 
@@ -42,7 +43,7 @@ public class IndexTest {
 
     @Test
     public void testBrowseLink() {
-        driver.findElement(By.linkText("Browse BioStudies")).click();
+        driver.findElement(By.linkText("Browse")).click();
         assertTrue(driver.getTitle().equals("Studies < BioStudies < EMBL-EBI"));
     }
 
@@ -61,8 +62,8 @@ public class IndexTest {
         driver.get(baseUrl + "/admin/reload-xml/temp-test-study.xml");
         file.delete();
 
-        driver.get(baseUrl + "/");
-        assertEquals("1 study", driver.findElement(By.cssSelector("#content > aside > ul > li > a")).getText());
+        driver.get(baseUrl + "/studies");
+        assertEquals("1 result", driver.findElements(By.cssSelector(".ae-stats")).get(0).getText());
 
         file = new File(sourceLocation, "temp-test-study.xml");
         FileUtils.writeStringToFile(file, StringUtils.replaceOnce(sb.toString(), "<value>Test Document 0</value>", "<value>Updated Test Document 0</value>"));

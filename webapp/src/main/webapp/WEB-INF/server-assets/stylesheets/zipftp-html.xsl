@@ -24,7 +24,7 @@
                 extension-element-prefixes="fn ae search html xs"
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
-    <xsl:param name="ftpurl"/>
+    <xsl:param name="files"/>
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-date-functions.xsl"/>
 
@@ -36,20 +36,28 @@
             <xsl:with-param name="pExtraCSS"/>
             <xsl:with-param name="pBreadcrumbTrail"/>
             <xsl:with-param name="pEBISearchWidget"/>
-            <xsl:with-param name="pExtraJS"/>
+            <xsl:with-param name="pExtraJS">
+                <script src="{$context-path}/assets/scripts/jquery.bs-studies-zipftp-1.0.151211.js" type="text/javascript"/>
+            </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>
     </xsl:template>
 
     <xsl:template name="bs-content-section">
         <section class="alpha intro grid_24 omega">
-            <h3>Your download is ready.</h3>
-            <p class="center">However, the files you selected are too large to download using the browser.<br/>
-                Please use the following FTP link instead. This link will be available for 24 hours only.</p>
+            <h3>Your download is being prepared.</h3>
+            <p class="center">However, the files you selected are too large to download with your browser.<br/>
+                One the download is ready, an FTP link will appear below which you can click to start the download. <br/>
+                This link will be available for 24 hours.</p>
             <p/>
-            <p><a href="{$ftpurl}"><xsl:value-of select="$ftpurl"/></a></p>
+            <form id="zip-file-form">
+                <xsl:for-each select="$files">
+                    <input type="hidden" name="files" value="{.}"/>
+                </xsl:for-each>
+                <input type="hidden" name="dl" value="true"/>
+            </form>
+            <p id="ftp-link"><img src="{$context-path}/assets/images/ajax-loader.gif"/></p>
         </section>
-
 
     </xsl:template>
 </xsl:stylesheet>

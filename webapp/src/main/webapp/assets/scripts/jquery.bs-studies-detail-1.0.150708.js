@@ -84,11 +84,11 @@ var linksTable = null;
             var isChecked = $(this).is(':checked');
             if (!isChecked) {
                 $('input[type="checkbox"]', filesTable.cells().nodes()).removeAttr('checked');
-                $('input[type="checkbox"]', filesTable.cells().nodes()).parent().parent().removeClass('selected');
+                $('input[type="checkbox"]', filesTable.cells().nodes()).removeClass('selected');
                 selectedFilesCount = 0;
             } else {
                 $('input[type="checkbox"]', filesTable.cells().nodes()).attr('checked', 'checked');
-                $('input[type="checkbox"]', filesTable.cells().nodes()).parent().parent().addClass('selected');
+                $('input[type="checkbox"]', filesTable.cells().nodes()).addClass('selected');
                 selectedFilesCount = totalRows;
             }
             updateSelectedFiles(0);

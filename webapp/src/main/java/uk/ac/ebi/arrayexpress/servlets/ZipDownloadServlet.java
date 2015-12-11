@@ -56,7 +56,14 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
            fileSizeSum += new File(fqName).length();
         }
         boolean isLargeFile = fileSizeSum > 512*MB;  // Threshold for large files which will be available only on ftp
-
+        if (isLargeFile && request.getParameter("dl")==null) {
+            try {
+                request.getRequestDispatcher("/servlets/query/-/zipftp/html").forward(request, response);
+            } catch (Exception e) {
+                throw new DownloadServletException(e);
+            }
+            return;
+        }
         byte[] buffer = new byte[10*MB];
         try {
             fsManager = VFS.getManager();
@@ -114,8 +121,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             IDownloadFile zipfile = new RAMZipFile((FileObject) request.getAttribute("zipFile"), accession);
             if (request.getAttribute("isLargeFile")!=null) {
                 try {
-                    String referer = request.getHeader("referer");
-                    response.sendRedirect(request.getContextPath()+ "/zipftp/?ftpurl=" + getComponent(Files.class).getFtpURL()+ zipfile.getPath());
+                    response.getOutputStream().print(getComponent(Files.class).getFtpURL()+ zipfile.getPath());
                 } catch (IOException e) {
                     throw new DownloadServletException(e);
                 }
