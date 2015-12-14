@@ -74,7 +74,6 @@
                 <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/prod/adm/updates</interface.application.pref.studies.source.location>
                 <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/prod/adm/submission</interface.application.pref.studies.files.location>
                 <interface.application.pref.studies.ftp.location>/nfs/ftp/pub/databases/biostudies/ftptemp</interface.application.pref.studies.ftp.location>
-                <interface.application.pref.studies.reload.schedule>0 0/15 * * * ?</interface.application.pref.studies.reload.schedule>
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
 
                 <interface.application.pref.restart.command>/nfs/public/rw/webadmin/tomcat/bases/fg/tc-fg-biostudies-dev/restart-nowait</interface.application.pref.restart.command>
@@ -135,7 +134,6 @@
                 <interface.application.link.links_xml.url>ae-links.xml</interface.application.link.links_xml.url>
 
                 <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/dev/adm/updates</interface.application.pref.studies.source.location>
-                <interface.application.pref.studies.reload.schedule>0 0/15 * * * ?</interface.application.pref.studies.reload.schedule>
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
                 <interface.application.pref.restart.command>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/restart-nowait</interface.application.pref.restart.command>
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
