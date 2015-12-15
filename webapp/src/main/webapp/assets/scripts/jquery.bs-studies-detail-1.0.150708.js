@@ -160,7 +160,7 @@ var linksTable = null;
         if (! $(fileLink).data('thumbnail')) return;
         if (!$(fileLink).data("loaded")) {
             $(".thumbnail-image", $(fileLink)).attr("src",($(fileLink).data('thumbnail')));
-            $(".thumbnail-loader", $(fileLink)).show();
+            $(".thumbnail-loader", $(fileLink)).css('visibility','visible');
         } else {
             $(".thumbnail-image", $(fileLink)).css('visibility','visible');
             $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 1});
