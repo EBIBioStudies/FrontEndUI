@@ -183,7 +183,7 @@
                                                 </input>
                                             </label>
                                             <!-- Include some example searchterms - keep them short and few! -->
-                                            <span class="examples">Examples: <a href="#">cancer</a>,
+                                            <span class="examples">Examples: <a href="#">hyperplasia</a>,
                                                 <a href="#">PMC516016</a>
                                             </span>
                                             <xsl:if test="$project!=''">

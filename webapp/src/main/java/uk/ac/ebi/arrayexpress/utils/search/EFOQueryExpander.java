@@ -92,7 +92,7 @@ public final class EFOQueryExpander implements IQueryExpander {
 
             if (env.fields.containsKey(field) && "string".equalsIgnoreCase(env.fields.get(field).type) && env.fields.get(field).shouldExpand) {
                 EFOExpansionTerms expansionTerms = lookup.getExpansionTerms(query);
-                if (100 < expansionTerms.efo.size() + expansionTerms.synonyms.size()
+                if (1000 < expansionTerms.efo.size() + expansionTerms.synonyms.size()
                         && !queryInfo.getParams().containsKey("expand")) {
                     queryInfo.getParams().put("tooManyExpansionTerms", new String[]{"true"});
                 } else if (0 != expansionTerms.efo.size() || 0 != expansionTerms.synonyms.size()) {
