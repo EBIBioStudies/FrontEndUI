@@ -18,7 +18,7 @@
 (function($, undefined) {
     if($ == undefined) throw "jQuery not loaded";
     $(function() {
-        $.getJSON( contextPath + "/servlets/query/-/home/json?type=Study&fo=1&pagesize=5", function( data ) {
+        $.getJSON( contextPath + "/servlets/query/-/home/json?type=Study&fo=1&pagesize=5&sortby=release_date", function( data ) {
             $('#studyCount').text(data.studies.total + (data.studies.total==1 ? ' study' : ' studies') );
             if (data.studies.study) {
                 $.each(data.studies.study.slice(0, 5), function (i, v) {

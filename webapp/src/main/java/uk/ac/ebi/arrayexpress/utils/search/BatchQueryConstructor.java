@@ -39,17 +39,19 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
     @Override
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
 
-        //expand query to other fields
-        if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_AUTHORS)) {
-            querySource.put(FIELD_AUTHORS, querySource.get(FIELD_KEYWORDS));
-        }
-        if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TITLE)) {
-            querySource.put(FIELD_TITLE, querySource.get(FIELD_KEYWORDS));
-        }
-        if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_ACCESSION)) {
-            querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
-        }
+        //expand query to other fields if not a detail page
+        if (!querySource.containsKey(FIELD_ACCESSION)) {
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_AUTHORS)) {
+                querySource.put(FIELD_AUTHORS, querySource.get(FIELD_KEYWORDS));
+            }
 
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TITLE)) {
+                querySource.put(FIELD_TITLE, querySource.get(FIELD_KEYWORDS));
+            }
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_ACCESSION)) {
+                querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
+            }
+        }
         Query query = super.construct(env, querySource);
 
 

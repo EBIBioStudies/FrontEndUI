@@ -294,7 +294,7 @@ public class Querier {
                 params.put("nextAccession", new String[]{next.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
             }
 
-            //getSimilarStudies(params, hits.scoreDocs[position], leafReader, searcher);
+            getSimilarStudies(params, hits.scoreDocs[position], leafReader, searcher);
 
         } catch (ArrayIndexOutOfBoundsException ex) {
             logger.warn("Trying to load an inaccessible document");
