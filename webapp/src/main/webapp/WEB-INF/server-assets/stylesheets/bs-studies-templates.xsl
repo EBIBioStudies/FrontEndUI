@@ -838,7 +838,7 @@
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ena/data/view/', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'arrayexpress files'">
-                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId,'/files/')"/>
             </xsl:when>
             <xsl:when test="$type = 'arrayexpress'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/arrayexpress/experiments/', $pId)"/>
