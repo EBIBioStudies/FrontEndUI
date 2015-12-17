@@ -378,7 +378,7 @@
                     <xsl:variable name="vName" select="@name"/>
                     <tr>
                         <xsl:if test="$elementId='file-list'">
-                            <td class="disable-select">
+                            <td class="disable-select file-check-box">
                                 <input class="text-bottom" type="checkbox" data-name="{$vName}"/>
                             </td>
                         </xsl:if>

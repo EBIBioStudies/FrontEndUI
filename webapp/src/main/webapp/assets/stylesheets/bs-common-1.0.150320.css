@@ -941,3 +941,7 @@ div#local-title > a > img {
 .browse-study-accession:after {
     content: ']';
 }
+
+.file-check-box {
+    width:20px;
+}

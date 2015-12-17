@@ -112,6 +112,7 @@ public class Querier {
         Query query = queryInfo.getQuery();
         Map<String, String[]> params = queryInfo.getParams();
         boolean queryIsEmpty = params.containsKey("queryIsEmpty");
+        boolean isDetailPage = params.get("path-info")[0].contains("detail");
         String sortBy =  (params.containsKey("sortby")) ? params.get("sortby")[0] : null;
 
         if (sortBy==null ) {
@@ -144,36 +145,32 @@ public class Querier {
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             LeafReader leafReader = SlowCompositeReaderWrapper.wrap(reader);
             IndexSearcher searcher = new IndexSearcher(reader);
-
             logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
                     query.toString(), sort, shouldReverse);
-
-
             TopDocs hits = searcher.search(
                     query,
-                    Integer.MAX_VALUE,
+                    isDetailPage ? 1 : Integer.MAX_VALUE,
                     sort
             );
-
             logger.info("Search reported [{}] matches", hits.totalHits);
             final List<NodeInfo> matchingNodes = new ArrayList<>();
-            final NumericDocValues ids = leafReader.getNumericDocValues(Indexer.DOCID_FIELD);
 
-            int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
-            int pageSize = params.containsKey("pagesize") ? Integer.parseInt(params.get("pagesize")[0].toString()) : 25;
-            int from = 1+ ( page - 1 ) * pageSize <  hits.totalHits ? 1+ ( page - 1 ) * pageSize : 1;
-            int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
-            params.put("total", new String[]{hits.totalHits+""});
-            params.put("from", new String[]{from+""});
-            params.put("to", new String[]{to + ""});
-
-
-            // if page is from search results, get the document at nth position in the search results
-            // and store the previous and next result as well. Otherwise, return the whole result set
-            if (params.get("path-info")[0].contains("detail")) {
-                NodeInfo nodeInfo = getSingleDocument(params, hits, leafReader, searcher);
-                if(nodeInfo!=null) matchingNodes.add(nodeInfo);
+            // if page is from search results, get the first hit only since it should be the one with the accession match
+            if (isDetailPage) {
+                NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(
+                                leafReader.document(hits.scoreDocs[0].doc).get("xml"));
+                if(nodeInfo!=null) {
+                    matchingNodes.add(nodeInfo);
+                    getSimilarStudies(params,hits.scoreDocs[0],leafReader,searcher);
+                }
             } else {
+                int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
+                int pageSize = params.containsKey("pagesize") ? Integer.parseInt(params.get("pagesize")[0].toString()) : 25;
+                int from = 1+ ( page - 1 ) * pageSize <  hits.totalHits ? 1+ ( page - 1 ) * pageSize : 1;
+                int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
+                params.put("total", new String[]{hits.totalHits+""});
+                params.put("from", new String[]{from+""});
+                params.put("to", new String[]{to + ""});
                 ScoreDoc [] scoreDocs = hits.scoreDocs;
                 for (int i = from - 1; i < to; i++) {
                     try {
@@ -268,39 +265,6 @@ public class Querier {
         params.put("titles", titles.toArray(new String[titles.size()]));
         params.put("authors", authors.toArray(new String[authors.size()]));
         params.put("fragments", snippets.toArray(new String[snippets.size()]));
-    }
-
-    private NodeInfo getSingleDocument(Map<String, String[]> params, TopDocs hits, IndexReader leafReader, IndexSearcher searcher) throws IOException, SaxonException, ParseException {
-        ScoreDoc[] scoreDocs = hits.scoreDocs;
-        int position = -1;
-        for (int i = 0; i < scoreDocs.length; i++) {
-            if (leafReader.document(scoreDocs[i].doc).get("accession").equalsIgnoreCase(params.get("accessionNumber")[0])) {
-                position=i;
-                break;
-            }
-        }
-        NodeInfo ni = null;
-        try {
-            ni = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position].doc).get("xml"));
-            params.put("accessionNumber", new String[]{ni.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
-            params.put("accessionIndex", new String[]{"" + position});
-
-            if (position > 0) {
-                NodeInfo prev = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position - 1].doc).get("xml"));
-                params.put("previousAccession", new String[]{prev.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
-            }
-            if (position < hits.totalHits - 1) {
-                NodeInfo next = Application.getAppComponent(SaxonEngine.class).buildDocument(leafReader.document(scoreDocs[position + 1].doc).get("xml"));
-                params.put("nextAccession", new String[]{next.iterateAxis(Axis.DESCENDANT.getAxisNumber(), new NameTest(Type.ELEMENT, "", "accession", ni.getNamePool())).next().getStringValue()});
-            }
-
-            getSimilarStudies(params, hits.scoreDocs[position], leafReader, searcher);
-
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            logger.warn("Trying to load an inaccessible document");
-        }
-
-        return ni;
     }
 
     private void getSimilarStudies(Map<String, String[]> params, ScoreDoc scoreDoc, IndexReader leafReader, IndexSearcher searcher) throws ParseException, IOException {

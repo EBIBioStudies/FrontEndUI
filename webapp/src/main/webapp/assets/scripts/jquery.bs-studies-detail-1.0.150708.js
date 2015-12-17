@@ -287,7 +287,8 @@ var linksTable = null;
         $('#ae-detail-right-column').toggleClass('expanded-right-column');
         $(this).toggleClass('fa-compress').toggleClass('fa-expand');
         $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to collapse')
-        $("table.link-widget tbody td a").css("max-width", $(this).attr('data-icon')=='u' ? '200px' : '600px')
+        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
+        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
         redrawTables()
     });
 
