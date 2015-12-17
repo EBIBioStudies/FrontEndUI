@@ -46,23 +46,8 @@
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
         <xsl:call-template name="bs-page">
             <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
-            <xsl:with-param name="pEBISearchWidget">
-                <xsl:if test="$vSearchMode and $vTotal > 0">
-                    <aside class="grid_6 omega shortcuts expander" id="search-extras">
-                        <div id="ebi_search_results">
-                            <h3 class="slideToggle icon icon-functional" data-icon="u">Show more data from EMBL-EBI</h3>
-                        </div>
-                    </aside>
-                </xsl:if>
-            </xsl:with-param>
-            <xsl:with-param name="pExtraSearchFields">
-                <!--
-                <input id="ls-organism" type="hidden" name="organism" value="{$organism}"/>
-                <input id="ls-array" type="hidden" name="array" value="{$array}"/>
-                <input id="ls-expdesign" type="hidden" name="exptype[]" value="{$exptype[1]}"/>
-                <input id="ls-exptech" type="hidden" name="exptype[]" value="{$exptype[2]}"/>
-                -->
-            </xsl:with-param>
+            <xsl:with-param name="pEBISearchWidget" />
+            <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail" select="$vTitle"/>
             <xsl:with-param name="pExtraCSS">
                 <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-studies-browse-1.0.150220.css" type="text/css"/>
@@ -113,7 +98,7 @@
                 <xsl:if test="$vSearchMode">
                     <aside class="grid_6 omega shortcuts expander" id="search-extras">
                         <div id="ebi_search_results">
-                            <h3 class="slideToggle icon icon-functional" data-icon="u">Show more data from EMBL-EBI<i class="fa fa-spinner fa-pulse"/></h3>
+                            <h3 class="slideToggle icon icon-functional" data-icon="u">Show more data from EMBL-EBI</h3>
                         </div>
                     </aside>
                 </xsl:if>
