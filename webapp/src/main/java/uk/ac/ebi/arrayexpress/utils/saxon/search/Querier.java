@@ -156,7 +156,7 @@ public class Querier {
             final List<NodeInfo> matchingNodes = new ArrayList<>();
 
             // if page is from search results, get the first hit only since it should be the one with the accession match
-            if (isDetailPage) {
+            if (isDetailPage && hits.totalHits>0) {
                 NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(
                                 leafReader.document(hits.scoreDocs[0].doc).get("xml"));
                 if(nodeInfo!=null) {
