@@ -49,11 +49,14 @@ public class ControlServlet extends ApplicationServlet {
         try {
             String ip = request.getHeader("X-Cluster-Client-IP");
             if (ip==null || ip.equalsIgnoreCase("")){
+                logger.warn("Header X-Cluster-Client-IP not found");
                 ip = request.getHeader("X-Forwarded-For");
             }
             if (ip==null || ip.equalsIgnoreCase("")){
+                logger.warn("Header X-Forwarded-For not found");
                 ip = request.getRemoteAddr();
             }
+
             String hn = InetAddress.getByName(ip).getCanonicalHostName();
             String patternString = getPreferences().getString("app.admin.allow-list");
             Pattern allow = Pattern.compile(patternString);
