@@ -138,6 +138,12 @@
                     <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
                 </attribute>
             </xsl:if>
+            <xsl:if test="fn:lower-case(@type)='publication'
+                and matches(@acc,'^10.\d{4,9}/.+$')">
+                <attribute name="DOI">
+                    <value><xsl:value-of select="@acc"/></value>
+                </attribute>
+            </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:copy-of select="./*[not(name()='section' or name()='subsections' or name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
             <xsl:apply-templates select="section | subsections/section" mode="section"/>

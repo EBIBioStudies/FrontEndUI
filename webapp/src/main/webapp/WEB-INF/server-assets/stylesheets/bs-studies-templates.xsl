@@ -173,10 +173,14 @@
                                         <xsl:value-of select="attribute[fn:lower-case(@name)='journal']"/>
                                         <xsl:text> [</xsl:text>
                                         <xsl:value-of select="attribute[fn:lower-case(@name)='publication date']"/>
-                                        <xsl:text>, </xsl:text>
-                                        <xsl:value-of select="attribute[fn:lower-case(@name)='volume']"/>
-                                        <xsl:text>:</xsl:text>
-                                        <xsl:value-of select="attribute[fn:lower-case(@name)='pages']"/>
+                                        <xsl:if test="fn:exists(attribute[fn:lower-case(@name)='volume'])">
+                                            <xsl:text>, </xsl:text>
+                                            <xsl:value-of select="attribute[fn:lower-case(@name)='volume']"/>
+                                        </xsl:if>
+                                        <xsl:if test="fn:exists(attribute[fn:lower-case(@name)='pages'])">
+                                            <xsl:text>:</xsl:text>
+                                            <xsl:value-of select="attribute[fn:lower-case(@name)='pages']"/>
+                                        </xsl:if>
                                         <xsl:text>]</xsl:text>
                                     </xsl:with-param>
                                 </xsl:call-template>
@@ -187,6 +191,17 @@
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                             <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                             <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmcid']"/>
+                                        </xsl:call-template>
+                                    </a>
+                                    <xsl:text>)</xsl:text>
+                                </xsl:if>
+                                <xsl:if test="exists(attribute[fn:lower-case(@name)='doi'])">
+                                    <xsl:text>&#160;(doi:</xsl:text>
+                                    <a href="http://dx.doi.org/{attribute[fn:lower-case(@name)='doi']}" target="_blank">
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                            <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='doi']"/>
                                         </xsl:call-template>
                                     </a>
                                     <xsl:text>)</xsl:text>
