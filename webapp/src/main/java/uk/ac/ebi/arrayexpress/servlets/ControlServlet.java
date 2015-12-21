@@ -51,6 +51,9 @@ public class ControlServlet extends ApplicationServlet {
             if (ip==null || ip.equalsIgnoreCase("")){
                 ip = request.getHeader("X-Forwarded-For");
             }
+            if (ip==null || ip.equalsIgnoreCase("")){
+                ip = request.getRemoteAddr();
+            }
             String hn = InetAddress.getByName(ip).getCanonicalHostName();
             String patternString = getPreferences().getString("app.admin.allow-list");
             Pattern allow = Pattern.compile(patternString);
