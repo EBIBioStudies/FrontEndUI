@@ -66,18 +66,22 @@
             </p>
         </section>
         <div class="grid_24 intro" id="secondary">
+            <xsl:if test="$vTotal>0">
             <h2><a href="{$context-path}/studies/" title="Browse BioStudies"><span class="icon icon-functional home-icon" data-icon="1">
                 Browse</span>
             </a></h2>
+            </xsl:if>
         </div>
         <div class="grid_24" id="tertiary">
             <div class="grid_6" id="stats">
+                <xsl:if test="$vTotal>0">
                 <h5>
                     <a href="{$context-path}/studies/" title="Browse BioStudies">
                         <span class="icon icon-functional home-icon-small" id="submissionsIcon" data-icon="D" />
-                        <xsl:value-of select="fn:concat($vTotal, ' ', if ($vTotal > 1) then 'submissions' else 'submission')"/>
+                        <xsl:value-of select="fn:concat($vTotal, ' submissions')"/>
                     </a>
                 </h5>
+                </xsl:if>
                 <h5 id="projectCountStats" >
                     <a href="{$context-path}/studies/?query=type:Project" title="Browse BioStudies">
                         <span class="icon icon-functional home-icon-small" id="projectsIcon"  data-icon="A" />

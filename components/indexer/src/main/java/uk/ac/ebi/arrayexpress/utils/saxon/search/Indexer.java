@@ -84,6 +84,10 @@ public class Indexer {
     }
 
     public List<NodeInfo> index(NodeInfo documentNode) throws IndexerException, InterruptedException {
+        return  index(documentNode,true);
+    }
+
+    public List<NodeInfo> index(NodeInfo documentNode, boolean commit) throws IndexerException, InterruptedException {
         try {
             //logger.debug( serializeDocument(documentNode));
             List<Item> documentNodes = evaluateXPath(documentNode, this.env.indexDocumentPath);
@@ -136,7 +140,9 @@ public class Indexer {
                 indexedNodes.add((NodeInfo) node);
             }
 
-            w.commit();
+            if(commit) {
+                w.commit();
+            }
 
             return indexedNodes;
         } catch (IOException | XPathException x) {
@@ -162,11 +168,13 @@ public class Indexer {
         return new IndexWriter(indexDirectory, config);
     }
 
-    public void clearIndex() throws IOException {
+    public void clearIndex(boolean commit) throws IOException {
         IndexWriter w = indexWriters.get(env.indexId);
         w.deleteAll();
-        w.forceMergeDeletes();
-        w.commit();
+        if (commit) {
+            w.forceMergeDeletes();
+            w.commit();
+        }
     }
 
     public void delete(String accession) throws IOException {

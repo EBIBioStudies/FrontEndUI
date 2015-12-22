@@ -100,7 +100,7 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
 
     public void clearIndex(String indexId) throws IndexerException, InterruptedException, IOException {
         this.logger.info("Clearing index for index id [{}]", indexId);
-        new Indexer(indexId, saxon.getxPathEvaluator()).clearIndex();
+        new Indexer(indexId, saxon.getxPathEvaluator()).clearIndex(true);
         this.logger.info("Indexfor index id [{}] cleared", indexId);
     }
 
