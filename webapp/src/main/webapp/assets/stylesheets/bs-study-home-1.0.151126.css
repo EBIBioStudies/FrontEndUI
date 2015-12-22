@@ -14,6 +14,10 @@
  * limitations under the License.
  *
  */
+nav ul, nav ol {
+    z-index: 1;
+}
+
 #logo-icon {
     height: 55px;
     vertical-align: bottom;
