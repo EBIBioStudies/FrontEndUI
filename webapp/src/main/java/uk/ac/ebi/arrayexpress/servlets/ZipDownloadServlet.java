@@ -61,7 +61,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                 String fqName = files.getRootFolder() + "/" + relativePath+"/Files/"+filename;
                fileSizeSum += new File(fqName).length();
             }
-            boolean isLargeFile = fileSizeSum > 100*MB;  // Threshold for large files which will be available only on ftp
+            boolean isLargeFile = fileSizeSum > 50*MB;  // Threshold for large files which will be available only on ftp
             if (!isLargeFile) {
                 // stream smaller files from memory
                 createZipArchive(request, relativePath, accession, filenames, files);
