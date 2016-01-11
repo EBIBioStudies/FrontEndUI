@@ -30,8 +30,6 @@
         <studies>
             <source-location>${interface.application.pref.studies.source.location}</source-location>
             <files-location>${interface.application.pref.studies.files.location}</files-location>
-            <ftp-location>${interface.application.pref.studies.ftp.location}</ftp-location>
-            <ftp-url>${interface.application.pref.studies.ftp.url}</ftp-url>
             <thumbnails-location>${sys:java.io.tmpdir}/thumbnails/</thumbnails-location>
 
             <reload>
@@ -72,7 +70,10 @@
             <get-md5-base64-encoded-command>openssl md5 -binary ${arg.file} | openssl base64</get-md5-base64-encoded-command>
             <persistence-location>${sys:java.io.tmpdir}/bs-files.xml</persistence-location>
             <rescan><interval>${interface.application.pref.files.rescan.interval}</interval></rescan>
-            <zipftp><delete><interval>${interface.application.pref.files.zipftp.delete.interval}</interval></delete></zipftp>
+            <temp-zip>
+                <location>${sys:java.io.tmpdir}/${interface.application.pref.files.temp-zip.location}</location>
+                <delete><interval>${interface.application.pref.files.temp-zip.delete.interval}</interval></delete>
+            </temp-zip>
             <check>
                 <atstart>false</atstart>
                 <schedule>${interface.application.pref.files.check.schedule}</schedule>

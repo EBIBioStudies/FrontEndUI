@@ -22,7 +22,6 @@ import uk.ac.ebi.arrayexpress.app.ApplicationServlet;
 import uk.ac.ebi.arrayexpress.components.Files;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -65,7 +64,7 @@ public class ZipStatusServlet extends ApplicationServlet {
             try {
                 String uuid = UUID.fromString(request.getParameter("filename")).toString();
 
-                boolean fileExists = new File(filesComponent.getFtpFolder() + "/" + uuid + ".zip").exists();
+                boolean fileExists = new File(filesComponent.getTempZipFolder() + "/" + uuid + ".zip").exists();
 
                 if (fileExists) {
                     if (filesBeingProcessed.contains(uuid)) {

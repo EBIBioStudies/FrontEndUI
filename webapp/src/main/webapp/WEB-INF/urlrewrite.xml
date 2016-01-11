@@ -27,10 +27,10 @@
         <!--set type="parameter" name="type">Study</set-->
         <to type="forward" last="true">/servlets/query/-/home/html</to>
     </rule>
-    <!-- ftp message page -->
+    <!-- zip message page -->
     <rule>
-        <from>^/zipftp/$</from>
-        <to type="forward" last="true">/servlets/query/-/zipftp/html</to>
+        <from>^/zip/$</from>
+        <to type="forward" last="true">/servlets/query/-/zip/html</to>
     </rule>
 
     <!-- search page -->
@@ -110,6 +110,10 @@
         <to type="permanent-redirect" last="true">%{context-path}/studies/$1/files/$2/</to>
     </rule>
     -->
+    <rule>
+        <from>^/[A-Za-z]/files/([^/]+)/zip$</from>
+        <to type="forward" last="true">/servlets/download/zip/${upper:$1}</to>
+    </rule>
     <rule>
         <from>^/files/([^/]+)/zip$</from>
         <to type="forward" last="true">/servlets/download/zip/${upper:$1}</to>

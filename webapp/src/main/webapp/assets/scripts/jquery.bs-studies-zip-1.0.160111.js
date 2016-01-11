@@ -31,7 +31,7 @@
                             setTimeout(checkStatus,2000);
                             break;
                         case 'done':
-                            link = contextPath+"/files/"+accession+"/"+dc+"/zip?file="+filename;
+                            link = contextPath+"/"+dc+"/files/"+accession+"/zip?file="+filename;
                             $('#ftp-link').html('<a href="'+link+'">Click here to download the file</a>')
                             break;
                         default:

@@ -25,27 +25,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.app.ApplicationJob;
 import uk.ac.ebi.arrayexpress.components.Files;
-import uk.ac.ebi.arrayexpress.components.Studies;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-public class DeleteZipFTPFilesJob extends ApplicationJob {
+public class DeleteTempZipFilesJob extends ApplicationJob {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void doExecute(JobExecutionContext jec) throws Exception {
         try {
-            logger.debug("Looking for expired Zipped FTP files");
+            logger.debug("Looking for expired temp zip files");
             Files files = getComponent(Files.class);
             Date oldestFileDate = DateUtils.addDays(new Date(), -1);
-
-            Iterator<File> filesToDelete = FileUtils.iterateFiles(
-                    new File(files.getFtpFolder()), new AgeFileFilter(oldestFileDate), null);
+            File tempZipDirectory = new File(files.getTempZipFolder());
+            if (!tempZipDirectory.exists()) tempZipDirectory.mkdir();
+            Iterator<File> filesToDelete = FileUtils.iterateFiles(tempZipDirectory, new AgeFileFilter(oldestFileDate), null);
             while (filesToDelete.hasNext()) {
                 File file = filesToDelete.next();
                 file.delete();

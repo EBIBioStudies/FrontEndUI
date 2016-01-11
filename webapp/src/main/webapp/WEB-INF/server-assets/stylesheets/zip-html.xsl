@@ -39,7 +39,7 @@
             <xsl:with-param name="pBreadcrumbTrail"/>
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS">
-                <script src="{$context-path}/assets/scripts/jquery.bs-studies-zipftp-1.0.151211.js" type="text/javascript"/>
+                <script src="{$context-path}/assets/scripts/jquery.bs-studies-zip-1.0.160111.js" type="text/javascript"/>
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
         </xsl:call-template>

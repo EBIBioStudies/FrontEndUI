@@ -24,8 +24,7 @@ import uk.ac.ebi.arrayexpress.app.ApplicationComponent;
 public class Files extends ApplicationComponent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String rootFolder;
-    private String ftpFolder;
-    private String ftpURL;
+    private String tempZipFolder;
 
     public Files() {
     }
@@ -34,19 +33,14 @@ public class Files extends ApplicationComponent {
         return this.rootFolder;
     }
 
-    public synchronized String getFtpFolder() {
-        return this.ftpFolder;
-    }
-
-    public synchronized String getFtpURL() {
-        return this.ftpURL;
+    public synchronized String getTempZipFolder() {
+        return this.tempZipFolder;
     }
 
     @Override
     public void initialize() throws Exception {
         this.rootFolder = getPreferences().getString("bs.studies.files-location");
-        this.ftpFolder = getPreferences().getString("bs.studies.ftp-location");
-        this.ftpURL = getPreferences().getString("bs.studies.ftp-url");
+        this.tempZipFolder = getPreferences().getString("bs.files.temp-zip.location");
     }
 
     @Override

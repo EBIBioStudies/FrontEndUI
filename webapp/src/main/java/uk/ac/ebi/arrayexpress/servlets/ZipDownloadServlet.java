@@ -61,7 +61,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                 String fqName = files.getRootFolder() + "/" + relativePath+"/Files/"+filename;
                fileSizeSum += new File(fqName).length();
             }
-            boolean isLargeFile = fileSizeSum > 512;//*MB;  // Threshold for large files which will be available only on ftp
+            boolean isLargeFile = fileSizeSum > 100*MB;  // Threshold for large files which will be available only on ftp
             if (!isLargeFile) {
                 // stream smaller files from memory
                 createZipArchive(request, relativePath, accession, filenames, files);
@@ -78,7 +78,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                             URLEncoder.encode(uuid,"UTF-8"),
                             URLEncoder.encode(accession,"UTF-8"),
                             URLEncoder.encode(datacenter.substring(0,1),"UTF-8"));
-                    request.getRequestDispatcher("/servlets/query/-/zipftp/html"+forwardedParams)
+                    request.getRequestDispatcher("/servlets/query/-/zip/html"+forwardedParams)
                                 .forward(request, response);
                 } catch (Exception e) {
                     throw new DownloadServletException(e);
@@ -142,20 +142,12 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             logger.info("Requested download of accession [{}] files: {}", accession, filenames);
             if (request.getAttribute("zipFile") != null) {
                 IDownloadFile zipfile = new RAMZipFile((FileObject) request.getAttribute("zipFile"), accession);
-                if (request.getAttribute("isLargeFile") != null) {
-                    try {
-                        response.getOutputStream().print(getComponent(Files.class).getFtpURL() + zipfile.getPath());
-                    } catch (IOException e) {
-                        throw new DownloadServletException(e);
-                    }
-                    return null;
-                }
                 return zipfile;
             }
         } else if (request.getParameter("file")!=null) { //second hit: File has already been created. Stream it
             Files filesComponent = getComponent(Files.class);
             String uuid = UUID.fromString(request.getParameter("file")).toString();
-            return new RegularDownloadFile(new File(filesComponent.getFtpFolder(), uuid+".zip"));
+            return new RegularDownloadFile(new File(filesComponent.getTempZipFolder(), uuid+".zip"));
         }
         return null;
     }
@@ -228,7 +220,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         public void run() {
             Files filesComponent = getComponent(Files.class);
 
-            String zipFileName = filesComponent.getFtpFolder()+ "/" + uuid + ".zip";
+            String zipFileName = filesComponent.getTempZipFolder()+ "/" + uuid + ".zip";
             byte[] buffer = new byte[10*MB];
             try (FileOutputStream zipFile = new FileOutputStream(zipFileName)) {
                 try (ZipOutputStream zos = new ZipOutputStream(zipFile)) {
