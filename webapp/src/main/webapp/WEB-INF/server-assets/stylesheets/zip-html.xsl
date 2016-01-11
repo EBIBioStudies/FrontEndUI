@@ -48,8 +48,8 @@
     <xsl:template name="bs-content-section">
         <section class="alpha intro grid_24 omega">
             <h3>Your download is being prepared.</h3>
-            <p class="center">However, the files you selected are too large to download with your browser.<br/>
-                One the download is ready, an FTP link will appear below which you can click to start the download. <br/>
+            <p class="center">However, the files you selected are large and preparing the download will take some time.<br/>
+                Once the download is ready, a link will appear below which you can click to start the download. <br/>
                 This link will be available for 24 hours.</p>
             <p/>
             <form id="variables">

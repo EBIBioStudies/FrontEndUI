@@ -73,7 +73,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                 new ZipperThread(filenames, relativePath, uuid).start();
 
                 try {
-                    String datacenter = System.getProperty("DATACENTRE")==null ? "lc" : System.getProperty("DATACENTRE");
+                    String datacenter = System.getProperty("datacentre")==null ? "lc" : System.getProperty("datacentre");
                     String forwardedParams = String.format("?uuid=%s&accession=%s&dc=%s",
                             URLEncoder.encode(uuid,"UTF-8"),
                             URLEncoder.encode(accession,"UTF-8"),
