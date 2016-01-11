@@ -21,6 +21,7 @@ import java.io.*;
 
 public final class RegularDownloadFile implements IDownloadFile {
     private final File file;
+    private String downloadName;
 
     public RegularDownloadFile(File file) {
         if (null == file) {
@@ -29,12 +30,19 @@ public final class RegularDownloadFile implements IDownloadFile {
         this.file = file;
     }
 
+    public RegularDownloadFile(File file, String downloadName) {
+        if (null == file) {
+            throw new IllegalArgumentException("File cannot be null");
+        }
+        this.file = file;
+        this.downloadName = downloadName;
+    }
     private File getFile() {
         return this.file;
     }
 
     public String getName() {
-        return getFile().getName();
+        return downloadName!=null ? downloadName : getFile().getName();
     }
 
     public String getPath() {

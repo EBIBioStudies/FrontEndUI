@@ -24,7 +24,7 @@
         setTimeout(checkStatus,2000);
 
         function checkStatus(){
-            $.get( contextPath+"/"+accession+"/zipstatus", { filename: filename}, function(data) {
+            $.get( contextPath+"/"+dc+"/zipstatus", { filename: filename}, function(data) {
                 if(data) {
                     switch (data.status) {
                         case 'processing':
