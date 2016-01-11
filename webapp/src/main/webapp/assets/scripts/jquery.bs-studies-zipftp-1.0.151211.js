@@ -18,13 +18,38 @@
 (function($, undefined) {
     if($ == undefined) throw "jQuery not loaded";
     $(function() {
-        $('#ftp-link').load('',$('#zip-file-form').serialize(),function(data) {
-            if(data.indexOf('ftp') == 0) {
-                $(this).wrap('<a href="'+data+'">')
-            } else {
-                $(this).html('An error occured while preparing the archive. Please try again later.<br/> If the problem persists, please use the feedback form to report it.');
-            }
+        var filename = $('#filename').val();
+        var dc = $('#dc').val();
+        var accession = $('#accession').val();
+        setTimeout(checkStatus,2000);
 
-        });
+        function checkStatus(){
+            $.get( contextPath+"/"+accession+"/zipstatus", { filename: filename}, function(data) {
+                if(data) {
+                    switch (data.status) {
+                        case 'processing':
+                            setTimeout(checkStatus,2000);
+                            break;
+                        case 'done':
+                            link = contextPath+"/files/"+accession+"/"+dc+"/zip?file="+filename;
+                            $('#ftp-link').html('<a href="'+link+'">Click here to download the file</a>')
+                            break;
+                        default:
+                            err();
+                            break;
+                    }
+                } else {
+                    err();
+                }
+            })
+            .fail(function() {
+                err();
+            })
+        }
+
+        function err() {
+            $('#ftp-link').html('An error occured while preparing the archive. Please try again later.<br/> If the problem persists, please use the feedback form to report it.');
+        }
+
      });
 })(window.jQuery);

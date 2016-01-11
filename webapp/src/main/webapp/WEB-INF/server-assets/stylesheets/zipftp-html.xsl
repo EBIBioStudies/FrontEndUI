@@ -24,7 +24,9 @@
                 extension-element-prefixes="fn ae search html xs"
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
-    <xsl:param name="files"/>
+    <xsl:param name="accession" select="''"/>
+    <xsl:param name="uuid" select="''"/>
+    <xsl:param name="dc" select="''"/>
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-date-functions.xsl"/>
 
@@ -50,11 +52,10 @@
                 One the download is ready, an FTP link will appear below which you can click to start the download. <br/>
                 This link will be available for 24 hours.</p>
             <p/>
-            <form id="zip-file-form">
-                <xsl:for-each select="$files">
-                    <input type="hidden" name="files" value="{.}"/>
-                </xsl:for-each>
-                <input type="hidden" name="dl" value="true"/>
+            <form id="variables">
+                <input type="hidden" id="filename" value="{$uuid}"/>
+                <input type="hidden" id="dc" value="{$dc}"/>
+                <input type="hidden" id="accession" value="{$accession}"/>
             </form>
             <p id="ftp-link"><img src="{$context-path}/assets/images/ajax-loader.gif"/></p>
         </section>

@@ -17,12 +17,11 @@
 
 package uk.ac.ebi.arrayexpress.servlets;
 
-import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Studies;
-import uk.ac.ebi.arrayexpress.components.Users;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
+import uk.ac.ebi.arrayexpress.utils.download.IDownloadFile;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.ServletException;
@@ -56,26 +55,6 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
         public DownloadServletException(Throwable x) {
             super(x);
         }
-    }
-
-    protected interface IDownloadFile {
-        public String getName();
-
-        public String getPath();
-
-        public long getLength();
-
-        public long getLastModified();
-
-        public boolean canDownload();
-
-        public boolean isRandomAccessSupported();
-
-        public DataInput getRandomAccessFile() throws IOException;
-
-        public InputStream getInputStream() throws IOException;
-
-        public void close() throws IOException;
     }
 
     @Override

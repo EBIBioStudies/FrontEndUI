@@ -73,15 +73,14 @@
                                 <xsl:value-of select="$error-request-uri"/>
                             </span>
                             may have been removed, had its name changed, or has restricted access.
-                            <!-- If you have been granted access, please <a href="#" class="login">log in</a> to proceed.-->
+                            If you have been granted access, please <a href="#" class="login">log in</a> to proceed.
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:call-template name="block-warning">
-                        <xsl:with-param name="pTitle">Something has gone wrong with BioStudies</xsl:with-param>
-                        <xsl:with-param name="pMessage">Our web server says this as a <span class="alert"><xsl:value-of select="$error-message"/></span>.
-                            This problem means that the service you are trying to access is currently unavailable. We’re very sorry.</xsl:with-param>
+                        <xsl:with-param name="pTitle">Oops! Something has gone wrong with BioStudies</xsl:with-param>
+                        <xsl:with-param name="pMessage">The service you are trying to access is currently unavailable. We’re very sorry. Please try again later or use the feedback link to report if the problem persists.</xsl:with-param>
                     </xsl:call-template>
                 </xsl:otherwise>
             </xsl:choose>
@@ -94,7 +93,6 @@
         <section>
             <h2 class="alert"><xsl:copy-of select="$pTitle"/></h2>
             <p><xsl:copy-of select="$pMessage"/></p>
-            <h3>Still confused?</h3>
             <p>If you require further assistance locating missing page or file, please <a href="#" class="feedback">contact us</a> and we will look into it for you.</p>
         </section>
     </xsl:template>

@@ -20,6 +20,8 @@ package uk.ac.ebi.arrayexpress.servlets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.arrayexpress.components.Files;
+import uk.ac.ebi.arrayexpress.utils.download.IDownloadFile;
+import uk.ac.ebi.arrayexpress.utils.download.RegularDownloadFile;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,56 +74,6 @@ public class FileDownloadServlet extends BaseDownloadServlet {
             throw new DownloadServletException(x);
         }
         return file;
-    }
-
-    protected final class RegularDownloadFile implements IDownloadFile {
-        private final File file;
-
-        public RegularDownloadFile(File file) {
-            if (null == file) {
-                throw new IllegalArgumentException("File cannot be null");
-            }
-            this.file = file;
-        }
-
-        private File getFile() {
-            return this.file;
-        }
-
-        public String getName() {
-            return getFile().getName();
-        }
-
-        public String getPath() {
-            return getFile().getPath();
-        }
-
-        public long getLength() {
-            return getFile().length();
-        }
-
-        public long getLastModified() {
-            return getFile().lastModified();
-        }
-
-        public boolean canDownload() {
-            return getFile().exists() && getFile().isFile() && getFile().canRead();
-        }
-
-        public boolean isRandomAccessSupported() {
-            return true;
-        }
-
-        public DataInput getRandomAccessFile() throws IOException {
-            return new RandomAccessFile(getFile(), "r");
-        }
-
-        public InputStream getInputStream() throws IOException {
-            return new FileInputStream(getFile());
-        }
-
-        public void close() throws IOException {
-        }
     }
 
 }
