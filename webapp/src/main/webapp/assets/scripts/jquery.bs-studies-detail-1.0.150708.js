@@ -291,6 +291,15 @@ var linksTable = null;
         $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
         redrawTables()
     });
+    $('.sub-attribute-info').hover(
+        function() {
+            $(this).next().css('display','inline-block');
+            $(this).prev().toggleClass('sub-attribute-text');
+        }, function() {
+            $(this).next().css('display','none');
+            $(this).prev().toggleClass('sub-attribute-text');
+        }
+    );
 
 })(window.jQuery);
 

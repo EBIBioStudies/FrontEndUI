@@ -83,10 +83,15 @@
                 <xsl:with-param name="pName" select="fn:current-group()[1]/@name"/>
                 <xsl:with-param name="pContent">
                     <xsl:for-each select="fn:current-group()">
-                        <xsl:call-template name="highlight">
-                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                            <xsl:with-param name="pText" select="value"/>
-                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                        <span>
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                <xsl:with-param name="pText" select="value"/>
+                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                            </xsl:call-template>
+                        </span>
+                        <xsl:call-template name="study-sub-attributes">
+                            <xsl:with-param name="pSubAttributes" select="./*[name()!='value']"/>
                         </xsl:call-template>
                         <xsl:if test="fn:position() != fn:last()">, </xsl:if>
                     </xsl:for-each>
@@ -94,6 +99,20 @@
                 <xsl:with-param name="pClass" select="'justify'"/>
             </xsl:call-template>
         </xsl:for-each-group>
+    </xsl:template>
+
+    <xsl:template name="study-sub-attributes">
+        <xsl:param name="pSubAttributes"/>
+        <xsl:if test="count($pSubAttributes)>0">
+            <i class="fa fa-info-circle sub-attribute-info"></i>
+            <span class="sub-attribute">
+                <xsl:for-each select="$pSubAttributes">
+                    <span class="sub-attribute-title"><xsl:value-of select="name()"/>:</span>
+                    <span><xsl:value-of select="text()"/></span>
+                    <br/>
+                </xsl:for-each>
+            </span>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="study-subsections">
@@ -171,7 +190,9 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                     <xsl:with-param name="pText">
                                         <xsl:value-of select="attribute[fn:lower-case(@name)='journal']"/>
-                                        <xsl:text> [</xsl:text>
+                                        <xsl:if test="fn:exists(attribute[fn:lower-case(@name)='journal'])">
+                                            <xsl:text> [</xsl:text>
+                                        </xsl:if>
                                         <xsl:value-of select="attribute[fn:lower-case(@name)='publication date']"/>
                                         <xsl:if test="fn:exists(attribute[fn:lower-case(@name)='volume'])">
                                             <xsl:text>, </xsl:text>
@@ -181,11 +202,15 @@
                                             <xsl:text>:</xsl:text>
                                             <xsl:value-of select="attribute[fn:lower-case(@name)='pages']"/>
                                         </xsl:if>
-                                        <xsl:text>]</xsl:text>
+                                        <xsl:if test="fn:exists(attribute[fn:lower-case(@name)='journal'])">
+                                            <xsl:text>]</xsl:text>
+                                        </xsl:if>
                                     </xsl:with-param>
                                 </xsl:call-template>
                                 <xsl:if test="exists(attribute[fn:lower-case(@name)='pmcid'])">
-                                    <xsl:text>&#160;(PMCID: </xsl:text>
+                                     <xsl:value-of select="concat(
+                                        if (fn:exists(attribute[fn:lower-case(@name)='journal']))
+                                              then '&#160;(' else '','PMCID:')"/>
                                     <a href="http://europepmc.org/articles/{attribute[fn:lower-case(@name)='pmcid']}" target="_blank">
                                         <xsl:call-template name="highlight">
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
@@ -196,7 +221,9 @@
                                     <xsl:text>)</xsl:text>
                                 </xsl:if>
                                 <xsl:if test="exists(attribute[fn:lower-case(@name)='doi'])">
-                                    <xsl:text>&#160;(doi:</xsl:text>
+                                    <xsl:value-of select="concat(
+                                        if (fn:exists(attribute[fn:lower-case(@name)='journal']))
+                                              then '&#160;(' else '','doi:')"/>
                                     <a href="http://dx.doi.org/{attribute[fn:lower-case(@name)='doi']}" target="_blank">
                                         <xsl:call-template name="highlight">
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>

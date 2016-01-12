@@ -386,3 +386,36 @@ ul.recommendations li{
     background-color: #2BA35F;
     border: none !important;
 }
+
+.file-list:not(#file-list) tbody td a {
+    white-space: normal;
+    display: inline;
+}
+
+.sub-attribute {
+    position: absolute;
+    background-color: #EAF5FB;
+    padding: 3px;
+    border: 1px solid #6BA8C5;
+    margin-top: 20px;
+    margin-left: 10px;
+    display: none;
+    color: #777;
+}
+
+.sub-attribute-info {
+    margin: 0px 0px 0px 4px;
+    display: inline-block;
+    color: #6BA8C5;
+    cursor: pointer;
+    font-size: 10pt;
+}
+
+.sub-attribute-title {
+    font-weight: bold;
+    margin-right:5px;
+}
+
+.sub-attribute-text {
+    background-color: #EAF5FB;
+}

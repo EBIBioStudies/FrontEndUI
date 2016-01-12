@@ -111,7 +111,7 @@
     </xsl:template>
 
     <xsl:template match="valqual" mode="attribute">
-        <xsl:element name="{name}">
+        <xsl:element name="{string-join(for $s in tokenize(name,'\W+') return concat(upper-case(substring($s,1,1)),substring($s,2)),'')}">
             <xsl:value-of select="value"/>
         </xsl:element>
     </xsl:template>
