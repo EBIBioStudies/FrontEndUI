@@ -301,5 +301,20 @@ var linksTable = null;
         }
     );
 
+    $("span[data-term-id][data-ontology]").each(function() {
+        $.ajax({
+            async: true,
+            context: this,
+            url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/"+ $(this).data('ontology').toLowerCase() +"/terms",
+            data: {short_form:$(this).data('term-id'), size:1},
+            success: function(data){
+                if (data && data._embedded && data._embedded.terms && data._embedded.terms.length>0) {
+                    console.log(this)
+                    $(this).wrap('<a target="_blank" href="'+ data._embedded.terms[0].iri + '"/>');
+                }
+            }
+        });
+    });
+
 })(window.jQuery);
 

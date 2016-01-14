@@ -84,6 +84,10 @@
                 <xsl:with-param name="pContent">
                     <xsl:for-each select="fn:current-group()">
                         <span>
+                            <xsl:if test="exists(./*[lower-case(name())='ontology']) and exists(./*[lower-case(name())='ontology'])">
+                                <xsl:attribute name="data-ontology" select="./*[lower-case(name())='ontology']"/>
+                                <xsl:attribute name="data-term-id" select="./*[lower-case(name())='termid']"/>
+                            </xsl:if>
                             <xsl:call-template name="highlight">
                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                 <xsl:with-param name="pText" select="value"/>
