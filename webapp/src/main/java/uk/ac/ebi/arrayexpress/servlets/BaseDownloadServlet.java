@@ -40,7 +40,7 @@ public abstract class BaseDownloadServlet extends AuthAwareApplicationServlet {
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     // buffer size (in bytes)
-    private static final int TRANSFER_BUFFER_SIZE = 10 * 1024 * 1024;
+    private static final int TRANSFER_BUFFER_SIZE = 4* 1024;
 
     // multipart boundary constant
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";

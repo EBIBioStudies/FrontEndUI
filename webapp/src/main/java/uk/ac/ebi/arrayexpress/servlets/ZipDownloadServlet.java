@@ -33,7 +33,8 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909737571L;
-    private static final int MB = 1024 * 1024;
+    private static final int KB = 1024;
+    private static final int MB = KB * KB;
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -52,13 +53,13 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                 String fqName = files.getRootFolder() + "/" + relativePath + "/Files/" + filename;
                 fileSizeSum += new File(fqName).length();
             }
-            boolean isLargeFile = fileSizeSum > 100* MB;  // Threshold for large files which will be available only on ftp
+            boolean isLargeFile = fileSizeSum > 200* MB;  // Threshold for large files which will be available for 24 hours
             request.setAttribute("isLargeFile", true);
             String uuid = UUID.randomUUID().toString();
-            Thread thread = new ZipperThread(filenames, relativePath, uuid);
-            thread.start();
             try {
                 if (isLargeFile) {
+                    Thread thread = new ZipperThread(filenames, relativePath, uuid,null);
+                    thread.start();
                     String datacentre = System.getProperty("datacentre") == null ? "lc" : System.getProperty("datacentre");
                     String forwardedParams = String.format("?uuid=%s&accession=%s&dc=%s",
                             URLEncoder.encode(uuid, "UTF-8"),
@@ -69,9 +70,12 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                             .forward(request, response);
                     return;
                 } else {
+                    // File is not large. Send over the zipped stream
+                    response.setContentType("application/zip");
+                    response.addHeader("Content-Disposition", "attachment; filename="+ accession+".zip");
+                    Thread thread = new ZipperThread(filenames, relativePath, uuid,response.getOutputStream());
+                    thread.start();
                     thread.join();
-                    String zipFile =  files.getTempZipFolder() + "/" + uuid + ".zip";
-                    request.setAttribute("zipFile", zipFile);
                 }
             } catch (Exception e) {
                 throw new DownloadServletException(e);
@@ -115,20 +119,24 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         private String[] files;
         private String relativePath;
         private String uuid;
+        private OutputStream out;
 
-        public ZipperThread(String[] files, String relativePath, String uuid) {
+        public ZipperThread(String[] files, String relativePath, String uuid, OutputStream out) {
             this.files = files;
             this.relativePath = relativePath;
             this.uuid = uuid;
+            this.out = out;
         }
 
         public void run() {
             Files filesComponent = getComponent(Files.class);
 
             String zipFileName = filesComponent.getTempZipFolder() + "/" + uuid + ".zip";
-            byte[] buffer = new byte[10 * MB];
-            try (FileOutputStream zipFile = new FileOutputStream(zipFileName)) {
-                try (ZipOutputStream zos = new ZipOutputStream(zipFile)) {
+            byte[] buffer = new byte[4 * KB];
+            OutputStream outputStream = null;
+            try {
+                outputStream= out!=null ? out : new FileOutputStream(zipFileName);
+                try (ZipOutputStream zos = new ZipOutputStream(outputStream)) {
                     for (String filename : files) {
                         ZipEntry entry = new ZipEntry(filename);
                         zos.putNextEntry(entry);
@@ -145,6 +153,13 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             } catch (Exception e) {
                 new File(zipFileName).delete();
                 e.printStackTrace();
+            } finally {
+                if(outputStream!=null)
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
             }
             ZipStatusServlet.removeFile(uuid);
         }
