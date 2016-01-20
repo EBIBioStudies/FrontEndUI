@@ -16,6 +16,7 @@
  */
 var filesTable = null;
 var linksTable = null;
+var sectionTables = [];
 
 (function($, undefined) {
     if($ == undefined)
@@ -38,16 +39,21 @@ var linksTable = null;
             function () {hideThumbnail($(this).next());}
         );
 
+
         // create all sub-section file tables and hide them
-        $(".file-list:not(#file-list)").DataTable( {
-            "dom":"t",
-            "scrollX" : "100%"
+        $(".file-list:not(#file-list)").each( function(){
+            sectionTables.push( $(this).DataTable( {
+                "dom":"t",
+                "scrollX" : "100%"
+            }));
         });
         $(".ae-section-files").hide();
-        $(".link-list:not(.link-widget)").DataTable( {
-            "dom":"t",
-            "scrollX" : "100%"
-        });
+        $(".link-list:not(.link-widget)").each( function(){
+            sectionTables.push( $(this).DataTable( {
+                "dom":"t",
+                "scrollX" : "100%"
+            }));
+        })
         $(".ae-section-links").hide();
 
 
@@ -102,6 +108,7 @@ var linksTable = null;
             var section = $(this).first().next();
             if (section.css('display')=='none') {
                 section.show();
+                redrawTables(true);
                 $(this).text('hide files in this section')
             } else {
                 section.hide();
@@ -114,10 +121,12 @@ var linksTable = null;
             var section = $(this).first().next();
             if (section.css('display')=='none') {
                 section.show();
+                redrawTables(true);
                 $(this).text('hide links in this section')
             } else {
                 section.hide();
                 $(this).text('show links in this section')
+
             }
 
         });
@@ -137,9 +146,11 @@ var linksTable = null;
             if ( indented_section.css('display') == 'none') {
                 $(this).children().first().toggleClass('fa-compress').toggleClass('fa-expand');
                 indented_section.show();
+                redrawTables(true);
             } else {
                 $(this).children().first().toggleClass('fa-compress').toggleClass('fa-expand');
                 indented_section.hide();
+                redrawTables(true);
             }
         })
 
@@ -229,37 +240,45 @@ var linksTable = null;
 
     }
 
-    function redrawTables() {
-        if (filesTable == null) {
-            filesTable = $("#file-list").DataTable({
-                "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-                "columnDefs": [{"targets": [0], "searchable": false, "orderable": false, "visible": true}],
-                "order": [[1, "asc"]],
-                "dom": "rlftpi",
-                "scrollX" : "100%"
-            });
-        } else {
-            filesTable.columns.adjust().draw();
-        }
+    function redrawTables(drawSecionTablesOnly) {
 
-        if (linksTable == null) {
-            linksTable = [];
-            $(".link-widget").each(function () {
-                linksTable.push($(this).DataTable({
-                        "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-                        "dom": "rlftpi",
-                        "scrollX" : "100%"
-                    })
-                );
-            });
-        } else {
-            $(linksTable).each(function() {
-                this.columns.adjust().draw();
-            });
-        }
+        if (!drawSecionTablesOnly) {
+            if (filesTable == null) {
+                filesTable = $("#file-list").DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+                    "columnDefs": [{"targets": [0], "searchable": false, "orderable": false, "visible": true}],
+                    "order": [[1, "asc"]],
+                    "dom": "rlftpi",
+                    "scrollX": "100%"
+                });
+            } else {
+                filesTable.columns.adjust().draw();
+            }
 
-        $(".list-content").show()
-        $(".list-loader").hide();
+            if (linksTable == null) {
+                linksTable = [];
+                $(".link-widget").each(function () {
+                    linksTable.push($(this).DataTable({
+                            "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+                            "dom": "rlftpi",
+                            "scrollX": "100%"
+                        })
+                    );
+                });
+            } else {
+                $(linksTable).each(function () {
+                    this.columns.adjust().draw();
+                    window
+                });
+            }
+
+            $(".list-content").show()
+            $(".list-loader").hide();
+        }
+        $(sectionTables).each(function() {
+            this.columns.adjust().draw();
+        });
+
     }
 
     $('.org-link').click( function() {
@@ -309,7 +328,6 @@ var linksTable = null;
             data: {short_form:$(this).data('term-id'), size:1},
             success: function(data){
                 if (data && data._embedded && data._embedded.terms && data._embedded.terms.length>0) {
-                    console.log(this)
                     $(this).wrap('<a target="_blank" href="'+ data._embedded.terms[0].iri + '"/>');
                 }
             }

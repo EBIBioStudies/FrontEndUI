@@ -551,7 +551,7 @@
     <xsl:template name="link-table">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
-        <xsl:param name="elementId" select="fn:concat('link-table-',../position())"/>
+        <xsl:param name="elementId" select="generate-id()"/>
         <xsl:param name="pClass" select="''"/>
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[fn:lower-case(@name)!='type' and fn:lower-case(@name)!='description']/@name)"/>
         <table class="stripe compact hover link-list {$pClass}" cellspacing="0" width="100%" id="{$elementId}" >
