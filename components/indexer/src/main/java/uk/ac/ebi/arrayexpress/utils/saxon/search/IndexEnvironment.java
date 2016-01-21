@@ -23,6 +23,11 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.spell.LuceneDictionary;
+import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
@@ -48,6 +53,7 @@ public class IndexEnvironment {
     public String defaultField;
     public String idField;
     public int searchSnippetFragmentSize;
+    public SpellChecker spellChecker;
 
     // index document xpath
     public String indexDocumentPath;
@@ -149,6 +155,16 @@ public class IndexEnvironment {
             }
 
             this.indexAnalyzer = new PerFieldAnalyzerWrapper(a, fieldAnalyzers);
+
+            this.spellChecker = new SpellChecker(indexDirectory);
+            try (IndexReader reader = DirectoryReader.open(indexDirectory)){
+                spellChecker.indexDictionary(
+                        new LuceneDictionary(reader,this.defaultField),
+                        new IndexWriterConfig(this.indexAnalyzer),
+                        false
+                );
+            }
+
 
         } catch (Exception x) {
             logger.error("Caught an exception:", x);

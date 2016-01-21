@@ -41,6 +41,7 @@
     <xsl:variable name="vUnrestrictedAccess" select="fn:not($userid)"/>
     <xsl:variable name="vTotal" select="xs:integer(search:getQueryInfoParameter($queryid,'total'))"/>
     <xsl:variable name="projectLink" select="if ($project!='') then concat('/',$project) else '' "/>
+    <xsl:variable name="vSuggestions" select="search:getQueryInfoParameter($queryid,'suggestions')"/>
 
     <xsl:template match="/">
         <xsl:variable name="vTitle" select="if ($vSearchMode) then fn:concat('Studies matching &quot;', $keywords, '&quot;') else 'Studies'"/>
@@ -329,14 +330,14 @@
             <xsl:if test="exists($keywords) and $keywords!=''">
                 <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
             </xsl:if>
-            <!-- TODO:
+            <xsl:if test="exists($vSuggestions) and $vSuggestions!=''">
             <h3>Did you mean...</h3>
             <ul>
-                <li>Suggestion 1</li>
-                <li>Suggestion 2</li>
-                <li>Suggestion 3</li>
+                <xsl:for-each select="$vSuggestions">
+                    <li><a href="search.html?query={.}"><xsl:value-of select="." /></a></li>
+                </xsl:for-each>
             </ul>
-            -->
+            </xsl:if>
             <!--
             <p>&#160;</p>
             <xsl:if test="$vSearchMode">

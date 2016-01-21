@@ -18,19 +18,13 @@
 package uk.ac.ebi.arrayexpress.utils.saxon.search;
 
 import net.sf.saxon.om.NodeInfo;
-import net.sf.saxon.pattern.NameTest;
-import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.type.Type;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queries.mlt.MoreLikeThis;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
-import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,24 +32,23 @@ import uk.ac.ebi.arrayexpress.app.Application;
 import uk.ac.ebi.arrayexpress.components.SaxonEngine;
 import uk.ac.ebi.arrayexpress.utils.StringTools;
 import uk.ac.ebi.arrayexpress.utils.saxon.SaxonException;
-import uk.ac.ebi.arrayexpress.utils.search.AttributeFieldAnalyzer;
 import uk.ac.ebi.arrayexpress.utils.search.EFOExpandedHighlighter;
-import uk.ac.ebi.arrayexpress.utils.search.ExperimentTextAnalyzer;
-import uk.ac.ebi.arrayexpress.utils.search.LowercaseAnalyzer;
 import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Querier {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IndexEnvironment env;
-
     public Querier(IndexEnvironment env) {
         this.env = env;
     }
@@ -153,6 +146,15 @@ public class Querier {
                     sort
             );
             logger.info("Search reported [{}] matches", hits.totalHits);
+
+            if (hits.totalHits==0) {
+                String q = params.get("keywords")[0];
+                String[] suggestions = this.env.spellChecker.suggestSimilar(q,5);
+                if (suggestions.length>0) {
+                    params.put("suggestions", suggestions);
+                }
+            }
+
             final List<NodeInfo> matchingNodes = new ArrayList<>();
 
             // if page is from search results, get the first hit only since it should be the one with the accession match
