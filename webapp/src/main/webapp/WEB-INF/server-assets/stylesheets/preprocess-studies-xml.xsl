@@ -119,6 +119,7 @@
     <xsl:template match="url" mode="attribute">
         <url>
             <xsl:value-of select="text()"/>
+            <xsl:value-of select="text()"/>
         </url>
     </xsl:template>
 
@@ -149,8 +150,10 @@
             <xsl:apply-templates select="section | subsections/section" mode="section"/>
             <xsl:apply-templates select="file|files/table/file|files/file" mode="files"/>
             <xsl:apply-templates select="link|links/table/link|links/link" mode="links"/>
+            <xsl:copy-of select="subsections/table"  />
         </section>
     </xsl:template>
+
 
     <xsl:template match="file" mode="files">
         <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}">

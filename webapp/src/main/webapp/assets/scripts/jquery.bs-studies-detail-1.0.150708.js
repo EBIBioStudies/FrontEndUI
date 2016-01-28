@@ -55,8 +55,13 @@ var sectionTables = [];
             }));
         })
         $(".ae-section-links").hide();
-
-
+        $(".section-table").each( function(){
+            sectionTables.push( $(this).DataTable( {
+                "dom":"t",
+                "scrollX" : "100%"
+            }));
+        });
+        $(".ae-section-tables").hide();
         // handle file selection
         /*$("#file-list tbody").on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
@@ -126,6 +131,20 @@ var sectionTables = [];
             } else {
                 section.hide();
                 $(this).text('show links in this section')
+
+            }
+
+        });
+
+        $(".toggle-tables").on ('click', function () {
+            var section = $(this).first().next();
+            if (section.css('display')=='none') {
+                section.show();
+                redrawTables(true);
+                $(this).text('hide tables in this section')
+            } else {
+                section.hide();
+                $(this).text('show tables in this section')
 
             }
 

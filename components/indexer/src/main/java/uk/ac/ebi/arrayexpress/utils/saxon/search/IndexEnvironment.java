@@ -54,6 +54,7 @@ public class IndexEnvironment {
     public String idField;
     public int searchSnippetFragmentSize;
     public SpellChecker spellChecker;
+    public static HashMap<String,SpellChecker> spellCheckerMap = new HashMap<>();
 
     // index document xpath
     public String indexDocumentPath;
@@ -155,22 +156,27 @@ public class IndexEnvironment {
             }
 
             this.indexAnalyzer = new PerFieldAnalyzerWrapper(a, fieldAnalyzers);
-
-            this.spellChecker = new SpellChecker(indexDirectory);
-            try (IndexReader reader = DirectoryReader.open(indexDirectory)){
-                spellChecker.indexDictionary(
-                        new LuceneDictionary(reader,this.defaultField),
-                        new IndexWriterConfig(this.indexAnalyzer),
-                        false
-                );
-            }
-
+            this.spellChecker = getSpellChecker(this.indexId,this.indexDirectory,this.defaultField,this.indexAnalyzer);
 
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
         }
     }
 
+    private static SpellChecker getSpellChecker(String indexId, Directory indexDirectory, String defaultField, PerFieldAnalyzerWrapper indexAnalyzer) throws Exception{
+        if (!spellCheckerMap.containsKey(indexId)) {
+            SpellChecker spellChecker = new SpellChecker(indexDirectory);
+            try (IndexReader reader = DirectoryReader.open(indexDirectory)){
+                spellChecker.indexDictionary(
+                        new LuceneDictionary(reader,defaultField),
+                        new IndexWriterConfig(indexAnalyzer),
+                        false
+                );
+                spellCheckerMap.put(indexId, spellChecker);
+            }
+        }
+        return spellCheckerMap.get(indexId);
+    }
     public boolean doesFieldExist(String fieldName) {
         return fields.containsKey(fieldName);
     }

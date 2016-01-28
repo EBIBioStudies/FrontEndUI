@@ -147,7 +147,7 @@ public class Querier {
             );
             logger.info("Search reported [{}] matches", hits.totalHits);
 
-            if (hits.totalHits==0) {
+            if (hits.totalHits==0 && params.containsKey("keywords")) {
                 String q = params.get("keywords")[0];
                 String[] suggestions = this.env.spellChecker.suggestSimilar(q,5);
                 if (suggestions.length>0) {

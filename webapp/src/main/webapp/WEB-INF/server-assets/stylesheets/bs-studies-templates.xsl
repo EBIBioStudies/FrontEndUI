@@ -172,6 +172,22 @@
                                 </xsl:call-template>
                             </div>
                         </xsl:if>
+
+                        <xsl:if test="fn:exists(table)">
+                            <br/>
+                            <a class="show-more toggle-tables">show tables in this section</a>
+                            <div class="ae-section-tables">
+                                <xsl:for-each select="table">
+                                    <div class="ae-section-file-title">Table: <xsl:value-of select="section[1]/@type"/></div>
+                                    <xsl:call-template name="subsection-table">
+                                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                                        <xsl:with-param name="pNodes" select="."/>
+                                    </xsl:call-template>
+                                    <br/>
+                                </xsl:for-each>
+                            </div>
+                        </xsl:if>
+
                     </div> <!--end content-->
                 </xsl:with-param>
                 <xsl:with-param name="pClass" select="('left')"/>
@@ -621,6 +637,29 @@
             </tbody>
         </table>
     </xsl:template>
+
+    <xsl:template name="subsection-table">
+        <xsl:param name="pQueryId"/>
+        <xsl:param name="pNodes"/>
+        <xsl:variable name="vColumns" select="distinct-values($pNodes//attribute/name)"/>
+        <table class="stripe compact hover section-table" style=" width: 100% " cellspacing="0"  >
+        <thead>
+                    <xsl:for-each select="$vColumns">
+                        <th><xsl:value-of select="."/></th>
+                    </xsl:for-each>
+                </thead>
+                <xsl:for-each select="$pNodes/section">
+                    <xsl:variable name="pRow" select="."/>
+                    <tr>
+                        <xsl:for-each select="$vColumns">
+                            <xsl:variable name="vColumn" select="."/>
+                            <td><xsl:value-of select="$pRow/attributes/attribute[name=$vColumn]/value"/></td>
+                        </xsl:for-each>
+                    </tr>
+                </xsl:for-each>
+            </table>
+    </xsl:template>
+
 
     <xsl:template name="study-funding">
         <xsl:param name="pQueryId"/>
