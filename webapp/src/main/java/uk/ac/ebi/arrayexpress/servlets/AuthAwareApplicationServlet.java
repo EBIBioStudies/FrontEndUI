@@ -60,7 +60,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
 
     protected void doRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType)
             throws ServletException, IOException {
-        User authenticatedUser = getAuthenticatedUser(request);
+        User authenticatedUser = getAuthenticatedUser(request, requestType);
         if (authenticatedUser == null) {
             invalidateAuthCookies(response);
         }
@@ -76,7 +76,7 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
         response.addCookie(userCookie);
     }
 
-    protected User getAuthenticatedUser(HttpServletRequest request) throws ServletException {
+    protected User getAuthenticatedUser(HttpServletRequest request, RequestType requestType) throws ServletException {
         try {
             CookieMap cookies = new CookieMap(request.getCookies());
             String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
@@ -88,7 +88,11 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
             Users users = getComponent(Users.class);
             return users.checkAccess(userName, token);
         } catch (Exception x) {
-            throw new AuthApplicationServletException(x);
+            getApplication().handleException(
+                    "[SEVERE] Runtime error while processing " + requestToString(request, requestType)
+                    , x
+            );
+            return null;
         }
     }
 
