@@ -183,7 +183,16 @@ var sectionTables = [];
             linksTable[$(this).data('position')-1].column(1).search(filters.join('|'),true, false).draw()
         });
 
+        handleAnchors();
+
     });
+
+    function handleAnchors() {
+        if (window.location.hash.length<2) return;
+        var subq = window.location.hash.substring(1);
+        $('#right-column-expander').click();
+        filesTable.search(subq).draw();
+    }
 
     function showThumbnail(fileLink) {
         $(".thumbnail-image", $(fileLink)).data('isFocused', true);
