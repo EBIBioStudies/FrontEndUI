@@ -94,7 +94,7 @@
 
                 <interface.application.pref.restart.command>/nfs/public/rw/webadmin/tomcat/bases/fg/tc-fg-biostudies-dev/restart-nowait</interface.application.pref.restart.command>
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
-                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-beta/checkAccess</interface.application.pref.users.authentication.url>
+                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9280/biostd-prod/checkAccess</interface.application.pref.users.authentication.url>
             </properties>
         </profile>
         <profile>
@@ -153,7 +153,7 @@
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
                 <interface.application.pref.restart.command>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/restart-nowait</interface.application.pref.restart.command>
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
-                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-dev/checkAccess</interface.application.pref.users.authentication.url>
+                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9280/biostd-prod/checkAccess</interface.application.pref.users.authentication.url>
                 <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/dev/adm/submission</interface.application.pref.studies.files.location>
             </properties>
 
