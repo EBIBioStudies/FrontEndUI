@@ -27,6 +27,7 @@ import uk.ac.ebi.microarray.arrayexpress.shared.auth.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 
 public class FileDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909737571L;
@@ -57,6 +58,12 @@ public class FileDownloadServlet extends BaseDownloadServlet {
             File downloadFile = new File(files.getRootFolder(), relativePath+ "/Files/" +name);
 
             if (downloadFile.exists()) {
+                if (downloadFile.isDirectory()) {
+                    String forwardedParams = String.format("?url=%s",
+                            URLEncoder.encode(files.getFtpURL() + relativePath+"/"+name, "UTF-8"));
+                    request.getRequestDispatcher("/servlets/query/download/directory/html"+forwardedParams ).forward(request, response);
+                    return null;
+                }
                 file = new RegularDownloadFile(downloadFile);
             } else if (name.equalsIgnoreCase(accession+".json") || name.equalsIgnoreCase(accession+".xml") || name.equalsIgnoreCase(accession+".pagetab.tsv") ) {
                 file = new RegularDownloadFile(new File(files.getRootFolder(), relativePath+ "/" +name));

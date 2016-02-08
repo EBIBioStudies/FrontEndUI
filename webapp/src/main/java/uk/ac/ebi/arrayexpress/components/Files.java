@@ -25,6 +25,7 @@ public class Files extends ApplicationComponent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String rootFolder;
     private String tempZipFolder;
+    private String ftpURL;
 
     public Files() {
     }
@@ -37,10 +38,15 @@ public class Files extends ApplicationComponent {
         return this.tempZipFolder;
     }
 
+    public synchronized String getFtpURL() {
+        return this.ftpURL;
+    }
+
     @Override
     public void initialize() throws Exception {
         this.rootFolder = getPreferences().getString("bs.studies.files-location");
         this.tempZipFolder = getPreferences().getString("bs.files.temp-zip.location");
+        this.ftpURL = getPreferences().getString("bs.files.ftp.url");
     }
 
     @Override

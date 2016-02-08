@@ -172,7 +172,7 @@ public class Studies extends ApplicationComponent  {
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
             Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
-            if (xmlFile.getName()=="studies.xml") {
+            if (xmlFile.getName().equalsIgnoreCase("studies.xml")) {
                 indexer.clearIndex(false);
             }
             try (InputStreamReader inputStreamReader= new InputStreamReader(new FileInputStream(xmlFile), "UTF-8")) {

@@ -78,6 +78,7 @@
                 <atstart>false</atstart>
                 <schedule>${interface.application.pref.files.check.schedule}</schedule>
             </check>
+            <ftp><url>${interface.application.pref.files.ftp.url}</url></ftp>
         </files>
         <!--
         <species>

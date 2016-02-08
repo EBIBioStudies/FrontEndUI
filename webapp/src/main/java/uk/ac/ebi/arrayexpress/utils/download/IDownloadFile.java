@@ -32,6 +32,8 @@ public interface IDownloadFile {
 
     public boolean canDownload();
 
+    public boolean isDirectory();
+
     public boolean isRandomAccessSupported();
 
     public DataInput getRandomAccessFile() throws IOException;

@@ -61,6 +61,11 @@ public final class RegularDownloadFile implements IDownloadFile {
         return getFile().exists() && getFile().isFile() && getFile().canRead();
     }
 
+    public boolean isDirectory() {
+        return getFile().exists() && getFile().isDirectory() && getFile().canRead();
+    }
+
+
     public boolean isRandomAccessSupported() {
         return true;
     }
