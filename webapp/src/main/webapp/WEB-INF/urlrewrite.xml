@@ -30,7 +30,7 @@
     <!-- zip message page -->
     <rule>
         <from>^/zip/$</from>
-        <to type="forward" last="true">/servlets/query/-/zip/html</to>
+        <to type="forward" last="true">/servlets/view/-/zip/html</to>
     </rule>
 
     <!-- search page -->
@@ -134,7 +134,7 @@
     <rule>
         <from>^/about[.]html?$</from>
         <set type="parameter" name="filename">about.html</set>
-        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
+        <to type="forward" last="true">/servlets/view/-/static-page/html</to>
     </rule>
     <rule>
         <from>^/acknowledgements[.]html?$</from>
@@ -148,7 +148,7 @@
     <rule>
         <from>^/submit/.*$</from>
         <set type="parameter" name="filename">submit.html</set>
-        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
+        <to type="forward" last="true">/servlets/view/-/static-page/html</to>
     </rule>
     <!-- help pages -->
     <rule>
@@ -158,19 +158,19 @@
     <rule>
         <from>^/help/$</from>
         <set type="parameter" name="filename">help/index.html</set>
-        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
+        <to type="forward" last="true">/servlets/view/-/static-page/html</to>
     </rule>
     <rule>
         <from>^/help/(.+)[.]html?$</from>
         <set type="parameter" name="filename">help/${lower:$1}.html</set>
-        <to type="forward" last="true">/servlets/query/-/static-page/html</to>
+        <to type="forward" last="true">/servlets/view/-/static-page/html</to>
     </rule>
 
     <!-- global search dump export -->
     <rule>
         <from>^/export/ebeye_export[.]xml$</from>
         <set type="parameter" name="version">2</set>
-        <to type="forward" last="true">/servlets/query/experiments/ebeye/xml</to>
+        <to type="forward" last="true">/servlets/view/experiments/ebeye/xml</to>
     </rule>
 
     <!-- proxy calls to json efo api for nils -->
@@ -250,7 +250,7 @@
     <!-- test page -->
     <rule>
         <from>^/test[.]html?$</from>
-        <to type="forward" last="true">/servlets/query/-/test/html</to>
+        <to type="forward" last="true">/servlets/view/-/test/html</to>
     </rule>
 
     <!-- this has to be the last rule so that /admin/ can work -->

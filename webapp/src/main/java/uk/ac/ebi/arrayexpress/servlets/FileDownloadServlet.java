@@ -61,7 +61,7 @@ public class FileDownloadServlet extends BaseDownloadServlet {
                 if (downloadFile.isDirectory()) {
                     String forwardedParams = String.format("?url=%s",
                             URLEncoder.encode(files.getFtpURL() + relativePath+"/"+name, "UTF-8"));
-                    request.getRequestDispatcher("/servlets/query/download/directory/html"+forwardedParams ).forward(request, response);
+                    request.getRequestDispatcher("/servlets/view/download/directory/html"+forwardedParams ).forward(request, response);
                     return null;
                 }
                 file = new RegularDownloadFile(downloadFile);

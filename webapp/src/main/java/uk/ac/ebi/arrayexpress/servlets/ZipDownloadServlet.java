@@ -66,7 +66,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                             URLEncoder.encode(accession, "UTF-8"),
                             URLEncoder.encode(datacentre.substring(0, 1), "UTF-8"));
                     ZipStatusServlet.addFile(uuid);
-                    request.getRequestDispatcher("/servlets/query/-/zip/html" + forwardedParams)
+                    request.getRequestDispatcher("/servlets/view/-/zip/html" + forwardedParams)
                             .forward(request, response);
                     return;
                 } else {

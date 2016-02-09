@@ -18,6 +18,11 @@
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.QueryServlet</servlet-class>
     </servlet>
     <servlet>
+        <description>View Servlet</description>
+        <servlet-name>ViewServlet</servlet-name>
+        <servlet-class>uk.ac.ebi.arrayexpress.servlets.ViewServlet</servlet-class>
+    </servlet>
+    <servlet>
         <description>File Download Servlet</description>
         <servlet-name>FileDownloadServlet</servlet-name>
         <servlet-class>uk.ac.ebi.arrayexpress.servlets.FileDownloadServlet</servlet-class>
@@ -78,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>QueryServlet</servlet-name>
         <url-pattern>/servlets/query/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewServlet</servlet-name>
+        <url-pattern>/servlets/view/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ZipDownloadServlet</servlet-name>
