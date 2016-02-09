@@ -349,17 +349,25 @@ var sectionTables = [];
     );
 
     $("span[data-term-id][data-ontology]").each(function() {
-        $.ajax({
-            async: true,
-            context: this,
-            url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/"+ $(this).data('ontology').toLowerCase() +"/terms",
-            data: {short_form:$(this).data('term-id'), size:1},
-            success: function(data){
-                if (data && data._embedded && data._embedded.terms && data._embedded.terms.length>0) {
-                    $(this).wrap('<a target="_blank" href="'+ data._embedded.terms[0].iri + '"/>');
+        var onts = $(this).data('ontology').toLowerCase().split(" ");
+        var terms = $(this).data('term-id').split(" ");
+
+        for(var i=0; i<onts.length; i++) {
+            $.ajax({
+                async: true,
+                context: this,
+                url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/" + onts[i] + "/terms",
+                data: {short_form: terms[i], size: 1},
+                success: function (data) {
+                    if (data && data._embedded && data._embedded.terms && data._embedded.terms.length > 0) {
+                        $(this).append('<a title="'+data._embedded.terms[0].obo_id +
+                            ( data._embedded.terms[0].description ? ' - '+ data._embedded.terms[0].description : '') + '" ' +
+                            'class="ontology-icon"  target="_blank" href="' + data._embedded.terms[0].iri
+                            + '"><span class="icon icon-conceptual" data-icon="o"></span></a>');
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
 })(window.jQuery);

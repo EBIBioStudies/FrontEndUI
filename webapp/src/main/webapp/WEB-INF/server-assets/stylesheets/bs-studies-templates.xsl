@@ -95,7 +95,7 @@
                             </xsl:call-template>
                         </span>
                         <xsl:call-template name="study-sub-attributes">
-                            <xsl:with-param name="pSubAttributes" select="./*[name()!='value']"/>
+                            <xsl:with-param name="pSubAttributes" select="./*[lower-case(name())!='value' and lower-case(name())!='ontology' and lower-case(name())!='termid']"/>
                         </xsl:call-template>
                         <xsl:if test="fn:position() != fn:last()">, </xsl:if>
                     </xsl:for-each>

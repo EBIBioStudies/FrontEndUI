@@ -419,3 +419,10 @@ ul.recommendations li{
 .sub-attribute-text {
     background-color: #EAF5FB;
 }
+
+.ontology-icon {
+    border: 0px !important;
+    color: #6BA8C5 !important;
+    padding: 2px;
+    /* display: inline; */
+}
