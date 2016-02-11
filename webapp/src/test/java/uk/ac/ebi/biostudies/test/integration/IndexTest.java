@@ -87,11 +87,11 @@ public class IndexTest {
         String sourceLocation = BSInterfaceTestApplication.getInstance().getPreferences().getString("bs.studies.source-location");
         File file = new File(sourceLocation, "temp-test-study.xml");
         FileUtils.writeStringToFile(file, sb.toString());
-        driver.get(baseUrl + "/reload-xml/temp-test-study.xml");
+        driver.get(baseUrl + "/admin/reload-xml/temp-test-study.xml");
         file.delete();
 
         driver.get(baseUrl + "/admin/delete/TEST-0");
-        driver.get(baseUrl + "/admin/studies");
+        driver.get(baseUrl + "/studies");
         assertEquals("We’re sorry that we couldn’t find any matching studies", driver.findElement(By.cssSelector("h2.alert")).getText());
 
         driver.get(baseUrl + "/admin/clear-index");

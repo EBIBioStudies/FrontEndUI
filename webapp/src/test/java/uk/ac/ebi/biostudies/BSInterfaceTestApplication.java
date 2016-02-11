@@ -1,6 +1,6 @@
 package uk.ac.ebi.biostudies;
 
-import uk.ac.ebi.arrayexpress.app.Application;
+import uk.ac.ebi.biostudies.app.Application;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -19,7 +19,6 @@ package uk.ac.ebi.biostudies.utils;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.ac.ebi.arrayexpress.utils.StringTools;
 
 import static org.junit.Assert.assertEquals;
 
