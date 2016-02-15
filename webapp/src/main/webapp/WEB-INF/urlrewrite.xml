@@ -275,13 +275,12 @@
     <rule>
         <from>^/hecatos/studies/$</from> <!-- handle project specific pages (without a query) -->
         <set type="parameter" name="project">hecatos</set>
-        <set type="parameter" name="pagesize">10000000</set>
+        <set type="parameter" name="pagesize">10000000</set> <!-- show all hecatos projects -->
         <to type="forward" last="true">/servlets/query/hecatos/browse/html</to>
     </rule>
     <rule>
-         <from>^/([^/]+)/studies/$</from> <!-- handle project specific pages (without a query) -->
+         <from>^/([^/]+)/studies/$</from> <!-- handle general project page (without a query) -->
         <set type="parameter" name="project">$1</set>
-        <set type="parameter" name="pagesize">10000000</set>
         <to type="forward" last="true">/servlets/query/studies/browse/html</to>
     </rule>
     <rule>
