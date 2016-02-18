@@ -401,6 +401,7 @@ ul.recommendations li{
     margin-left: 10px;
     display: none;
     color: #777;
+    z-index: 999;
 }
 
 .sub-attribute-info {

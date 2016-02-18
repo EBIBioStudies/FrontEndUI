@@ -349,25 +349,25 @@ var sectionTables = [];
     );
 
     $("span[data-term-id][data-ontology]").each(function() {
-        var onts = $(this).data('ontology').toLowerCase().split(" ");
-        var terms = $(this).data('term-id').split(" ");
-
-        for(var i=0; i<onts.length; i++) {
-            $.ajax({
-                async: true,
-                context: this,
-                url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/" + onts[i] + "/terms",
-                data: {short_form: terms[i], size: 1},
-                success: function (data) {
-                    if (data && data._embedded && data._embedded.terms && data._embedded.terms.length > 0) {
-                        $(this).append('<a title="'+data._embedded.terms[0].obo_id +
-                            ( data._embedded.terms[0].description ? ' - '+ data._embedded.terms[0].description : '') + '" ' +
-                            'class="ontology-icon"  target="_blank" href="' + data._embedded.terms[0].iri
-                            + '"><span class="icon icon-conceptual" data-icon="o"></span></a>');
-                    }
+        var ont = $(this).data('ontology').toLowerCase();
+        var termId = $(this).data('term-id');
+        var name =  $(this).data('term-name');
+        $.ajax({
+            async: true,
+            context: this,
+            url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/" + ont + "/terms",
+            data: {short_form: termId, size: 1},
+            success: function (data) {
+                if (data && data._embedded && data._embedded.terms && data._embedded.terms.length > 0) {
+                    var n = name ? name : data._embedded.terms[0].description ? data._embedded.terms[0].description : null;
+                    $(this).append('<a title="'+data._embedded.terms[0].obo_id +
+                        ( n ? ' - '+ n : '') + '" ' +
+                        'class="ontology-icon"  target="_blank" href="' + data._embedded.terms[0].iri
+                        + '"><span class="icon icon-conceptual" data-icon="o"></span></a>');
                 }
-            });
-        }
+            }
+        });
+
     });
 
 })(window.jQuery);
