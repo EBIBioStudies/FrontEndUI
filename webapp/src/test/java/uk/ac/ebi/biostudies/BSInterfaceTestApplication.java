@@ -32,6 +32,11 @@ public class BSInterfaceTestApplication extends Application
         return "BioStudies Test Application";
     }
 
+    public String getContextPath()
+    {
+        return "/";
+    }
+
     public URL getResource(String path) throws MalformedURLException
     {
         return getClass().getResource(path.replaceFirst("/WEB-INF/classes", ""));

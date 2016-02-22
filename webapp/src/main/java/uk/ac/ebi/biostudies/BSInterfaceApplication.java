@@ -58,6 +58,10 @@ public class BSInterfaceApplication extends Application implements ServletContex
         return null != servletContext ? servletContext.getServletContextName() : null;
     }
 
+    public String getContextPath() {
+        return null != servletContext ? servletContext.getContextPath()  : null;
+    }
+
     public URL getResource(String path) throws MalformedURLException {
         return null != servletContext ? servletContext.getResource(path) : null;
     }

@@ -56,6 +56,8 @@ public abstract class Application {
 
     public abstract String getName();
 
+    public abstract String getContextPath();
+
     public abstract URL getResource(String path) throws MalformedURLException;
 
     public <T extends ApplicationComponent> void addComponent(T component) {
@@ -151,6 +153,7 @@ public abstract class Application {
 
             Map<String, String> params = new HashMap<>();
             params.put("variable.appname", getName());
+            params.put("variable.contextpath", getContextPath());
             params.put("variable.thread", String.valueOf(currentThread));
             params.put("variable.hostname", hostName);
             StrSubstitutor sub = new StrSubstitutor(params);
@@ -174,6 +177,7 @@ public abstract class Application {
                 , getPreferences().getString("app.reports.subject")
                 , message + ": " + x.getMessage() + StringTools.EOL
                         + "Application [${variable.appname}]" + StringTools.EOL
+                        + "Context Path [${variable.contextpath}]" + StringTools.EOL
                         + "Host [${variable.hostname}]" + StringTools.EOL
                         + "Thread [${variable.thread}]" + StringTools.EOL
                         + getStackTrace(x)
