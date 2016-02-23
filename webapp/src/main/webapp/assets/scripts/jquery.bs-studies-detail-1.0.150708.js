@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2015 European Molecular Biology Laboratory
+ * Copyright 2009-2016 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -183,7 +183,16 @@ var sectionTables = [];
             linksTable[$(this).data('position')-1].column(1).search(filters.join('|'),true, false).draw()
         });
 
+        handleAnchors();
+
     });
+
+    function handleAnchors() {
+        if (window.location.hash.length<2) return;
+        var subq = window.location.hash.substring(1);
+        $('#right-column-expander').click();
+        filesTable.search(subq).draw();
+    }
 
     function showThumbnail(fileLink) {
         $(".thumbnail-image", $(fileLink)).data('isFocused', true);
@@ -340,17 +349,25 @@ var sectionTables = [];
     );
 
     $("span[data-term-id][data-ontology]").each(function() {
+        var ont = $(this).data('ontology').toLowerCase();
+        var termId = $(this).data('term-id');
+        var name =  $(this).data('term-name');
         $.ajax({
             async: true,
             context: this,
-            url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/"+ $(this).data('ontology').toLowerCase() +"/terms",
-            data: {short_form:$(this).data('term-id'), size:1},
-            success: function(data){
-                if (data && data._embedded && data._embedded.terms && data._embedded.terms.length>0) {
-                    $(this).wrap('<a target="_blank" href="'+ data._embedded.terms[0].iri + '"/>');
+            url: "http://www.ebi.ac.uk/ols/beta/api/ontologies/" + ont + "/terms",
+            data: {short_form: termId, size: 1},
+            success: function (data) {
+                if (data && data._embedded && data._embedded.terms && data._embedded.terms.length > 0) {
+                    var n = name ? name : data._embedded.terms[0].description ? data._embedded.terms[0].description : null;
+                    $(this).append('<a title="'+data._embedded.terms[0].obo_id +
+                        ( n ? ' - '+ n : '') + '" ' +
+                        'class="ontology-icon"  target="_blank" href="' + data._embedded.terms[0].iri
+                        + '"><span class="icon icon-conceptual" data-icon="o"></span></a>');
                 }
             }
         });
+
     });
 
 })(window.jQuery);

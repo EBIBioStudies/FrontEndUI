@@ -44,7 +44,7 @@ public class DetailTest {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#file-list_info")));
         String filesCountOnDetails = driver.findElement(By.cssSelector("#file-list_info")).getText();
-        assertEquals( "Showing 1 to "+(fileCount<5?fileCount:5)+" of "+(fileCount)+" entries", filesCountOnDetails);
+        assertEquals( "Showing 1 to "+(fileCount<5?fileCount:5)+" of "+(fileCount)+" entries", filesCountOnDetails.replaceAll(",",""));
     }
 
 
@@ -106,9 +106,10 @@ public class DetailTest {
     @Test
     public void testDownloadSelection() {
         driver.get(baseUrl + "/studies/search.html?sortby=files&sortorder=descending");
-        String fileCountText = driver.findElement(By.cssSelector(".browse-study-release-files")).getText();
+        String fileCountText = driver.findElements(By.cssSelector(".browse-study-release-files")).get(1).getText();
         int fileCount = Integer.parseInt(fileCountText.substring(0, fileCountText.indexOf(" ")));
-        driver.findElements(By.cssSelector(".browse-study-title a")).get(0).click();
+        List<WebElement> studies = driver.findElements(By.cssSelector(".browse-study-title a"));
+        studies.get(1).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#select-all-files")));
         driver.findElement(By.cssSelector("#select-all-files")).click();

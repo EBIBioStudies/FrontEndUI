@@ -4,7 +4,9 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlSearchInput;
+import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,10 +23,7 @@ import uk.ac.ebi.biostudies.utils.TestUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
@@ -141,7 +140,7 @@ public class SearchTest {
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-files"));
         Integer [] values = new Integer[list.size()];
         for(int i=0; i < values.length; i++) {
-            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" data files",""));
+            values[i] = Integer.parseInt(list.get(i).getText().trim().split(" ")[0]);
         }
         Integer [] unsortedValues = values.clone();
         Arrays.sort(values, Collections.reverseOrder());
@@ -156,7 +155,7 @@ public class SearchTest {
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-files"));
         Integer [] values = new Integer[list.size()];
         for(int i=0; i < values.length; i++) {
-            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" data files",""));
+            values[i] = Integer.parseInt(list.get(i).getText().trim().split(" ")[0]);
         }
         Integer [] unsortedValues = values.clone();
         assertArrayEquals(values, unsortedValues);
@@ -169,7 +168,7 @@ public class SearchTest {
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-links"));
         Integer [] values = new Integer[list.size()];
         for(int i=0; i < values.length; i++) {
-            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" links",""));
+            values[i] = Integer.parseInt(list.get(i).getText().trim().split(" ")[0]);
         }
         Integer [] unsortedValues = values.clone();
         Arrays.sort(values, Collections.reverseOrder());
@@ -184,7 +183,7 @@ public class SearchTest {
         List<WebElement> list = driver.findElements(By.cssSelector(".browse-study-release-links"));
         Integer [] values = new Integer[list.size()];
         for(int i=0; i < values.length; i++) {
-            values[i] = Integer.parseInt(list.get(i).getText().toLowerCase().trim().replaceAll(" links", ""));
+            values[i] = Integer.parseInt(list.get(i).getText().trim().split(" ")[0]);
         }
         Integer [] unsortedValues = values.clone();
         assertArrayEquals(values, unsortedValues);
@@ -198,11 +197,26 @@ public class SearchTest {
         Date [] values = new Date[list.size()];
         SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");
         for(int i=0; i < values.length; i++) {
-            values[i] = formatter.parse(list.get(i).getText().trim());
+            String date = list.get(i).getText().trim();
+            if (date.equalsIgnoreCase("today")) {
+                values[i] = Calendar.getInstance().getTime();
+            } else if (date.equalsIgnoreCase("yesterday")) {
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -1);
+                values[i] = cal.getTime();
+            } else if (date.equalsIgnoreCase("tomorrow")) {
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 1);
+                values[i] = cal.getTime();
+            } else {
+                values[i] = formatter.parse(date);
+            }
         }
         Date [] unsortedValues = values.clone();
         Arrays.sort(values, Collections.reverseOrder());
-        assertArrayEquals(values, unsortedValues);
+        for (int i=0; i< unsortedValues.length; i++) {
+            assertTrue(DateUtils.isSameDay(values[i],unsortedValues[i]));
+        }
     }
 
 
@@ -214,10 +228,25 @@ public class SearchTest {
         Date [] values = new Date[list.size()];
         SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");
         for(int i=0; i < values.length; i++) {
-            values[i] = formatter.parse(list.get(i).getText().trim());
+            String date = list.get(i).getText().trim();
+            if (date.equalsIgnoreCase("today")) {
+                values[i] = new Date();
+            } else if (date.equalsIgnoreCase("yesterday")) {
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -1);
+                values[i] = cal.getTime();
+            } else if (date.equalsIgnoreCase("tomorrow")) {
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 1);
+                values[i] = cal.getTime();
+            } else {
+                values[i] = formatter.parse(date);
+            }
         }
         Date [] unsortedValues = values.clone();
-        assertArrayEquals(values, unsortedValues);
+        for (int i=0; i< unsortedValues.length; i++) {
+            assertTrue(DateUtils.isSameDay(values[i],unsortedValues[i]));
+        }
     }
 
 

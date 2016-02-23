@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * Copyright 2009-2015 European Molecular Biology Laboratory
+ * Copyright 2009-2016 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,19 +83,26 @@
                 <xsl:with-param name="pName" select="fn:current-group()[1]/@name"/>
                 <xsl:with-param name="pContent">
                     <xsl:for-each select="fn:current-group()">
-                        <span>
-                            <xsl:if test="exists(./*[lower-case(name())='ontology']) and exists(./*[lower-case(name())='ontology'])">
-                                <xsl:attribute name="data-ontology" select="./*[lower-case(name())='ontology']"/>
-                                <xsl:attribute name="data-term-id" select="./*[lower-case(name())='termid']"/>
-                            </xsl:if>
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                                <xsl:with-param name="pText" select="value"/>
-                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
-                            </xsl:call-template>
-                        </span>
+                        <xsl:call-template name="highlight">
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                            <xsl:with-param name="pText" select="value"/>
+                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                        </xsl:call-template>
+                        <xsl:for-each select="./*[lower-case(name())='ontology']">
+                            <span>
+                                <xsl:attribute name="data-ontology">
+                                    <xsl:value-of select="."/>
+                                </xsl:attribute>
+                                <xsl:attribute name="data-term-id">
+                                    <xsl:value-of select="following-sibling::*[lower-case(name())='termid'][1]"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="data-term-name">
+                                    <xsl:value-of select="following-sibling::*[lower-case(name())='termname'][1]"/>
+                                </xsl:attribute>
+                            </span>
+                        </xsl:for-each>
                         <xsl:call-template name="study-sub-attributes">
-                            <xsl:with-param name="pSubAttributes" select="./*[name()!='value']"/>
+                            <xsl:with-param name="pSubAttributes" select="./*[lower-case(name())!='value' and lower-case(name())!='ontology' and lower-case(name())!='termid' and lower-case(name())!='termname']"/>
                         </xsl:call-template>
                         <xsl:if test="fn:position() != fn:last()">, </xsl:if>
                     </xsl:for-each>
