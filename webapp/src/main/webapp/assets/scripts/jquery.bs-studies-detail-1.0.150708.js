@@ -94,12 +94,12 @@ var sectionTables = [];
         $("#select-all-files").on ('click', function () {
             var isChecked = $(this).is(':checked');
             if (!isChecked) {
-                $('input[type="checkbox"]', filesTable.cells().nodes()).removeAttr('checked');
-                $('input[type="checkbox"]', filesTable.cells().nodes()).removeClass('selected');
+                $('input[type="checkbox"]', filesTable.column(0).nodes()).removeAttr('checked');
+                $('input[type="checkbox"]', filesTable.column(0).nodes()).removeClass('selected');
                 selectedFilesCount = 0;
             } else {
-                $('input[type="checkbox"]', filesTable.cells().nodes()).attr('checked', 'checked');
-                $('input[type="checkbox"]', filesTable.cells().nodes()).addClass('selected');
+                $('input[type="checkbox"]', filesTable.column(0).nodes()).attr('checked', 'checked');
+                $('input[type="checkbox"]', filesTable.column(0).nodes()).addClass('selected');
                 selectedFilesCount = totalRows;
             }
             updateSelectedFiles(0);
