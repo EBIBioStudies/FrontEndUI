@@ -47,6 +47,9 @@ public class Files extends ApplicationComponent {
         this.rootFolder = getPreferences().getString("bs.studies.files-location");
         this.tempZipFolder = getPreferences().getString("bs.files.temp-zip.location");
         this.ftpURL = getPreferences().getString("bs.files.ftp.url");
+        logger.debug("bs.studies.files-location = {}", this.rootFolder);
+        logger.debug("bs.files.temp-zip.location = {}", this.tempZipFolder);
+        logger.debug("bs.files.ftp.url = {}", this.ftpURL);
     }
 
     @Override
