@@ -71,7 +71,7 @@
             <persistence-location>${sys:java.io.tmpdir}/bs-files.xml</persistence-location>
             <rescan><interval>${interface.application.pref.files.rescan.interval}</interval></rescan>
             <temp-zip>
-                <location>${sys:java.io.tmpdir}/${interface.application.pref.files.temp-zip.location}</location>
+                <location>${interface.application.pref.files.temp-zip.location}</location>
                 <delete><interval>${interface.application.pref.files.temp-zip.delete.interval}</interval></delete>
             </temp-zip>
             <check>
