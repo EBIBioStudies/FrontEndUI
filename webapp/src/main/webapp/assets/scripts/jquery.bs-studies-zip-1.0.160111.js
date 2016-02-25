@@ -21,14 +21,14 @@
         var filename = $('#filename').val();
         var dc = $('#dc').val();
         var accession = $('#accession').val();
-        setTimeout(checkStatus,2000);
+        setTimeout(checkStatus,5000);
 
         function checkStatus(){
             $.get( contextPath+"/"+dc+"/zipstatus", { filename: filename}, function(data) {
                 if(data) {
                     switch (data.status) {
                         case 'processing':
-                            setTimeout(checkStatus,2000);
+                            setTimeout(checkStatus,5000);
                             break;
                         case 'done':
                             link = contextPath+"/"+dc+"/files/"+accession+"/zip?file="+filename;
