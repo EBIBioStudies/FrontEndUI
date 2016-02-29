@@ -243,6 +243,10 @@
         <to type="forward" last="true">/servlets/control/test-email</to>
     </rule>
     <rule>
+        <from>^/admin/delete-temp-zip-files$</from>
+        <to type="forward" last="true">/servlets/control/delete-temp-zip-files</to>
+    </rule>
+    <rule>
         <from>^/admin/restart-app$</from>
         <to type="forward" last="true">/servlets/control/restart</to>
     </rule>

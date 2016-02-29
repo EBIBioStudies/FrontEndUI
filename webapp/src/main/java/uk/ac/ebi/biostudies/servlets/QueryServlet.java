@@ -18,6 +18,7 @@
 package uk.ac.ebi.biostudies.servlets;
 
 
+import net.sf.saxon.trans.XPathException;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,6 +152,9 @@ public class QueryServlet extends AuthAwareApplicationServlet {
                     } else {
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     }
+                } else if (x.getCause() instanceof XPathException && x.getCause().getMessage().contains("Illegal HTML")) {
+                    getApplication().handleException("[SEVERE] Runtime error while processing " + requestToString(request, requestType), x);
+                    return;
                 }
             }
 

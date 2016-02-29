@@ -96,6 +96,7 @@ public class ControlServlet extends ApplicationServlet {
                             || "rescan-files".equals(command)
                             || "check-experiments".equals(command)
                             || "reload-atlas-info".equals(command)
+                            || "delete-temp-zip-files".equals(command)
                     ) {
                 getComponent(JobsController.class).executeJob(command);
             } else if ("reload-xml".equals(command)) {

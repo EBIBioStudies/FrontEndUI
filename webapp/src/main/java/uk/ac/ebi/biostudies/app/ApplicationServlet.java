@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 
 public abstract class ApplicationServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -105,13 +107,22 @@ public abstract class ApplicationServlet extends HttpServlet {
     }
 
     protected String requestToString(HttpServletRequest request, RequestType requestType) {
-        return "["
-                + requestType.toString()
-                + "] request ["
-                + request.getRequestURL().append(
-                null != request.getQueryString() ? "?" + request.getQueryString() : ""
-        )
-                + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[")
+                .append(requestType.toString())
+                .append("] request [")
+                .append(request.getRequestURL())
+                .append(null != request.getQueryString() ? "?" + request.getQueryString() : "")
+                .append("]")
+                .append("\n");
+        Map map = request.getParameterMap();
+        for (Object key: map.keySet())
+        {
+            String keyStr = (String)key;
+            String[] value = (String[])map.get(keyStr);
+            sb.append((String)key + "   :   " + Arrays.toString(value)+ "\n");
+        }
+        return sb.toString();
     }
 
 }
