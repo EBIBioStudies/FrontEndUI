@@ -127,7 +127,7 @@ public class ControlServlet extends ApplicationServlet {
                 );
                 if (!params.isEmpty()) {
                     logger.debug("Will redirect to [{}]", params);
-                    response.sendRedirect("/" + params);
+                    response.sendRedirect( request.getContextPath()+"/" + params);
                 }
             }
 //            } else if ("reload-ae1-xml".equals(command)) {

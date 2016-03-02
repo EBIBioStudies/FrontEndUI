@@ -172,7 +172,7 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
     // implements ErrorListener.fatalError
     @Override
     public void fatalError(TransformerException x) throws TransformerException {
-        if (!(x instanceof HTTPStatusException)) {
+        if (!(x instanceof HTTPStatusException || x.getMessage().contains("Illegal HTML"))) {
             logger.error("Caught XSLT fatal transformation error:", x);
             getApplication().handleException("[SEVERE] XSLT fatal transformation error occurred", x);
         }

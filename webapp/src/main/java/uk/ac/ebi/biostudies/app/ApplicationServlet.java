@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.biostudies.app;
 
+import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,8 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 public abstract class ApplicationServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -114,13 +114,17 @@ public abstract class ApplicationServlet extends HttpServlet {
                 .append(request.getRequestURL())
                 .append(null != request.getQueryString() ? "?" + request.getQueryString() : "")
                 .append("]")
-                .append("\n");
+                .append(" with parameters ");
         Map map = request.getParameterMap();
-        for (Object key: map.keySet())
+        List<String> keys = new ArrayList<>(map.keySet());
+        for (int i=0; i < keys.size(); i++)
         {
-            String keyStr = (String)key;
+            String keyStr = keys.get(i);
             String[] value = (String[])map.get(keyStr);
-            sb.append((String)key + "   :   " + Arrays.toString(value)+ "\n");
+            if (i>0) {
+                sb.append(", ");
+            }
+            sb.append(keyStr).append(": ").append(Arrays.toString(value));
         }
         return sb.toString();
     }

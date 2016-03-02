@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.biostudies.components;
 
+import com.google.common.io.*;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import org.slf4j.Logger;
@@ -167,7 +168,10 @@ public class Studies extends ApplicationComponent  {
     }
 
     // Updates the index one study at a time
-    public synchronized void updateFromXMLFile(File xmlFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
+    public synchronized void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
+        File xmlFile = new File( System.getProperty("java.io.tmpdir"),  originalXMLFile.getName());
+        logger.info("Making a local copy  of {} at {}", originalXMLFile.getAbsolutePath(), xmlFile.getAbsolutePath());
+        com.google.common.io.Files.copy(originalXMLFile, xmlFile);
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
