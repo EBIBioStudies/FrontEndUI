@@ -185,6 +185,9 @@ var sectionTables = [];
 
         handleAnchors();
 
+        //replace all newlines with html tags
+        $('.value').each(function () { $(this).html( $(this).html().replace(/\n/g,'<br/>'))});
+
     });
 
     function handleAnchors() {
