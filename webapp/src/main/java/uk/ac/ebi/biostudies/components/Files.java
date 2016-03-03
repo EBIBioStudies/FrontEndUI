@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.biostudies.app.ApplicationComponent;
 
 public class Files extends ApplicationComponent {
+    public static final int KB = 1024;
+    public static final int MB = KB * KB;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String rootFolder;
     private String tempZipFolder;

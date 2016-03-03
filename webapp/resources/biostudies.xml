@@ -2,7 +2,7 @@
 <configuration>
     <app>
         <reports>
-            <originator>"BioStudies" &lt;ae-mgmt@ebi.ac.uk&gt;</originator>
+            <originator>"BioStudies" &lt;biostudies-mgmt@ebi.ac.uk&gt;</originator>
             <recipients>${interface.application.pref.reports.recipients}</recipients>
             <hidden-recipients>${interface.application.pref.reports.hidden-recipients}</hidden-recipients>
             <subject>Runtime exception report</subject>

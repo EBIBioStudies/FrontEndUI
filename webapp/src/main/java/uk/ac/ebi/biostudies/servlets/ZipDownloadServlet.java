@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.biostudies.components.Files;
 import uk.ac.ebi.biostudies.utils.download.IDownloadFile;
 import uk.ac.ebi.biostudies.utils.download.RegularDownloadFile;
+import uk.ac.ebi.biostudies.utils.download.ZipperThread;
 import uk.ac.ebi.microarray.biostudies.shared.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,13 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class ZipDownloadServlet extends BaseDownloadServlet {
     private static final long serialVersionUID = 292987974909737571L;
-    private static final int KB = 1024;
-    private static final int MB = KB * KB;
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -49,16 +46,23 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
 
         if (filenames != null) { // first hit: We have to zip the files
             long fileSizeSum = 0;
+            boolean isDirectory =false ;
             for (String filename : filenames) {
                 String fqName = files.getRootFolder() + "/" + relativePath + "/Files/" + filename;
-                fileSizeSum += new File(fqName).length();
+                File thisFile = new File(fqName);
+                fileSizeSum += thisFile.length();
+                if (thisFile.isDirectory()) {
+                    isDirectory = true;
+                    break;
+                }
             }
-            boolean isLargeFile = fileSizeSum > 200* MB;  // Threshold for large files which will be available for 24 hours
-            request.setAttribute("isLargeFile", true);
+            // Threshold for large files which will be available for 24 hours.
+            // Since we don't know the size of a directory, just treat is as a large file.
+            boolean isLargeFile = isDirectory || fileSizeSum > 200* Files.MB;
             String uuid = UUID.randomUUID().toString();
             try {
                 if (isLargeFile) {
-                    Thread thread = new ZipperThread(filenames, relativePath, uuid,null);
+                    Thread thread = new ZipperThread(this, filenames, relativePath, uuid,null);
                     thread.start();
                     String datacentre = System.getProperty("datacentre") == null ? "lc" : System.getProperty("datacentre");
                     String forwardedParams = String.format("?uuid=%s&accession=%s&dc=%s",
@@ -73,7 +77,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
                     // File is not large. Send over the zipped stream
                     response.setContentType("application/zip");
                     response.addHeader("Content-Disposition", "attachment; filename="+ accession+".zip");
-                    Thread thread = new ZipperThread(filenames, relativePath, uuid,response.getOutputStream());
+                    Thread thread = new ZipperThread(this, filenames, relativePath, uuid,response.getOutputStream());
                     thread.start();
                     thread.join();
                 }
@@ -115,53 +119,4 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
         }
     }
 
-    private class ZipperThread extends Thread {
-        private String[] files;
-        private String relativePath;
-        private String uuid;
-        private OutputStream out;
-
-        public ZipperThread(String[] files, String relativePath, String uuid, OutputStream out) {
-            this.files = files;
-            this.relativePath = relativePath;
-            this.uuid = uuid;
-            this.out = out;
-        }
-
-        public void run() {
-            Files filesComponent = getComponent(Files.class);
-
-            String zipFileName = filesComponent.getTempZipFolder() + "/" + uuid + ".zip";
-            byte[] buffer = new byte[4 * KB];
-            OutputStream outputStream = null;
-            try {
-                outputStream= out!=null ? out : new FileOutputStream(zipFileName);
-                try (ZipOutputStream zos = new ZipOutputStream(outputStream)) {
-                    for (String filename : files) {
-                        ZipEntry entry = new ZipEntry(filename);
-                        zos.putNextEntry(entry);
-                        File file = new File(filesComponent.getRootFolder() + "/" + relativePath + "/Files/" + filename);
-                        FileInputStream fin = new FileInputStream(file);
-                        int length;
-                        while ((length = fin.read(buffer)) > 0) {
-                            zos.write(buffer, 0, length);
-                        }
-                        fin.close();
-                        zos.closeEntry();
-                    }
-                }
-            } catch (Exception e) {
-                new File(zipFileName).delete();
-                e.printStackTrace();
-            } finally {
-                if(outputStream!=null)
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-            }
-            ZipStatusServlet.removeFile(uuid);
-        }
-    }
 }

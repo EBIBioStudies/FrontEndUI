@@ -27,10 +27,10 @@
 
         <interface.application.webxml.security.transport.guarantee>NONE</interface.application.webxml.security.transport.guarantee>
 
-        <interface.application.pref.reports.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
+        <interface.application.pref.reports.recipients>biostudies-mgmt&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
         <interface.application.pref.reports.hidden-recipients>awais&#64;ebi.ac.uk</interface.application.pref.reports.hidden-recipients>
         <interface.application.pref.feedback.recipients>awais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
-        <interface.application.pref.remind.recipients>ae-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
+        <interface.application.pref.remind.recipients>biostudies-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
 
         <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/prod/adm/updates</interface.application.pref.studies.source.location>
         <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/prod/adm/submission</interface.application.pref.studies.files.location>

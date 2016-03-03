@@ -469,9 +469,16 @@
                             </xsl:if>
                         </td>
                         <td class="align-right" data-order="{@size}">
-                            <xsl:call-template name="file-size">
-                                <xsl:with-param name="size" select="@size"/>
-                            </xsl:call-template>
+                            <xsl:choose>
+                                <xsl:when test="lower-case(@type)='directory'">
+                                    <i class="fa fa-folder"></i>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="file-size">
+                                        <xsl:with-param name="size" select="@size"/>
+                                    </xsl:call-template>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </td>
                         <xsl:for-each select="$vColumns">
                             <xsl:variable name="vColumnName" select="."/>

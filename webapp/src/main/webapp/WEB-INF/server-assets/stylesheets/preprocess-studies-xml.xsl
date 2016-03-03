@@ -157,6 +157,9 @@
 
     <xsl:template match="file" mode="files">
         <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}">
+            <xsl:if test="fn:exists(@type)">
+                <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
     </xsl:template>
