@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.biostudies.servlets;
 
+import org.apache.commons.io.IOUtils;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import uk.ac.ebi.biostudies.utils.StringTools;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +44,9 @@ public class ControlServlet extends ApplicationServlet {
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected boolean canAcceptRequest(HttpServletRequest request, RequestType requestType) {
+        if (request.getPathInfo().contains("assignment")) {
+            return true;
+        }
         // Allow only ebi hosts and 127.0.0.1 to call the admin functions
         // Doing it here because RemoteHostFilter doesn't seem to be working properly
         // and we don't have access to the Apache server
@@ -118,16 +122,23 @@ public class ControlServlet extends ApplicationServlet {
             } else if ("restart".equals(command)) {
                 getApplication().requestRestart();
             } else if ("assignment".equals(command)) {
+                String code = request.getParameter("code");
                 getApplication().sendEmail(
                         null
                         , null
                         , "Assignment requested"
-                        , "An assignment has just been downloaded, the code was [" + request.getParameter("code") + "]"
+                        , "An assignment has just been downloaded, the code was [" + code + "]"
                                 + StringTools.EOL
                 );
-                if (!params.isEmpty()) {
-                    logger.debug("Will redirect to [{}]", params);
-                    response.sendRedirect( request.getContextPath()+"/" + params);
+                if (!params.isEmpty() && ("ahigw".equals(code) || "naolp".equals(code) || "bkeje".equals(code)|| "awais".equals(code)) ) {
+                    response.setContentType("application/pdf");
+                    response.addHeader("Content-Disposition", "attachment; filename=EBI_00651_assignment.pdf");
+                    InputStream fin = getServletContext().getResourceAsStream("/WEB-INF/server-assets/jobs/EBI_00651_assignment.pdf");
+                    OutputStream out = response.getOutputStream();
+                    IOUtils.copy(fin, out);
+                    out.flush();
+                    out.close();
+                    fin.close();
                 }
             }
 //            } else if ("reload-ae1-xml".equals(command)) {

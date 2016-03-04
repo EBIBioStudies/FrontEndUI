@@ -294,4 +294,17 @@
         <set type="parameter" name="project">$1</set>
         <to type="forward" last="true">/servlets/query/studies/detail/html</to>
     </rule>
+    <!-- jobs hiring campaign -->
+    <rule>
+        <from>^/send-assignment/(.*)$</from>
+        <to type="forward" last="true">/servlets/control/assignment/jobs/$1</to>
+    </rule>
+    <!--rule>
+        <from>^/jobs/EBI_00651/EBI_00651_assignment[.]pdf$</from>
+        <to type="forward" last="true">/assets/misc/EBI_00651_assignment.pdf</to>
+    </rule-->
+    <rule>
+        <from>^/jobs/EBI_00651(|/.*)$</from>
+        <to type="forward" last="true">/servlets/view/-/EBI_00651/html</to>
+    </rule>
 </urlrewrite>
