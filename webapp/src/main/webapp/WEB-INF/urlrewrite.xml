@@ -250,7 +250,16 @@
         <from>^/admin/restart-app$</from>
         <to type="forward" last="true">/servlets/control/restart</to>
     </rule>
-
+    <rule>
+        <condition type="method">GET</condition>
+        <from>^/admin/upload-and-index$</from>
+        <to type="forward" last="true">/servlets/view/admin/upload/html</to>
+    </rule>
+    <rule>
+        <condition type="method">POST</condition>
+        <from>^/admin/upload-and-index$</from>
+        <to type="forward" last="true">/servlets/control/upload-and-index</to>
+    </rule>
     <!-- test page -->
     <rule>
         <from>^/test[.]html?$</from>

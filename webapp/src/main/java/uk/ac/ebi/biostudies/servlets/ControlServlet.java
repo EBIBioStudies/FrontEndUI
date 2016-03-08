@@ -25,12 +25,14 @@ import uk.ac.ebi.biostudies.app.ApplicationServlet;
 import uk.ac.ebi.biostudies.components.JobsController;
 import uk.ac.ebi.biostudies.components.Studies;
 import uk.ac.ebi.biostudies.components.Thumbnails;
+import uk.ac.ebi.biostudies.utils.HttpTools;
 import uk.ac.ebi.biostudies.utils.RegexHelper;
 import uk.ac.ebi.biostudies.utils.StringTools;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.*;
 import java.net.InetAddress;
 import java.util.regex.Matcher;
@@ -52,11 +54,11 @@ public class ControlServlet extends ApplicationServlet {
         // and we don't have access to the Apache server
         try {
             String ip = request.getHeader("X-Cluster-Client-IP");
-            if (ip==null || ip.equalsIgnoreCase("")){
+            if (ip == null || ip.equalsIgnoreCase("")) {
                 logger.warn("Header X-Cluster-Client-IP not found");
                 ip = request.getHeader("X-Forwarded-For");
             }
-            if (ip==null || ip.equalsIgnoreCase("")){
+            if (ip == null || ip.equalsIgnoreCase("")) {
                 logger.warn("Header X-Forwarded-For not found");
                 ip = request.getRemoteAddr();
             }
@@ -65,13 +67,13 @@ public class ControlServlet extends ApplicationServlet {
             String patternString = getPreferences().getString("app.admin.allow-list");
             Pattern allow = Pattern.compile(patternString);
             Matcher matcher = allow.matcher(hn);
-            if(!matcher.matches()) {
-                logger.warn("Rejecting admin URL request from {} {}",ip,hn);
+            if (!matcher.matches()) {
+                logger.warn("Rejecting admin URL request from {} {}", ip, hn);
                 return false;
             }
-            logger.warn("Accepting admin URL request from {} {}",ip,hn);
+            logger.warn("Accepting admin URL request from {} {}", ip, hn);
         } catch (Exception ex) {
-            return  false;
+            return false;
         }
 
         return (requestType == RequestType.GET || requestType == RequestType.POST);
@@ -91,7 +93,6 @@ public class ControlServlet extends ApplicationServlet {
             params = requestArgs[1];
         }
         try {
-            //TODO: place these behind an authentication flow
             if (
                     "reload-atlas-info".equals(command)
                             || "reload-efo".equals(command)
@@ -104,7 +105,7 @@ public class ControlServlet extends ApplicationServlet {
                     ) {
                 getComponent(JobsController.class).executeJob(command);
             } else if ("reload-xml".equals(command)) {
-                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"),Boolean.parseBoolean(request.getParameter("delete")));
+                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"), Boolean.parseBoolean(request.getParameter("delete")));
             } else if ("clear-index".equals(command)) {
                 getComponent(Studies.class).clearIndex();
             } else if ("delete".equals(command)) {
@@ -121,38 +122,70 @@ public class ControlServlet extends ApplicationServlet {
                 );
             } else if ("restart".equals(command)) {
                 getApplication().requestRestart();
-            } else if ("assignment".equals(command)) {
-                String code = request.getParameter("code");
-                getApplication().sendEmail(
-                        null
-                        , null
-                        , "Assignment requested"
-                        , "An assignment has just been downloaded, the code was [" + code + "]"
-                                + StringTools.EOL
-                );
-                if (!params.isEmpty() && ("ahigw".equals(code) || "naolp".equals(code) || "bkeje".equals(code)|| "awais".equals(code)) ) {
-                    response.setContentType("application/pdf");
-                    response.addHeader("Content-Disposition", "attachment; filename=EBI_00651_assignment.pdf");
-                    InputStream fin = getServletContext().getResourceAsStream("/WEB-INF/server-assets/jobs/EBI_00651_assignment.pdf");
-                    OutputStream out = response.getOutputStream();
-                    IOUtils.copy(fin, out);
-                    out.flush();
-                    out.close();
-                    fin.close();
+            } else if ("assignment".equals(command)) { //TODO: refactor this (and remove hardcoded check in canAcceptRequest)
+                sendAssignment(request, response, params);
+            } else if ("upload-and-index".equals(command)) {
+                String fileName = uploadFile(request, response);
+                if (fileName != null) {
+                    getComponent(Studies.class).updateFromXMLFile(fileName, Boolean.parseBoolean(request.getParameter("delete")));
+                    HttpTools.displayMessage(request,response,"Success!", fileName+" successfully loaded.");
                 }
             }
-//            } else if ("reload-ae1-xml".equals(command)) {
-//                ((JobsController) getComponent("JobsController")).executeJobWithParam(command, "connections", params);
-//            } else if ("rescan-files".equals(command)) {
-//                if (!params.isEmpty()) {
-//                    ((Files) getComponent("Files")).setRootFolder(params);
-//                }
-//                ((JobsController) getComponent("JobsController")).executeJob(command);
 
         } catch (SchedulerException x) {
             logger.error("Jobs controller threw an exception", x);
+            HttpTools.displayMessage(request,response,"Error!", x.getMessage());
         } catch (Exception e) {
             logger.error("Controller threw an exception", e);
+            HttpTools.displayMessage(request,response,"Error!", e.getMessage());
         }
     }
+
+    private void sendAssignment(HttpServletRequest request, HttpServletResponse response, String params) throws IOException {
+        String code = request.getParameter("code");
+        getApplication().sendEmail(
+                null
+                , null
+                , "Assignment requested"
+                , "An assignment has just been downloaded, the code was [" + code + "]"
+                        + StringTools.EOL
+        );
+        if (!params.isEmpty() && ("ahigw".equals(code) || "naolp".equals(code) || "bkeje".equals(code) || "awais".equals(code))) {
+            response.setContentType("application/pdf");
+            response.addHeader("Content-Disposition", "attachment; filename=EBI_00651_assignment.pdf");
+            InputStream fin = getServletContext().getResourceAsStream("/WEB-INF/server-assets/jobs/EBI_00651_assignment.pdf");
+            OutputStream out = response.getOutputStream();
+            IOUtils.copy(fin, out);
+            out.flush();
+            out.close();
+            fin.close();
+        }
+    }
+
+    private String uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String sourceLocation = getPreferences().getString("bs.studies.source-location");
+        Part filePart = request.getPart("file");
+        if (filePart == null) {
+            HttpTools.displayMessage(request,response,"Error!", "Could not upload file.");
+            return null;
+        }
+        String fileName = HttpTools.getFileNameFromPart(filePart);
+        if ("studies.xml".equalsIgnoreCase(fileName)) {
+            HttpTools.displayMessage(request,response,"Error!", fileName+" can't be overwritten.");
+            return null;
+        }
+        File newXmlFile = new File(sourceLocation, fileName);
+        try (FileOutputStream out = new FileOutputStream(newXmlFile);
+             InputStream fileContent = filePart.getInputStream();
+        ) {
+            logger.debug("File {} will be uploaded to {}", fileName, newXmlFile.getAbsolutePath());
+            int read;
+            final byte[] bytes = new byte[1024];
+            while ((read = fileContent.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+        }
+        return fileName;
+    }
+
 }

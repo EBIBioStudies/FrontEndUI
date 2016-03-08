@@ -17,9 +17,15 @@
 
 package uk.ac.ebi.biostudies.utils;
 
+import uk.ac.ebi.biostudies.servlets.ZipStatusServlet;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.IOException;
+import java.net.URLEncoder;
 
 public class HttpTools {
 
@@ -47,4 +53,20 @@ public class HttpTools {
         return cookies.containsKey(name) ? cookies.get(name).getValue() : null;
     }
 
+    public static String getFileNameFromPart(final Part part) {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(
+                        content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
+
+    public static void displayMessage(HttpServletRequest request, HttpServletResponse response, String title, String message) throws ServletException, IOException {
+        String forwardedParams = String.format("?title=%s&message=%s",
+                URLEncoder.encode(title, "UTF-8"),
+                URLEncoder.encode(message, "UTF-8"));
+        request.getRequestDispatcher("/servlets/view/display/message/html"+forwardedParams).forward(request, response);
+    }
 }
