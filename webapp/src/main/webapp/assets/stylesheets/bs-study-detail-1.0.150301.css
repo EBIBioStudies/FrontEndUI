@@ -300,7 +300,7 @@ input.link-filter:checked + label > span:before {
     padding-right:4px;
 }
 
-.link-filter-label:nth-child(2) {
+.link-filter-label:nth-child(4) {
     border-bottom-left-radius: 3px;
     border-top-left-radius: 3px;
     border-left: 1px solid #ddd;
