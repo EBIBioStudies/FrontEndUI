@@ -125,10 +125,10 @@ public class ControlServlet extends ApplicationServlet {
             } else if ("assignment".equals(command)) { //TODO: refactor this (and remove hardcoded check in canAcceptRequest)
                 sendAssignment(request, response, params);
             } else if ("upload-and-index".equals(command)) {
-                String fileName = uploadFile(request, response);
-                if (fileName != null) {
-                    getComponent(Studies.class).updateFromXMLFile(fileName, Boolean.parseBoolean(request.getParameter("delete")));
-                    HttpTools.displayMessage(request,response,"Success!", fileName+" successfully loaded.");
+                File uploadedFile = uploadFile(request, response);
+                if (uploadedFile != null) {
+                    getComponent(Studies.class).updateFromXMLFile(uploadedFile, true, false);
+                    HttpTools.displayMessage(request,response,"Success!", uploadedFile.getName()+" successfully loaded.");
                 }
             }
 
@@ -162,8 +162,8 @@ public class ControlServlet extends ApplicationServlet {
         }
     }
 
-    private String uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String sourceLocation = getPreferences().getString("bs.studies.source-location");
+    private File uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String sourceLocation = System.getProperty("java.io.tmpdir");
         Part filePart = request.getPart("file");
         if (filePart == null) {
             HttpTools.displayMessage(request,response,"Error!", "Could not upload file.");
@@ -174,18 +174,18 @@ public class ControlServlet extends ApplicationServlet {
             HttpTools.displayMessage(request,response,"Error!", fileName+" can't be overwritten.");
             return null;
         }
-        File newXmlFile = new File(sourceLocation, fileName);
-        try (FileOutputStream out = new FileOutputStream(newXmlFile);
+        File uploadedFile = new File(sourceLocation, fileName);
+        try (FileOutputStream out = new FileOutputStream(uploadedFile);
              InputStream fileContent = filePart.getInputStream();
         ) {
-            logger.debug("File {} will be uploaded to {}", fileName, newXmlFile.getAbsolutePath());
+            logger.debug("File {} will be uploaded to {}", fileName, uploadedFile.getAbsolutePath());
             int read;
             final byte[] bytes = new byte[1024];
             while ((read = fileContent.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
         }
-        return fileName;
+        return uploadedFile;
     }
 
 }

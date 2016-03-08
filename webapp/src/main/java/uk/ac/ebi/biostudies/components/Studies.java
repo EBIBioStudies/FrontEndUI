@@ -156,22 +156,36 @@ public class Studies extends ApplicationComponent  {
         }
     }
 
+
     public synchronized void updateFromXMLFile(String xmlFileName, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, TransformerException, IndexerException, SaxonException, XMLStreamException {
+        updateFromXMLFile(xmlFileName, deleteFileAfterProcessing, true);
+    }
+
+    public synchronized void updateFromXMLFile(String xmlFileName, boolean deleteFileAfterProcessing, boolean makeCopy) throws IOException, InterruptedException, TransformerException, IndexerException, SaxonException, XMLStreamException {
         if (xmlFileName == null) {
             xmlFileName = "studies.xml";
         }
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             File xmlFile = new File(sourceLocation, xmlFileName);
-            updateFromXMLFile(xmlFile, deleteFileAfterProcessing);
+            updateFromXMLFile(xmlFile, deleteFileAfterProcessing, makeCopy);
         }
     }
 
-    // Updates the index one study at a time
     public synchronized void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
-        File xmlFile = new File( System.getProperty("java.io.tmpdir"),  originalXMLFile.getName());
-        logger.info("Making a local copy  of {} at {}", originalXMLFile.getAbsolutePath(), xmlFile.getAbsolutePath());
-        com.google.common.io.Files.copy(originalXMLFile, xmlFile);
+        updateFromXMLFile(originalXMLFile, deleteFileAfterProcessing, true);
+    }
+
+        // Updates the index one study at a time
+    public synchronized void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing, boolean makeCopy) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
+        File xmlFile;
+        if (makeCopy) {
+            xmlFile = new File(System.getProperty("java.io.tmpdir"), originalXMLFile.getName());
+            logger.info("Making a local copy  of {} at {}", originalXMLFile.getAbsolutePath(), xmlFile.getAbsolutePath());
+            com.google.common.io.Files.copy(originalXMLFile, xmlFile);
+        } else {
+            xmlFile = originalXMLFile;
+        }
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             logger.info("Reload of experiment data from [{}] requested", sourceLocation);
