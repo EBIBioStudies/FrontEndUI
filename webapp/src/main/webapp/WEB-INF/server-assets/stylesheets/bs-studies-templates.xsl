@@ -247,6 +247,19 @@
                                     </a>
                                     <xsl:text>)</xsl:text>
                                 </xsl:if>
+                                <xsl:if test="exists(attribute[fn:lower-case(@name)='pmid'])">
+                                    <xsl:value-of select="concat(
+                                        if (fn:exists(attribute[fn:lower-case(@name)='journal']))
+                                              then '&#160;(' else '','PMID:')"/>
+                                    <a href="http://europepmc.org/abstract/MED/{attribute[fn:lower-case(@name)='pmid']}" target="_blank">
+                                        <xsl:call-template name="highlight">
+                                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                                            <xsl:with-param name="pText" select="attribute[fn:lower-case(@name)='pmid']"/>
+                                        </xsl:call-template>
+                                    </a>
+                                    <xsl:text>)</xsl:text>
+                                </xsl:if>
                                 <xsl:if test="exists(attribute[fn:lower-case(@name)='doi'])">
                                     <xsl:value-of select="concat(
                                         if (fn:exists(attribute[fn:lower-case(@name)='journal']))

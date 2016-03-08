@@ -139,6 +139,11 @@
                     <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
                 </attribute>
             </xsl:if>
+            <xsl:if test="fn:lower-case(@type)='publication' and not(fn:lower-case(fn:substring(@acc,1,3))='pmc')">
+                <attribute name="PMID">
+                    <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
+                </attribute>
+            </xsl:if>
             <xsl:if test="fn:lower-case(@type)='publication'
                 and matches(@acc,'^10.\d{4,9}/.+$')">
                 <attribute name="DOI">
