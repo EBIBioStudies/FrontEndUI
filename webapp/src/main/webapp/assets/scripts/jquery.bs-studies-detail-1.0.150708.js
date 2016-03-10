@@ -186,7 +186,12 @@ var sectionTables = [];
         handleAnchors();
 
         //replace all newlines with html tags
-        $('#ae-detail > .value').each(function () { $(this).html( $(this).html().replace(/\n/g,'<br/>'))});
+        $('#ae-detail > .value').each(function () {
+            var html = $(this).html();
+            if (html.indexOf('<')<0) { // replace only if no tags are inside
+                $(this).html($(this).html().replace(/\n/g, '<br/>'))
+            }
+        });
 
     });
 
