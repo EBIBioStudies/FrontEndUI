@@ -63,6 +63,7 @@ public class Studies extends ApplicationComponent  {
 //    private Events events;
     private Autocompletion autocompletion;
     public final String INDEX_ID = "studies";
+    private final int SUBMISSIONS_PER_BATCH = 500;
 
     @Override
     public void initialize() throws Exception {
@@ -213,7 +214,7 @@ public class Studies extends ApplicationComponent  {
                         writer.flush();
                         writer.close();
                         submissionQueue.add(saxon.buildDocument(buffer.toString()));
-                        if (++count % 1000 == 0) {
+                        if (++count % SUBMISSIONS_PER_BATCH == 0) {
                             logger.info("Processed {} submissions", count - 1);
                             logger.info("Queued {} submissions for processing", submissionQueue.size());
                             try {
@@ -252,7 +253,7 @@ public class Studies extends ApplicationComponent  {
                 count++;
                 sb.append(saxon.serializeDocument(node, true));
             }
-            if (count % 10000==0 || deleteAccession!=null) {
+            if (count % SUBMISSIONS_PER_BATCH ==0 || deleteAccession!=null) {
                 sb.append("</submissions></pmdocument>");
                 NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
                 NodeInfo updateXml = this.saxon.transform(
