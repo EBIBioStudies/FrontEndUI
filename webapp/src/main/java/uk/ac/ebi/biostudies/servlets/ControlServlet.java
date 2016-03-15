@@ -150,7 +150,7 @@ public class ControlServlet extends ApplicationServlet {
                 , "An assignment has just been downloaded, the code was [" + code + "]"
                         + StringTools.EOL
         );
-        if (!params.isEmpty() && ("ahigw".equals(code) || "naolp".equals(code) || "bkeje".equals(code) || "awais".equals(code))) {
+        if (!params.isEmpty() && ("fefas".equals(code) || "awais".equals(code))) {
             response.setContentType("application/pdf");
             response.addHeader("Content-Disposition", "attachment; filename=EBI_00651_assignment.pdf");
             InputStream fin = getServletContext().getResourceAsStream("/WEB-INF/server-assets/jobs/EBI_00651_assignment.pdf");
