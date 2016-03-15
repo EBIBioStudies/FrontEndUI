@@ -45,7 +45,7 @@
         <section class="alpha intro grid_24 omega">
             <h3>Test Assignment for EBI_00651</h3>
             <xsl:choose>
-                <xsl:when test="not($code='ahigw' or $code='naolp' or $code='bkeje' or $code='awais')">
+                <xsl:when test="not($code='fefas' or $code='awais')"> <!--modify ControlServlet.java as well-->
                     <h3>Please enter the code below:</h3>
                     <form method="get">
                         <input type="text" name="code" maxlength="11"
