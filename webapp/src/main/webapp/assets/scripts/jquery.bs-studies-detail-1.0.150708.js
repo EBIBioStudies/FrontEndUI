@@ -150,6 +150,15 @@ var sectionTables = [];
 
         });
 
+        $(".attributes-icon").on ('click', function () {
+            var section = $('#'+$($(".attributes-icon")[0]).data('section-id'));
+            var toggleLink = section.next().find('.toggle-tables').first();
+            if (toggleLink.first().text().indexOf('show')>=0) toggleLink.click();
+            $('html, body').animate({
+                scrollTop: $(section).offset().top -10
+            }, 200);
+        });
+
         // draw the main file table
         redrawTables();
         redrawTables(); // needed to adjust the column width. TODO: Find a better solution
@@ -346,6 +355,7 @@ var sectionTables = [];
         $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
         redrawTables()
     });
+
     $('.sub-attribute-info').hover(
         function() {
             $(this).next().css('display','inline-block');
@@ -377,6 +387,22 @@ var sectionTables = [];
         });
 
     });
+
+    $('body').append('<div id="blocker"/>');
+    $('.table-expander').click( function() {
+        $(this).toggleClass('fa-compress').toggleClass('fa-expand');
+        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to collapse');
+        $('html').toggleClass('stop-scrolling');
+        $('#blocker').toggleClass('blocker');
+        $(this).parent().parent().toggleClass('fullscreen');
+    });
+    
+    $(document).on('keydown',function ( e ) {
+        if ( e.keyCode === 27 ) {
+            $('.table-expander','.fullscreen').click();
+        }
+    });
+
 
 })(window.jQuery);
 

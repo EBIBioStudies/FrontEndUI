@@ -132,6 +132,7 @@
         <xsl:for-each select="$pNodes">
             <xsl:variable name="vSectionTitle" select="if (fn:exists(attributes/attribute[lower-case(@name)='title'])) then attributes/attribute[lower-case(@name)='title']/value else if (exists(attribute[lower-case(@name)='title'])) then attribute[lower-case(@name)='title'] else if (exists(@type)) then @type else 'Section'"/>
             <xsl:call-template name="section">
+                <xsl:with-param name="pId" select="@acc"/>
                 <xsl:with-param name="pName" select="$vSectionTitle"/>
                 <xsl:with-param name="pContent">
                     <div>
@@ -155,7 +156,18 @@
                             <xsl:with-param name="pNodes" select="section | subsections/section"/>
                         </xsl:call-template>
 
-                        <xsl:if test="fn:count(file)>0">
+                        <xsl:if test="fn:count(file)=1">
+                            <br/>
+                            <div class="ae-section-file">
+                                <xsl:call-template name="file-table">
+                                    <xsl:with-param name="pQueryId" select="$queryid"/>
+                                    <xsl:with-param name="pNodes" select="file"/>
+                                    <xsl:with-param name="pBasePath" select="$context-path"/>
+                                    <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
+                                </xsl:call-template>
+                            </div>
+                        </xsl:if>
+                        <xsl:if test="fn:count(file)>1">
                             <br/>
                             <a class="show-more toggle-files">show files in this section</a>
                             <div class="ae-section-files">
@@ -168,7 +180,7 @@
                                 </xsl:call-template>
                             </div>
                         </xsl:if>
-                        <xsl:if test="fn:exists(link)">
+                        <xsl:if test="fn:count(link)>0">
                             <br/>
                             <a class="show-more toggle-links">show links in this section</a>
                             <div class="ae-section-links">
@@ -180,12 +192,15 @@
                             </div>
                         </xsl:if>
 
-                        <xsl:if test="fn:exists(table)">
+                        <xsl:if test="fn:count(table)>0">
                             <br/>
                             <a class="show-more toggle-tables">show tables in this section</a>
                             <div class="ae-section-tables">
                                 <xsl:for-each select="table">
-                                    <div class="ae-section-file-title">Table: <xsl:value-of select="section[1]/@type"/></div>
+                                    <div class="ae-section-file-title">
+                                        Table: <xsl:value-of select="section[1]/@type"/>
+                                        <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
+                                    </div>
                                     <xsl:call-template name="subsection-table">
                                         <xsl:with-param name="pQueryId" select="$queryid"/>
                                         <xsl:with-param name="pNodes" select="."/>
@@ -458,6 +473,9 @@
                 <xsl:for-each select="$pNodes">
                     <xsl:variable name="aFile" select="."/>
                     <xsl:variable name="vName" select="@name"/>
+                    <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv|html|htm')"/>
+                    <xsl:variable name="vSectionAcc" select="../@acc"/>
+                    <xsl:variable name="hasAttributes" select="fn:exists(../@acc)"/>
                     <tr>
                         <xsl:if test="$elementId='file-list'">
                             <td class="disable-select file-check-box">
@@ -472,7 +490,7 @@
                                     <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
                                 </xsl:call-template>
                             </a>
-                            <xsl:variable name="isImage" select="matches(lower-case(tokenize($vName, '\.')[last()]),'bmp|jpg|wbmp|jpeg|png|gif|tif|tiff|pdf|docx|txt|csv|html|htm')"/>
+                            <xsl:if test="$hasAttributes"><span title="Show file details" class="attributes-icon fa fa-table" data-section-id="{$vSectionAcc}"></span></xsl:if>
                             <xsl:if test="$isImage">
                                 <a href="{$pBasePath}/files/{$pAccession}/{$vName}"  target="_blank"  data-name="{$vName}" class="file-link">
                                     <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vName)"/>
@@ -745,11 +763,12 @@
     </xsl:template>
 
     <xsl:template name="section">
+        <xsl:param name="pId" select="''"/>
         <xsl:param name="pName" select="''"/>
         <xsl:param name="pContent"/>
         <xsl:param name="pClass" as="xs:string*" select="''"/>
         <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
-             <div class="ae-detail-name"><xsl:value-of select="$pName"/></div>
+             <div id="{$pId}" class="ae-detail-name"><xsl:value-of select="$pName"/></div>
         </xsl:if>
         <xsl:if test="fn:exists($pContent) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <div>
