@@ -32,7 +32,6 @@ import uk.ac.ebi.biostudies.utils.StringTools;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.*;
 import java.net.InetAddress;
 import java.util.regex.Matcher;
@@ -125,7 +124,7 @@ public class ControlServlet extends ApplicationServlet {
             } else if ("assignment".equals(command)) { //TODO: refactor this (and remove hardcoded check in canAcceptRequest)
                 sendAssignment(request, response, params);
             } else if ("upload-and-index".equals(command)) {
-                File uploadedFile = uploadFile(request, response);
+                File uploadedFile = HttpTools.uploadFile(request, response);
                 if (uploadedFile != null) {
                     getComponent(Studies.class).updateFromXMLFile(uploadedFile, true, false);
                     HttpTools.displayMessage(request,response,"Success!", uploadedFile.getName()+" successfully loaded.");
@@ -150,7 +149,7 @@ public class ControlServlet extends ApplicationServlet {
                 , "An assignment has just been downloaded, the code was [" + code + "]"
                         + StringTools.EOL
         );
-        if (!params.isEmpty() && ("ahigw".equals(code) || "naolp".equals(code) || "bkeje".equals(code) || "awais".equals(code))) {
+        if (!params.isEmpty() && ("awais".equals(code))) {
             response.setContentType("application/pdf");
             response.addHeader("Content-Disposition", "attachment; filename=EBI_00651_assignment.pdf");
             InputStream fin = getServletContext().getResourceAsStream("/WEB-INF/server-assets/jobs/EBI_00651_assignment.pdf");
@@ -160,32 +159,6 @@ public class ControlServlet extends ApplicationServlet {
             out.close();
             fin.close();
         }
-    }
-
-    private File uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String sourceLocation = System.getProperty("java.io.tmpdir");
-        Part filePart = request.getPart("file");
-        if (filePart == null) {
-            HttpTools.displayMessage(request,response,"Error!", "Could not upload file.");
-            return null;
-        }
-        String fileName = HttpTools.getFileNameFromPart(filePart);
-        if ("studies.xml".equalsIgnoreCase(fileName)) {
-            HttpTools.displayMessage(request,response,"Error!", fileName+" can't be overwritten.");
-            return null;
-        }
-        File uploadedFile = new File(sourceLocation, fileName);
-        try (FileOutputStream out = new FileOutputStream(uploadedFile);
-             InputStream fileContent = filePart.getInputStream();
-        ) {
-            logger.debug("File {} will be uploaded to {}", fileName, uploadedFile.getAbsolutePath());
-            int read;
-            final byte[] bytes = new byte[1024];
-            while ((read = fileContent.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-        }
-        return uploadedFile;
     }
 
 }
