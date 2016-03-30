@@ -47,23 +47,28 @@ var sectionTables = [];
         $(".file-list:not(#file-list)").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom":"t",
-                "scrollX" : "100%"
+                "scrollX" : "100%",
+                paging: false
             }));
         });
-        $(".ae-section-files").hide();
-        $(".link-list:not(.link-widget)").each( function(){
+        $(".ae-section-file").show();
+        $(".ae-section-files").hide(); $(".link-list:not(.link-widget)").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom":"t",
-                "scrollX" : "100%"
+                "scrollX" : "100%",
+                paging: false
             }));
         })
+        $(".ae-section-link").show();
         $(".ae-section-links").hide();
         $(".section-table").each( function(){
             sectionTables.push( $(this).DataTable( {
-                "dom":"t",
-                "scrollX" : "100%"
+                "dom": "t",
+                "scrollX" : "100%",
+                paging: false
             }));
         });
+        $(".ae-section-table").show();
         $(".ae-section-tables").hide();
         // handle file selection
         /*$("#file-list tbody").on( 'click', 'tr', function () {

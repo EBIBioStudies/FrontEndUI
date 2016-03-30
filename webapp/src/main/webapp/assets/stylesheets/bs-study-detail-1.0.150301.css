@@ -190,9 +190,11 @@ span.icon.icon-functional:before{
     vertical-align: text-bottom;
 }
 
-.ae-section-files, .ae-section-links {
+.ae-section-files, .ae-section-links, .ae-section-tables, .ae-section-file, .ae-section-link, .ae-section-table {
+    display:none;
     margin: 10px 0px;
 }
+
 .ae-section-file-title, .ae-section-link-title
 {
     color: #6BA8C5;
