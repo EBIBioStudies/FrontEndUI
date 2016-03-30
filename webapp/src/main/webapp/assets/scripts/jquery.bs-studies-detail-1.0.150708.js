@@ -26,6 +26,9 @@ var sectionTables = [];
     var totalRows = $("#file-list tbody tr").length;
 
     $(function() {
+        // add modal blocker div
+        $('body').append('<div id="blocker"/>');
+
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
 
@@ -150,8 +153,10 @@ var sectionTables = [];
 
         });
 
+        //handle file attribute table icons
         $(".attributes-icon").on ('click', function () {
-            var section = $('#'+$($(".attributes-icon")[0]).data('section-id'));
+            closeFullScreen();
+            var section = $('#'+$(this).data('section-id'));
             var toggleLink = section.next().find('.toggle-tables').first();
             if (toggleLink.first().text().indexOf('show')>=0) toggleLink.click();
             $('html, body').animate({
@@ -285,9 +290,9 @@ var sectionTables = [];
 
     }
 
-    function redrawTables(drawSecionTablesOnly) {
+    function redrawTables(drawSectionTablesOnly) {
 
-        if (!drawSecionTablesOnly) {
+        if (!drawSectionTablesOnly) {
             if (filesTable == null) {
                 filesTable = $("#file-list").DataTable({
                     "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
@@ -347,14 +352,27 @@ var sectionTables = [];
 
     });
 
+    // right column expansion
     $('#right-column-expander').click( function() {
-        $('#ae-detail-right-column').toggleClass('expanded-right-column');
-        $(this).toggleClass('fa-compress').toggleClass('fa-expand');
-        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to collapse')
-        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
-        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
-        redrawTables()
+        $(this).toggleClass('fa-close').toggleClass('fa-expand');
+        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to close');
+        $('html').toggleClass('stop-scrolling');
+        $('#blocker').toggleClass('blocker');
+        $('#ae-detail-right-column').toggleClass('fullscreen');
+        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px');
+        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px');
+        redrawTables();
     });
+
+    // file attribute table expansion
+    $('.table-expander').click( function() {
+        $(this).toggleClass('fa-close').toggleClass('fa-expand');
+        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to close');
+        $('html').toggleClass('stop-scrolling');
+        $('#blocker').toggleClass('blocker');
+        $(this).parent().parent().toggleClass('fullscreen');
+    });
+
 
     $('.sub-attribute-info').hover(
         function() {
@@ -388,18 +406,15 @@ var sectionTables = [];
 
     });
 
-    $('body').append('<div id="blocker"/>');
-    $('.table-expander').click( function() {
-        $(this).toggleClass('fa-compress').toggleClass('fa-expand');
-        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to collapse');
-        $('html').toggleClass('stop-scrolling');
-        $('#blocker').toggleClass('blocker');
-        $(this).parent().parent().toggleClass('fullscreen');
-    });
-    
+    function closeFullScreen() {
+        $('.table-expander','.fullscreen').click();
+        $('#right-column-expander','.fullscreen').click();
+    }
+
+    //handle escape key on fullscreen
     $(document).on('keydown',function ( e ) {
         if ( e.keyCode === 27 ) {
-            $('.table-expander','.fullscreen').click();
+            closeFullScreen();
         }
     });
 
