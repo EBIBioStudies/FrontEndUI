@@ -47,7 +47,6 @@ var sectionTables = [];
         $(".file-list:not(#file-list)").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom":"t",
-                "scrollX" : "100%",
                 paging: false
             }));
         });
@@ -55,7 +54,6 @@ var sectionTables = [];
         $(".ae-section-files").hide(); $(".link-list:not(.link-widget)").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom":"t",
-                "scrollX" : "100%",
                 paging: false
             }));
         })
@@ -64,7 +62,6 @@ var sectionTables = [];
         $(".section-table").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom": "t",
-                "scrollX" : "100%",
                 paging: false
             }));
         });
@@ -364,8 +361,10 @@ var sectionTables = [];
         $('html').toggleClass('stop-scrolling');
         $('#blocker').toggleClass('blocker');
         $('#ae-detail-right-column').toggleClass('fullscreen');
-        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px');
-        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px');
+        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '500px');
+        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '500px');
+        $('#right-column-wrapper').css('height', $('#ae-detail-right-column').hasClass('fullscreen')
+            ? (parseInt($(window).height())*0.80)+'px' :'auto');
         redrawTables();
     });
 
@@ -376,6 +375,9 @@ var sectionTables = [];
         $('html').toggleClass('stop-scrolling');
         $('#blocker').toggleClass('blocker');
         $(this).parent().parent().toggleClass('fullscreen');
+        $("table.dataTable tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '500px');
+        $('.table-wrapper').css('height','auto');
+        $('.fullscreen .table-wrapper').css('height',(parseInt($(window).height())*0.80)+'px');
     });
 
 

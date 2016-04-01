@@ -155,23 +155,13 @@
                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                             <xsl:with-param name="pNodes" select="section | subsections/section"/>
                         </xsl:call-template>
-
-                        <xsl:if test="fn:count(file)=1">
-                            <br/>
-                            <div class="ae-section-file">
-                                <xsl:call-template name="file-table">
-                                    <xsl:with-param name="pQueryId" select="$queryid"/>
-                                    <xsl:with-param name="pNodes" select="file"/>
-                                    <xsl:with-param name="pBasePath" select="$context-path"/>
-                                    <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
-                                </xsl:call-template>
-                            </div>
-                        </xsl:if>
-                        <xsl:if test="fn:count(file)>1">
+                        <xsl:if test="fn:count(file)>0">
                             <br/>
                             <a class="show-more toggle-files">show files in this section</a>
                             <div class="ae-section-files">
-                                <div class="ae-section-file-title">Files</div>
+                                <div class="ae-section-file-title">Files
+                                    <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
+                                </div>
                                 <xsl:call-template name="file-table">
                                     <xsl:with-param name="pQueryId" select="$queryid"/>
                                     <xsl:with-param name="pNodes" select="file"/>
@@ -184,7 +174,9 @@
                             <br/>
                             <a class="show-more toggle-links">show links in this section</a>
                             <div class="ae-section-links">
-                                <div class="ae-section-file-title">Links</div>
+                                <div class="ae-section-file-title">Links
+                                    <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
+                                </div>
                                 <xsl:call-template name="link-table">
                                     <xsl:with-param name="pQueryId" select="$queryid"/>
                                     <xsl:with-param name="pNodes" select="link"/>
@@ -205,7 +197,6 @@
                                         <xsl:with-param name="pQueryId" select="$queryid"/>
                                         <xsl:with-param name="pNodes" select="."/>
                                     </xsl:call-template>
-                                    <br/>
                                 </xsl:for-each>
                             </div>
                         </xsl:if>
@@ -452,6 +443,7 @@
         <xsl:param name="pAccession"/>
 
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
+        <div class="table-wrapper">
         <table class="stripe compact hover file-list" style=" width: 100% " cellspacing="0" id="{$elementId}" >
             <thead>
                 <tr>
@@ -545,6 +537,7 @@
                 </xsl:for-each>
             </tbody>
         </table>
+        </div>
     </xsl:template>
     <xsl:template name="file-size">
         <xsl:param name="size"/>
@@ -615,6 +608,7 @@
         <xsl:param name="elementId" select="generate-id()"/>
         <xsl:param name="pClass" select="''"/>
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[fn:lower-case(@name)!='type' and fn:lower-case(@name)!='description']/@name)"/>
+        <div class="table-wrapper">
         <table class="stripe compact hover link-list {$pClass}" cellspacing="0" width="100%" id="{$elementId}" >
             <thead>
                 <tr>
@@ -681,14 +675,16 @@
                 </xsl:for-each>
             </tbody>
         </table>
+        </div>
     </xsl:template>
 
     <xsl:template name="subsection-table">
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:variable name="vColumns" select="distinct-values($pNodes//attribute/name)"/>
-        <table class="stripe compact hover section-table" style=" width: 100% " cellspacing="0"  >
-        <thead>
+        <div class="table-wrapper">
+            <table class="stripe compact hover section-table" style=" width: 100% " cellspacing="0"  >
+                <thead>
                     <xsl:for-each select="$vColumns">
                         <th><xsl:value-of select="."/></th>
                     </xsl:for-each>
@@ -703,6 +699,7 @@
                     </tr>
                 </xsl:for-each>
             </table>
+        </div>
     </xsl:template>
 
 

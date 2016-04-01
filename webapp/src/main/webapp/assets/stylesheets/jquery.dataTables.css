@@ -77,8 +77,8 @@ table.dataTable tbody td a{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 100%;
   vertical-align: middle;
+  max-width: 200px;
 }
 table.link-widget tbody td a {
   max-width: 200px;

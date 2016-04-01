@@ -165,18 +165,23 @@
                 </div>
             </div>
             <div id="ae-detail-right-column">
-                <span class="fa fa-expand fa-icon fa-icon-large" id="right-column-expander" title="Click to expand"/>
+                <div id="right-column-toggler">
+                    <span class="fa fa-expand fa-icon fa-icon-large" id="right-column-expander" title="Click to expand"/>
+                </div>
+                <div id="right-column-wrapper">
                 <xsl:choose>
                     <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0 and search:getQueryInfoParameter($queryid,'similarAccessions')=''">
                         <xsl:value-of select="'No data'"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:call-template name="study-files">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pNodes" select="descendant::file"/>
-                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                            <xsl:with-param name="pAccession" select="$vAccession"/>
-                        </xsl:call-template>
+                        <div id="right-column-all-files">
+                            <xsl:call-template name="study-files">
+                                <xsl:with-param name="pQueryId" select="$queryid"/>
+                                <xsl:with-param name="pNodes" select="descendant::file"/>
+                                <xsl:with-param name="pBasePath" select="$context-path"/>
+                                <xsl:with-param name="pAccession" select="$vAccession"/>
+                            </xsl:call-template>
+                        </div>
                         <xsl:call-template name="study-links">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pLinks" select="descendant::link"/>
@@ -185,6 +190,7 @@
                         <xsl:call-template name="study-suggestion"/>
                     </xsl:otherwise>
                 </xsl:choose>
+                </div>
             </div>
             <div class="clearboth"></div>
         </div>
