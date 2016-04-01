@@ -443,7 +443,7 @@
         <xsl:param name="pAccession"/>
 
         <xsl:variable name="vColumns" select="distinct-values($pNodes/attribute[@name!='Type']/@name)"/>
-        <div class="table-wrapper">
+        <div class="table-wrapper file-table-wrapper">
         <table class="stripe compact hover file-list" style=" width: 100% " cellspacing="0" id="{$elementId}" >
             <thead>
                 <tr>

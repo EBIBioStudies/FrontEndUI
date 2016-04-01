@@ -174,14 +174,12 @@
                         <xsl:value-of select="'No data'"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <div id="right-column-all-files">
-                            <xsl:call-template name="study-files">
-                                <xsl:with-param name="pQueryId" select="$queryid"/>
-                                <xsl:with-param name="pNodes" select="descendant::file"/>
-                                <xsl:with-param name="pBasePath" select="$context-path"/>
-                                <xsl:with-param name="pAccession" select="$vAccession"/>
-                            </xsl:call-template>
-                        </div>
+                        <xsl:call-template name="study-files">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pNodes" select="descendant::file"/>
+                            <xsl:with-param name="pBasePath" select="$context-path"/>
+                            <xsl:with-param name="pAccession" select="$vAccession"/>
+                        </xsl:call-template>
                         <xsl:call-template name="study-links">
                             <xsl:with-param name="pQueryId" select="$queryid"/>
                             <xsl:with-param name="pLinks" select="descendant::link"/>

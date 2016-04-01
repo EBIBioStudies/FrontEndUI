@@ -472,7 +472,7 @@ ul.recommendations li{
     overflow: auto;
 }
 
-#right-column-all-files .table-wrapper{
+.file-table-wrapper{
     overflow: visible;
 }
 
