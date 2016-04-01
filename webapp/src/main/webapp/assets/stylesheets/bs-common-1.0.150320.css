@@ -449,6 +449,7 @@ p.center {
 #ae-content h4 {
     margin: 0;
     padding: 5px 9px 5px;
+    clear: left;
 }
 
 #ae-content .floating-header h4 {

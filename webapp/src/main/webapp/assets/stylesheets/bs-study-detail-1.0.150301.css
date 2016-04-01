@@ -38,7 +38,7 @@
 }
 
 #ae-detail-left-column {
-    width: 60%;
+    width: 98%;
     float:left;
     padding: 0 1em;
 }
@@ -46,7 +46,7 @@
 #ae-detail-right-column {
     width: 30%;
     float:right;
-    margin: 0 2em 1em 1em;
+    margin: 0 0 1em 1em;
     padding: 1em;
     background-color: hsla(201, 65%, 95%, 1);
     border: solid 1px #C9E4F3;
@@ -82,7 +82,7 @@
 
 #ae-detail-title {
     padding: 0.5em 0 0.5em 0  !important;
-    
+    clear: left;
 }
 
 .clearboth {

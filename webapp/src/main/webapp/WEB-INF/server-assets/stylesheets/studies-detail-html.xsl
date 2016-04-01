@@ -117,19 +117,43 @@
                     <xsl:call-template name="study-status">
                         <xsl:with-param name="pIsGoogleBot" select="$vIsGoogleBot"/>
                     </xsl:call-template>
+                    <div id="ae-detail-right-column">
+                        <div id="right-column-toggler">
+                            <span class="fa fa-expand fa-icon fa-icon-large" id="right-column-expander" title="Click to expand"/>
+                        </div>
+                        <div id="right-column-wrapper">
+                            <xsl:choose>
+                                <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0 and search:getQueryInfoParameter($queryid,'similarAccessions')=''">
+                                    <xsl:value-of select="'No data'"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="study-files">
+                                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                                        <xsl:with-param name="pNodes" select="descendant::file"/>
+                                        <xsl:with-param name="pBasePath" select="$context-path"/>
+                                        <xsl:with-param name="pAccession" select="$vAccession"/>
+                                    </xsl:call-template>
+                                    <xsl:call-template name="study-links">
+                                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                                        <xsl:with-param name="pLinks" select="descendant::link"/>
+                                        <xsl:with-param name="pBasePath" select="$context-path"/>
+                                    </xsl:call-template>
+                                    <xsl:call-template name="study-suggestion"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </div>
+                    </div>
                     <xsl:call-template name="study-download">
                         <xsl:with-param name="pBasePath" select="$context-path"/>
                         <xsl:with-param name="pAccession" select="$vAccession"/>
                     </xsl:call-template>
-                    <div class="persist-header">
-                        <h4 id="ae-detail-title">
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="pQueryId" select="$queryid"/>
-                                <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
-                                <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
-                            </xsl:call-template>
-                        </h4>
-                    </div>
+                    <h4 id="ae-detail-title">
+                        <xsl:call-template name="highlight">
+                            <xsl:with-param name="pQueryId" select="$queryid"/>
+                            <xsl:with-param name="pText" select="fn:string-join(title, ', ')"/>
+                            <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
+                        </xsl:call-template>
+                    </h4>
                     <xsl:call-template name="study-authors">
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pTitle" select="title"/>
@@ -162,32 +186,6 @@
                         <xsl:with-param name="pQueryId" select="$queryid"/>
                         <xsl:with-param name="pNodes" select="descendant::section[fn:lower-case(@type)='funding']"/>
                     </xsl:call-template>
-                </div>
-            </div>
-            <div id="ae-detail-right-column">
-                <div id="right-column-toggler">
-                    <span class="fa fa-expand fa-icon fa-icon-large" id="right-column-expander" title="Click to expand"/>
-                </div>
-                <div id="right-column-wrapper">
-                <xsl:choose>
-                    <xsl:when test="fn:count(descendant::file)=0 and fn:count(descendant::link)=0 and search:getQueryInfoParameter($queryid,'similarAccessions')=''">
-                        <xsl:value-of select="'No data'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:call-template name="study-files">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pNodes" select="descendant::file"/>
-                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                            <xsl:with-param name="pAccession" select="$vAccession"/>
-                        </xsl:call-template>
-                        <xsl:call-template name="study-links">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pLinks" select="descendant::link"/>
-                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                        </xsl:call-template>
-                        <xsl:call-template name="study-suggestion"/>
-                    </xsl:otherwise>
-                </xsl:choose>
                 </div>
             </div>
             <div class="clearboth"></div>
