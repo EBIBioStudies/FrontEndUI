@@ -157,7 +157,7 @@
                         </xsl:call-template>
                         <xsl:if test="fn:count(descendant::file)>0">
                             <div>
-                            <a class="show-more toggle-files">show files in this section</a>
+                            <a class="show-more toggle-files" data-total="{fn:count(descendant::file)}">show files in this section</a>
                                 <xsl:for-each select="files/table">
                                     <div class="ae-section-files">
                                         <div class="ae-section-file-title">File Table: <xsl:value-of select="position()"/>
@@ -173,7 +173,7 @@
                                 </xsl:for-each>
                                 <xsl:if test="exists(file|files/file)">
                                     <div class="ae-section-files">
-                                        <div class="ae-section-file-title">Other Files
+                                        <div class="ae-section-file-title">Section Files
                                             <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
                                         </div>
                                         <xsl:call-template name="file-table">
@@ -188,7 +188,7 @@
                         </xsl:if>
                         <xsl:if test="fn:count(descendant::link)>0">
                             <div>
-                                <a class="show-more toggle-links">show links in this section</a>
+                                <a class="show-more toggle-links" data-total="{fn:count(descendant::link)}">show links in this section</a>
                                 <xsl:for-each select="links/table">
                                     <div class="ae-section-links">
                                         <div class="ae-section-file-title">Link Table: <xsl:value-of select="position()"/>
@@ -202,7 +202,7 @@
                                 </xsl:for-each>
                                 <xsl:if test="exists(link|links/link)">
                                     <div class="ae-section-links">
-                                        <div class="ae-section-file-title">Other Links
+                                        <div class="ae-section-file-title">Section Links
                                             <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
                                         </div>
                                         <xsl:call-template name="link-table">
@@ -216,7 +216,7 @@
 
                         <xsl:if test="fn:count(table)>0">
                             <div>
-                                <a class="show-more toggle-tables">show tables in this section</a>
+                                <a class="show-more toggle-tables"  data-total="{fn:count(table)}">show tables in this section</a>
                                 <div class="ae-section-tables">
                                     <xsl:for-each select="table">
                                         <div class="ae-section-file-title">

@@ -115,19 +115,22 @@ var sectionTables = [];
         });
 
         $(".toggle-files, .toggle-links, .toggle-tables").on ('click', function () {
-            var type = $(this).hasClass("toggle-files") ? "files" : $(this).hasClass("toggle-links") ? "links" : "tables";
-            var section = $(this).siblings('.ae-section-'+type);
+            var type = $(this).hasClass("toggle-files") ? "file" : $(this).hasClass("toggle-links") ? "link" : "table";
+            var section = $(this).siblings('.ae-section-'+type+'s');
             if (section.css('display')=='none') {
                 section.show();
                 redrawTables(true);
-                $(this).text('hide ' + type +' in this section')
+                $(this).text('hide ' + type +($(this).data('total') == '1' ? '' : 's') +' in this section')
             } else {
                 section.hide();
-                $(this).text('show ' + type +' in this section')
+                $(this).text('show ' + type +($(this).data('total') == '1' ? '' : 's')+' in this section')
             }
 
         });
-
+        $(".toggle-files, .toggle-links, .toggle-tables").each (function () {
+            var type = $(this).hasClass("toggle-files") ? "file" : $(this).hasClass("toggle-links") ? "link" : "table";
+            $(this).text('show '+type + ($(this).data('total') == '1' ? '' : 's') + ' in this section');
+        });
 
         //handle file attribute table icons
         $(".attributes-icon").on ('click', function () {
