@@ -26,6 +26,9 @@ var sectionTables = [];
     var totalRows = $("#file-list tbody tr").length;
 
     $(function() {
+        // add modal blocker div
+        $('body').append('<div id="blocker"/>');
+
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
 
@@ -44,23 +47,25 @@ var sectionTables = [];
         $(".file-list:not(#file-list)").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom":"t",
-                "scrollX" : "100%"
+                paging: false
             }));
         });
-        $(".ae-section-files").hide();
-        $(".link-list:not(.link-widget)").each( function(){
+        $(".ae-section-file").show();
+        $(".ae-section-files").hide(); $(".link-list:not(.link-widget)").each( function(){
             sectionTables.push( $(this).DataTable( {
                 "dom":"t",
-                "scrollX" : "100%"
+                paging: false
             }));
         })
+        $(".ae-section-link").show();
         $(".ae-section-links").hide();
         $(".section-table").each( function(){
             sectionTables.push( $(this).DataTable( {
-                "dom":"t",
-                "scrollX" : "100%"
+                "dom": "t",
+                paging: false
             }));
         });
+        $(".ae-section-table").show();
         $(".ae-section-tables").hide();
         // handle file selection
         /*$("#file-list tbody").on( 'click', 'tr', function () {
@@ -109,45 +114,33 @@ var sectionTables = [];
             redrawTables();
         });
 
-        $(".toggle-files").on ('click', function () {
-            var section = $(this).first().next();
+        $(".toggle-files, .toggle-links, .toggle-tables").on ('click', function () {
+            var type = $(this).hasClass("toggle-files") ? "file" : $(this).hasClass("toggle-links") ? "link" : "table";
+            var section = $(this).siblings('.ae-section-'+type+'s');
             if (section.css('display')=='none') {
                 section.show();
                 redrawTables(true);
-                $(this).text('hide files in this section')
+                $(this).text('hide ' + type +($(this).data('total') == '1' ? '' : 's') +' in this section')
             } else {
                 section.hide();
-                $(this).text('show files in this section')
+                $(this).text('show ' + type +($(this).data('total') == '1' ? '' : 's')+' in this section')
             }
 
         });
-
-        $(".toggle-links").on ('click', function () {
-            var section = $(this).first().next();
-            if (section.css('display')=='none') {
-                section.show();
-                redrawTables(true);
-                $(this).text('hide links in this section')
-            } else {
-                section.hide();
-                $(this).text('show links in this section')
-
-            }
-
+        $(".toggle-files, .toggle-links, .toggle-tables").each (function () {
+            var type = $(this).hasClass("toggle-files") ? "file" : $(this).hasClass("toggle-links") ? "link" : "table";
+            $(this).text('show '+type + ($(this).data('total') == '1' ? '' : 's') + ' in this section');
         });
 
-        $(".toggle-tables").on ('click', function () {
-            var section = $(this).first().next();
-            if (section.css('display')=='none') {
-                section.show();
-                redrawTables(true);
-                $(this).text('hide tables in this section')
-            } else {
-                section.hide();
-                $(this).text('show tables in this section')
-
-            }
-
+        //handle file attribute table icons
+        $(".attributes-icon").on ('click', function () {
+            closeFullScreen();
+            var section = $('#'+$(this).data('section-id'));
+            var toggleLink = section.next().find('.toggle-tables').first();
+            if (toggleLink.first().text().indexOf('show')>=0) toggleLink.click();
+            $('html, body').animate({
+                scrollTop: $(section).offset().top -10
+            }, 200);
         });
 
         // draw the main file table
@@ -276,9 +269,9 @@ var sectionTables = [];
 
     }
 
-    function redrawTables(drawSecionTablesOnly) {
+    function redrawTables(drawSectionTablesOnly) {
 
-        if (!drawSecionTablesOnly) {
+        if (!drawSectionTablesOnly) {
             if (filesTable == null) {
                 filesTable = $("#file-list").DataTable({
                     "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
@@ -338,14 +331,33 @@ var sectionTables = [];
 
     });
 
+    // right column expansion
     $('#right-column-expander').click( function() {
-        $('#ae-detail-right-column').toggleClass('expanded-right-column');
-        $(this).toggleClass('fa-compress').toggleClass('fa-expand');
-        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to collapse')
-        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
-        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '600px')
-        redrawTables()
+        $(this).toggleClass('fa-close').toggleClass('fa-expand');
+        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to close');
+        $('html').toggleClass('stop-scrolling');
+        $('#blocker').toggleClass('blocker');
+        $('#ae-detail-right-column').toggleClass('fullscreen');
+        $(".file-list-file-name > a:nth-child(1)").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '500px');
+        $("table.link-widget tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '500px');
+        $('#right-column-wrapper').css('max-height', $('#ae-detail-right-column').hasClass('fullscreen')
+            ? (parseInt($(window).height())*0.80)+'px' :'auto');
+        redrawTables();
     });
+
+    // file attribute table expansion
+    $('.table-expander').click( function() {
+        $(this).toggleClass('fa-close').toggleClass('fa-expand');
+        $(this).attr('title', $(this).hasClass('fa-expand') ? 'Click to expand' : 'Click to close');
+        $('html').toggleClass('stop-scrolling');
+        $('#blocker').toggleClass('blocker');
+        $(this).parent().parent().toggleClass('fullscreen');
+        $("table.dataTable tbody td a").css("max-width", $(this).hasClass('fa-expand') ? '200px' : '500px');
+        $('.table-wrapper').css('height','auto');
+        $('.fullscreen .table-wrapper').css('max-height',(parseInt($(window).height())*0.80)+'px').css('top','45%');
+    });
+
+
     $('.sub-attribute-info').hover(
         function() {
             $(this).next().css('display','inline-block');
@@ -377,6 +389,19 @@ var sectionTables = [];
         });
 
     });
+
+    function closeFullScreen() {
+        $('.table-expander','.fullscreen').click();
+        $('#right-column-expander','.fullscreen').click();
+    }
+
+    //handle escape key on fullscreen
+    $(document).on('keydown',function ( e ) {
+        if ( e.keyCode === 27 ) {
+            closeFullScreen();
+        }
+    });
+
 
 })(window.jQuery);
 

@@ -17,7 +17,6 @@
 
 package uk.ac.ebi.biostudies.components;
 
-import com.google.common.io.*;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import org.slf4j.Logger;
@@ -253,7 +252,10 @@ public class Studies extends ApplicationComponent  {
                 count++;
                 sb.append(saxon.serializeDocument(node, true));
             }
-            if (count % SUBMISSIONS_PER_BATCH ==0 || deleteAccession!=null) {
+            if (count % SUBMISSIONS_PER_BATCH ==0
+                    || deleteAccession!=null
+                    || sb.length() >= 50 * Files.MB
+                    ) {
                 sb.append("</submissions></pmdocument>");
                 NodeInfo submissionDocument = saxon.buildDocument(sb.toString());
                 NodeInfo updateXml = this.saxon.transform(

@@ -270,6 +270,7 @@ public class Querier {
     }
 
     private void getSimilarStudies(Map<String, String[]> params, ScoreDoc scoreDoc, IndexReader leafReader, IndexSearcher searcher) throws ParseException, IOException {
+        if (!params.containsKey("accessionNumber")) return;
         int maxHits = 3;
         MoreLikeThis mlt = new MoreLikeThis(leafReader);
         mlt.setFieldNames(new String[]{"keywords"});
@@ -279,7 +280,7 @@ public class Querier {
         if (likeQuery.endsWith("keywords:")) likeQuery = likeQuery.substring(0,likeQuery.length()-9);
         Query mltQuery = qc.construct(this.env,likeQuery
                 + " NOT type:project NOT accession:"
-                +params.get("accessionNumber")[0]);// remove projects and self
+                + params.get("accessionNumber")[0]);// remove projects and self
         TopDocs mltDocs = searcher.search( qc.getAccessControlledQuery(mltQuery, this.env, params) , maxHits);
         String[] titles = new String[mltDocs.scoreDocs.length];
         String[] accessions = new String[mltDocs.scoreDocs.length];

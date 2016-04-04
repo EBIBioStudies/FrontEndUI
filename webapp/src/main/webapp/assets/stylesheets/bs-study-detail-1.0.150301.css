@@ -38,7 +38,7 @@
 }
 
 #ae-detail-left-column {
-    width: 60%;
+    width: 98%;
     float:left;
     padding: 0 1em;
 }
@@ -46,7 +46,7 @@
 #ae-detail-right-column {
     width: 30%;
     float:right;
-    margin: 0 2em 1em 1em;
+    margin: 0 0 1em 1em;
     padding: 1em;
     background-color: hsla(201, 65%, 95%, 1);
     border: solid 1px #C9E4F3;
@@ -82,7 +82,7 @@
 
 #ae-detail-title {
     padding: 0.5em 0 0.5em 0  !important;
-    
+    clear: left;
 }
 
 .clearboth {
@@ -139,7 +139,7 @@
     text-align: right;
 }
 
-#right-column-expander {
+#right-column-expander, .table-expander {
     float:right;
     cursor: pointer;
     border: 0px;
@@ -148,7 +148,7 @@
     position: absolute;
     width: 93% !important;
     left: 28px;
-    z-index: 99999;
+    z-index: 9999;
 }
 #select-all-files-header {
     text-align: left;
@@ -190,9 +190,11 @@ span.icon.icon-functional:before{
     vertical-align: text-bottom;
 }
 
-.ae-section-files, .ae-section-links {
+.ae-section-files, .ae-section-links, .ae-section-tables, .ae-section-file, .ae-section-link, .ae-section-table {
+    display:none;
     margin: 10px 0px;
 }
+
 .ae-section-file-title, .ae-section-link-title
 {
     color: #6BA8C5;
@@ -426,4 +428,61 @@ ul.recommendations li{
     color: #6BA8C5 !important;
     padding: 2px;
     /* display: inline; */
+}
+
+.attributes-icon {
+    font-size: 14px;
+    padding: 0px 5px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.blocker {
+    z-index: 99998;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.stop-scrolling {
+    overflow-y: hidden;
+}
+
+.fullscreen{
+    z-index: 99999;
+    padding:5px;
+    width: 90% !important;
+    height: auto;
+    max-height: 90% !important;
+    top:5%;
+    left:5%;
+    position: fixed;
+    background-color:white;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-clip: padding-box;
+}
+
+.table-wrapper, #right-column-wrapper {
+    overflow: auto;
+}
+
+.file-table-wrapper{
+    overflow: visible;
+}
+
+#right-column-toggler {
+    display: block;
+    height: 20px;
+}
+
+
+.file-list-file-name > a:nth-child(1)
+, table.link-widget tbody td a
+, table.dataTable tbody td a {
 }

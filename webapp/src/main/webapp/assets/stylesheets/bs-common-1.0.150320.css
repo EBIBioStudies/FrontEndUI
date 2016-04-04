@@ -59,7 +59,7 @@ a span.link-txt {
 }
 
 .container_24 {
-    min-width: 984px
+    /*min-width: 984px*/
 }
 
 .logo-title {
@@ -449,6 +449,7 @@ p.center {
 #ae-content h4 {
     margin: 0;
     padding: 5px 9px 5px;
+    clear: left;
 }
 
 #ae-content .floating-header h4 {
@@ -630,10 +631,6 @@ p.center {
     font-style: inherit;
 }
 
-#ae-detail table {
-    width: 100%;
-    table-layout: fixed;
-}
 
 #ae-detail tr:nth-child(odd) {
     background-color: hsla(200, 65%, 95%, 1)}
