@@ -254,7 +254,7 @@ public class Studies extends ApplicationComponent  {
             }
             if (count % SUBMISSIONS_PER_BATCH ==0
                     || deleteAccession!=null
-                    || sb.length() >= 100 * Files.MB
+                    || sb.length() >= 50 * Files.MB
                     ) {
                 sb.append("</submissions></pmdocument>");
                 NodeInfo submissionDocument = saxon.buildDocument(sb.toString());

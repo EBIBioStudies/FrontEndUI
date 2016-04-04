@@ -206,6 +206,7 @@ public abstract class Application {
                         , null
                         , "Restart succesfully requested"
                         , "Application [${variable.appname}]" + StringTools.EOL
+                                + "Context Path [${variable.contextpath}]" + StringTools.EOL
                                 + "Host [${variable.hostname}]" + StringTools.EOL
                                 + "Thread [${variable.thread}]" + StringTools.EOL);
 

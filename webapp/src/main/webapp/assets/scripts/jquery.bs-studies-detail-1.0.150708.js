@@ -114,46 +114,20 @@ var sectionTables = [];
             redrawTables();
         });
 
-        $(".toggle-files").on ('click', function () {
-            var section = $(this).first().next();
+        $(".toggle-files, .toggle-links, .toggle-tables").on ('click', function () {
+            var type = $(this).hasClass("toggle-files") ? "files" : $(this).hasClass("toggle-links") ? "links" : "tables";
+            var section = $(this).siblings('.ae-section-'+type);
             if (section.css('display')=='none') {
                 section.show();
                 redrawTables(true);
-                $(this).text('hide files in this section')
+                $(this).text('hide ' + type +' in this section')
             } else {
                 section.hide();
-                $(this).text('show files in this section')
+                $(this).text('show ' + type +' in this section')
             }
 
         });
 
-        $(".toggle-links").on ('click', function () {
-            var section = $(this).first().next();
-            if (section.css('display')=='none') {
-                section.show();
-                redrawTables(true);
-                $(this).text('hide links in this section')
-            } else {
-                section.hide();
-                $(this).text('show links in this section')
-
-            }
-
-        });
-
-        $(".toggle-tables").on ('click', function () {
-            var section = $(this).first().next();
-            if (section.css('display')=='none') {
-                section.show();
-                redrawTables(true);
-                $(this).text('hide tables in this section')
-            } else {
-                section.hide();
-                $(this).text('show tables in this section')
-
-            }
-
-        });
 
         //handle file attribute table icons
         $(".attributes-icon").on ('click', function () {
