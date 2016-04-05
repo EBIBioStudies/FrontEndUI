@@ -193,7 +193,7 @@
                                                 </span>
                                             </xsl:if>
                                         </div>
-                                        <div class="right">
+                                        <div class="right nowidth">
                                             <input type="submit" value="Search" class="submit"/>
                                             <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search,
                                            with whatever features you want available -->

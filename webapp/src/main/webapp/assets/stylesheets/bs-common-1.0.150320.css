@@ -922,7 +922,7 @@ p.center {
 }
 
 div#local-title > a > img {
-    height:70px;
+    height: 70px;
 }
 
 .browse-study-accession {
@@ -941,4 +941,14 @@ div#local-title > a > img {
 
 .file-check-box {
     width:20px;
+}
+.nowidth {
+    width:auto !important;
+}
+
+.grid_4 {
+    min-width: 120px;
+}
+#ebi-footer-meta {
+    padding-top: 12px;
 }

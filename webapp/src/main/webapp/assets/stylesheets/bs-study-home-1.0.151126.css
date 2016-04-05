@@ -73,8 +73,7 @@ nav ul, nav ol {
     background: #FFEBD5;
 }
 
-#tagline {
-display: inline-block;padding: 8px 8px;color: #FFFFFF;text-shadow: 1px 1px 5px #466B7D;}
+#tagline {display: inline-block;/* padding: 8px 8px; */color: #FFFFFF;text-shadow: 1px 1px 5px #466B7D;margin: auto;/* border: 1px solid blue; *//* height: 100%; *//* position: absolute; */display: block;/* margin: auto; */}
 
 #secondary {
     padding-bottom:36px;
@@ -87,6 +86,9 @@ display: inline-block;padding: 8px 8px;color: #FFFFFF;text-shadow: 1px 1px 5px #
 #stats h5, #latest h5 {
     line-height: 36px;
     color: #555;
+}
+#stats h5 a, #latest h5 a{
+    display: flex;
 }
 
 #latestList li:before {
@@ -105,63 +107,64 @@ display: inline-block;padding: 8px 8px;color: #FFFFFF;text-shadow: 1px 1px 5px #
 }
 
 #primary h2{
-    background-color: rgb(107, 168, 197);
-    margin-top: 0px;
-    /* margin-bottom: 32px; */
-    padding: 50px;
+    /* background-color: rgb(107, 168, 197); */
+    /* margin: auto; */
+    display: table-cell;
     vertical-align: middle;
+    /* padding: 10px; */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    width: 98%;
 }
 
 #content {
     padding:0px !important;
 }
 
-#primary:before, #primary:after,#primary h2:before, #primary h2:after   {
+#bs-title-header {
+    background-color: rgb(107, 168, 197);
+    position: relative;
+    min-height: 160px;
+    text-align: center;
+    margin-bottom: 10pt;
+}
+
+#primary {
+    /* border:1px solid red; */
+}
+
+.ribbon, .molecule, .twist, .flask {
     font-family: 'EBI-Conceptual';
     color: #FFFFFF;
-    content: 'd';
-    display: block;
-    opacity: 0.2;
-}
-
-#primary:before {
+    opacity: 0.1;
     font-size: 180px;
-    content: 's';
-    float: left;
     position: absolute;
-    color: white;
-    opacity: 0.1;
-    vertical-align: top;
-    line-height: 1;
+    /* border: 4px solid pink; */
 }
 
-#primary h2:before {
-    font-size: 230pt;
-    content: 'd';
-    float: left;
-    opacity: 0.05;
-    margin-top: -142px;
-    position: absolute;
-    margin-left: 23%;
-    text-align: left;
+.ribbon {
+    top: -60px;
 }
-
-#primary h2:after {
-    font-size: 146pt;
-    content: 'b';
-    float: right;
-    margin-top: -102px;
-    position: absolute;
-    width: 97%;
+.molecule {
     text-align: right;
+    width: 100%;
+}
+.twist {
+    width: 80%;
+    top: -113pt;
+    font-size: 220pt;
+    opacity: 0.05;
+}
+.flask {
+    font-family: 'EBI-Functional';
+    font-size: 140px;
+    top: -30px;
+    text-align: right;
+    width: 80%;
 }
 
-#primary:after {
-    font-family: 'EBI-Functional';
-    font-size: 138px;
-    content: 'A';
-    position: absolute;
-    margin-top: -286px;
-    margin-left: 65%;
-    opacity: 0.1;
+#stats {
+    min-width: 150px;
 }

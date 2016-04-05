@@ -55,9 +55,15 @@
         <xsl:variable name="vNews" select="doc('news.xml')"/>
         -->
         <section class="alpha intro grid_24" id="primary">
-            <h2><span id="tagline">BioStudies – database of biological
-                studies</span>
-            </h2>
+            <div id="bs-title-header">
+                <div class="ribbon">s</div>
+                <div class="twist">d</div>
+                <div class="molecule">b</div>
+                <div class="flask">A</div>
+                <h2>
+                    <div id="tagline">BioStudies – database of biological studies</div>
+                </h2>
+            </div>
             <p class="justify">The BioStudies database holds descriptions of biological studies, links to data
                 from these studies in other databases at EMBL-EBI or outside, as well as data that do not fit in the
                 structured archives at EMBL-EBI. The database can accept a wide range of types of studies described
