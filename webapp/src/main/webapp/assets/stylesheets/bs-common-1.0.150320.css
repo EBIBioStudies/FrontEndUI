@@ -921,10 +921,6 @@ p.center {
     padding: 10px;
 }
 
-div#local-title > a > img {
-    height: 70px;
-}
-
 .browse-study-accession {
     font-size: 70%;
     padding: 5px;
