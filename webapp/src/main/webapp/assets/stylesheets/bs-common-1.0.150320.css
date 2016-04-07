@@ -941,3 +941,7 @@ p.center {
 #ebi-footer-meta {
     padding-top: 12px;
 }
+
+#global-masthead, #local-masthead {
+    z-index:10;
+}
