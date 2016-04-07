@@ -562,37 +562,34 @@
                 <xsl:otherwise><xsl:value-of select="$vFrom + $pPageSize - 1"/></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-
-        <tr>
-            <th colspan="{$pColumnsToSpan}" class="col_pager">
-                <xsl:call-template name="table-pager-pages">
-                    <xsl:with-param name="pPage" select="$pPage"/>
-                    <xsl:with-param name="pPageSize" select="$pPageSize"/>
-                    <xsl:with-param name="pTotal" select="$pTotal"/>
-                    <xsl:with-param name="pPageParam" select="$vPageParam"/>
-                    <xsl:with-param name="pPageSizeParam" select="$vPageSizeParam"/>
-                </xsl:call-template>
-                <xsl:call-template name="table-page-size">
-                    <xsl:with-param name="pCurrentPageSize" select="$pPageSize"/>
-                    <xsl:with-param name="pTotal" select="$pTotal"/>
-                    <xsl:with-param name="pPageParam" select="$vPageParam"/>
-                    <xsl:with-param name="pPageSizeParam" select="$vPageSizeParam"/>
-                </xsl:call-template>
-                <div class="ae-stats">
-                    <xsl:if test="$pTotal > $pPageSize">
-                        <xsl:text>Showing </xsl:text>
-                        <span>
-                            <xsl:value-of select="$vFrom"/>
-                            <xsl:text> - </xsl:text>
-                            <xsl:value-of select="$vTo"/>
-                        </span>
-                        <xsl:text> of </xsl:text>
-                    </xsl:if>
-                    <span><xsl:value-of select="$pTotal"/></span>
-                    <xsl:value-of select="fn:concat(' ', $pName)"/>
-                </div>
-            </th>
-        </tr>
+        <div colspan="{$pColumnsToSpan}" class="col_pager">
+            <xsl:call-template name="table-pager-pages">
+                <xsl:with-param name="pPage" select="$pPage"/>
+                <xsl:with-param name="pPageSize" select="$pPageSize"/>
+                <xsl:with-param name="pTotal" select="$pTotal"/>
+                <xsl:with-param name="pPageParam" select="$vPageParam"/>
+                <xsl:with-param name="pPageSizeParam" select="$vPageSizeParam"/>
+            </xsl:call-template>
+            <div class="ae-stats">
+                <xsl:if test="$pTotal > $pPageSize">
+                    <xsl:text>Showing </xsl:text>
+                    <span>
+                        <xsl:value-of select="$vFrom"/>
+                        <xsl:text> - </xsl:text>
+                        <xsl:value-of select="$vTo"/>
+                    </span>
+                    <xsl:text> of </xsl:text>
+                </xsl:if>
+                <span><xsl:value-of select="$pTotal"/></span>
+                <xsl:value-of select="fn:concat(' ', $pName)"/>
+            </div>
+            <xsl:call-template name="table-page-size">
+                <xsl:with-param name="pCurrentPageSize" select="$pPageSize"/>
+                <xsl:with-param name="pTotal" select="$pTotal"/>
+                <xsl:with-param name="pPageParam" select="$vPageParam"/>
+                <xsl:with-param name="pPageSizeParam" select="$vPageSizeParam"/>
+            </xsl:call-template>
+        </div>
     </xsl:template>
 
 </xsl:stylesheet>

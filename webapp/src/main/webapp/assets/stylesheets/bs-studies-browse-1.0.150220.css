@@ -38,6 +38,7 @@
     list-style-type: none;
     padding: 0;
     margin-top: 20px;
+    clear: both;
 }
 
 .browse-study {
@@ -54,6 +55,7 @@
     padding: 8px;
     position: relative;
     color: #8F5109;
+    clear: both;
 }
 
 #ae-studies-browse-sort-by select {

@@ -107,17 +107,15 @@
                     <div id="ae-content">
                         <div id="ae-browse">
                             <div class="persist-area">
-                                <table class="persist-header" border="0" cellpadding="0" cellspacing="0">
-                                    <thead>
-                                        <xsl:call-template name="table-pager">
-                                            <xsl:with-param name="pColumnsToSpan" select="1"/>
-                                            <xsl:with-param name="pName" select="if ($vTotal > 1) then 'results' else 'result'"/>
-                                            <xsl:with-param name="pTotal" select="$vTotal"/>
-                                            <xsl:with-param name="pPage" select="$vPage"/>
-                                            <xsl:with-param name="pPageSize" select="$vPageSize"/>
-                                        </xsl:call-template>
-                                    </thead>
-                                </table>
+                                <div class="persist-header" border="0" cellpadding="0" cellspacing="0">
+                                    <xsl:call-template name="table-pager">
+                                        <xsl:with-param name="pColumnsToSpan" select="1"/>
+                                        <xsl:with-param name="pName" select="if ($vTotal > 1) then 'results' else 'result'"/>
+                                        <xsl:with-param name="pTotal" select="$vTotal"/>
+                                        <xsl:with-param name="pPage" select="$vPage"/>
+                                        <xsl:with-param name="pPageSize" select="$vPageSize"/>
+                                    </xsl:call-template>
+                                </div>
                                 <div id="ae-studies-browse-sort-by">
                                     <xsl:text>Sort by: </xsl:text>
                                     <select id="studies-browse-sorter">
