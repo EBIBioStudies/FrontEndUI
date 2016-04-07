@@ -206,7 +206,7 @@ var sectionTables = [];
             $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 1});
         }
         $(".thumbnail-image", $(fileLink)).one("load",function(){
-            $(this).css({"position":"absolute", "max-width":"150px"})
+            $(this).css({"position":"absolute", "max-width":"150px", "max-height":"150px"})
             if($(this).data("isFocused")) {
                 $(this).css('visibility','visible');
                 $(this).stop().animate({opacity: 1});
