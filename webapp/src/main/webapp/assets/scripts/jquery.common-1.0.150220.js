@@ -334,18 +334,14 @@
                 scrollTop      = $(window).scrollTop(),
                 scrollLeft = $(window).scrollLeft(),
                 floatingHeader = $(".floating-header", this),
-                floatingPanel = $(".floating-panel"),
                 width = floatingHeader.prev().width(),
                 height = floatingHeader.prev().height();
 
 
             if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
                 if (!floatingHeader.hasClass("visible")) {
-                    floatingHeader.addClass("visible").css({
+                    floatingHeader.addClass("floating-panel").addClass("visible").css({
                         "width": width + "px"
-                    });
-                    floatingPanel.addClass("visible").css({
-                        "height": height + "px"
                     });
                 }
                 if (floatingHeader.prop("ae_ScrollLeft") != scrollLeft) {
@@ -354,7 +350,6 @@
                     });
                 }
             } else if (floatingHeader.hasClass("visible")) {
-                floatingPanel.removeClass("visible");
                 floatingHeader.removeClass("visible");
             }
         });

@@ -431,19 +431,10 @@ p.center {
     z-index: 9999;
     top: 0;
     visibility: hidden;
-}
-
-.floating-panel {
-    position: fixed;
-    z-index: 9998;
-    top: 0;
-    left: 0;
-    right: 0;
     background: #fff;
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-    visibility: hidden;
 }
 
 #ae-content h4 {
@@ -459,7 +450,10 @@ p.center {
 #ae-browse div.persist-area {
     margin-top: 5px;
 }
-
+.persist-header {
+    background: white;
+    padding-bottom: 3px;
+}
 #ae-browse table {
     table-layout: fixed;
     width: 100%;
@@ -550,25 +544,24 @@ p.center {
 }
 
 #ae-browse .ae-stats {
-    position: relative;
     text-align: center;
     pointer-events: none;
-    margin: 0
 }
 
 #ae-browse .ae-pager {
-    float: left;
-    text-align: left
 }
 
 #ae-browse .ae-page-size {
-    float: right;
-    text-align: right
+    text-align: right;
 }
 
 #ae-browse .ae-pager,
+#ae-browse .ae-stats,
 #ae-browse .ae-page-size {
-    width: 33%
+    float: left;
+    width: 33%;
+    min-width: 200px;
+    margin-top: 2px;
 }
 
 #ae-browse .col_pager div {
@@ -919,10 +912,6 @@ p.center {
     content: ' \25AA';
     color: #6BA8C5;
     padding: 10px;
-}
-
-div#local-title > a > img {
-    height: 70px;
 }
 
 .browse-study-accession {
