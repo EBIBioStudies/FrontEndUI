@@ -516,10 +516,12 @@
                             </a>
                             <xsl:if test="$hasAttributes"><span title="Show file details" class="attributes-icon fa fa-table" data-section-id="{$vSectionAcc}"></span></xsl:if>
                             <xsl:if test="$isImage">
-                                <a href="{$pBasePath}/files/{$pAccession}/{$vPath}"  target="_blank"  data-name="{$vName}" class="file-link">
-                                    <xsl:attribute name="data-thumbnail" select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vPath)"/>
-                                    <span class="thumbnail icon icon-functional" data-icon="4"></span>
-                                    <div class="thumbnail-div"><img class="thumbnail-loader" src="{$pBasePath}/assets/images/ajax-loader.gif"/><img class="thumbnail-image"/></div>
+                                <a href="{$pBasePath}/files/{$pAccession}/{$vPath}"  target="_blank"
+                                   data-name="{$vName}" class="file-link">
+                                    <xsl:attribute name="data-thumbnail"
+                                                   select="concat($pBasePath,'/thumbnail/',$pAccession,'/',$vPath)"/>
+                                    <i class="fa fa-file-image-o"></i><span  class="thumbnail-image"/>
+                                    <img/>
                                 </a>
                             </xsl:if>
                         </td>

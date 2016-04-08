@@ -27,7 +27,7 @@ var sectionTables = [];
 
     $(function() {
         // add modal blocker div
-        $('body').append('<div id="blocker"/>');
+        $('body').append('<div id="blocker"/><div id="tooltip"/>');
 
         //turn off all selected files
         $('input:checkbox:not(.do-not-clear)').prop('checked', false);
@@ -67,16 +67,6 @@ var sectionTables = [];
         });
         $(".ae-section-table").show();
         $(".ae-section-tables").hide();
-        // handle file selection
-        /*$("#file-list tbody").on( 'click', 'tr', function () {
-            $(this).toggleClass('selected');
-            if ( $(this).hasClass('selected')) {
-                $('input[type="checkbox"]',$(this)).attr('checked','checked');
-            } else {
-                $('input[type="checkbox"]',$(this)).removeAttr('checked');
-            }
-            updateSelectedFiles();
-        });*/
 
 
         $("#file-list tbody").on( 'click', 'input[type="checkbox"]', function () {
@@ -170,7 +160,6 @@ var sectionTables = [];
         $(".link-filter").on('change', function() {
             var filters = $(".link-filter:checked").map(function() { return '^'+this.id+'$'}).get();
             if (filters.length==0) {
-                /*$(this).attr('checked','checked');                return;*/
                 filters = ['^$']
             }
             linksTable[$(this).data('position')-1].column(1).search(filters.join('|'),true, false).draw()
@@ -196,31 +185,28 @@ var sectionTables = [];
     }
 
     function showThumbnail(fileLink) {
-        $(".thumbnail-image", $(fileLink)).data('isFocused', true);
-        if (! $(fileLink).data('thumbnail')) return;
         if (!$(fileLink).data("loaded")) {
-            $(".thumbnail-image", $(fileLink)).attr("src",($(fileLink).data('thumbnail')));
-            $(".thumbnail-loader", $(fileLink)).css('visibility','visible');
+            $(fileLink).addClass("fa-spin");
+            $("img",$(fileLink)).attr("src",($(fileLink).data("thumbnail")));
         } else {
-            $(".thumbnail-image", $(fileLink)).css('visibility','visible');
-            $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 1});
+            $("#tooltip").html($("img",$(fileLink)).clone());
+            var o = $(".thumbnail-image", $(fileLink)).offset()
+            $("#tooltip").css("top",o.top).css("left",o.left);
+            $("#tooltip").fadeIn();
         }
-        $(".thumbnail-image", $(fileLink)).one("load",function(){
-            $(this).css({"position":"absolute", "max-width":"150px", "max-height":"150px"})
-            if($(this).data("isFocused")) {
-                $(this).css('visibility','visible');
-                $(this).stop().animate({opacity: 1});
-            }
-            $(".thumbnail-loader",$(this).parent()).css('visibility','hidden');
-            $(this).parent().parent().data("loaded",true);
+        $("img", $(fileLink)).one("load",function() {
+            $(fileLink).data("loaded",true);
+            $(fileLink).removeClass("fa-spin");
+            $("#tooltip").html($(this).clone());
+            var o = $(".thumbnail-image", $(this).parent()).offset();
+            $("#tooltip").css("top",o.top).css("left",o.left);
+            $("#tooltip").fadeIn();
         });
     }
 
     function hideThumbnail(fileLink) {
-        $(".thumbnail-image", $(fileLink)).stop().animate({opacity: 0});
-        $(".thumbnail-image", $(fileLink)).css('visibility','hidden');
-        $(".thumbnail-loader", $(fileLink)).css('visibility','hidden');
-        $(".thumbnail-image", $(fileLink)).data('isFocused', false);
+        $(fileLink).removeClass('fa-spin');
+        $('#tooltip').hide();
     }
 
 
