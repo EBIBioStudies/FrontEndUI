@@ -16,6 +16,7 @@
  */
 
 package uk.ac.ebi.biostudies.servlets;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.biostudies.components.Files;
@@ -48,7 +49,7 @@ public class ZipDownloadServlet extends BaseDownloadServlet {
             long fileSizeSum = 0;
             boolean isDirectory =false ;
             for (String filename : filenames) {
-                String fqName = files.getRootFolder() + "/" + relativePath + "/Files/" + filename;
+                String fqName = files.getRootFolder() + "/" + relativePath + "/Files/" + StringUtils.replace(filename,"..","");
                 File thisFile = new File(fqName);
                 fileSizeSum += thisFile.length();
                 if (thisFile.isDirectory()) {

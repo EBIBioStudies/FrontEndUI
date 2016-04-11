@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.biostudies.servlets;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.biostudies.components.Files;
@@ -48,9 +49,9 @@ public class FileDownloadServlet extends BaseDownloadServlet {
             String[] requestArgs = request.getPathInfo().replaceFirst("^/", "").split("/");
             if (requestArgs.length == 1) { // name only passed
                 name = requestArgs[0];
-            } else if (requestArgs.length == 2) { // accession/name passed
+            } else if (requestArgs.length >1 ) { // accession/name passed
                 accession = requestArgs[0];
-                name = requestArgs[1];
+                name = StringUtils.replace(request.getPathInfo().substring(accession.length()+2), "..", "");
             }
 
             logger.info("Requested download of [" + name + "], path [" + relativePath + "]");

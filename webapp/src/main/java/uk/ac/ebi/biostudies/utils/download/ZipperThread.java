@@ -19,6 +19,7 @@ package uk.ac.ebi.biostudies.utils.download;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import org.apache.commons.lang3.StringUtils;
 import uk.ac.ebi.biostudies.components.Files;
 import uk.ac.ebi.biostudies.servlets.ZipDownloadServlet;
 import uk.ac.ebi.biostudies.servlets.ZipStatusServlet;
@@ -55,9 +56,12 @@ public class ZipperThread extends Thread {
         try {
             outputStream = out != null ? out : new FileOutputStream(zipFileName);
             try (ZipOutputStream zos = new ZipOutputStream(outputStream)) {
+                String canonicalPath = filesComponent.getRootFolder() + "/" + relativePath + "/Files/";
+                String envIndependentCanonicalPath = new File(canonicalPath).getCanonicalPath();
                 while (!fileStack.empty()) {
-                    final String filename = fileStack.pop();
-                    File file = new File(filesComponent.getRootFolder() + "/" + relativePath + "/Files/" + filename);
+                    final String filename = StringUtils.replace(fileStack.pop(),"..",".");
+                    File file = new File(canonicalPath,filename);
+                    if (!file.getCanonicalPath().startsWith(envIndependentCanonicalPath)) break;
                     if (file.isDirectory()) {
                         fileStack.addAll(Collections2.transform(Arrays.asList(file.list()),
                                 new Function<String, String>() {
@@ -66,7 +70,7 @@ public class ZipperThread extends Thread {
                                         return filename+"/"+f;
                                     }
                                 }));
-                    } else {
+                    } else if(file.exists()) {
                         ZipEntry entry = new ZipEntry(filename);
                         zos.putNextEntry(entry);
                         FileInputStream fin = new FileInputStream(file);
