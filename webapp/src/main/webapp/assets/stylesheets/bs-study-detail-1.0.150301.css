@@ -382,6 +382,15 @@ ul.recommendations li{
     background-color: #2BA35F;
     border: none !important;
 }
+.source-icon-ftp:before, .source-icon-ftp {
+    color: #FFFFFF !important;
+    background-color: #9E5F5F;
+    border: none !important;
+}
+.source-icon-ftp .fa {
+    padding-right:2px;
+}
+
 
 .file-list:not(#file-list) tbody td a {
     white-space: normal;

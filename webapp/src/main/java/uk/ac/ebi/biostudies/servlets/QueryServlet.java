@@ -22,6 +22,7 @@ import net.sf.saxon.trans.XPathException;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.ebi.biostudies.components.Files;
 import uk.ac.ebi.biostudies.components.SaxonEngine;
 import uk.ac.ebi.biostudies.components.SearchEngine;
 import uk.ac.ebi.biostudies.utils.HttpServletRequestParameterMap;
@@ -37,6 +38,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -112,19 +114,7 @@ public class QueryServlet extends AuthAwareApplicationServlet {
             String stylesheetName = ("-".equals(index) ? "" : index + "-")
                     + stylesheet + "-" + outputType + ".xsl";
 
-            HttpServletRequestParameterMap params = new HttpServletRequestParameterMap(request);
-
-            // to make sure nobody sneaks in the other value w/o proper authentication
-            if (authenticatedUser!=null) {
-                params.put("username", authenticatedUser.getUsername());
-                params.put("allow", authenticatedUser.getAllow());
-                params.put("deny", authenticatedUser.getDeny());
-            } else {
-                params.put("allow", AE_PUBLIC_ACCESS);
-            }
-
-            // migration rudiment - show only "visible" i.e. overlapping experiments from AE2
-            params.put("visible", "true");
+            HttpServletRequestParameterMap params = getParameterMap(request, authenticatedUser);
             try {
                 SearchEngine search = getComponent(SearchEngine.class);
                 SaxonEngine saxonEngine = getComponent(SaxonEngine.class);
@@ -161,5 +151,27 @@ public class QueryServlet extends AuthAwareApplicationServlet {
         } catch (Exception x) {
             throw new RuntimeException(x);
         }
+    }
+
+    private HttpServletRequestParameterMap getParameterMap(HttpServletRequest request, User authenticatedUser) throws UnsupportedEncodingException {
+        HttpServletRequestParameterMap params = new HttpServletRequestParameterMap(request);
+
+        // to make sure nobody sneaks in the other value w/o proper authentication
+        if (authenticatedUser!=null) {
+            params.put("username", authenticatedUser.getUsername());
+            params.put("allow", authenticatedUser.getAllow());
+            params.put("deny", authenticatedUser.getDeny());
+        } else {
+            params.put("allow", AE_PUBLIC_ACCESS);
+        }
+
+        // migration rudiment - show only "visible" i.e. overlapping experiments from AE2
+        params.put("visible", "true");
+
+        // add page-specific application constants
+        if (request.getRequestURI().contains("/detail/")) {
+            params.put("ftp-url", getComponent(Files.class).getFtpURL());
+        }
+        return params;
     }
 }
