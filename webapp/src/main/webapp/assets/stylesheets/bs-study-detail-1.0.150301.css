@@ -215,7 +215,7 @@ a.file-link {
     box-shadow: 3px 3px 5px #AAA;
     background-color: white;
     z-index: 999999999;
-    /* max-height:150px; */
+    display: none;
     max-width:150px;
 }
 
@@ -382,6 +382,15 @@ ul.recommendations li{
     background-color: #2BA35F;
     border: none !important;
 }
+.source-icon-ftp:before, .source-icon-ftp {
+    color: #FFFFFF !important;
+    background-color: #9E5F5F;
+    border: none !important;
+}
+.source-icon-ftp .fa {
+    padding-right:2px;
+}
+
 
 .file-list:not(#file-list) tbody td a {
     white-space: normal;

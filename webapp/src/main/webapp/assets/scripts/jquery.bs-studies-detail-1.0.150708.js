@@ -185,6 +185,7 @@ var sectionTables = [];
     }
 
     function showThumbnail(fileLink) {
+        $(fileLink).data('isFocused', true);
         if (!$(fileLink).data("loaded")) {
             $(fileLink).addClass("fa-spin");
             $("img",$(fileLink)).attr("src",($(fileLink).data("thumbnail")));
@@ -197,16 +198,19 @@ var sectionTables = [];
         $("img", $(fileLink)).one("load",function() {
             $(fileLink).data("loaded",true);
             $(fileLink).removeClass("fa-spin");
-            $("#tooltip").html($(this).clone());
-            var o = $(".thumbnail-image", $(this).parent()).offset();
-            $("#tooltip").css("top",o.top).css("left",o.left);
-            $("#tooltip").fadeIn();
+            if ($(fileLink).data('isFocused')) { // focus is still on the link
+                $("#tooltip").html($(this).clone());
+                var o = $(".thumbnail-image", $(this).parent()).offset();
+                $("#tooltip").css("top", o.top).css("left", o.left);
+                $("#tooltip").fadeIn();
+            }
         });
     }
 
     function hideThumbnail(fileLink) {
         $(fileLink).removeClass('fa-spin');
-        $('#tooltip').hide();
+        $('#tooltip').stop().hide();
+        $(fileLink).data('isFocused', false);
     }
 
 

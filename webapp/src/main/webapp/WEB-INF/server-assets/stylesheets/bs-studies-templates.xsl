@@ -65,6 +65,7 @@
     <xsl:template name="study-download">
         <xsl:param name="pBasePath"/>
         <xsl:param name="pAccession"/>
+        <xsl:param name="pFtpUrl"/>
         <div id="download-source">
             <a href="{$pBasePath}/files/{$pAccession}/{$pAccession}.json" target="_blank" title="Download Study as JSON"
                class="source-icon source-icon-json" data-icon="=">{JSON}</a>
@@ -73,6 +74,11 @@
             <a href="{$pBasePath}/files/{$pAccession}/{$pAccession}.pagetab.tsv" target="_blank"
                title="Download Study as PageTab" class="source-icon source-icon-pagetab"
                data-icon="=">→PageTab↲</a>
+            <xsl:if test="not(@files=0)">
+            <a href="{$pFtpUrl}{@relPath}" target="_blank"
+               title="Open FTP Folder" class="source-icon source-icon-ftp"
+               data-icon="="><i class="fa fa-cloud-download"></i>FTP</a>
+            </xsl:if>
         </div>
     </xsl:template>
     <xsl:template name="study-attributes">

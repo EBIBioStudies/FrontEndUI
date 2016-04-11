@@ -28,6 +28,7 @@
     <xsl:param name="queryid"/>
     <xsl:param name="accession"/>
     <xsl:param name="user-agent"/>
+    <xsl:param name="ftp-url"/>
 
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
     <xsl:variable name="vAccessionNumber" select="search:getQueryInfoParameter($queryid,'accessionNumber')"/>
@@ -110,7 +111,6 @@
     </xsl:template>
 
     <xsl:template match="study">
-        <xsl:variable name="vFiles" select="ae:getMappedValue('accession-folder', $vAccession)"/>
         <div>
             <div id="ae-detail-left-column">
                 <div id="ae-detail">
@@ -146,6 +146,7 @@
                     <xsl:call-template name="study-download">
                         <xsl:with-param name="pBasePath" select="$context-path"/>
                         <xsl:with-param name="pAccession" select="$vAccession"/>
+                        <xsl:with-param name="pFtpUrl" select="$ftp-url"/>
                     </xsl:call-template>
                     <h4 id="ae-detail-title">
                         <xsl:call-template name="highlight">
