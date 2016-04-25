@@ -17,8 +17,7 @@
 
 package uk.ac.ebi.biostudies.app;
 
-import com.google.common.base.Joiner;
-import org.slf4j.Logger;
+;import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;

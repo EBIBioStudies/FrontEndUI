@@ -23,6 +23,11 @@
         <servlet-class>uk.ac.ebi.biostudies.servlets.ViewServlet</servlet-class>
     </servlet>
     <servlet>
+        <description>Assignment Servlet</description>
+        <servlet-name>AssignmentServlet</servlet-name>
+        <servlet-class>uk.ac.ebi.biostudies.servlets.AssignmentServlet</servlet-class>
+    </servlet>
+    <servlet>
         <description>File Download Servlet</description>
         <servlet-name>FileDownloadServlet</servlet-name>
         <servlet-class>uk.ac.ebi.biostudies.servlets.FileDownloadServlet</servlet-class>
@@ -87,6 +92,10 @@
     <servlet-mapping>
         <servlet-name>ViewServlet</servlet-name>
         <url-pattern>/servlets/view/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AssignmentServlet</servlet-name>
+        <url-pattern>/servlets/assignment</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ZipDownloadServlet</servlet-name>

@@ -24,7 +24,9 @@
                 extension-element-prefixes="fn ae search html xs"
                 exclude-result-prefixes="fn ae search html xs"
                 version="2.0">
-    <xsl:param name="code" select="''"/>
+    <xsl:param name="code"/>
+    <xsl:param name="assignmentId"/>
+    <xsl:param name="description"/>
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-date-functions.xsl"/>
 
@@ -43,9 +45,9 @@
 
     <xsl:template name="bs-content-section">
         <section class="alpha intro grid_24 omega">
-            <h3>Test Assignment for EBI_00651</h3>
+            <h3>Test Assignment for <xsl:value-of select="$assignmentId"/></h3>
             <xsl:choose>
-                <xsl:when test="not($code='fefas' or $code='awais')"> <!--modify ControlServlet.java as well-->
+                <xsl:when test="not($code)"> <!--modify ControlServlet.java as well-->
                     <h3>Please enter the code below:</h3>
                     <form method="get">
                         <input type="text" name="code" maxlength="11"
@@ -55,20 +57,15 @@
                 <xsl:otherwise>
                     <h5>Instructions</h5>
                     <div style="text-align:justify">
-                        <p>Please set aside 2-2.5 hours for a technical test that you are requested to complete by the
-                            end of this week (March 6th). You are free to use any programming language you find suitable
-                            for the tasks, though for one of the problems an XSLT/HTML/JavaScript/CSS-based solution
-                            will be preferred. We expect you to work on your own. Please e-mail back the solutions to
-                            <a href="mailto://ugis@ebi.ac.uk">ugis@ebi.ac.uk</a>
-                            within approximately 2 hours from accessing the problem statements. Good luck!
-                        </p>
+                        <p><xsl:value-of select="$description" disable-output-escaping="yes"/></p>
                         <p><strong>Please note - time spent between downloading the assignment and sending us the
                             results will be measured; please proceed only when you're ready to complete the
                             assignment</strong>.
                         </p>
 
-                        <form id="accept" method="get"
-                              action="{$context-path}/send-assignment/EBI_00651/EBI_00651_assignment.pdf">
+                        <form id="accept" method="post"
+                              action="{$context-path}/jobs/{$assignmentId}">
+                            <input type="hidden" name="start" value="true"/>
                             <input type="hidden" name="code" value="{$code}"/>
                             <input type="submit" value="I understand - please let me start the assignment"/>
                         </form>
