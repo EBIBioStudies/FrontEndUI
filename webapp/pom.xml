@@ -104,13 +104,6 @@
             </properties>
         </profile>
         <profile>
-            <id>frequent-data-updates</id>
-            <properties>
-                <interface.application.pref.experiments.ae2.reload.schedule>0 0/30 * * * ?</interface.application.pref.experiments.ae2.reload.schedule>
-                <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
-            </properties>
-        </profile>
-        <profile>
             <id>production</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -131,11 +124,6 @@
 ]]>
                 </interface.application.google.analytics>
                 <interface.application.pref.restart.command>/nfs/public/rw/webadmin/tomcat/bases/fg/tc-fg-biostudies/restart-nowait</interface.application.pref.restart.command>
-            </properties>
-        </profile>
-        <profile>
-            <id>london</id>
-            <properties>
             </properties>
         </profile>
         <profile>
