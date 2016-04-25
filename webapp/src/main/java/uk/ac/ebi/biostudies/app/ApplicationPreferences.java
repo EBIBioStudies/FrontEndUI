@@ -62,7 +62,7 @@ public class ApplicationPreferences {
         try {
             value = prefs.getInt(key);
         } catch (ConversionException | NoSuchElementException x) {
-            logger.error(x.getMessage());
+            logger.warn(x.getMessage());
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
         }
@@ -73,10 +73,8 @@ public class ApplicationPreferences {
         Long value = null;
         try {
             value = prefs.getLong(key);
-        } catch (ConversionException x) {
-            logger.error(x.getMessage());
-        } catch (NoSuchElementException x) {
-            logger.error(x.getMessage());
+        } catch (ConversionException | NoSuchElementException x) {
+            logger.warn(x.getMessage());
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
         }
@@ -88,7 +86,7 @@ public class ApplicationPreferences {
         try {
             value = prefs.getBoolean(key);
         } catch (NoSuchElementException x) {
-            logger.error(x.getMessage());
+            logger.warn(x.getMessage());
         } catch (Exception x) {
             logger.error("Caught an exception:", x);
         }

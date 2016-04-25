@@ -121,8 +121,6 @@ public class ControlServlet extends ApplicationServlet {
                 );
             } else if ("restart".equals(command)) {
                 getApplication().requestRestart();
-            } else if ("assignment".equals(command)) { //TODO: refactor this (and remove hardcoded check in canAcceptRequest)
-                sendAssignment(request, response, params);
             } else if ("upload-and-index".equals(command)) {
                 File uploadedFile = HttpTools.uploadFile(request, response);
                 if (uploadedFile != null) {
@@ -140,25 +138,6 @@ public class ControlServlet extends ApplicationServlet {
         }
     }
 
-    private void sendAssignment(HttpServletRequest request, HttpServletResponse response, String params) throws IOException {
-        String code = request.getParameter("code");
-        getApplication().sendEmail(
-                null
-                , null
-                , "Assignment requested"
-                , "An assignment has just been downloaded, the code was [" + code + "]"
-                        + StringTools.EOL
-        );
-        if (!params.isEmpty() && ("awais".equals(code))) {
-            response.setContentType("application/pdf");
-            response.addHeader("Content-Disposition", "attachment; filename=EBI_00651_assignment.pdf");
-            InputStream fin = getServletContext().getResourceAsStream("/WEB-INF/server-assets/jobs/EBI_00651_assignment.pdf");
-            OutputStream out = response.getOutputStream();
-            IOUtils.copy(fin, out);
-            out.flush();
-            out.close();
-            fin.close();
-        }
-    }
+
 
 }
