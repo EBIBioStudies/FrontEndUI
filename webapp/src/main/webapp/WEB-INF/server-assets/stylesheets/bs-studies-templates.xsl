@@ -74,7 +74,7 @@
             <a href="{$pBasePath}/files/{$pAccession}/{$pAccession}.pagetab.tsv" target="_blank"
                title="Download Study as PageTab" class="source-icon source-icon-pagetab"
                data-icon="=">→PageTab↲</a>
-            <xsl:if test="not(@files=0)">
+            <xsl:if test="not(@files=0) and fn:contains(lower-case(access),'public')">
             <a href="{$pFtpUrl}{@relPath}" target="_blank"
                title="Open FTP Folder" class="source-icon source-icon-ftp"
                data-icon="="><i class="fa fa-cloud-download"></i>FTP</a>

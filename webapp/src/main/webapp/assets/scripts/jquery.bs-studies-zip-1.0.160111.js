@@ -18,17 +18,19 @@
 (function($, undefined) {
     if($ == undefined) throw "jQuery not loaded";
     $(function() {
+        var retries = 0; // in seconds
         var filename = $('#filename').val();
         var dc = $('#dc').val();
         var accession = $('#accession').val();
-        setTimeout(checkStatus,5000);
+        setTimeout(checkStatus,Math.pow(2,retries)*1000);
 
         function checkStatus(){
             $.get( contextPath+"/"+dc+"/zipstatus", { filename: filename}, function(data) {
                 if(data) {
                     switch (data.status) {
                         case 'processing':
-                            setTimeout(checkStatus,5000);
+                            if (retries<8) retries++;
+                            setTimeout(checkStatus,Math.pow(2,retries)*1000);
                             break;
                         case 'done':
                             link = contextPath+"/"+dc+"/files/"+accession+"/zip?file="+filename;
