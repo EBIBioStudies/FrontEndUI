@@ -60,7 +60,7 @@ public abstract class Application {
 
     public abstract URL getResource(String path) throws MalformedURLException;
 
-    public <T extends ApplicationComponent> void addComponent(T component) {
+    protected <T extends ApplicationComponent> void addComponent(T component) {
         String className = component.getClass().getSimpleName();
         if (components.containsKey(className)) {
             logger.error("The component [{}] has already been added to the application", className);
@@ -72,7 +72,7 @@ public abstract class Application {
     public <T extends ApplicationComponent> T getComponent(Class<T> clazz) {
         ApplicationComponent component = components.get(clazz.getSimpleName());
         if (component.getClass().isAssignableFrom(clazz)) {
-            return (T)component;
+            return clazz.cast(component);
         }
         return null;
     }

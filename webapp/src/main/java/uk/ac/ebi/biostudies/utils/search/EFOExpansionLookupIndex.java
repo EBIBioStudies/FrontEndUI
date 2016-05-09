@@ -238,23 +238,23 @@ public class EFOExpansionLookupIndex implements IEFOExpansionLookup {
                 String[] terms = text.split("\\s+");
 
                 for (int termIndex = 0; termIndex < terms.length; ++termIndex) {
-                    BooleanQuery q = new BooleanQuery();
+                    BooleanQuery.Builder qb = new BooleanQuery.Builder();
 
                     Term t = new Term("all", terms[termIndex]);
-                    q.add(new TermQuery(t), BooleanClause.Occur.SHOULD);
+                    qb.add(new TermQuery(t), BooleanClause.Occur.SHOULD);
 
                     for (int phraseLength = 4; phraseLength <= 2; --phraseLength) {
                         if (termIndex + phraseLength > terms.length) {
                             continue;
                         }
-                        PhraseQuery pq = new PhraseQuery();
+                        PhraseQuery.Builder pqb = new PhraseQuery.Builder();
                         for (int phraseTermIndex = 0; phraseTermIndex < phraseLength; ++phraseTermIndex) {
                             t = new Term("all", terms[termIndex + phraseTermIndex]);
-                            pq.add(t);
+                            pqb.add(t);
                         }
-                        q.add(pq, BooleanClause.Occur.SHOULD);
+                        qb.add(pqb.build(), BooleanClause.Occur.SHOULD);
                     }
-
+                    Query q = qb.build();
                     TopDocs hits = searcher.search(q, MAX_INDEX_HITS);
                     this.logger.debug("Expansion lookup for query [{}] returned [{}] hits", q.toString(), hits.totalHits);
 

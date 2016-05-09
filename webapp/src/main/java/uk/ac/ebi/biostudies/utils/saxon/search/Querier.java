@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.biostudies.app.Application;
 import uk.ac.ebi.biostudies.components.SaxonEngine;
+import uk.ac.ebi.biostudies.utils.AccessType;
 import uk.ac.ebi.biostudies.utils.StringTools;
 import uk.ac.ebi.biostudies.utils.saxon.SaxonException;
 import uk.ac.ebi.biostudies.utils.search.EFOExpandedHighlighter;
@@ -216,8 +217,8 @@ public class Querier {
         if (params.containsKey("project")) {
             Map<String, String[]> querySource = new HashMap<>();
             querySource.put("accession", params.get("project"));
-            querySource.put("allow", params.get("allow"));
-            querySource.put("deny", params.get("deny"));
+            querySource.put(AccessType.ALLOW, params.get(AccessType.ALLOW));
+            querySource.put(AccessType.DENY, params.get(AccessType.DENY));
             QueryConstructor qc = new QueryConstructor();
             Query projectQuery = qc.construct(this.env, querySource);
             projectQuery = qc.getAccessControlledQuery(projectQuery, this.env, querySource);
@@ -299,10 +300,10 @@ public class Querier {
             Map<String, String[]> querySource = new HashMap<>();
             querySource.put("accession", new String[]{accession});
             if (user!=null) {
-                querySource.put("allow", user.getAllow());
-                querySource.put("deny", user.getDeny());
+                querySource.put(AccessType.ALLOW, user.getAllow());
+                querySource.put(AccessType.DENY, user.getDeny());
             } else {
-                querySource.put("allow", new String[]{"public"});
+                querySource.put(AccessType.ALLOW, AccessType.PUBLIC_ACCESS);
             }
             QueryConstructor qc = new QueryConstructor();
             Query query = qc.construct(this.env, querySource);

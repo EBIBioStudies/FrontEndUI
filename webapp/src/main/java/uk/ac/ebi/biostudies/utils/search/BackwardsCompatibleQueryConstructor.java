@@ -36,7 +36,7 @@ public class BackwardsCompatibleQueryConstructor extends QueryConstructor {
             // preserving old stuff:
             // 1. all lucene special chars to be quoted
             // 2. if "wholewords" is "on" or "true" -> don't add *_*, otherwise add *_*
-            BooleanQuery result = new BooleanQuery();
+            BooleanQuery.Builder builder = new BooleanQuery.Builder();
             String wholeWords = StringTools.arrayToString(querySource.get("wholewords"), "");
             boolean useWildcards = !(null != wholeWords && StringTools.stringToBoolean(wholeWords));
             for (Map.Entry<String, String[]> queryItem : querySource.entrySet()) {
@@ -47,15 +47,15 @@ public class BackwardsCompatibleQueryConstructor extends QueryConstructor {
                             value = value.trim().toLowerCase();
                             if (0 != value.length()) {
                                 if ("keywords".equals(field) && ACCESSION_REGEX.test(value)) {
-                                    result.add(new TermQuery(new Term("accession", value)), BooleanClause.Occur.MUST);
+                                    builder.add(new TermQuery(new Term("accession", value)), BooleanClause.Occur.MUST);
                                 } else if ("keywords".equals(field) && '"' == value.charAt(0) && '"' == value.charAt(value.length() - 1)) {
                                     value = value.substring(1, value.length() - 1);
-                                    PhraseQuery q = new PhraseQuery();
+                                    PhraseQuery.Builder phraseBuilder = new PhraseQuery.Builder();
                                     String[] tokens = value.split("\\s+");
                                     for (String token : tokens) {
-                                        q.add(new Term(field, token));
+                                        phraseBuilder.add(new Term(field, token));
                                     }
-                                    result.add(q, BooleanClause.Occur.MUST);
+                                    builder.add(phraseBuilder.build(), BooleanClause.Occur.MUST);
                                 } else {
                                     String[] tokens = value.split("\\s+");
                                     for (String token : tokens) {
@@ -64,7 +64,7 @@ public class BackwardsCompatibleQueryConstructor extends QueryConstructor {
                                         Query q = !"boolean".equals(env.fields.get(field).type) && !" userid  accession ".contains(" " + field + " ") && (useWildcards || (!" keywords ".contains(" " + field + " ")))
                                                 ? new WildcardQuery(new Term(field, "*" + token + "*"))
                                                 : new TermQuery(new Term(field, token));
-                                        result.add(q, BooleanClause.Occur.MUST);
+                                        builder.add(q, BooleanClause.Occur.MUST);
                                     }
                                 }
                             }
@@ -73,7 +73,7 @@ public class BackwardsCompatibleQueryConstructor extends QueryConstructor {
                     }
                 }
             }
-            return result;
+            return builder.build();
         } else {
             return super.construct(env, querySource);
         }

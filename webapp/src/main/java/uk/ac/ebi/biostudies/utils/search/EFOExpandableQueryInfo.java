@@ -17,6 +17,7 @@
 
 package uk.ac.ebi.biostudies.utils.search;
 
+import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
@@ -24,8 +25,8 @@ import uk.ac.ebi.biostudies.utils.saxon.search.QueryInfo;
 
 public class EFOExpandableQueryInfo extends QueryInfo {
     private Query originalQuery;
-    private BooleanQuery synonymPartQuery = new BooleanQuery();
-    private BooleanQuery efoExpansionPartQuery = new BooleanQuery();
+    private BooleanQuery.Builder synonymPartQueryBuilder = new BooleanQuery.Builder();
+    private BooleanQuery.Builder efoExpansionPartQueryBuilder = new BooleanQuery.Builder();
 
     public Query getOriginalQuery() {
         return originalQuery;
@@ -36,18 +37,18 @@ public class EFOExpandableQueryInfo extends QueryInfo {
     }
 
     public Query getSynonymPartQuery() {
-        return synonymPartQuery;
+        return synonymPartQueryBuilder.build();
     }
 
     public void addToSynonymPartQuery(Query part) {
-        synonymPartQuery.add(part, BooleanClause.Occur.SHOULD);
+        synonymPartQueryBuilder.add(part, BooleanClause.Occur.SHOULD);
     }
 
     public Query getEfoExpansionPartQuery() {
-        return efoExpansionPartQuery;
+        return efoExpansionPartQueryBuilder.build();
     }
 
     public void addToEfoExpansionPartQuery(Query part) {
-        efoExpansionPartQuery.add(part, BooleanClause.Occur.SHOULD);
+        efoExpansionPartQueryBuilder.add(part, BooleanClause.Occur.SHOULD);
     }
 }

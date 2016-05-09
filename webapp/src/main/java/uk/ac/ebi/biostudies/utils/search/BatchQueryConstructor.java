@@ -19,6 +19,7 @@ package uk.ac.ebi.biostudies.utils.search;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
 import org.apache.lucene.search.*;
 import uk.ac.ebi.biostudies.utils.StringTools;
 import uk.ac.ebi.biostudies.utils.saxon.search.IndexEnvironment;
@@ -26,10 +27,6 @@ import uk.ac.ebi.biostudies.utils.saxon.search.IndexEnvironment;
 import java.util.Map;
 
 public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
-    private final static String FIELD_KEYWORDS = "keywords";
-    private final static String FIELD_ACCESSION = "accession";
-    private final static String FIELD_TITLE = "title";
-    private final static String FIELD_AUTHORS = "authors";
 
     private final static String RE_MATCHES_BATCH_OF_ACCESSIONS = "^\\s*(([ae]-\\w{4}-\\d+)[\\s,;]+)+$";
     private final static String RE_SPLIT_BATCH_OF_ACCESSIONS = "[\\s,;]+";
@@ -37,19 +34,6 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
     @Override
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
 
-        //expand query to other fields if not a detail page
-        if (!querySource.containsKey(FIELD_ACCESSION)) {
-            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_AUTHORS)) {
-                querySource.put(FIELD_AUTHORS, querySource.get(FIELD_KEYWORDS));
-            }
-
-            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TITLE)) {
-                querySource.put(FIELD_TITLE, querySource.get(FIELD_KEYWORDS));
-            }
-            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_ACCESSION)) {
-                querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
-            }
-        }
         Query query = super.construct(env, querySource);
 
 
@@ -60,21 +44,22 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
 
                 query = removeTermQueriesForField(query, FIELD_KEYWORDS);
 
-                BooleanQuery accQuery = new BooleanQuery();
+                BooleanQuery.Builder accQueryBuilder = new BooleanQuery.Builder();
                 for (String acc : accessions) {
-                    accQuery.add(new TermQuery(new Term(FIELD_ACCESSION, acc)), BooleanClause.Occur.SHOULD);
+                    accQueryBuilder.add(new TermQuery(new Term(FIELD_ACCESSION, acc)), BooleanClause.Occur.SHOULD);
                 }
 
-                BooleanQuery topQuery;
+                BooleanQuery.Builder topQueryBuilder = new BooleanQuery.Builder();
                 if (query instanceof BooleanQuery) {
-                    topQuery = (BooleanQuery) query;
+                    for(BooleanClause clause:  ((BooleanQuery) query).clauses()) {
+                        topQueryBuilder.add(clause);
+                    }
                 } else {
-                    topQuery = new BooleanQuery();
-                    topQuery.add(query, BooleanClause.Occur.SHOULD);
+                    topQueryBuilder.add(query, BooleanClause.Occur.SHOULD);
                 }
 
-                topQuery.add(accQuery, BooleanClause.Occur.SHOULD);
-                query = topQuery;
+                topQueryBuilder.add(accQueryBuilder.build(), BooleanClause.Occur.SHOULD);
+                query = topQueryBuilder.build();
             }
         }
 
@@ -91,7 +76,7 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
     private Query removeTermQueriesForField(Query query, String fieldName) {
         Query q = removeTermQueryForField(query, fieldName);
         if (null == q) {
-            q = new BooleanQuery();
+            q = new BooleanQuery.Builder().build();
         }
 
         return q;
@@ -100,14 +85,14 @@ public class BatchQueryConstructor extends BackwardsCompatibleQueryConstructor {
 
     private Query removeTermQueryForField(Query query, String fieldName) {
         if (query instanceof BooleanQuery) {
-            BooleanQuery boolQuery = new BooleanQuery();
+            BooleanQuery.Builder booleanQueryBuilder = new BooleanQuery.Builder();
             for (BooleanClause clause : ((BooleanQuery) query).clauses()) {
                 Query q = removeTermQueryForField(clause.getQuery(), fieldName);
                 if (null != q) {
-                    boolQuery.add(q, clause.getOccur());
+                    booleanQueryBuilder.add(q, clause.getOccur());
                 }
-                if (0 != boolQuery.clauses().size()) {
-                    query = boolQuery;
+                if (0 != booleanQueryBuilder.build().clauses().size()) {
+                    query = booleanQueryBuilder.build();
                 } else {
                     query = null;
                 }

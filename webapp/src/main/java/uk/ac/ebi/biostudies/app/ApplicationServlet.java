@@ -114,12 +114,12 @@ public abstract class ApplicationServlet extends HttpServlet {
                 .append(null != request.getQueryString() ? "?" + request.getQueryString() : "")
                 .append("]")
                 .append(" with parameters ");
-        Map map = request.getParameterMap();
+        Map<String, String[]> map = request.getParameterMap();
         List<String> keys = new ArrayList<>(map.keySet());
         for (int i=0; i < keys.size(); i++)
         {
             String keyStr = keys.get(i);
-            String[] value = (String[])map.get(keyStr);
+            String[] value = map.get(keyStr);
             if (i>0) {
                 sb.append(", ");
             }
