@@ -116,6 +116,12 @@
         </xsl:element>
     </xsl:template>
 
+    <xsl:template match="nmqual" mode="attribute">
+        <xsl:attribute name="{string-join(for $s in tokenize(name,'\W+') return concat(upper-case(substring($s,1,1)),substring($s,2)),'')}">
+            <xsl:value-of select="value"/>
+        </xsl:attribute>
+    </xsl:template>
+
     <xsl:template match="url" mode="attribute">
         <url>
             <xsl:value-of select="text()"/>
