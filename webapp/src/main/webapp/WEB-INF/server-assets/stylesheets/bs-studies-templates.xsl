@@ -1044,6 +1044,15 @@
             <xsl:when test="$type = 'ega'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ega/datasets/', $pId)"/>
             </xsl:when>
+            <xsl:when test="$type = 'biostudies'">
+                <xsl:value-of select="fn:concat('https://www.ebi.ac.uk/biostudies/studies/', $pId)"/>
+            </xsl:when>
+            <xsl:when test="$type = 'biostudies search'">
+                <xsl:value-of select="fn:concat('https://www.ebi.ac.uk/biostudies/studies/search.html?query=', $pId)"/>
+            </xsl:when>
+            <xsl:when test="$type = 'chembl'">
+                <xsl:value-of select="fn:concat('https://www.ebi.ac.uk/chembldb/compound/inspect/', $pId)"/>
+            </xsl:when>
             <xsl:when test="fn:starts-with($pUrl,'http:') or fn:starts-with($pUrl,'https:') or fn:starts-with($pUrl,'ftp:')">
                 <xsl:value-of select="$pUrl"/>
             </xsl:when>
