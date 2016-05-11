@@ -498,6 +498,9 @@ ul.recommendations li{
     -ms-transition: all 0.2s ease;
     -webkit-transition: all 0.2s ease;
     transform-origin: left center;
+    transform-style: flat;
+    border:1px solid transparent;
+    position:relative;
 }
 .url-image:hover {
     transform: scale(2.5);
@@ -506,4 +509,7 @@ ul.recommendations li{
     -ms-transform: scale(2.5);
     -webkit-transform: scale(2.5);
     border:1px solid #6BA8C5;
+    position:relative;
+    transform-style: flat;
+    z-index:1000;
 }
