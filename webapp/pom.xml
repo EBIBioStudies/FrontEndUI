@@ -92,13 +92,13 @@
                 <interface.application.link.news_xml.url>ae-news.xml</interface.application.link.news_xml.url>
                 <interface.application.link.links_xml.url>ae-links.xml</interface.application.link.links_xml.url>
 
-                <interface.application.pref.studies.source.location>/nfs/ftp/pub/databases/biostudies/beta/adm/updates</interface.application.pref.studies.source.location>
-                <interface.application.pref.studies.files.location>/nfs/ftp/pub/databases/biostudies/beta/adm/submission</interface.application.pref.studies.files.location>
+                <interface.application.pref.studies.source.location>/nfs/biostudies/.adm/databases/beta/updates</interface.application.pref.studies.source.location>
+                <interface.application.pref.studies.files.location>/nfs/biostudies/.adm/databases/beta/submission</interface.application.pref.studies.files.location>
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
 
                 <interface.application.pref.restart.command>/nfs/public/rw/webadmin/tomcat/bases/fg/tc-fg-biostudies-dev/restart-nowait</interface.application.pref.restart.command>
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
-                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9080/biostd-beta/checkAccess</interface.application.pref.users.authentication.url>
+                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:10180/biostd-beta/checkAccess</interface.application.pref.users.authentication.url>
                 <interface.application.pref.files.temp-zip.location>/nfs/public/rw/fg/tmp/biostudies/zips/beta</interface.application.pref.files.temp-zip.location>
                 <interface.application.pref.files.ftp.url>ftp://ftp.ebi.ac.uk/pub/databases/biostudies/beta/public/</interface.application.pref.files.ftp.url>
             </properties>
