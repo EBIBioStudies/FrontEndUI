@@ -455,6 +455,11 @@
             <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>
             <version>1.0.5</version>
         </dependency>
+        <dependency>
+            <groupId>uk.ac.cam.ch.wwmm.oscar</groupId>
+            <artifactId>oscar4-api</artifactId>
+            <version>4.2.2</version>
+        </dependency>
     </dependencies>
 </project>
 
