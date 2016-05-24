@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.LowerCaseFilter;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -72,6 +73,7 @@ public final class Oscar4Analyzer extends Analyzer {
     protected TokenStreamComponents createComponents(String fieldName) {
         Tokenizer source = new Oscar4Tokenizer(text);
         TokenStream filter = new ASCIIFoldingFilter(source);
+        filter = new LowerCaseFilter(filter);
         return new TokenStreamComponents(source, filter);
     }
 
