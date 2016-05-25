@@ -489,3 +489,27 @@ ul.recommendations li{
 , table.link-widget tbody td a
 , table.dataTable tbody td a {
 }
+
+.url-image {
+    max-height: 250px;
+    transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    transform-origin: left center;
+    transform-style: flat;
+    border:1px solid transparent;
+    position:relative;
+}
+.url-image:hover {
+    transform: scale(2.5);
+    -moz-transform: scale(2.5);
+    -o-transform: scale(2.5);
+    -ms-transform: scale(2.5);
+    -webkit-transform: scale(2.5);
+    border:1px solid #6BA8C5;
+    position:relative;
+    transform-style: flat;
+    z-index:1000;
+}

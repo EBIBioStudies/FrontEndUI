@@ -72,7 +72,7 @@ public class EFOExpandedHighlighter implements IQueryHighlighter {
 
             result = EFO_AND_SYN_REGEX.replace(result, SYN_OPEN_MARK + "$1" + SYN_CLOSE_MARK);
             result = SYN_AND_HIT_REGEX.replace(result, HIT_OPEN_MARK + "$1" + HIT_CLOSE_MARK);
-            result = EFO_AND_HIT_REGEX.replace(result, HIT_OPEN_MARK + "$1" + HIT_CLOSE_MARK);
+            result = EFO_AND_HIT_REGEX.replace(result, EFO_OPEN_MARK + "$1" + EFO_CLOSE_MARK);
 
             return result;
         }

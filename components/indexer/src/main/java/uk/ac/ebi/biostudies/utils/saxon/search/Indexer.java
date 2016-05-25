@@ -133,6 +133,7 @@ public class Indexer {
                     w.updateDocument(new Term("id", idValue), d);
                 } catch (Exception e) {
                     logger.error(" Error indexing " +d);
+                    logger.error(e.getMessage());
                 }
                 indexedNodes.add((NodeInfo) node);
             }

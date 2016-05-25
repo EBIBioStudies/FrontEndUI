@@ -56,7 +56,11 @@
                 <xsl:call-template name="format-highlighted-text">
                     <xsl:with-param name="pText" select="fn:substring-before($pText,'&#x00ab;')"/>
                 </xsl:call-template>
-                <span class="text-hit"><xsl:value-of select="fn:substring-after(fn:substring-before($pText,'&#x00bb;'),'&#x00ab;')"/></span>
+                <span class="text-hit">
+                    <xsl:call-template name="format-highlighted-text">
+                        <xsl:with-param name="pText" select="fn:substring-after(fn:substring-before($pText,'&#x00bb;'),'&#x00ab;')"/>
+                    </xsl:call-template>
+                </span>
                 <xsl:call-template name="format-highlighted-text">
                     <xsl:with-param name="pText" select="fn:substring-after($pText,'&#x00bb;')"/>
                 </xsl:call-template>

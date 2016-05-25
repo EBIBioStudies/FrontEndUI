@@ -348,6 +348,7 @@ var sectionTables = [];
     });
 
 
+    // handle sub-attributes (shown with an (i) sign)
     $('.sub-attribute-info').hover(
         function() {
             $(this).next().css('display','inline-block');
@@ -358,6 +359,7 @@ var sectionTables = [];
         }
     );
 
+    // handle ontology links
     $("span[data-term-id][data-ontology]").each(function() {
         var ont = $(this).data('ontology').toLowerCase();
         var termId = $(this).data('term-id');
@@ -379,6 +381,11 @@ var sectionTables = [];
         });
 
     });
+
+    // handle image URLs
+    $(".sub-attribute:contains('Type:Image URL')").each(function() {
+        var url = $(this).parent().clone().children().remove().end().text();
+        $(this).parent().html('<img class="url-image" src="'+url+'"/>'); });
 
     function closeFullScreen() {
         $('.table-expander','.fullscreen').click();

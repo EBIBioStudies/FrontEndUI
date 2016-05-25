@@ -25,15 +25,46 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.WildcardQuery;
+import uk.ac.ebi.biostudies.utils.AccessType;
 
 import java.util.Map;
 
 public class QueryConstructor implements IQueryConstructor {
+    protected final static String FIELD_KEYWORDS = "keywords";
+    protected final static String FIELD_ACCESSION = "accession";
+    protected final static String FIELD_TITLE = "title";
+    protected final static String FIELD_AUTHORS = "authors";
+    protected final static String FIELD_ACCESS = "access";
+    protected final static String FIELD_PROJECT = "project";
+    protected final static String FIELD_TYPE = "type";
+
     @Override
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {
-        BooleanQuery result = new BooleanQuery();
+
+
+        //expand query to other fields if not a detail page
+        //TODO: Refactor/Modify this to avoid redundant fields
+        if (!querySource.containsKey(FIELD_ACCESSION)) {
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_AUTHORS)) {
+                querySource.put(FIELD_AUTHORS, querySource.get(FIELD_KEYWORDS));
+            }
+
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TITLE)) {
+                querySource.put(FIELD_TITLE, querySource.get(FIELD_KEYWORDS));
+            }
+
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_ACCESSION)) {
+                querySource.put(FIELD_ACCESSION, querySource.get(FIELD_KEYWORDS));
+            }
+
+            if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TYPE)) {
+                querySource.put(FIELD_TYPE, querySource.get(FIELD_KEYWORDS));
+            }
+        }
+
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
         for (Map.Entry<String, String[]> queryItem : querySource.entrySet()) {
-            if (queryItem.getKey().equalsIgnoreCase("project")) continue;
+            if (queryItem.getKey().equalsIgnoreCase(FIELD_PROJECT)) continue;
             if (env.fields.containsKey(queryItem.getKey()) && queryItem.getValue()!=null && queryItem.getValue().length > 0) {
                 QueryParser parser = new EnhancedQueryParser(env, queryItem.getKey(), env.indexAnalyzer);
                 parser.setDefaultOperator(QueryParser.Operator.OR);
@@ -43,12 +74,12 @@ public class QueryConstructor implements IQueryConstructor {
                             value = value.replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1");
                         }
                         Query q = parser.parse(value);
-                        result.add(q, BooleanClause.Occur.SHOULD);
+                        builder.add(q, BooleanClause.Occur.SHOULD);
                     }
                 }
             }
         }
-        return result;
+        return builder.build();
     }
 
     @Override
@@ -67,33 +98,43 @@ public class QueryConstructor implements IQueryConstructor {
             querySource.put("queryIsEmpty",new String[]{"true"});
         }
 
-        BooleanQuery queryWithAccessControl = new BooleanQuery();
-        queryWithAccessControl.add(query, BooleanClause.Occur.MUST);
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        builder.add(query, BooleanClause.Occur.MUST);
 
-        if (querySource.containsKey("allow") && querySource.get("allow")!=null && querySource.get("allow").length>0) {
-            QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
+        // add allow rules
+        if (querySource.containsKey(AccessType.ALLOW) && querySource.get(AccessType.ALLOW)!=null && querySource.get(AccessType.ALLOW).length>0) {
+            QueryParser parser = new EnhancedQueryParser(env, FIELD_ACCESS, env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.OR);
-            String access = StringUtils.join(querySource.get("allow"), " ");
+            String access = StringUtils.join(querySource.get(AccessType.ALLOW), " ");
             Query q = parser.parse(access);
-            queryWithAccessControl.add(q, BooleanClause.Occur.MUST);
+            builder.add(q, BooleanClause.Occur.MUST);
         }
 
-        if (querySource.containsKey("deny") && querySource.get("deny")!=null && querySource.get("deny").length>0) {
-            QueryParser parser = new EnhancedQueryParser(env, "access", env.indexAnalyzer);
+        // add deny rules
+        if (querySource.containsKey(AccessType.DENY) && querySource.get(AccessType.DENY)!=null && querySource.get(AccessType.DENY).length>0) {
+            QueryParser parser = new EnhancedQueryParser(env, FIELD_ACCESS, env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.AND);
-            String access = StringUtils.join(querySource.get("deny"), " ");
+            String access = StringUtils.join(querySource.get(AccessType.DENY), " ");
             Query q = parser.parse(access);
-            queryWithAccessControl.add(q, BooleanClause.Occur.MUST_NOT);
+            builder.add(q, BooleanClause.Occur.MUST_NOT);
         }
 
-        if (querySource.containsKey("project")) {
-            QueryParser parser = new EnhancedQueryParser(env, "project", env.indexAnalyzer);
+        // filter on project
+        if (querySource.containsKey(FIELD_PROJECT)) {
+            QueryParser parser = new EnhancedQueryParser(env, FIELD_PROJECT, env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.AND);
-            Query q = parser.parse(querySource.get("project")[0]);
-            queryWithAccessControl.add(q, BooleanClause.Occur.MUST);
+            Query q = parser.parse(querySource.get(FIELD_PROJECT)[0]);
+            builder.add(q, BooleanClause.Occur.MUST);
         }
 
+        // remove compounds from list pages
+         if (!querySource.containsKey(FIELD_ACCESSION) && !querySource.containsKey(FIELD_TYPE)) {
+            QueryParser parser = new EnhancedQueryParser(env, FIELD_TYPE, env.indexAnalyzer);
+            parser.setDefaultOperator(QueryParser.Operator.AND);
+            Query q = parser.parse("compound");
+             builder.add(q, BooleanClause.Occur.MUST_NOT);
+        }
 
-        return queryWithAccessControl;
+        return builder.build();
     }
 }

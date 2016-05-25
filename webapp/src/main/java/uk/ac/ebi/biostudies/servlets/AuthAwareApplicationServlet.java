@@ -35,7 +35,6 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
     private static final long serialVersionUID = -82727624065665432L;
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
-    protected final static String[] AE_PUBLIC_ACCESS = new String[] {"public"};
 
     private final static String AE_LOGIN_USER_COOKIE = "AeLoggedUser";
     private final static String AE_LOGIN_TOKEN_COOKIE = "AeLoginToken";

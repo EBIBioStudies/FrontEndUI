@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.biostudies.components.Files;
 import uk.ac.ebi.biostudies.components.SaxonEngine;
 import uk.ac.ebi.biostudies.components.SearchEngine;
+import uk.ac.ebi.biostudies.utils.AccessType;
 import uk.ac.ebi.biostudies.utils.HttpServletRequestParameterMap;
 import uk.ac.ebi.biostudies.utils.RegexHelper;
 import uk.ac.ebi.biostudies.utils.saxon.SaxonException;
@@ -159,10 +160,10 @@ public class QueryServlet extends AuthAwareApplicationServlet {
         // to make sure nobody sneaks in the other value w/o proper authentication
         if (authenticatedUser!=null) {
             params.put("username", authenticatedUser.getUsername());
-            params.put("allow", authenticatedUser.getAllow());
-            params.put("deny", authenticatedUser.getDeny());
+            params.put(AccessType.ALLOW, authenticatedUser.getAllow());
+            params.put(AccessType.DENY, authenticatedUser.getDeny());
         } else {
-            params.put("allow", AE_PUBLIC_ACCESS);
+            params.put(AccessType.ALLOW, AccessType.PUBLIC_ACCESS);
         }
 
         // migration rudiment - show only "visible" i.e. overlapping experiments from AE2
