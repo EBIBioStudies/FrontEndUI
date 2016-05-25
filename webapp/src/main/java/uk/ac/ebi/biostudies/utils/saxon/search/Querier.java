@@ -164,7 +164,11 @@ public class Querier {
                                 leafReader.document(hits.scoreDocs[0].doc).get("xml"));
                 if(nodeInfo!=null) {
                     matchingNodes.add(nodeInfo);
-                    getSimilarStudies(params,hits.scoreDocs[0],leafReader,searcher);
+                    try {
+                        getSimilarStudies(params, hits.scoreDocs[0], leafReader, searcher);
+                    } catch (Exception ex) {
+                        logger.error("Error getting similar studies", ex);
+                    }
                 }
             } else {
                 int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
@@ -277,7 +281,7 @@ public class Querier {
         mlt.setFieldNames(new String[]{"keywords"});
         mlt.setAnalyzer(this.env.indexAnalyzer);
         QueryConstructor qc = new QueryConstructor();
-        String likeQuery = mlt.like( scoreDoc.doc).toString().replaceAll(":-",":").replaceAll("keywords: "," ");
+        String likeQuery = mlt.like( scoreDoc.doc).toString().replaceAll(":-",":").replaceAll("keywords:. "," ").replaceAll("keywords:[^a-zA-Z-]"," ").replaceAll("\"","");
         if (likeQuery.endsWith("keywords:")) likeQuery = likeQuery.substring(0,likeQuery.length()-9);
         Query mltQuery = qc.construct(this.env,likeQuery
                 + " NOT type:project NOT accession:"
