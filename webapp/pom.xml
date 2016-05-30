@@ -142,7 +142,7 @@
                 <interface.application.pref.files.rescan.interval>15</interface.application.pref.files.rescan.interval>
                 <interface.application.pref.restart.command>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/restart-nowait</interface.application.pref.restart.command>
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
-                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:9180/biostd-dev/checkAccess</interface.application.pref.users.authentication.url>
+                <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:10280/biostd-dev/checkAccess</interface.application.pref.users.authentication.url>
                 <interface.application.pref.files.temp-zip.location>/nfs/ma/home/tomcats/BIOSTUDY-DEV.BIOSTUDIES_DEV/temp/ziptemp</interface.application.pref.files.temp-zip.location>
                 <interface.application.pref.files.ftp.url>ftp://ftp.ebi.ac.uk/pub/databases/biostudies/dev/public/</interface.application.pref.files.ftp.url>
             </properties>
