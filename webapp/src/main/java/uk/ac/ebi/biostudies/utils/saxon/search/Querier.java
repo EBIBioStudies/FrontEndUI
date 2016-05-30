@@ -200,7 +200,7 @@ public class Querier {
 
     private NodeInfo getNodeInfo(Document doc, Map<String, String[]> params) throws SaxonException {
         NodeInfo nodeInfo = null;
-        if (!params.containsKey("fo")) {
+        if (params.containsKey("full")) {
             nodeInfo= Application.getAppComponent(SaxonEngine.class).buildDocument(doc.get("xml"));
         } else {
             StringBuffer sb = new StringBuffer("<study>");

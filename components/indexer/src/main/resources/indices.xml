@@ -4,17 +4,16 @@
            defaultAnalyzer="uk.ac.ebi.biostudies.utils.search.AttributeFieldAnalyzer"
            searchSnippetFragmentSize="300">
         <document path="/studies/study" defaultField="keywords" idField="accession">
-            <field name="keywords" type="string" path="string-join( ( .//text()[not(ancestor::accession or ancestor::access or ancestor::releasedate or ancestor::author or ancestor::section[@type='Author'] or ancestor::attribute[@name='affiliation'])] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name ) | .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.biostudies.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true"/>
-            <field name="title" title="by Accession" type="string" path="title" analyze="true" analyzer="uk.ac.ebi.biostudies.utils.search.ExperimentTextAnalyzer" store="true" escape="false" expand="true" docValueType="sorted" boost="2.0"/>
-            <field name="authors" title="by Authors" type="string" path="string-join(.//author, ', ')" analyze="true" store="true" escape="false" expand="false" docValueType="sorted"  />
-            <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" store="true" escape="false" expand="false" docValueType="sorted" />
+            <field name="keywords" type="string" path="string-join( ( .//text()[not(ancestor::accession or ancestor::access or ancestor::releasedate or ancestor::author or ancestor::section[@type='Author'] or ancestor::attribute[@name='affiliation'])] | .//file//text()[not(name(../..)='attribute' and ../../@name='Type')] | .//file/@name ) | .//link/@url, ' ')" analyze="true" analyzer="uk.ac.ebi.biostudies.utils.search.ExperimentTextAnalyzer" escape="false" expand="true"/>
+            <field name="title" title="by Accession" type="string" path="title" analyze="true" analyzer="uk.ac.ebi.biostudies.utils.search.ExperimentTextAnalyzer" escape="false" expand="true" docValueType="sorted" boost="2.0"/>
+            <field name="authors" title="by Authors" type="string" path="string-join(.//author, ', ')" analyze="true" escape="false" expand="false" docValueType="sorted"  />
+            <field name="accession" title="by Accession" type="string" path="accession | secondaryaccession" analyze="true" escape="false" expand="false" docValueType="sorted" />
             <field name="release_date" title="by Release Date" type="long" path="@releaseTime" store="true" docValueType="numeric" />
-            <field name="public" type="boolean" path="true()"/>
-            <field name="access" type="string" path="access" analyze="true" analyzer="uk.ac.ebi.biostudies.utils.search.AccessFieldAnalyzer" store="false" escape="true" expand="false" />
-            <field name="project" type="string" path="project" analyze="true" store="false" escape="true" expand="false" />
-            <field name="files"  title="Number of Files" type="long" path="@files" store="true" docValueType="numeric" />
-            <field name="links" title="Number of Links" type="long" path="@links" store="true" docValueType="numeric"  />
-            <field name="type" title="Submission Type" type="string" path="@type" store="true" analyze="false" expand="false" escape="false"/>
+            <field name="access" type="string" path="access" analyze="true" analyzer="uk.ac.ebi.biostudies.utils.search.AccessFieldAnalyzer" escape="true" expand="false" />
+            <field name="project" type="string" path="project" analyze="true" escape="true" expand="false" />
+            <field name="files"  title="Number of Files" type="long" path="@files" docValueType="numeric" />
+            <field name="links" title="Number of Links" type="long" path="@links" docValueType="numeric"  />
+            <field name="type" title="Submission Type" type="string" path="@type" analyze="false" expand="false" escape="false"/>
         </document>
     </index>
 </configuration>
