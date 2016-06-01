@@ -126,9 +126,12 @@
         <xsl:variable name="vColumns" select="distinct-values($pStudies/attribute[lower-case(@name)=lower-case($pColumnAttribute)]/value/text()/normalize-space(.))"/>
         <xsl:variable name="vRows" select="distinct-values($pStudies/attribute[lower-case(@name)=lower-case($pRowAttribute)]/value/text()/normalize-space(.))"/>
 
-        <table border="1">
+        <table border="1" class="proptable">
             <tr>
-                <th><xsl:value-of select="$pRowAttribute"/> <i class="project-table-arrow fa fa-long-arrow-down"></i> &#x2572; <xsl:value-of select="$pColumnAttribute"/> <i class="project-table-arrow fa fa-long-arrow-right"></i></th>
+                <th>
+                    <span class="right-header"><xsl:value-of select="$pColumnAttribute"/> <i class="project-table-arrow fa fa-long-arrow-right"></i></span>
+                    <span class="down-header"><xsl:value-of select="$pRowAttribute"/> <i class="project-table-arrow fa fa-long-arrow-down"></i></span>
+                </th>
                 <xsl:for-each select="$vColumns">
                     <th><xsl:value-of select="."/></th>
                 </xsl:for-each>

@@ -78,13 +78,14 @@ public class IndexEnvironment {
             this.title = fieldConfig.containsKey("[@title]") ? fieldConfig.getString("[@title]") : null;
             this.type = fieldConfig.getString("[@type]");
             this.path = fieldConfig.getString("[@path]");
+            this.shouldStore = fieldConfig.getBoolean("[@store]", true);
+
             if ("string".equals(this.type)) {
                 this.shouldAnalyze = fieldConfig.getBoolean("[@analyze]");
                 this.analyzer = fieldConfig.getString("[@analyzer]");
-                this.shouldStore = fieldConfig.getBoolean("[@store]");
+                this.docValueType =  fieldConfig.getString("[@docValueType]", "none");
                 this.shouldEscape = fieldConfig.getBoolean("[@escape]");
                 this.shouldExpand = fieldConfig.getBoolean("[@expand]");
-                this.docValueType =  fieldConfig.getString("[@docValueType]", "none");
                 this.boost =  fieldConfig.getFloat("[@boost]", 1.0f);
             }
         }

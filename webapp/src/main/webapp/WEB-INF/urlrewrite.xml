@@ -288,6 +288,7 @@
     <rule>
         <from>^/hecatos/studies/$</from> <!-- handle project specific pages (without a query) -->
         <set type="parameter" name="project">hecatos</set>
+        <set type="parameter" name="full">true</set>
         <set type="parameter" name="pagesize">10000000</set> <!-- show all hecatos projects -->
         <to type="forward" last="true">/servlets/query/hecatos/browse/html</to>
     </rule>

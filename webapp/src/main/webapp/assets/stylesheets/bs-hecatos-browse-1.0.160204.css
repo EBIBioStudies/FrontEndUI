@@ -36,3 +36,17 @@
 .home-icon {
     color: #466B7D !important;
 }
+
+#ae-browse th {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    vertical-align: top;
+}
+
+.down-header {
+    float:left;
+}
+
+.right-header {
+    float:right;
+}

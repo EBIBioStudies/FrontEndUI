@@ -60,6 +60,8 @@ public class QueryConstructor implements IQueryConstructor {
             if (querySource.containsKey(FIELD_KEYWORDS) && !querySource.containsKey(FIELD_TYPE)) {
                 querySource.put(FIELD_TYPE, querySource.get(FIELD_KEYWORDS));
             }
+        } else {
+            querySource.put("isDetailPage",new String[]{"true"});
         }
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
@@ -128,11 +130,11 @@ public class QueryConstructor implements IQueryConstructor {
         }
 
         // remove compounds from list pages
-         if (!querySource.containsKey(FIELD_ACCESSION) && !querySource.containsKey(FIELD_TYPE)) {
+        if (!querySource.containsKey("isDetailPage")) {
             QueryParser parser = new EnhancedQueryParser(env, FIELD_TYPE, env.indexAnalyzer);
             parser.setDefaultOperator(QueryParser.Operator.AND);
             Query q = parser.parse("compound");
-             builder.add(q, BooleanClause.Occur.MUST_NOT);
+            builder.add(q, BooleanClause.Occur.MUST_NOT);
         }
 
         return builder.build();

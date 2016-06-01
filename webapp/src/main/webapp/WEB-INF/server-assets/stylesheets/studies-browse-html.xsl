@@ -181,8 +181,8 @@
         <xsl:param name="pTo"/>
         <xsl:param name="pPosition"/>
         <xsl:variable name="vAccession" select="accession"/>
-        <xsl:variable name="isPublic" select="@releaseTime!=9999999999 and contains(concat(' ',lower-case(access),' '),' public ')"/>
-        <xsl:variable name="isProject" select="fn:lower-case(@type)='project'"/>
+        <xsl:variable name="isPublic" select="release_date!=9999999999 and contains(concat(' ',lower-case(access),' '),' public ')"/>
+        <xsl:variable name="isProject" select="fn:lower-case(type)='project'"/>
         <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
         <li class="browse-study">
             <div>
@@ -191,26 +191,26 @@
                 </xsl:if>
                 <xsl:if test="not($isProject) and $isPublic ">
                         <span class="study-meta-data browse-study-release-date">
-                            <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(@releaseTime))"/>
+                            <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(release_date))"/>
                         </span>
                 </xsl:if>
                 <xsl:if test="not($isProject)">
-                        <xsl:if test="@files != '0'">
+                        <xsl:if test="files != '0'">
                             <span class="study-meta-data browse-study-release-files">
-                                <xsl:value-of select="@files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (@files>1) then 's' else ''" />
+                                <xsl:value-of select="files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (files>1) then 's' else ''" />
                             </span>
                         </xsl:if>
-                        <xsl:if test="@links != '0'">
+                        <xsl:if test="links != '0'">
                             <span class="study-meta-data browse-study-release-links">
-                                <xsl:value-of select="@links"/><xsl:text> link</xsl:text><xsl:value-of select="if (@links>1) then 's' else ''" />
+                                <xsl:value-of select="links"/><xsl:text> link</xsl:text><xsl:value-of select="if (links>1) then 's' else ''" />
                             </span>
                         </xsl:if>
                 </xsl:if>
             </div>
             <div class="browse-study-title">
-                <xsl:variable name="titleLink" select="if (fn:lower-case(@type)='project') then fn:concat($context-path,'/',accession,'/studies/') else fn:concat($context-path,$projectLink,'/studies/',accession,'/',$vQueryString)"/>
+                <xsl:variable name="titleLink" select="if (fn:lower-case(type)='project') then fn:concat($context-path,'/',accession,'/studies/') else fn:concat($context-path,$projectLink,'/studies/',accession,'/',$vQueryString)"/>
                 <xsl:variable name="accession" select="search:getQueryInfoParameter($queryid,'accessions')[$pPosition - $pFrom + 1]"/>
-                <xsl:if test="lower-case(@type)='project'">
+                <xsl:if test="lower-case(type)='project'">
                     <a class="project-logo no-border" href="{$titleLink}">
                         <img src="{$context-path}/files/{fn:replace(fn:replace(lower-case($accession),'&#x00ab;',''),'&#x00bb;','')}/logo.png"/>
                     </a>
