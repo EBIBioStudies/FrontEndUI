@@ -139,7 +139,23 @@
             <xsl:variable name="vSectionTitle" select="if (fn:exists(attributes/attribute[lower-case(@name)='title'])) then attributes/attribute[lower-case(@name)='title']/value else if (exists(attribute[lower-case(@name)='title'])) then attribute[lower-case(@name)='title'] else if (exists(@type)) then @type else 'Section'"/>
             <xsl:call-template name="section">
                 <xsl:with-param name="pId" select="@acc"/>
-                <xsl:with-param name="pName" select="$vSectionTitle"/>
+                <xsl:with-param name="pTitleContent">
+                    <xsl:value-of select="$vSectionTitle"/>
+                    <span class="section-title-bar">
+                        <xsl:if test="fn:count(files/table|file|files/file)>0">
+                            <span class="file-filter">
+                                <i class="fa fa-filter"></i>
+                                Files in: </span>
+                            <xsl:for-each select="files/table">
+                                <a class="section-button" data-files-id="{concat(../../@acc,'-table',position())}">
+                                    <xsl:value-of select="concat('FileTable ',position())"/></a>
+                            </xsl:for-each>
+                            <xsl:if test="exists(file|files/file)">
+                                <a class="section-button" data-files-id="{@acc}">This section</a>
+                            </xsl:if>
+                        </xsl:if>
+                    </span>
+                </xsl:with-param>
                 <xsl:with-param name="pContent">
                     <div>
                         <xsl:if test="descendant::section">
@@ -147,50 +163,6 @@
                         </xsl:if>
                         <xsl:if test="ancestor::section">
                             <xsl:attribute name="class" select="('indented-section')"/>
-                        </xsl:if>
-
-                        <xsl:variable name="vContent" select="if (fn:exists(attributes/attribute[lower-case(@name)='description'])) then attributes/attribute[lower-case(@name)='description']/value else attribute[lower-case(@name)='description']/value"/>
-                        <xsl:value-of select="$vContent"/>
-
-                        <xsl:call-template name="study-attributes">
-                            <xsl:with-param name="pNodes" select="attribute[lower-case(@name)!='title' and lower-case(@name)!='description']"/>
-                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                        </xsl:call-template>
-
-                        <xsl:call-template name="study-subsections">
-                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
-                            <xsl:with-param name="pNodes" select="section | subsections/section"/>
-                        </xsl:call-template>
-                        <xsl:if test="fn:count(descendant::file)>0">
-                            <div>
-                            <a class="show-more toggle-files" data-total="{fn:count(descendant::file)}">show files in this section</a>
-                                <xsl:for-each select="files/table">
-                                    <div class="ae-section-files">
-                                        <div class="ae-section-file-title">File Table: <xsl:value-of select="position()"/>
-                                            <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
-                                        </div>
-                                        <xsl:call-template name="file-table">
-                                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                                            <xsl:with-param name="pNodes" select="file"/>
-                                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                                            <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
-                                        </xsl:call-template>
-                                    </div>
-                                </xsl:for-each>
-                                <xsl:if test="exists(file|files/file)">
-                                    <div class="ae-section-files">
-                                        <div class="ae-section-file-title">Section Files
-                                            <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
-                                        </div>
-                                        <xsl:call-template name="file-table">
-                                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                                            <xsl:with-param name="pNodes" select="file|files/file"/>
-                                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                                            <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
-                                        </xsl:call-template>
-                                    </div>
-                                </xsl:if>
-                            </div>
                         </xsl:if>
                         <xsl:if test="fn:count(descendant::link)>0">
                             <div>
@@ -219,25 +191,37 @@
                                 </xsl:if>
                             </div>
                         </xsl:if>
-
                         <xsl:if test="fn:count(table)>0">
                             <div>
-                                <a class="show-more toggle-tables"  data-total="{fn:count(table)}">show tables in this section</a>
+                                <a class="show-more toggle-tables"  data-total="{fn:count(table)}">show tables</a>
                                 <div class="ae-section-tables">
                                     <xsl:for-each select="table">
                                         <div class="ae-section-file-title">
                                             Table: <xsl:value-of select="section[1]/@type"/>
                                             <span class="fa fa-expand fa-icon table-expander" title="Click to expand"/>
                                         </div>
-                                        <xsl:call-template name="subsection-table">
-                                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                                            <xsl:with-param name="pNodes" select="."/>
-                                        </xsl:call-template>
+                                        <div class="table-wrapper"  id="{concat(parent::section/@acc,'-table-',position())}">
+                                            <xsl:call-template name="subsection-table">
+                                                <xsl:with-param name="pQueryId" select="$queryid"/>
+                                                <xsl:with-param name="pNodes" select="."/>
+                                            </xsl:call-template>
+                                        </div>
                                     </xsl:for-each>
                                 </div>
                             </div>
                         </xsl:if>
+                        <xsl:variable name="vContent" select="if (fn:exists(attributes/attribute[lower-case(@name)='description'])) then attributes/attribute[lower-case(@name)='description']/value else attribute[lower-case(@name)='description']/value"/>
+                        <xsl:value-of select="$vContent"/>
 
+                        <xsl:call-template name="study-attributes">
+                            <xsl:with-param name="pNodes" select="attribute[lower-case(@name)!='title' and lower-case(@name)!='description']"/>
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                        </xsl:call-template>
+
+                        <xsl:call-template name="study-subsections">
+                            <xsl:with-param name="pQueryId" select="$pQueryId"/>
+                            <xsl:with-param name="pNodes" select="section | subsections/section"/>
+                        </xsl:call-template>
                     </div> <!--end content-->
                 </xsl:with-param>
                 <xsl:with-param name="pClass" select="('left')"/>
@@ -317,29 +301,6 @@
                                     <xsl:text>)</xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
-                            <xsl:if test="fn:count(.//file)>0">
-                                <br/>
-                                <a class="show-more toggle-files">show files in this section</a>
-                                <div class="ae-section-files">
-                                    <xsl:call-template name="file-table">
-                                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                                        <xsl:with-param name="pNodes" select=".//file"/>
-                                        <xsl:with-param name="pBasePath" select="$context-path"/>
-                                        <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
-                                    </xsl:call-template>
-                                </div>
-                            </xsl:if>
-                            <br/>
-                            <xsl:if test="fn:exists(.//link)">
-                                <a class="show-more toggle-links">show links in this section</a>
-                                <div class="ae-section-links">
-                                    <div class="ae-section-file-title">Links</div>
-                                    <xsl:call-template name="link-table">
-                                        <xsl:with-param name="pQueryId" select="$queryid"/>
-                                        <xsl:with-param name="pNodes" select="$pNodes//link"/>
-                                    </xsl:call-template>
-                                </div>
-                            </xsl:if>
                         </xsl:with-param>
                         <xsl:with-param name="pClass" select="('left')"/>
                     </xsl:call-template>
@@ -490,6 +451,7 @@
                         </th>
                     </xsl:if>
                     <th>Name</th>
+                    <th>Parent</th>
                     <th class="filesize">Size</th>
                     <xsl:for-each select="$vColumns">
                         <th>
@@ -531,6 +493,7 @@
                                 </a>
                             </xsl:if>
                         </td>
+                        <td><xsl:value-of select="@parent"/><xsl:if test="name(..)='table'"><xsl:value-of select="concat('-table',../position())"/></xsl:if></td>
                         <td class="align-right" data-order="{@size}">
                             <xsl:choose>
                                 <xsl:when test="lower-case(@type)='directory'">
@@ -552,7 +515,10 @@
                                         <xsl:variable name="text">
                                             <xsl:value-of select="$vColumn/value" disable-output-escaping="yes"/>
                                         </xsl:variable>
-                                        <a href="{$vColumn/url}" target="_blank">
+                                        <a href="{$vColumn/url}">
+                                            <xsl:if test="not(fn:starts-with($vColumn/url,'#'))">
+                                                <xsl:attribute name="target" select="'_blank'"/>
+                                            </xsl:if>
                                             <xsl:call-template name="highlight">
                                                 <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                                 <xsl:with-param name="pText" select="$text"/>
@@ -722,29 +688,26 @@
         <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:variable name="vColumns" select="distinct-values($pNodes//attribute/name)"/>
-        <div class="table-wrapper">
-            <table class="stripe compact hover section-table" style=" width: 100% " cellspacing="0"  >
-                <thead>
-                    <xsl:for-each select="$vColumns">
-                        <th><xsl:value-of select="."/></th>
-                    </xsl:for-each>
-                </thead>
-                <xsl:for-each select="$pNodes/section">
-                    <xsl:variable name="pRow" select="."/>
-                    <tr>
-                        <xsl:for-each select="$vColumns">
-                            <xsl:variable name="vColumn" select="."/>
-                            <td><xsl:value-of select="$pRow/attributes/attribute[name=$vColumn]/value"/></td>
-                        </xsl:for-each>
-                    </tr>
+        <table class="stripe compact hover section-table" style=" width: 100% " cellspacing="0"  >
+            <thead>
+                <xsl:for-each select="$vColumns">
+                    <th><xsl:value-of select="."/></th>
                 </xsl:for-each>
-            </table>
-        </div>
+            </thead>
+            <xsl:for-each select="$pNodes/section">
+                <xsl:variable name="pRow" select="."/>
+                <tr>
+                    <xsl:for-each select="$vColumns">
+                        <xsl:variable name="vColumn" select="."/>
+                        <td><xsl:value-of select="$pRow/attributes/attribute[name=$vColumn]/value"/></td>
+                    </xsl:for-each>
+                </tr>
+            </xsl:for-each>
+        </table>
     </xsl:template>
 
 
-    <xsl:template name="study-funding">
-        <xsl:param name="pQueryId"/>
+    <xsl:template name="study-funding">        <xsl:param name="pQueryId"/>
         <xsl:param name="pNodes"/>
         <xsl:call-template name="section">
             <xsl:with-param name="pName" select="'Funding'"/>
@@ -772,29 +735,7 @@
                         </li>
                     </xsl:for-each-group>
                 </ul>
-                <xsl:if test="fn:exists($pNodes//file)">
-                    <a class="show-more toggle-files">show files in this section</a>
-                    <div class="ae-section-files">
-                        <div class="ae-section-file-title">Files</div>
-                        <xsl:call-template name="file-table">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pNodes" select="$pNodes//file"/>
-                            <xsl:with-param name="pAccession" select="ancestor::study/accession"/>
-                            <xsl:with-param name="pBasePath" select="$context-path"/>
-                        </xsl:call-template>
-                    </div>
-                </xsl:if>
-                <br/>
-                <xsl:if test="fn:exists($pNodes//link)">
-                    <a class="show-more toggle-links">show links in this section</a>
-                    <div class="ae-section-links">
-                        <div class="ae-section-link-title">Links</div>
-                        <xsl:call-template name="link-table">
-                            <xsl:with-param name="pQueryId" select="$queryid"/>
-                            <xsl:with-param name="pNodes" select="$pNodes//link"/>
-                        </xsl:call-template>
-                    </div>
-                </xsl:if>
+
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
@@ -802,11 +743,21 @@
     <xsl:template name="section">
         <xsl:param name="pId" select="''"/>
         <xsl:param name="pName" select="''"/>
+        <xsl:param name="pTitleContent" select="''"/>
         <xsl:param name="pContent"/>
         <xsl:param name="pClass" as="xs:string*" select="''"/>
-        <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
-             <div id="{$pId}" class="ae-detail-name"><xsl:value-of select="$pName"/></div>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="not($pTitleContent='')">
+                <div id="{$pId}" class="ae-detail-name">
+                    <xsl:copy-of select="$pTitleContent"/>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:if test="fn:exists($pName) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
+                    <div id="{$pId}" class="ae-detail-name"><xsl:value-of select="$pName"/></div>
+                </xsl:if>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:if test="fn:exists($pContent) and fn:not(fn:matches(fn:string-join($pContent//text(), ''), '^\s*$'))">
             <div>
                 <xsl:attribute name="class" select="fn:string-join((('value'),$pClass), ' ')"/>

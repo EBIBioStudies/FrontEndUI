@@ -24,8 +24,15 @@ var sectionTables = [];
 
     var selectedFilesCount = 0;
     var totalRows = $("#file-list tbody tr").length;
-
+    var params = {};
     $(function() {
+        // parse params
+        $(location.search.substr(1).split('&')).each(function(i,v) {
+            var kv = v.split('=');
+            var k = kv[0], v = kv[1] && decodeURIComponent(kv[1]).replace(/\+/g, ' ');
+            (k in params) ? params[k]=params[k]+'|'+v : params[k] = v;
+        });
+
         // add modal blocker div
         $('body').append('<div id="blocker"/><div id="tooltip"/>');
 
@@ -110,27 +117,26 @@ var sectionTables = [];
             if (section.css('display')=='none') {
                 section.show();
                 redrawTables(true);
-                $(this).text('hide ' + type +($(this).data('total') == '1' ? '' : 's') +' in this section')
+                $(this).html('<i class="fa fa-caret-down"></i> hide ' + type +($(this).data('total') == '1' ? '' : 's'))
             } else {
                 section.hide();
-                $(this).text('show ' + type +($(this).data('total') == '1' ? '' : 's')+' in this section')
+                $(this).html('<i class="fa fa-caret-right"></i> show ' + type +($(this).data('total') == '1' ? '' : 's'))
             }
 
         });
         $(".toggle-files, .toggle-links, .toggle-tables").each (function () {
             var type = $(this).hasClass("toggle-files") ? "file" : $(this).hasClass("toggle-links") ? "link" : "table";
-            $(this).text('show '+type + ($(this).data('total') == '1' ? '' : 's') + ' in this section');
+            $(this).html('<i class="fa fa-caret-right"></i> show '+type + ($(this).data('total') == '1' ? '' : 's'));
         });
 
         //handle file attribute table icons
         $(".attributes-icon").on ('click', function () {
             closeFullScreen();
-            var section = $('#'+$(this).data('section-id'));
-            var toggleLink = section.next().find('.toggle-tables').first();
+            var section = '#'+$(this).data('section-id');
+            openHREF(section);
+            var toggleLink = $(section).next().find('.toggle-tables').first();
             if (toggleLink.first().text().indexOf('show')>=0) toggleLink.click();
-            $('html, body').animate({
-                scrollTop: $(section).offset().top -10
-            }, 200);
+            
         });
 
         // draw the main file table
@@ -139,18 +145,18 @@ var sectionTables = [];
         updateSelectedFiles(0);
 
         // draw subsection and hide them
-        $(".indented-section").parent().prev().prepend('<span class="toggle-section fa fa-expand fa-icon" title="Click to expand"/>')
+        $(".indented-section").parent().prev().prepend('<span class="toggle-section fa-fw fa fa-caret-right fa-icon" title="Click to expand"/>')
         $(".indented-section").hide();
 
         $('.toggle-section').parent().css('cursor','pointer');
         $('.toggle-section').parent().on('click', function() {
             var indented_section = $(this).next().children().first();
             if ( indented_section.css('display') == 'none') {
-                $(this).children().first().toggleClass('fa-compress').toggleClass('fa-expand');
+                $(this).children().first().toggleClass('fa-caret-down').toggleClass('fa-caret-right').attr('title', 'Click to collapse');
                 indented_section.show();
                 redrawTables(true);
             } else {
-                $(this).children().first().toggleClass('fa-compress').toggleClass('fa-expand');
+                $(this).children().first().toggleClass('fa-caret-down').toggleClass('fa-caret-right').attr('title','Click to expand');
                 indented_section.hide();
                 redrawTables(true);
             }
@@ -175,13 +181,57 @@ var sectionTables = [];
             }
         });
 
+        // limit section title clicks
+        $(".section-title-bar").click(function(e) {
+            e.stopPropagation();
+        })
     });
 
+    function openHREF(href) {
+        var section = $(href);
+        var o = section;
+        while (o.prop("tagName")!=='BODY') {
+            var p =  o.parent().parent();
+            if(o.parent().css('display')!='block') {
+                p.prev().click();
+            }
+            o = p;
+        }
+        if(section.next().children().first().css('display')=='none') section.click();
+        $('html, body').animate({
+            scrollTop: $(section).offset().top -10
+        }, 200);
+    }
+
     function handleAnchors() {
-        if (window.location.hash.length<2) return;
-        var subq = window.location.hash.substring(1);
-        $('#right-column-expander').click();
-        filesTable.search(subq).draw();
+        // handle clicks on section links in main file table
+        $("a[href^='#']", "#file-list" ).filter(function(){ return $(this).attr('href').length>1 }).click( function(){
+            var subsec = $(this).attr('href');
+            closeFullScreen();
+            openHREF(subsec);
+        });
+
+        // handle clicks on file filters in section
+        $("a[data-files-id]").click( function() {
+            filesTable.search($(this).data('files-id')).draw();
+            $('html, body').animate({
+                scrollTop: $('#right-column-expander').offset().top -10
+            }, 200);
+        });
+
+        // scroll to main anchor
+        if (location.hash) {
+            openHREF(location.hash);
+        }
+
+        // add file search filter
+        if (params['fs']) {
+            $('#right-column-expander').click();
+            filesTable.search(params['fs']).draw();
+        }
+
+
+
     }
 
     function showThumbnail(fileLink) {
@@ -265,7 +315,8 @@ var sectionTables = [];
             if (filesTable == null) {
                 filesTable = $("#file-list").DataTable({
                     "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-                    "columnDefs": [{"targets": [0], "searchable": false, "orderable": false, "visible": true}],
+                    "columnDefs": [ {"targets": [0], "searchable": false, "orderable": false, "visible": true},
+                                    {"targets": [2], "searchable": true, "orderable": false, "visible": false}],
                     "order": [[1, "asc"]],
                     "dom": "rlftpi",
                     "scrollX": "100%"

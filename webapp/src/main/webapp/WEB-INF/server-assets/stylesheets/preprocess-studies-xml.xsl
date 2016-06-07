@@ -162,7 +162,7 @@
             <xsl:apply-templates select="file|files/file" mode="files"/>
             <xsl:if test="fn:exists(files/table)">
                 <xsl:for-each select="files/table">
-                    <files><table> <xsl:apply-templates select="file" mode="files"/> </table></files>
+                    <files><table><xsl:apply-templates select="file" mode="files"/></table></files>
                 </xsl:for-each>
             </xsl:if>
             <xsl:apply-templates select="link|links/link" mode="links"/>
@@ -177,9 +177,12 @@
 
 
     <xsl:template match="file" mode="files">
-        <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}">
+        <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}" parent="{ancestor::*[@acc][1]/@acc}">
             <xsl:if test="fn:exists(@type)">
                 <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="fn:exists(ancestor::section/@acc)">
+                <attribute name="Section"><url>#<xsl:value-of select="ancestor::section[1]/@acc"/></url><value><xsl:value-of select="ancestor::section[1] /attributes/attribute[lower-case(name)='title']/value"/></value></attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>
