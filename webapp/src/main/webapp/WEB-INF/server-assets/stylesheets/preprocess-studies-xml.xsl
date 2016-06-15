@@ -182,7 +182,7 @@
                 <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
             </xsl:if>
             <xsl:if test="fn:exists(ancestor::section/@acc)">
-                <attribute name="Section"><url>#<xsl:value-of select="ancestor::section[1]/@acc"/></url><value><xsl:value-of select="ancestor::section[1] /attributes/attribute[lower-case(name)='title']/value"/></value></attribute>
+                <attribute name="Section"><url>#<xsl:value-of select="ancestor::section[1]/@acc"/></url><value><xsl:value-of select="(ancestor::section[1] /attributes/attribute[lower-case(name)='title']/value,ancestor::section[1]/@type)[1]"/></value></attribute>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
         </file>

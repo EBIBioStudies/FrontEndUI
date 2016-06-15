@@ -213,7 +213,7 @@ var sectionTables = [];
 
         // handle clicks on file filters in section
         $("a[data-files-id]").click( function() {
-            filesTable.search($(this).data('files-id')).draw();
+            filesTable.column(2).search('^'+$(this).data('files-id')+'$',true,false).draw();
             $('html, body').animate({
                 scrollTop: $('#right-column-expander').offset().top -10
             }, 200);
