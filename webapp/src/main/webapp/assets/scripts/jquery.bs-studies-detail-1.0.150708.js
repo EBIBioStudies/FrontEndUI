@@ -377,9 +377,6 @@ function handleAnchors() {
     $("a[data-files-id]").click( function() {
         $('#right-column-expander').click();
         filesTable.column(2).search('^'+$(this).data('files-id')+'$',true,false).draw();
-        $('html, body').animate({
-            scrollTop: $('#right-column-expander').offset().top -10
-        }, 200);
     });
 
     // scroll to main anchor

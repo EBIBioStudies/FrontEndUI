@@ -18,10 +18,10 @@
 package uk.ac.ebi.biostudies.utils.saxon.search;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
@@ -44,13 +44,12 @@ public class EnhancedQueryParser extends QueryParser {
         TermRangeQuery query = (TermRangeQuery)
                 super.getRangeQuery(field, part1, part2,
                         startInclusive, endInclusive);
-        if (env.fields.containsKey(field) && "integer".equals(env.fields.get(field).type)) {
-            return NumericRangeQuery.newLongRange(
+        if (env.fields.containsKey(field) && "long".equals(env.fields.get(field).type)) {
+            return LongPoint.newRangeQuery(
                     field,
                     parseLong(query.getLowerTerm().utf8ToString()),
-                    parseLong(query.getUpperTerm().utf8ToString()),
-                    query.includesLower(),
-                    query.includesUpper());
+                    parseLong(query.getUpperTerm().utf8ToString())
+                    );
         } else {
             return query;
         }
@@ -69,13 +68,11 @@ public class EnhancedQueryParser extends QueryParser {
     }
 
     private Query rewriteNumericBooleanFieldQuery(Query query, String field, String queryText) throws ParseException {
-        if (env.fields.containsKey(field) && "integer".equals(env.fields.get(field).type)) {
-            return NumericRangeQuery.newLongRange(
+        if (env.fields.containsKey(field) && "long".equals(env.fields.get(field).type)) {
+            return LongPoint.newRangeQuery(
                     field,
                     parseLong(queryText),
-                    parseLong(queryText),
-                    true,
-                    true);
+                    parseLong(queryText));
         } else if (env.fields.containsKey(field) && "boolean".equals(env.fields.get(field).type)) {
             if ("true".equalsIgnoreCase(queryText) || "on".equalsIgnoreCase(queryText) || "1".equalsIgnoreCase(queryText)) {
                 return new TermQuery(new Term(field, "true"));

@@ -42,7 +42,7 @@
         <guice.version>3.0</guice.version>
         <guava.version>18.0</guava.version>
         <saxon.version>9.6.0-4</saxon.version>
-        <lucene.version>5.5.1</lucene.version>
+        <lucene.version>6.1.0</lucene.version>
 
         <!-- http://colorschemedesigner.com/csd-3.5/#3s61Ts4rGw0w0 -->
         <color.p1>#17668C</color.p1>
@@ -94,8 +94,8 @@
                 <version>2.5.1</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>

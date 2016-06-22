@@ -102,8 +102,10 @@ public class Indexer {
                             if ("long".equals(field.type)) {
                                 addLongField(d, field.name, v, field.shouldStore);
                                 if (!"none".equalsIgnoreCase(field.docValueType)) {
-                                    d.add( new NumericDocValuesField (field.name, Long.parseLong(v.getStringValue())) );
+                                    d.add( new SortedNumericDocValuesField (field.name, Long.parseLong(v.getStringValue())) );
+                                    d.add( new StoredField (field.name, Long.parseLong(v.getStringValue())) );
                                 }
+
                             } else if ("date".equals(field.type)) {
                                 // todo: addDateIndexField(d, field.name, v);
                                 logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
@@ -216,7 +218,8 @@ public class Indexer {
             } else {
                 longValue = Long.parseLong(value.getStringValue());
             }
-            document.add(new LongField(name, longValue, store ? Field.Store.YES : Field.Store.NO));
+            LongPoint longPoint = new LongPoint(name, longValue);
+            document.add(longPoint);
         } catch (XPathException x) {
             logger.error("Unable to convert value [" + value.getStringValue() + "]", x);
         }
