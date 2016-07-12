@@ -127,8 +127,6 @@ public final class EFOQueryExpander implements IQueryExpander {
                 field = ((WildcardQuery) query).getTerm().field();
             } else if (query instanceof TermRangeQuery) {
                 field = ((TermRangeQuery) query).getField();
-            } else if (query instanceof NumericRangeQuery) {
-                field = ((NumericRangeQuery) query).getField();
             } else if (query instanceof FuzzyQuery) {
                 field = ((FuzzyQuery) query).getTerm().field();
             } else if (query instanceof TermQuery) {
@@ -195,8 +193,6 @@ public final class EFOQueryExpander implements IQueryExpander {
             term = ((WildcardQuery) query).getTerm();
         } else if (query instanceof TermRangeQuery) {
             term = new Term(((TermRangeQuery) query).getField(), "");
-        } else if (query instanceof NumericRangeQuery) {
-            term = new Term(((NumericRangeQuery) query).getField(), "");
         } else if (query instanceof FuzzyQuery) {
             term = ((FuzzyQuery) query).getTerm();
         } else if (query instanceof TermQuery) {

@@ -133,11 +133,12 @@ public class Querier {
         if (sortBy ==null || "relevance".equalsIgnoreCase(sortBy) ) {
             shouldReverse = !shouldReverse;
         }
-        SortField sortField = new SortField(sortBy, sortFieldType, shouldReverse);
+        SortField sortField = sortFieldType==SortField.Type.LONG
+                    ? new SortedNumericSortField (sortBy, sortFieldType, shouldReverse)
+                    : new SortField(sortBy, sortFieldType, shouldReverse);
         Sort sort = new Sort( sortField );
 
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
-            LeafReader leafReader = SlowCompositeReaderWrapper.wrap(reader);
             IndexSearcher searcher = new IndexSearcher(reader);
             logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
                     query.toString(), sort, shouldReverse);
@@ -161,11 +162,11 @@ public class Querier {
             // if page is from search results, get the first hit only since it should be the one with the accession match
             if (isDetailPage && hits.totalHits>0) {
                 NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(
-                                leafReader.document(hits.scoreDocs[0].doc).get("xml"));
+                                reader.document(hits.scoreDocs[0].doc).get("xml"));
                 if(nodeInfo!=null) {
                     matchingNodes.add(nodeInfo);
                     try {
-                        getSimilarStudies(params, hits.scoreDocs[0], leafReader, searcher);
+                        getSimilarStudies(params, hits.scoreDocs[0], reader, searcher);
                     } catch (Exception ex) {
                         logger.error("Error getting similar studies", ex);
                     }
@@ -181,13 +182,13 @@ public class Querier {
                 ScoreDoc [] scoreDocs = hits.scoreDocs;
                 for (int i = from - 1; i < to; i++) {
                     try {
-                        NodeInfo nodeInfo = getNodeInfo(leafReader.document(scoreDocs[i].doc), params);
+                        NodeInfo nodeInfo = getNodeInfo(reader.document(scoreDocs[i].doc), params);
                         if(nodeInfo!=null) matchingNodes.add(nodeInfo);
                     } catch (SaxonException e) {
                         e.printStackTrace();
                     }
                 }
-                addHighlights(queryInfo, params, leafReader, from, to, scoreDocs);
+                addHighlights(queryInfo, params, reader, from, to, scoreDocs);
             }
 
             logger.info("Search completed {}", matchingNodes.size());
@@ -248,7 +249,7 @@ public class Querier {
         }
     }
 
-    private void addHighlights(QueryInfo queryInfo, Map<String, String[]> params, LeafReader leafReader, int from, int to, ScoreDoc[] scoreDocs) throws IOException {
+    private void addHighlights(QueryInfo queryInfo, Map<String, String[]> params, IndexReader reader, int from, int to, ScoreDoc[] scoreDocs) throws IOException {
         //do highlighting for fields shown on search page
         ArrayList<String> accessions = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
@@ -257,13 +258,13 @@ public class Querier {
         EFOExpandedHighlighter highlighter = new EFOExpandedHighlighter();
         highlighter.setEnvironment(this.env);
         for (int i = from - 1; i < to; i++) {
-            String accession = leafReader.document(scoreDocs[i].doc).get("id");
+            String accession = reader.document(scoreDocs[i].doc).get("id");
             accessions.add(highlighter.highlightFragment(queryInfo, "id", accession));
-            String title = leafReader.document(scoreDocs[i].doc).get("title");
+            String title = reader.document(scoreDocs[i].doc).get("title");
             titles.add(highlighter.highlightFragment(queryInfo, "title", title));
-            String author = leafReader.document(scoreDocs[i].doc).get("authors");
+            String author = reader.document(scoreDocs[i].doc).get("authors");
             authors.add(highlighter.highlightFragment(queryInfo, "authors", author));
-            String snippet = leafReader.document(scoreDocs[i].doc).get("keywords");
+            String snippet = reader.document(scoreDocs[i].doc).get("keywords");
             String highlightedSnippet = highlighter.highlightFragment(queryInfo, "keywords", snippet);
             snippets.add( snippet.length() == highlightedSnippet.length() ? "" : highlightedSnippet );
 

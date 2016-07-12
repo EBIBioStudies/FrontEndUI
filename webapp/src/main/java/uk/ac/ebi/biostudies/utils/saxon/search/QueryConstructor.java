@@ -76,7 +76,8 @@ public class QueryConstructor implements IQueryConstructor {
                             value = value.replaceAll("([+\"!()\\[\\]{}^~*?:\\\\-]|&&|\\|\\|)", "\\\\$1");
                         }
                         Query q = parser.parse(value);
-                        builder.add(q, BooleanClause.Occur.SHOULD);
+                        builder.add(q, querySource.containsKey("isDetailPage") && queryItem.getKey().equalsIgnoreCase(FIELD_ACCESSION)
+                                ? BooleanClause.Occur.MUST : BooleanClause.Occur.SHOULD);
                     }
                 }
             }

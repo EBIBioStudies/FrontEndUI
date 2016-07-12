@@ -21,7 +21,8 @@
         $.getJSON( contextPath + "/servlets/query/-/home/json?type=Study&pagesize=5&sortby=release_date", function( data ) {
             $('#studyCount').text(data.studies.total + (data.studies.total==1 ? ' study' : ' studies') );
             if (data.studies.study) {
-                $.each(data.studies.study.slice(0, 5), function (i, v) {
+                var studies =  $.isArray(data.studies.study) ? data.studies.study.slice(0, 5) : [data.studies.study];
+                $.each(studies, function (i, v) {
                     $('#latestList').append('<li><a href="studies/' + v.accession + '">' + v.title
                         + '</a><span class="browse-study-accession">' + v.accession + '</span></li>')
                 });

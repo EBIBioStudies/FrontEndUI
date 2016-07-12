@@ -104,7 +104,9 @@ public class ControlServlet extends ApplicationServlet {
                     ) {
                 getComponent(JobsController.class).executeJob(command);
             } else if ("reload-xml".equals(command)) {
-                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"), Boolean.parseBoolean(request.getParameter("delete")));
+                getComponent(Studies.class).updateFromXMLFile(request.getParameter("xmlFilePath"),
+                        Boolean.parseBoolean(request.getParameter("delete")),
+                        !Boolean.parseBoolean(request.getParameter("dontCopy")));
             } else if ("clear-index".equals(command)) {
                 getComponent(Studies.class).clearIndex();
             } else if ("delete".equals(command)) {

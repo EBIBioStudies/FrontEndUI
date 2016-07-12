@@ -50,6 +50,7 @@
     padding: 1em;
     background-color: hsla(201, 65%, 95%, 1);
     border: solid 1px #C9E4F3;
+    font-size: 12px;
 }
 
 
@@ -236,11 +237,13 @@ th.filesize {
 
 .toggle-section {
     cursor: pointer;
+    color: #CCC !important;
 }
 
 .indented-section, .has-child-section{
     padding-left: 10px;
     border-left: 2px solid #D4D4D4;
+    margin-left: 8px;
 }
 
 .truncated {
@@ -296,7 +299,7 @@ input.link-filter:checked + label > span:before {
     padding-right:4px;
 }
 
-.link-filter-label:nth-child(4) {
+.link-filter-label:nth-child(2) {
     border-bottom-left-radius: 3px;
     border-top-left-radius: 3px;
     border-left: 1px solid #ddd;
@@ -512,4 +515,42 @@ ul.recommendations li{
     position:relative;
     transform-style: flat;
     z-index:1000;
+}
+
+a.section-button {
+    background-color: #6BA8C5;
+    padding: 2px 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 0px;
+    color: white;
+    border-radius: 3px;
+    margin-right:3px;
+}
+
+a.section-button:hover {
+    background-color: #466B7D;
+}
+.file-filter {
+    color: #AAA;
+    margin-right:3px;
+}
+
+.section-title-bar {
+    font-size: 9pt;
+    margin-left: 20px;
+    cursor: text;
+}
+
+#clear-filter {
+    margin-left: 5px;
+}
+
+.bs-icon-fa-stack {
+    width: 1em;
+}
+.filter-cross {
+    color: #fff;
+    font-size: 7px;
+    margin: 1px 0px 0px 5px;
 }
