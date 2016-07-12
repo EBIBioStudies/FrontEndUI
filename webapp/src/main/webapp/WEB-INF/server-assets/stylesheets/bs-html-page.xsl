@@ -221,8 +221,7 @@
                                     <a href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
                                 </li>
                                 <li>
-                                    <xsl:if test="fn:starts-with($relative-uri, '/submit/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/submit/" title="Submit a study">Submit a study</a>
+                                    <a target="_blank" href="{$context-path}/submissions/" title="Submit a study">Submit a study</a>
                                 </li>
                                 <li>
                                     <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
