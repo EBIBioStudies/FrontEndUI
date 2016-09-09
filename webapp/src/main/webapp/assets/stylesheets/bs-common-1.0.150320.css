@@ -945,3 +945,8 @@ p.center {
 #global-masthead, #local-masthead {
     z-index:10;
 }
+
+div#local-masthead ul {
+    margin-top: 0px;
+    background-color:#467088;
+}
