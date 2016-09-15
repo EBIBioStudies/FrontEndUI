@@ -61,7 +61,7 @@
                 <div class="molecule">b</div>
                 <div class="flask">A</div>
                 <h2>
-                    <div id="tagline">BioStudies – database of biological studies</div>
+                    <div id="tagline">BioStudies – one package for all the data supporting a study</div>
                 </h2>
             </div>
             <p class="justify">The BioStudies database holds descriptions of biological studies, links to data
