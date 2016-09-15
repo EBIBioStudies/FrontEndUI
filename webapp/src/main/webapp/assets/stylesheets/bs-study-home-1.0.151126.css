@@ -30,9 +30,9 @@ nav ul, nav ol {
     color: #FFFFFF !important;
     font-size: 22pt !important;
     vertical-align: middle;
-    border: 1px solid #466B7D;
+    border: 1px solid #22AAE2;
     border-radius: 50%;
-    background: #466B7D;
+    background: #0378BB;
     padding: 14px;
     margin-right: 0px !important;
     vertical-align: initial;
@@ -40,7 +40,7 @@ nav ul, nav ol {
 }
 
 .home-icon {
-    color: #466B7D !important;
+    color: #0378BB !important;
 }
 .home-icon-small:before {
     font-size: 12pt !important;
@@ -124,7 +124,7 @@ nav ul, nav ol {
 }
 
 #bs-title-header {
-    background-color: rgb(107, 168, 197);
+    background-color: #0378BB;
     position: relative;
     min-height: 160px;
     text-align: center;

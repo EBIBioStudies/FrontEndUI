@@ -98,7 +98,11 @@ form input.submit {
 
 /* Define the basic colour your local masthead */
 div#local-masthead {
-    background-color: ${color.p5};
+    background-color: white;
+}
+form#local-search fieldset {
+    background-color: #F7F7F7;
+    border: 1px solid #CCCCCC;
 }
 
 /* Colour the faux-underline for local menu items */
