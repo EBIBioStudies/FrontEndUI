@@ -68,6 +68,16 @@
                 </xsl:otherwise>
             </xsl:choose>
         </title>
+        <abstract>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='abstract'])">
+                    <xsl:value-of select="fn:replace(attributes/attribute[fn:lower-case(normalize-space(name))='abstract']/value, '[.]\s*$', '')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='abstract']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </abstract>
         <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
             <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
             <author index="{fn:position()}">
