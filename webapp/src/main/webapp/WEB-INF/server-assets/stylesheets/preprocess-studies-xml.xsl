@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Copyright 2009-2016 European Molecular Biology Laboratory
  *
@@ -152,12 +153,12 @@
             </xsl:if>
             <xsl:if test="fn:lower-case(@type)='publication' and fn:lower-case(fn:substring(@acc,1,3))='pmc'">
                 <attribute name="PMCID">
-                    <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
+                    <value><xsl:value-of select="@acc"/></value>
                 </attribute>
             </xsl:if>
             <xsl:if test="fn:lower-case(@type)='publication' and not(fn:lower-case(fn:substring(@acc,1,3))='pmc')">
                 <attribute name="PMID">
-                    <value><xsl:value-of select="fn:upper-case(@acc)"/></value>
+                    <value><xsl:value-of select="@acc"/></value>
                 </attribute>
             </xsl:if>
             <xsl:if test="fn:lower-case(@type)='publication'

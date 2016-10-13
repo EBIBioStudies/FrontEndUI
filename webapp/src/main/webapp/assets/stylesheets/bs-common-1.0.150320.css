@@ -720,9 +720,13 @@ p.center {
 }
 
 #ae-detail p.orgs sup {
-    margin-right: 1px;
+    margin: 1px;
     font-size: 85%;
     top: -0.4em;
+}
+
+#ae-detail p.orgs sup:not(:first-child) {
+    padding-left: 2px;
 }
 
 #ae-help table {

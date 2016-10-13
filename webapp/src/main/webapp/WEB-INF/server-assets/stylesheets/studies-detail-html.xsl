@@ -32,7 +32,7 @@
 
     <xsl:variable name="vIsGoogleBot" select="fn:matches($user-agent, '.*Googlebot.*')"/>
     <xsl:variable name="vAccessionNumber" select="search:getQueryInfoParameter($queryid,'accessionNumber')"/>
-    <xsl:variable name="vAccession" select="if ($vAccessionNumber) then fn:upper-case($vAccessionNumber) else fn:upper-case($accession)"/>
+    <xsl:variable name="vAccession" select="if ($vAccessionNumber) then $vAccessionNumber else $accession"/>
     <xsl:variable name="vQueryString" select="if ($query-string) then fn:concat('?', $query-string) else ''"/>
     <xsl:variable name="projectLink" select="if ($project!='') then concat('/',$project) else '' "/>
 
