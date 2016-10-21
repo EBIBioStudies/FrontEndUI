@@ -27,12 +27,12 @@
     <xsl:param name="code"/>
     <xsl:param name="assignmentId"/>
     <xsl:param name="description"/>
-    <xsl:include href="bs-html-page.xsl"/>
+    <xsl:include href="bs-jobs-page.xsl"/>
     <xsl:include href="bs-date-functions.xsl"/>
 
     <xsl:template match="/">
         <xsl:call-template name="bs-page">
-            <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
+            <xsl:with-param name="pIsSearchVisible" select="fn:false()"/>
             <xsl:with-param name="pExtraSearchFields"/>
             <xsl:with-param name="pTitleTrail"/>
             <xsl:with-param name="pExtraCSS"/>
@@ -63,7 +63,7 @@
                             assignment</strong>.
                         </p>
 
-                        <form id="accept" method="post"
+                        <form style="text-align:center" id="accept" method="post"
                               action="{$context-path}/jobs/{$assignmentId}">
                             <input type="hidden" name="start" value="true"/>
                             <input type="hidden" name="code" value="{$code}"/>

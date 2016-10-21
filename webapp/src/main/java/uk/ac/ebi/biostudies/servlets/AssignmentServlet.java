@@ -84,7 +84,7 @@ public class AssignmentServlet extends ApplicationServlet {
 
         // send file if conditions are accepted
         if (params.containsKey("start")) {
-            sendAssignment(code,assignmentId, response);
+            sendAssignment(code,assignmentId, assignment.getEmailTo(), response);
             return;
         }
 
@@ -125,10 +125,12 @@ public class AssignmentServlet extends ApplicationServlet {
                 for (int j = 0; j < allow.size(); j++) {
                     allowList.add((String) allow.get(j));
                 }
+                String emailTo = (String) assignment.get("emailTo");
                 AssignmentMetaData amd = new AssignmentMetaData(
                         id,
                         allowList,
-                        (String) assignment.get("description")
+                        (String) assignment.get("description"),
+                        emailTo
                 );
                 map.put(id, amd);
             }
@@ -138,11 +140,11 @@ public class AssignmentServlet extends ApplicationServlet {
         return map;
     }
 
-    private void sendAssignment(String code, String assignmentId, HttpServletResponse response) throws IOException {
-
+    private void sendAssignment(String code, String assignmentId, String emailTo, HttpServletResponse response) throws IOException {
+        logger.debug("Sending "+ assignmentId + " to " + code );
         getApplication().sendEmail(
                 null
-                , null
+                , new String [] {emailTo}
                 , "Assignment requested"
                 , "An assignment for "+assignmentId+" has just been downloaded, the code was [" + code + "]"
                         + StringTools.EOL
@@ -164,11 +166,13 @@ public class AssignmentServlet extends ApplicationServlet {
         private String id;
         private List<String> allowList;
         private String description;
+        private String emailTo;
 
-        public AssignmentMetaData(String id, List<String> allowList, String description) {
+        public AssignmentMetaData(String id, List<String> allowList, String description, String emailTo) {
             this.id = id;
             this.allowList = allowList;
             this.description = description;
+            this.emailTo = emailTo;
         }
 
         public String getId() {
@@ -181,6 +185,10 @@ public class AssignmentServlet extends ApplicationServlet {
 
         public String getDescription() {
             return description;
+        }
+
+        public String getEmailTo() {
+            return emailTo;
         }
     }
 }
