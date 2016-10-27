@@ -141,11 +141,13 @@ nav ul, nav ol {
     opacity: 0.1;
     font-size: 180px;
     position: absolute;
+    line-height: 160px;
+    height: 160px;
     /* border: 4px solid pink; */
 }
 
 .ribbon {
-    top: -60px;
+
 }
 .molecule {
     text-align: right;
@@ -153,14 +155,12 @@ nav ul, nav ol {
 }
 .twist {
     width: 80%;
-    top: -113pt;
-    font-size: 220pt;
+    font-size: 160px;
     opacity: 0.05;
 }
 .flask {
     font-family: 'EBI-Functional';
     font-size: 140px;
-    top: -30px;
     text-align: right;
     width: 80%;
 }

@@ -82,7 +82,7 @@
         <xsl:param name="pExtraCode"/>
         <head>
             <meta charset="utf-8"/>
-
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
             <title>
                 <xsl:if test="$pTitleTrail"><xsl:value-of select="$pTitleTrail"/> &lt; </xsl:if>
                 <xsl:text>BioStudies &lt; EMBL-EBI</xsl:text>
@@ -95,13 +95,14 @@
             <meta name="viewport" content="width=device-width,initial-scale=1"/>
 
             <!-- Place favicon.ico and apple-touch-icon.png in the root directory: http://mathiasbynens.be/notes/touch-icons -->
-
-            <!-- CSS: implied media=all -->
-            <!-- CSS concatenated and minified via ant build script-->
-            <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/biostudies-colours.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/font-awesome.min.css" type="text/css"/>
             <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-common-1.0.150320.css" type="text/css"/>
+            <link rel="stylesheet" href="{$context-path}/assets/stylesheets/bs-study-home-1.0.151126.css" type="text/css"/>
+            <!-- CSS: implied media=all -->
+            <!-- CSS concatenated and minified via ant build script-->
+
+
             <xsl:copy-of select="$pExtraCode"/>
             <!-- end CSS-->
 
@@ -113,7 +114,25 @@
             <!-- <script src="../js/libs/modernizr.minified.2.1.6.js"></script> -->
 
             <!-- custom build (lacks most of the "advanced" HTML5 support -->
+            <script src="/assets/scripts/jquery-1.8.2.min.js"></script>
             <script src="//www.ebi.ac.uk/web_guidelines/js/libs/modernizr.custom.49274.js"/>
+
+            <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/css/foundation.css" type="text/css"/>
+            <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/css/ebi-global.css" type="text/css"/>
+            <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Icon-fonts/v1.1/fonts.css" type="text/css"/>
+            <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/css/theme-embl-petrol.css" type="text/css"/>
+
+
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/cookiebanner.js"></script>
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/foot.js"></script>
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/script.js"></script>
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/js/foundation.js"></script>
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/foundationExtendEBI.js"></script>
+            <script defer="defer" src="/assets/scripts/jquery.cookie-1.0.js"/>
+            <script defer="defer" src="/assets/scripts/jquery.caret-range-1.0.js"/>
+            <script defer="defer" src="/assets/scripts/jquery.autocomplete-1.1.0.150319.js"/>
+            <script defer="defer" src="/assets/scripts/jquery.common-1.0.150220.js"/>
+
         </head>
     </xsl:template>
 
@@ -127,7 +146,7 @@
 
         <body>   <!-- add any of your classes or IDs -->
             <xsl:attribute name="class">
-                <xsl:text>level2</xsl:text>
+                <xsl:text>level2 local-search</xsl:text>
                 <xsl:if test="$pExtraBodyClasses != ''">
                     <xsl:text> </xsl:text><xsl:value-of select="$pExtraBodyClasses"/>
                 </xsl:if>
@@ -144,121 +163,154 @@
 
             <div id="wrapper" class="container_24">
                 <header>
-                    <div id="global-masthead" class="masthead grid_24">
+                    <div data-sticky-container="">
+                    <div data-btm-anchor="300000" data-top-anchor="180" data-sticky-on="large" data-sticky="true" id="local-masthead" class="meta-background-image">
+                    <div id="global-masthead" class="clearfix">
                         <!--This has to be one line and no newline characters-->
-                        <a href="//www.ebi.ac.uk/" title="Go to the EMBL-EBI homepage"><img src="//www.ebi.ac.uk/web_guidelines/images/logos/EMBL-EBI/EMBL_EBI_Logo_white.png" alt="EMBL European Bioinformatics Institute"/></a>
-
+                        <a href="//www.ebi.ac.uk/" title="Go to the EMBL-EBI homepage"><span class="ebi-logo"></span></a>
                         <nav>
-                            <ul id="global-nav">
-                                <!-- set active class as appropriate -->
-                                <li class="first active" id="services"><a href="//www.ebi.ac.uk/services">Services</a></li>
-                                <li id="research"><a href="//www.ebi.ac.uk/research">Research</a></li>
-                                <li id="training"><a href="//www.ebi.ac.uk/training">Training</a></li>
-                                <li id="industry"><a href="//www.ebi.ac.uk/industry">Industry</a></li>
-                                <li id="about" class="last"><a href="//www.ebi.ac.uk/about">About us</a></li>
-                            </ul>
+                            <div class="row">
+                                <ul id="global-nav" class="menu">
+                                    <!-- set active class as appropriate -->
+                                    <li id="home-mobile" class=""><a href="//www.ebi.ac.uk"></a></li>
+                                    <li id="home" class="active"><a href="//www.ebi.ac.uk"><i class="icon icon-generic" data-icon="H"></i> EMBL-EBI</a></li>
+                                    <li id="services"><a href="//www.ebi.ac.uk/services"><i class="icon icon-generic" data-icon="("></i> Services</a></li>
+                                    <li id="research"><a href="//www.ebi.ac.uk/research"><i class="icon icon-generic" data-icon=")"></i> Research</a></li>
+                                    <li id="training"><a href="//www.ebi.ac.uk/training"><i class="icon icon-generic" data-icon="t"></i> Training</a></li>
+                                    <li id="about"><a href="//www.ebi.ac.uk/about"><i class="icon icon-generic" data-icon="i"></i> About us</a></li>
+                                    <li id="search">
+                                        <a href="#" data-toggle="search-global-dropdown"><i class="icon icon-functional" data-icon="1"></i> <span class="show-for-small-only">Search</span></a>
+                                        <div id="search-global-dropdown" class="dropdown-pane" data-dropdown="" data-options="closeOnClick:true;">
+                                            <form id="global-search" name="global-search" action="/ebisearch/search.ebi" method="GET">
+                                                <fieldset>
+                                                    <div class="input-group">
+                                                        <input type="text" name="query" id="global-searchbox" class="input-group-field" placeholder="Search all of EMBL-EBI"/>
+                                                        <div class="input-group-button">
+                                                            <input type="submit" name="submit" value="Search" class="button"/>
+                                                            <input type="hidden" name="db" value="allebi" checked="checked"/>
+                                                            <input type="hidden" name="requestFrom" value="global-masthead" checked="checked"/>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <li class="float-right show-for-medium embl-selector">
+                                        <button class="button" type="button" data-toggle="embl-dropdown">Hinxton</button>
+                                        <div id="embl-dropdown" class="dropdown-pane" data-dropdown="" data-options="closeOnClick:true;">
+                                            to come.
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </nav>
 
                     </div>
-                    <div id="local-masthead" class="masthead grid_24 nomenu">
-                        <!-- local-title -->
-                        <div id="local-title">
-                            <xsl:attribute name="class">logo-title<xsl:if test="$pIsSearchVisible"> grid_12 alpha</xsl:if></xsl:attribute>
+                    <!-- local-title -->
+                    <div class="masthead row">
+                        <div id="local-title" >
+                            <xsl:attribute name="class">logo-title columns medium-6<xsl:if test="$pIsSearchVisible"> grid_12 alpha</xsl:if></xsl:attribute>
                             <!-- <img class="svg" src="{$context-path}/assets/images/ae-logo-64.svg" width="64" height="64" alt="AE"/> -->
                             <a href="{$context-path}/" title="Back to BioStudies homepage"><img src="{$context-path}/assets/images/logo.png"/></a>
                         </div>
+
                         <!-- /local-title -->
                         <!-- local-search -->
                         <!-- NB: if you do not have a local-search, delete the following div, and drop the class="grid_12 alpha" class from local-title above -->
                         <xsl:if test="$pIsSearchVisible">
-                            <div class="grid_12 omega">
-                                <form id="local-search" name="local-search"  action="{$context-path}/search" method="get">
-                                    <fieldset>
-                                        <div class="left">
-                                            <label>
-                                                <input type="search" name="query" id="local-searchbox">
-                                                    <xsl:if test="$keywords != ''">
-                                                        <xsl:attribute name="value" select="$keywords"/>
-                                                    </xsl:if>
-                                                </input>
-                                            </label>
-                                            <!-- Include some example searchterms - keep them short and few! -->
-                                            <span class="examples">Examples: <a href="#">hyperplasia</a>,
-                                                <a href="#">PMC516016</a>
-                                            </span>
-                                            <xsl:if test="$project!=''">
-                                                <span class="examples project">
-                                                    <input type="checkbox" checked="true" id="search-in-project" class="do-not-clear"/>Search in <xsl:value-of select="$project"/> only
-                                                    <input type="hidden" id="project" value="{$project}" />
-                                                </span>
-                                            </xsl:if>
-                                        </div>
-                                        <div class="right nowidth">
-                                            <input type="submit" value="Search" class="submit"/>
-                                            <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search,
-                                           with whatever features you want available -->
-                                            <!--
-                                            <span class="adv"><a href="{$context-path}/help/how_to_search.html#AdvancedSearchExperiment" id="adv-search" title="Advanced">Advanced</a></span>
-                                            -->
-                                        </div>
-                                    </fieldset>
-                                    <xsl:copy-of select="$pExtraSearchFields"/>
-                                </form>
-                            </div>
+                            <div class="columns medium-6 last">
+                                    <form id="local-search" name="local-search"  action="{$context-path}/search" method="get">
+                                        <fieldset>
+                                            <div class="input-group">
+
+                                                <label>
+                                                    <input type="search" name="query" id="local-searchbox">
+                                                        <xsl:if test="$keywords != ''">
+                                                            <xsl:attribute name="value" select="$keywords"/>
+                                                        </xsl:if>
+                                                    </input>
+                                                <!-- Include some example searchterms - keep them short and few! -->
+                                                    <p class="examples">Examples: <a href="#">hyperplasia</a>,
+                                                        <a href="#">PMC516016</a>
+                                                    </p>
+                                                </label>
+                                                <xsl:if test="$project!=''">
+                                                    <p class="examples project">
+                                                        <input type="checkbox" checked="true" id="search-in-project" class="do-not-clear"/>Search in <xsl:value-of select="$project"/> only
+                                                        <input type="hidden" id="project" value="{$project}" />
+                                                    </p>
+                                                </xsl:if>
+                                                <div class="input-group-button">
+                                                    <input type="submit" value="Search" class="submit button secondary"/>
+                                                    <div class="small">
+                                                    <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search,
+                                                   with whatever features you want available -->
+                                                    <!--
+                                                    <span class="adv"><a href="{$context-path}/help/how_to_search.html#AdvancedSearchExperiment" id="adv-search" title="Advanced">Advanced</a></span>
+                                                    -->
+                                        </div></div></div>
+                                        </fieldset>
+                                        <xsl:copy-of select="$pExtraSearchFields"/>
+                                    </form>
+                             </div>
+
                         </xsl:if>
-                        <!-- /local-search -->
-                        <!-- local-nav -->
-                        <nav>
-                            <ul class="grid_24" id="local-nav">
-                                <li>
-                                    <xsl:attribute name="class">first<xsl:if test="$relative-uri = '/'"> active</xsl:if></xsl:attribute>
-                                    <a href="{$context-path}/" title="BioStudies ${project.version}.${buildNumber}">
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
-                                </li>
-                                <li>
-                                    <a target="_blank" href="{$context-path}/submissions/" title="Submit a study">Submit a study</a>
-                                </li>
-                                <li>
-                                    <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/help/index.html" title="BioStudies Help">Help</a>
-                                </li>
-                                <li class="last">
-                                    <xsl:if test="$relative-uri = '/about.html'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                    <a href="{$context-path}/about.html">About BioStudies</a>
-                                </li>
-                                <!-- If you need to include functional (as opposed to purely navigational) links in your local menu,
-                                 add them here, and give them a class of "functional". Remember: you'll need a class of "last" for
-                                 whichever one will show up last...
-                                 For example: -->
-                                <li class="functional">
-                                    <a href="#" class="icon icon-functional login" data-icon="l">
-                                        <xsl:choose>
-                                            <xsl:when test="$username">Logout [<xsl:value-of select="$username"/>]</xsl:when>
-                                            <xsl:otherwise>Login</xsl:otherwise>
-                                        </xsl:choose>
-                                    </a>
-                                </li>
-                                <li class="functional last">
-                                    <a href="#" class="icon icon-static feedback" data-icon="\">Feedback</a>
-                                </li>
-                                <!--
-                                <li class="functional"><a href="#" class="icon icon-functional" data-icon="r">Share</a></li>
-                                -->
-                            </ul>
-                        </nav>
-                        <!-- /local-nav -->
+                            <!-- /local-search -->
+                            <!-- local-nav -->
+                            <nav>
+                                    <ul class="grid_24 dropdown menu float-left columns medium-12" data-dropdown-menu="true" id="local-nav">
+                                        <li>
+                                            <xsl:attribute name="class">first<xsl:if test="$relative-uri = '/'"> active</xsl:if></xsl:attribute>
+                                            <a href="{$context-path}/" title="BioStudies ${project.version}.${buildNumber}">
+                                                Home
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+                                            <a href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" href="{$context-path}/submissions/" title="Submit a study">Submit a study</a>
+                                        </li>
+                                        <li>
+                                            <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+                                            <a href="{$context-path}/help/index.html" title="BioStudies Help">Help</a>
+                                        </li>
+                                        <li class="last">
+                                            <xsl:if test="$relative-uri = '/about.html'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+                                            <a href="{$context-path}/about.html">About BioStudies</a>
+                                        </li>
+                                        <!-- If you need to include functional (as opposed to purely navigational) links in your local menu,
+                                         add them here, and give them a class of "functional". Remember: you'll need a class of "last" for
+                                         whichever one will show up last...
+                                         For example: -->
+                                        <li class="functional float-right last">
+                                            <a href="#" class="icon icon-functional login" data-icon="l">
+                                                <xsl:choose>
+                                                    <xsl:when test="$username">Logout [<xsl:value-of select="$username"/>]</xsl:when>
+                                                    <xsl:otherwise>Login</xsl:otherwise>
+                                                </xsl:choose>
+                                            </a>
+                                        </li>
+                                        <li class="functional first float-right">
+                                            <a href="#" class="icon icon-static feedback" data-icon="\">Feedback</a>
+                                        </li>
+                                        <!--
+                                        <li class="functional"><a href="#" class="icon icon-functional" data-icon="r">Share</a></li>
+                                        -->
+                                    </ul>
+
+                            </nav>
+
+                            <!-- /local-nav -->
+                        </div>
                     </div>
                     <xsl:if test="$project">
                         <div class="project-banner clearfix">
                             <span class="project-banner-content">
                                 <div class="project-logo">
                                     <a class="no-border" href="{$project-url}" target="_blank">
-                                    <img src="{$context-path}/files/{lower-case($project)}/logo.png"/></a>
+                                        <img src="{$context-path}/files/{lower-case($project)}/logo.png"/></a>
                                 </div>
                                 <div class="project-text">
                                     <span class="project-description"><xsl:value-of select="$project-description"/></span>
@@ -266,8 +318,10 @@
                             </span>
                         </div>
                     </xsl:if>
-                </header>
-                <div id="content" role="main" class="grid_24 clearfix">
+            </div>
+            </header>
+
+                <div id="content" role="main" class="columns medium-12  clearfix row">
                     <!-- If you require a breadcrumb trail, its root should be your service.
      	                 You don't need a breadcrumb trail on the homepage of your service... -->
                     <xsl:if test="$pBreadcrumbTrail != ''">
@@ -290,27 +344,27 @@
                     <section id="ae-feedback" style="display:none">
                         <h3>Have your say<a id="ae-feedback-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
                         <form method="post" action="#" onsubmit="return false">
-                            <fieldset>
+                            <fieldset class="callout">
                                 <label for="ae-feedback-message">We value your feedback. Please leave your comment below.</label>
                                 <textarea id="ae-feedback-message" name="m"/>
                             </fieldset>
-                            <fieldset>
+                            <fieldset class="callout">
                                 <label for="ae-email-field">Optionally please enter your email address if you wish to get a response.<br/>We will never share this address with anyone else.</label>
                                 <input id="ae-email-field" name="e" maxlength="50"/>
                             </fieldset>
                             <input type="hidden" name="p" value="{$host}{$context-path}{$relative-uri}{if ($query-string) then fn:concat('?', $query-string) else ''}"/>
                             <input type="hidden" name="r" value="{$host}{$context-path}{$relative-referer}"/>
-                            <input class="submit" type="submit" value="Send"/>
+                            <input class="submit button" type="submit" value="Send"/>
                         </form>
                     </section>
                     <section id="ae-login" style="display:none">
                         <h3>BioStudies submitter/reviewer login<a id="ae-login-close" href="#" class="icon icon-functional" data-icon="x"/></h3>
                         <form id="ae-login-form" method="post" action="{$secure-host}{$context-path}/auth">
-                            <fieldset>
+                            <fieldset class="callout">
                                 <label for="ae-user-field">User name</label>
                                 <input id="ae-user-field" name="u" maxlength="50"/>
                             </fieldset>
-                            <fieldset>
+                            <fieldset class="callout">
                                 <label for="ae-pass-field">Password</label>
                                 <input id="ae-pass-field" type="password" name="p" maxlength="50"/>
                             </fieldset>
@@ -318,24 +372,28 @@
                                 <input id="ae-login-remember" name="r" type="checkbox"/>
                                 <label for="ae-login-remember">Remember me</label>
                             </span>
-                            <input class="submit" type="submit" value="Login"/>
-                            <div class="ae-login-status" style="display:none"/>
+                            <input class="submit button" type="submit" value="Login"/>
+                            <div class="ae-login-status" style="display:none">
+                            <span class="alert"></span>
+                            </div>
                             <!--div id="ae-login-forgot"><a href="#">Forgot user name or password?</a></div-->
                         </form>
                         <form id="ae-logout-form" method="post" action="{$secure-host}{$context-path}/logout">
                         </form>
                         <form id="ae-forgot-form" method="post" action="{$secure-host}{$context-path}/auth">
-                            <fieldset>
+                            <fieldset class="callout">
                                 <label for="ae-name-email-field">User name or email address</label>
                                 <input id="ae-name-email-field" name="e" maxlength="50"/>
                             </fieldset>
-                            <fieldset>
+                            <fieldset class="callout">
                                 <label for="ae-accession-field">Experiment accession associated with the account</label>
                                 <input id="ae-accession-field" name="a" maxlength="14"/>
                             </fieldset>
                             <div>We will send you a reminder with your account information</div>
-                            <div class="ae-login-status" style="display:none"/>
-                            <input class="submit" type="submit" value="Send"/>
+                            <div class="ae-login-status" style="display:none">
+                            <span class="alert"></span>
+                            </div>
+                            <input class="submit button" type="submit" value="Send"/>
                         </form>
                     </section>
                 </div>
@@ -347,36 +405,65 @@
                         </div>
                     -->
                     <!-- End optional local footer -->
-                    <div id="global-footer" class="grid_24">
-                        <nav id="global-nav-expanded">
-                            <div class="grid_4 alpha">
-                                <h3 class="embl-ebi"><a href="//www.ebi.ac.uk/" title="EMBL-EBI">EMBL-EBI</a></h3>
+                    <div id="global-footer" class="columns medium-12">
+                        <nav id="global-nav-expanded" class="row">
+                            <div class="columns small-6 medium-2">
+                                <a href="//www.ebi.ac.uk/" title="EMBL-EBI"><span class="ebi-logo"></span></a>
                             </div>
-                            <div class="grid_4">
-                                <h3 class="services"><a href="//www.ebi.ac.uk/services">Services</a></h3>
+                            <div class="columns small-6 medium-2">
+                                <h5 class="services"><a class="services-color" href="//www.ebi.ac.uk/services">Services</a></h5>
+                                <ul>
+                                    <li class="first"><a href="//www.ebi.ac.uk/services">By topic</a></li>
+                                    <li><a href="//www.ebi.ac.uk/services/all">By name (A-Z)</a></li>
+                                    <li class="last"><a href="//www.ebi.ac.uk/support">Help &amp; Support</a></li>
+                                </ul>
                             </div>
-                            <div class="grid_4">
-                                <h3 class="research"><a href="//www.ebi.ac.uk/research">Research</a></h3>
+                            <div class="columns small-6 medium-2">
+                                <h5 class="research"><a class="research-color" href="//www.ebi.ac.uk/research">Research</a></h5>
+                                <ul>
+                                    <li><a href="//www.ebi.ac.uk/research/publications">Publications</a></li>
+                                    <li><a href="//www.ebi.ac.uk/research/groups">Research groups</a></li>
+                                    <li class="last"><a href="//www.ebi.ac.uk/research/postdocs">Postdocs</a> &amp; <a href="//www.ebi.ac.uk/research/eipp">PhDs</a></li>
+                                </ul>
                             </div>
-                            <div class="grid_4">
-                                <h3 class="training"><a href="//www.ebi.ac.uk/training">Training</a></h3>
+                            <div class="columns small-6 medium-2">
+                                <h5 class="training"><a class="training-color" href="//www.ebi.ac.uk/training">Training</a></h5>
+                                <ul>
+                                    <li><a href="//www.ebi.ac.uk/training/handson">Train at EBI</a></li>
+                                    <li><a href="//www.ebi.ac.uk/training/roadshow">Train outside EBI</a></li>
+                                    <li><a href="//www.ebi.ac.uk/training/online">Train online</a></li>
+                                    <li class="last"><a href="//www.ebi.ac.uk/training/contact-us">Contact organisers</a></li>
+                                </ul>
                             </div>
-                            <div class="grid_4">
-                                <h3 class="industry"><a href="//www.ebi.ac.uk/industry">Industry</a></h3>
+                            <div class="columns small-6 medium-2">
+                                <h5 class="industry"><a class="industry-color" href="//www.ebi.ac.uk/industry">Industry</a></h5>
+                                <ul>
+                                    <li><a href="//www.ebi.ac.uk/industry/private">Members Area</a></li>
+                                    <li><a href="//www.ebi.ac.uk/industry/workshops">Workshops</a></li>
+                                    <li><a href="//www.ebi.ac.uk/industry/sme-forum"><abbr title="Small Medium Enterprise">SME</abbr> Forum</a></li>
+                                    <li class="last"><a href="//www.ebi.ac.uk/industry/contact">Contact Industry programme</a></li>
+                                </ul>
                             </div>
-                            <div class="grid_4 omega">
-                                <h3 class="about"><a href="//www.ebi.ac.uk/about">About us</a></h3>
+                            <div class="columns small-6 medium-2">
+                                <h5 class="about"><a class="ebi-color" href="//www.ebi.ac.uk/about">About EMBL-EBI</a></h5>
+                                <ul>
+                                    <li><a href="//www.ebi.ac.uk/about/leadership">Leadership</a></li>
+                                    <li><a href="//www.ebi.ac.uk/about/funding">Funding</a></li>
+                                    <li><a href="//www.ebi.ac.uk/about/jobs" title="Jobs, postdocs, PhDs...">Jobs</a></li>
+                                    <li><a href="//www.ebi.ac.uk/about/people">People &amp; groups</a></li>
+                                    <li><a href="//www.ebi.ac.uk/about/travel">Visit us</a></li>
+                                </ul>
                             </div>
                         </nav>
-                        <section id="ebi-footer-meta">
+                        <section id="ebi-footer-meta" class="row">
                             <p class="address">EMBL-EBI, Wellcome Trust Genome Campus, Hinxton, Cambridgeshire, CB10 1SD, UK &#160; &#160; +44 (0)1223 49 44 44</p>
                             <p class="legal">Copyright &#169; EMBL-EBI 2015 | EBI is an Outstation of the
                                 <a href="http://www.embl.org">European Molecular Biology Laboratory</a>
                                 |
-                                <a href="/about/privacy">Privacy</a>
-                                |
-                                <a href="/about/cookies">Cookies</a>
-                                |
+                                <!--<a href="/about/privacy">Privacy</a>-->
+                                <!--|-->
+                                <!--<a href="/about/cookies">Cookies</a>-->
+                                <!--|-->
                                 <a href="/about/terms-of-use">Terms of use</a>
                             </p>
                         </section>
@@ -384,17 +471,15 @@
                 </footer>
             </div>  <!--! end of #wrapper -->
 
-            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
-            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/foot.js"/>
+            <script defer="defer" src="http://www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
+            <!--script defer="defer" src="http://www.ebi.ac.uk/web_guidelines/js/foot.js"/ -->
             <script><![CDATA[var contextPath = "]]><xsl:value-of select="$context-path"/><![CDATA[";]]>
             </script>
-            <script src="{$context-path}/assets/scripts/jquery-1.8.2.min.js"/>
-            <script src="{$context-path}/assets/scripts/jquery.cookie-1.0.js"/>
-            <script src="{$context-path}/assets/scripts/jquery.caret-range-1.0.js"/>
-            <script src="{$context-path}/assets/scripts/jquery.autocomplete-1.1.0.150319.js"/>
-            <script src="{$context-path}/assets/scripts/jquery.common-1.0.150220.js"/>
+
+
             <xsl:copy-of select="$pExtraCode"/>
             ${interface.application.google.analytics}
+            <div class="floating-panel"></div>
         </body>
     </xsl:template>
 
@@ -418,7 +503,7 @@
         <xsl:param name="pQueryString" as="xs:string"/>
         <xsl:param name="pParamName" as="xs:string"/>
         <xsl:param name="pParamValue" as="xs:string"/>
-        
+
         <xsl:choose>
             <xsl:when test="fn:matches($pQueryString, fn:concat('(^|&amp;)', $pParamName, '='))">
                 <xsl:value-of select="fn:replace($pQueryString, fn:concat('(^|&amp;)(', $pParamName, '=)([^&amp;]+)'), fn:concat('$1$2', $pParamValue))"/>
@@ -431,7 +516,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-    
+
     <xsl:template name="table-page-size">
         <xsl:param name="pCurrentPageSize" as="xs:integer"/>
         <xsl:param name="pTotal" as="xs:integer"/>

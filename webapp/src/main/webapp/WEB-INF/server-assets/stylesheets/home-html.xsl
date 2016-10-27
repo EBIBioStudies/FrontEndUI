@@ -36,7 +36,7 @@
             <xsl:with-param name="pBreadcrumbTrail"/>
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS">
-                <script src="{$context-path}/assets/scripts/jquery.bs-studies-home-1.0.151127.js" type="text/javascript"/>
+                <script src="/assets/scripts/jquery.bs-studies-home-1.0.151127.js" type="text/javascript"/>
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses"/>
             <xsl:with-param name="pExtraCSS">
@@ -54,7 +54,7 @@
         <xsl:variable name="vFiles" select="search:queryIndex('files', 'userid:1 (kind:raw OR kind:processed)')"/>
         <xsl:variable name="vNews" select="doc('news.xml')"/>
         -->
-        <section class="alpha intro grid_24" id="primary">
+        <section class="alpha intro  columns medium-12" id="primary">
             <div id="bs-title-header">
                 <div class="ribbon">s</div>
                 <div class="twist">d</div>
@@ -71,15 +71,16 @@
                 to it from the publication.
             </p>
         </section>
-        <div class="grid_24 intro" id="secondary">
+        <div class="columns medium-12  intro" id="secondary">
             <xsl:if test="$vTotal>0">
             <h2><a href="{$context-path}/studies/" title="Browse BioStudies"><span class="icon icon-functional home-icon" data-icon="1">
                 Browse</span>
             </a></h2>
             </xsl:if>
         </div>
-        <div class="grid_24" id="tertiary">
-            <div class="grid_6" id="stats">
+        <div class="columns medium-12" id="tertiary">
+        <div class="row">
+            <div class="columns medium-3" id="stats">
                 <xsl:if test="$vTotal>0">
                 <h5>
                     <a href="{$context-path}/studies/" title="Browse BioStudies">
@@ -101,7 +102,7 @@
                     </a>
                 </h5>
             </div>
-            <div class="grid_18 alpha" id="latest">
+            <div class="columns medium-9" id="latest" style="display: block;">
                 <h5>
                     <a href="#" title="Latest studies">
                         <span class="icon icon-functional home-icon-small" id="latestIcon" data-icon="n" />Latest</a>
@@ -110,7 +111,7 @@
 
                 </ul>
             </div>
-
+        </div>
         </div>
     </xsl:template>
 </xsl:stylesheet>
