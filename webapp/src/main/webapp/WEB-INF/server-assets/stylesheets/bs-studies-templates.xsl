@@ -993,7 +993,9 @@
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/chebi/searchId.do?chebiId=', fn:replace($pId, '[:]', '%3A'))"/>
             </xsl:when>
             <xsl:when test="$type = 'ega'">
-                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ega/studies/', $pId)"/>
+                <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/ega/',
+                    if (fn:starts-with(fn:upper-case($pId),'EGAS')) then 'studies' else 'datasets'
+                    ,'/', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'biostudies'">
                 <xsl:value-of select="fn:concat('https://www.ebi.ac.uk/biostudies/studies/', $pId)"/>
