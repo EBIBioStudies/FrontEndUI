@@ -78,7 +78,7 @@ public class Users extends ApplicationComponent {
                                     , passwordHash
                                     , getPreferences().getString("bs.users.authentication-url")  );
         String [] lines = response.split("\n");
-        if (lines.length<3 || !"Status: OK".equalsIgnoreCase(lines[0])) {
+        if (lines.length<4 || !"Status: OK".equalsIgnoreCase(lines[0])) {
             return null;
         }
 
@@ -90,6 +90,7 @@ public class Users extends ApplicationComponent {
         allowSet.removeAll(denySet);
         user.setAllow(allowSet.toArray(new String[allowSet.size()]));
         user.setDeny(denySet.toArray(new String[denySet.size()]));
+        user.setSuperUser(StringUtils.split(lines[3], ':')[1].trim().toLowerCase().equals("true"));
         passwordCache.put(username, user);
         return user;
     }

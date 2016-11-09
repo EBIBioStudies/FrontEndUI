@@ -22,6 +22,7 @@ public class User {
     protected String hashedPassword;
     protected String[] allow;
     protected String[] deny;
+    protected boolean superUser;
 
     public String getUsername() {
         return username;
@@ -55,5 +56,7 @@ public class User {
         this.deny = deny;
     }
 
+    public boolean isSuperUser() { return superUser; }
 
+    public void setSuperUser(boolean superUser) { this.superUser = superUser; }
 }

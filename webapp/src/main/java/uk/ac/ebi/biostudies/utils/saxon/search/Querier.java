@@ -305,8 +305,10 @@ public class Querier {
             Map<String, String[]> querySource = new HashMap<>();
             querySource.put("accession", new String[]{accession});
             if (user!=null) {
-                querySource.put(AccessType.ALLOW, user.getAllow());
-                querySource.put(AccessType.DENY, user.getDeny());
+                if (!user.isSuperUser()) {
+                    querySource.put(AccessType.ALLOW, user.getAllow());
+                    querySource.put(AccessType.DENY, user.getDeny());
+                }
             } else {
                 querySource.put(AccessType.ALLOW, AccessType.PUBLIC_ACCESS);
             }

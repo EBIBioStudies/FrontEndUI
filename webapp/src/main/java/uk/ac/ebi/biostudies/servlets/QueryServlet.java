@@ -158,7 +158,9 @@ public class QueryServlet extends AuthAwareApplicationServlet {
         HttpServletRequestParameterMap params = new HttpServletRequestParameterMap(request);
 
         // to make sure nobody sneaks in the other value w/o proper authentication
-        if (authenticatedUser!=null) {
+        if (authenticatedUser!=null && authenticatedUser.isSuperUser()) {
+            params.put("username", authenticatedUser.getUsername());
+        } else if (authenticatedUser!=null) {
             params.put("username", authenticatedUser.getUsername());
             params.put(AccessType.ALLOW, authenticatedUser.getAllow());
             params.put(AccessType.DENY, authenticatedUser.getDeny());
