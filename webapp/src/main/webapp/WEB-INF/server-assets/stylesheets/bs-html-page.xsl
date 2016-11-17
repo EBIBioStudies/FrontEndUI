@@ -120,7 +120,7 @@
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/css/foundation.css" type="text/css"/>
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/css/ebi-global.css" type="text/css"/>
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Icon-fonts/v1.1/fonts.css" type="text/css"/>
-            <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/css/theme-embl-petrol.css" type="text/css"/>
+            <!--<link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/css/theme-embl-petrol.css" type="text/css"/>-->
 
 
             <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/cookiebanner.js"></script>
@@ -235,7 +235,7 @@
                                                     </p>
                                                 </label>
                                                 <xsl:if test="$project!=''">
-                                                    <p class="examples project">
+                                                    <p class="projectcheck">
                                                         <input type="checkbox" checked="true" id="search-in-project" class="do-not-clear"/>Search in <xsl:value-of select="$project"/> only
                                                         <input type="hidden" id="project" value="{$project}" />
                                                     </p>
@@ -261,39 +261,39 @@
                                     <ul class="grid_24 dropdown menu float-left columns medium-12" data-dropdown-menu="true" id="local-nav">
                                         <li>
                                             <xsl:attribute name="class">first<xsl:if test="$relative-uri = '/'"> active</xsl:if></xsl:attribute>
-                                            <a href="{$context-path}/" title="BioStudies ${project.version}.${buildNumber}">
+                                            <a class="inner" href="{$context-path}/" title="BioStudies ${project.version}.${buildNumber}">
                                                 Home
                                             </a>
                                         </li>
                                         <li>
                                             <xsl:if test="fn:starts-with($relative-uri, '/studies/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                            <a href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
+                                            <a class="inner" href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
                                         </li>
                                         <li>
-                                            <a target="_blank" href="{$context-path}/submissions/" title="Submit a study">Submit a study</a>
+                                            <a class="inner" target="_blank" href="{$context-path}/submissions/" title="Submit a study">Submit a study</a>
                                         </li>
                                         <li>
                                             <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                            <a href="{$context-path}/help/index.html" title="BioStudies Help">Help</a>
+                                            <a class="inner" href="{$context-path}/help/index.html" title="BioStudies Help">Help</a>
                                         </li>
                                         <li class="last">
                                             <xsl:if test="$relative-uri = '/about.html'"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-                                            <a href="{$context-path}/about.html">About BioStudies</a>
+                                            <a class="inner" href="{$context-path}/about.html">About BioStudies</a>
                                         </li>
                                         <!-- If you need to include functional (as opposed to purely navigational) links in your local menu,
                                          add them here, and give them a class of "functional". Remember: you'll need a class of "last" for
                                          whichever one will show up last...
                                          For example: -->
                                         <li class="functional float-right last">
-                                            <a href="#" class="icon icon-functional login" data-icon="l">
+                                            <a  href="#" class="inner icon icon-functional login" data-icon="l">
                                                 <xsl:choose>
                                                     <xsl:when test="$username">Logout [<xsl:value-of select="$username"/>]</xsl:when>
                                                     <xsl:otherwise>Login</xsl:otherwise>
                                                 </xsl:choose>
                                             </a>
                                         </li>
-                                        <li class="functional first float-right">
-                                            <a href="#" class="icon icon-static feedback" data-icon="\">Feedback</a>
+                                        <li class="inner functional first float-right">
+                                            <a  href="#" class="icon icon-static feedback" data-icon="\">Feedback</a>
                                         </li>
                                         <!--
                                         <li class="functional"><a href="#" class="icon icon-functional" data-icon="r">Share</a></li>

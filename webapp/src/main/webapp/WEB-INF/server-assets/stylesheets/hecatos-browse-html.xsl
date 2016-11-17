@@ -205,7 +205,7 @@
         </section>
         <aside class="grid_6 omega shortcuts" id="search-extras">
             <div id="ebi_search_results">
-                <h3>More data from EMBL-EBI</h3>
+                <h5>More data from EMBL-EBI</h5>
             </div>
         </aside>
 
@@ -222,7 +222,7 @@
         </section>
         <aside class="grid_6 omega shortcuts" id="search-extras">
             <div id="ebi_search_results">
-                <h3>More data from EMBL-EBI</h3>
+                <h5>More data from EMBL-EBI</h5>
             </div>
         </aside>
     </xsl:template>
