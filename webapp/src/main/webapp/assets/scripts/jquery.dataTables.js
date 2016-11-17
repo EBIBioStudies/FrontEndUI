@@ -4172,7 +4172,7 @@
 		var language = settings.oLanguage;
 		var previousSearch = settings.oPreviousSearch;
 		var features = settings.aanFeatures;
-		var input = '<input type="search" class="'+classes.sFilterInput+'"/>';
+		var input = '<input id="biostdinp" type="search" class="'+classes.sFilterInput+'"/>';
 	
 		var str = language.sSearch;
 		str = str.match(/_INPUT_/) ?
@@ -4183,7 +4183,7 @@
 				'id': ! features.f ? tableId+'_filter' : null,
 				'class': classes.sFilter
 			} )
-			.append( $('<label/>' ).append( str ) );
+			.append( $('<label class="filterlabel"/>' ).append( str ) );
 	
 		var searchFn = function() {
 			/* Update all other filter input elements for the new display */
@@ -4802,16 +4802,17 @@
 			language = d2 ? menu[1] : menu;
 	
 		var select = $('<select/>', {
-			'name':          tableId+'_length',
+			'name':           tableId+'_length',
 			'aria-controls': tableId,
-			'class':         classes.sLengthSelect
+			'class':         'bioinfselectclass'
+			// 'id': 	 		'bioinfselectid'
 		} );
 	
 		for ( var i=0, ien=lengths.length ; i<ien ; i++ ) {
 			select[0][ i ] = new Option( language[i], lengths[i] );
 		}
 	
-		var div = $('<div><label/></div>').addClass( classes.sLength );
+		var div = $('<div><label class="inplabel"/></div>').addClass( classes.sLength );
 		if ( ! settings.aanFeatures.l ) {
 			div[0].id = tableId+'_length';
 		}
@@ -14352,10 +14353,10 @@
 	
 		/* Features */
 		"sWrapper": "dataTables_wrapper",
-		"sFilter": "dataTables_filter",
+		"sFilter": "biodivfilter2", //dataTables_filter
 		"sInfo": "dataTables_info",
 		"sPaging": "dataTables_paginate paging_", /* Note that the type is postfixed */
-		"sLength": "dataTables_length",
+		"sLength": "biodivfilter1",//dataTables_length
 		"sProcessing": "dataTables_processing",
 	
 		/* Sorting */
@@ -14368,7 +14369,7 @@
 		"sSortColumn": "sorting_", /* Note that an int is postfixed for the sorting order */
 	
 		/* Filtering */
-		"sFilterInput": "",
+		"sFilterInput": "bioinpclass",
 	
 		/* Page length */
 		"sLengthSelect": "",

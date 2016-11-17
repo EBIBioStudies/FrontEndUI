@@ -22,28 +22,58 @@
     your custom colour palette in a consistent manner */
 
 /* Links */
+/*
+    #####  Color Palette by Color Scheme Designer
+    #####  Palette URL: http://colorschemedesigner.com/[custom URL]
+    #####  Color Space: RGB;
+    *** Primary Color: 75C8EC	6E9DB1	267799	99D9F6	B1E1F6*/
+:root {
+    --P1 : #75C8EC;
+    --P2 : #6E9DB1;
+    --P3 : #267799;
+    --P4 : #99D9F6;
+    --P5 : #B1E1F6;
+    /*** Secondary Color A: 8190EF	757EB3	2A3A9B	A2AEF7	B8C1F7*/
+    --A1 : #8190EF;
+    --A2 : #757EB3;
+    --A3 : #2A3A9B;
+    --A4 : #A2AEF7;
+    --A5 : #B8C1F7;
+    /*** Secondary Color B: 72F1A5	6DB48A	259C55	96F8BD	B0F8CD*/
+    --B1 : #72F1A5;
+    --B2 : #6DB48A;
+    --B3 : #259C55;
+    --B4 : #96F8BD;
+    --B5 : #B0F8CD;
+        /*** Complementary Color: FFBF78	BF9C73	A66A27	FFCF9A	FFDCB5*/
+    --C1 : #FFBF78;
+    --C2 : #BF9C73;
+    --C3 : #A66A27;
+    --C4 : #FFCF9A;
+    --C5 : #FFDCB5;
+}
+
 a:link,
 a:visited {
-    color: ${color.a3};
-    border-bottom-color: ${color.a1};
+    color: var(--A3);
+    border-bottom-color: var(--A1);
 }
 
 a:hover,
 a:focus,
 a:active {
-    color: ${color.b3};
-    border-bottom: 1px solid ${color.b1};
+    color: var(--B3);
 }
 
 a.special:hover,
 a.special:focus,
 a.special:active {
-    color: ${color.p1};
-    border-bottom: 3px double ${color.p1};
+    color: var(--P1);
+    border-bottom: 3px double var(--P1);
 }
 
 a.special {
-    background-color: ${color.b5};
+    background-color: var(--B5);
 }
 
 /* Headings */
@@ -52,11 +82,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    color: ${color.p1};
+    color: var(--P1);
 }
 
 h2 {
-    color: ${color.c2};
+    color: var(--C2);
 }
 
 h1 a:link,
@@ -71,43 +101,45 @@ h3 a:visited,
 h4 a:visited,
 h5 a:visited,
 h6 a:visited {
-    border-bottom-color: ${color.p1};
+    border-bottom-color: var(--P1);
+    border-bottom-width: 0px;
+    border-bottom-style: none;
 }
 
 /* Table heading cells */
 th {
-    background-color: ${color.b1};
+    background-color: var(--B1);
 }
 
 /* Form submission button */
 form input.submit {
     /* colours */
     color: #fff;
-    text-shadow: ${color.p3} 1px 1px;
-    border-top: 1px solid ${color.p5};
-    border-left: 1px solid ${color.p5};
-    border-right: 1px solid ${color.p3};
-    border-bottom: 1px solid ${color.p3};
+    text-shadow: var(--P3) 1px 1px;
+    border-top: 1px solid var(--P5);
+    border-left: 1px solid var(--P5);
+    border-right: 1px solid var(--P3);
+    border-bottom: 1px solid var(--P3);
 
-    background-image: -moz-linear-gradient(top, ${color.p1}, ${color.p2});
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ccc), color-stop(1, ${color.p2}));
-    background-image: -webkit-linear-gradient(${color.p1}, ${color.p2});
-    background-image: linear-gradient(top, ${color.p1}, ${color.p2});
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='${color.p1}', EndColorStr='${color.p2}');
+    background-image: -moz-linear-gradient(top, var(--P1), var(--P2));
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ccc), color-stop(1, var(--P2)));
+    background-image: -webkit-linear-gradient(var(--P1), var(--P2));
+    background-image: linear-gradient(top, var(--P1), var(--P2));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='var(--P1)', EndColorStr='var(--P2)');
 }
 
 /* Define the basic colour your local masthead */
 div#local-masthead {
-    background-color: white;
+    background-color: var(--P5);
 }
-form#local-search fieldset {
-    background-color: #F7F7F7;
-    border: 1px solid #CCCCCC;
-}
+/*form#local-search fieldset {*/
+    /*background-color: #F7F7F7;*/
+    /*border: 1px solid #CCCCCC;*/
+/*}*/
 
 /* Colour the faux-underline for local menu items */
-div#local-masthead ul li ,
-div#local-masthead ul li a:focus,
-div#local-masthead ul li a:active {
-    border-bottom: 3px solid ${color.p1};
-}
+/*div#local-masthead ul li ,*/
+/*div#local-masthead ul li a:focus,*/
+/*div#local-masthead ul li a:active {*/
+    /*border-bottom: 3px solid var(--P1);*/
+/*}*/

@@ -18,6 +18,33 @@ nav ul, nav ol {
     z-index: 1;
 }
 
+#local-masthead p.examples{
+    /*color:#000;*/
+    float:left;
+}
+
+.input-group{
+    position:relative;
+}
+
+div.input-group{
+    /*margin: 0;*/
+}
+
+#local-masthead p.projectcheck{
+    /*color:#000;*/
+    position: absolute;
+    margin: 0;
+    right:0px;
+    font-size:14px;
+    font-family: "Helvetica Neue,Helvetica,Roboto,Arial,sans-serif" ;
+}
+
+#local-masthead p a{
+    /*color:#000;*/
+}
+
+
 #logo-icon {
     height: 55px;
     vertical-align: bottom;
@@ -87,9 +114,9 @@ nav ul, nav ol {
     line-height: 36px;
     color: #555;
 }
-#stats h5 a, #latest h5 a{
-    display: flex;
-}
+/*#stats h5 a, #latest h5 a{*/
+    /*display: flex;*/
+/*}*/
 
 #latestList li:before {
     /* content: "\25AA"; */
