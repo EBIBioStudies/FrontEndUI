@@ -25,6 +25,9 @@
   line-height: 0.75em;
   vertical-align: -15%;
 }
+.icon{
+  margin-right: 6px;
+}
 .fa-2x {
   font-size: 2em;
 }
