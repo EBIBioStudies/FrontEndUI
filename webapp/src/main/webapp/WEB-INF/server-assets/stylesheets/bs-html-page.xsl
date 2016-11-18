@@ -114,7 +114,7 @@
             <!-- <script src="../js/libs/modernizr.minified.2.1.6.js"></script> -->
 
             <!-- custom build (lacks most of the "advanced" HTML5 support -->
-            <script src="/assets/scripts/jquery-1.8.2.min.js"></script>
+            <script src="{$context-path}/assets/scripts/jquery-1.8.2.min.js"></script>
             <script src="//www.ebi.ac.uk/web_guidelines/js/libs/modernizr.custom.49274.js"/>
 
             <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/css/foundation.css" type="text/css"/>

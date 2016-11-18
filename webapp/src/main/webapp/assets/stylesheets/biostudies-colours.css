@@ -130,7 +130,7 @@ form input.submit {
 
 /* Define the basic colour your local masthead */
 div#local-masthead {
-    background-color: var(--P5);
+    background-color: var(--P1);
 }
 /*form#local-search fieldset {*/
     /*background-color: #F7F7F7;*/
