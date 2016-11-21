@@ -128,10 +128,10 @@
             <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/script.js"></script>
             <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/js/foundation.js"></script>
             <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/js/foundationExtendEBI.js"></script>
-            <script defer="defer" src="/assets/scripts/jquery.cookie-1.0.js"/>
-            <script defer="defer" src="/assets/scripts/jquery.caret-range-1.0.js"/>
-            <script defer="defer" src="/assets/scripts/jquery.autocomplete-1.1.0.150319.js"/>
-            <script defer="defer" src="/assets/scripts/jquery.common-1.0.150220.js"/>
+            <script defer="defer" src="{$context-path}/assets/scripts/jquery.cookie-1.0.js"/>
+            <script defer="defer" src="{$context-path}/assets/scripts/jquery.caret-range-1.0.js"/>
+            <script defer="defer" src="{$context-path}/assets/scripts/jquery.autocomplete-1.1.0.150319.js"/>
+            <script defer="defer" src="{$context-path}/assets/scripts/jquery.common-1.0.150220.js"/>
 
         </head>
     </xsl:template>
