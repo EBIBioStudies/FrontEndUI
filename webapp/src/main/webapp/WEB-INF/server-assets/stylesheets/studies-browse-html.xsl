@@ -99,7 +99,7 @@
                 <xsl:if test="$vSearchMode">
                     <aside class="grid_6 omega shortcuts expander" id="search-extras">
                         <div id="ebi_search_results">
-                            <h5 class="slideToggle icon icon-functional" data-icon="u">Show more data from EMBL-EBI</h5>
+                            <h3 class="slideToggle icon icon-functional" data-icon="u">Show more data from EMBL-EBI</h3>
                         </div>
                     </aside>
                 </xsl:if>
