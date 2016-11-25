@@ -123,6 +123,8 @@ h3.slideToggle.icon.icon-functional{
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background: #ededed;
+    position: relative;
+    z-index: 999;
 }
 #ebi_search_results h3{
     cursor: pointer;
