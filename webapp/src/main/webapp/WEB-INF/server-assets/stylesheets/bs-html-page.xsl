@@ -471,7 +471,7 @@
                 </footer>
             </div>  <!--! end of #wrapper -->
 
-            <script defer="defer" src="http://www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
             <!--script defer="defer" src="http://www.ebi.ac.uk/web_guidelines/js/foot.js"/ -->
             <script><![CDATA[var contextPath = "]]><xsl:value-of select="$context-path"/><![CDATA[";]]>
             </script>

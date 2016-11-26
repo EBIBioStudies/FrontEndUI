@@ -100,7 +100,11 @@ div.input-group{
     background: #FFEBD5;
 }
 
-#tagline {display: inline-block;/* padding: 8px 8px; */color: #FFFFFF;text-shadow: 1px 1px 5px #466B7D;margin: auto;/* border: 1px solid blue; *//* height: 100%; *//* position: absolute; */display: block;/* margin: auto; */}
+#tagline {
+    display: inline-block;
+    color: #58585a;
+    margin: auto;
+}
 
 #secondary {
     padding-bottom:36px;
@@ -151,7 +155,6 @@ div.input-group{
 }
 
 #bs-title-header {
-    background-color: #0378BB;
     position: relative;
     min-height: 160px;
     text-align: center;
@@ -164,8 +167,8 @@ div.input-group{
 
 .ribbon, .molecule, .twist, .flask {
     font-family: 'EBI-Conceptual';
-    color: #FFFFFF;
-    opacity: 0.1;
+    color: #75c8ec;
+    opacity: 0.2;
     font-size: 180px;
     position: absolute;
     line-height: 160px;
@@ -183,13 +186,16 @@ div.input-group{
 .twist {
     width: 80%;
     font-size: 160px;
-    opacity: 0.05;
+    opacity: 0.1;
+    color: #ee1c25;
 }
 .flask {
     font-family: 'EBI-Functional';
     font-size: 140px;
     text-align: right;
     width: 80%;
+    color: #58585a;
+    opacity: 0.1;
 }
 
 #stats {
