@@ -62,14 +62,14 @@
     background-color: rgb(226,237,243);
     color: #555;
     border-radius: 3px;
-    border-color: #6BA8C5;
+    border-color: var(--P3);
     width: 150px;
 }
 
 a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
     padding: 11px 12px;
-    border: 1px solid #6BA8C5 !important;
-    color: #6BA8C5 !important;
+    border: 1px solid var(--P3) !important;
+    color: var(--P3) !important;
 }
 
 .studies-browse-sort-order-left{
@@ -82,7 +82,7 @@ a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
     border-radius: 0px 3px 3px 0px;
 }
 .studies-browse-sort-order-left[disabled],.studies-browse-sort-order-right[disabled]{
-    background-color: #6BA8C5;
+    background-color: var(--P3);
     color:white !important;
 }
 
@@ -111,7 +111,7 @@ a.studies-browse-sort-order-left, a.studies-browse-sort-order-right{
 
 .message .fa {
     font-size: 12pt;
-    color: #6BA8C5;
+    color: var(--P3);
     vertical-align: middle;
 }
 
