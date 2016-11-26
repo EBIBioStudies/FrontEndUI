@@ -981,3 +981,8 @@ div#local-masthead ul {
 .menu > li > a.inner {
     display: flex;
 }
+
+select {
+    -moz-appearance:none;
+    -webkit-appearance:none;
+}
