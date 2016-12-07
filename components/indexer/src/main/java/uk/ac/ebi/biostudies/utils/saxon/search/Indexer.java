@@ -28,6 +28,7 @@ import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
+import org.apache.lucene.facet.FacetField;
 import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
@@ -111,7 +112,10 @@ public class Indexer {
                                 logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
                             } else if ("boolean".equals(field.type)) {
                                 addBooleanIndexField(d, field.name, v);
-                            } else {
+                            } else if(!v.getStringValue().isEmpty() && "facet".equalsIgnoreCase(field.type)) {
+                                addFacetField(d, v, field.name);
+                            }
+                            else {
                                 addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
                                 if (!"none".equalsIgnoreCase(field.docValueType)) {
                                     String value = v.getStringValue().toLowerCase();
@@ -132,7 +136,9 @@ public class Indexer {
                 addDocIdField(d, idValue);
                 //logger.debug("Indexing document {} = {}", env.idField, idValue);
                 try {
-                    w.updateDocument(new Term("id", idValue), d);
+                    Document facetedDocument = FacetManager.FACET_CONFIG.build(FacetManager.getTaxonomyWriter() ,d);
+                    w.addDocument(facetedDocument);
+//                    w.updateDocument(new Term("id", idValue), facetedDocument);
                 } catch (Exception e) {
                     logger.error(" Error indexing " +d);
                     logger.error(e.getMessage());
@@ -148,6 +154,10 @@ public class Indexer {
         } catch (IOException | XPathException x) {
             throw new IndexerException(x);
         }
+    }
+
+    private void addFacetField(Document d, Item value, String name){
+        d.add(new FacetField(name, value.getStringValue().trim().toLowerCase()));
     }
 
     private void addXMLField(Document d, Item node) throws IndexerException {

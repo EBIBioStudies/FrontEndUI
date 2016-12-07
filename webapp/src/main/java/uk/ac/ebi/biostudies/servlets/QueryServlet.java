@@ -114,8 +114,9 @@ public class QueryServlet extends AuthAwareApplicationServlet {
         try (PrintWriter out = response.getWriter()) {
             String stylesheetName = ("-".equals(index) ? "" : index + "-")
                     + stylesheet + "-" + outputType + ".xsl";
-
             HttpServletRequestParameterMap params = getParameterMap(request, authenticatedUser);
+            if(stylesheetName.toLowerCase().contains("hecatos") || params.containsKey("facets"))
+                params.put("chkfacets", "");
             try {
                 SearchEngine search = getComponent(SearchEngine.class);
                 SaxonEngine saxonEngine = getComponent(SaxonEngine.class);

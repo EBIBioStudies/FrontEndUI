@@ -25,6 +25,7 @@ import uk.ac.ebi.biostudies.app.ApplicationComponent;
 import uk.ac.ebi.biostudies.utils.saxon.Document;
 import uk.ac.ebi.biostudies.utils.saxon.SaxonException;
 import uk.ac.ebi.biostudies.utils.saxon.StoredDocument;
+import uk.ac.ebi.biostudies.utils.saxon.search.FacetManager;
 import uk.ac.ebi.biostudies.utils.saxon.search.Indexer;
 import uk.ac.ebi.biostudies.utils.saxon.search.IndexerException;
 import uk.ac.ebi.biostudies.utils.saxon.search.Querier;
@@ -238,6 +239,7 @@ public class Studies extends ApplicationComponent  {
         if (deleteFileAfterProcessing) {
             xmlFile.delete();
         }
+        FacetManager.closeTaxonomy();
     }
 
     private void processSubmissionQueue(Indexer indexer, List<Source> submissions, boolean commit) throws XPathException, IndexerException, InterruptedException, IOException, SaxonException {

@@ -26,6 +26,7 @@
                 version="2.0">
 
     <xsl:param name="page"/>
+    <xsl:param name="vFacetData"/>
     <xsl:param name="pagesize"/>
     <xsl:param name="sortby"/>
     <xsl:param name="sortorder"/>
@@ -35,6 +36,8 @@
     <xsl:include href="bs-html-page.xsl"/>
     <xsl:include href="bs-sort-studies.xsl"/>
     <xsl:include href="bs-studies-templates.xsl"/>
+    <!--<xsl:include href="bs-highlight.xsl"/>-->
+
 
     <xsl:variable name="vSearchMode" select="$keywords != ''"/>
     <xsl:variable name="vQueryString" select="if ($query-string!='') then fn:concat('?', $query-string) else ''"/>
@@ -57,10 +60,11 @@
             <xsl:with-param name="pBreadcrumbTrail"/>
             <!-- <xsl:if test="$vTotal > 0"><xsl:value-of select="$vTitle"/></xsl:if></xsl:with-param> -->
             <xsl:with-param name="pExtraJS">
-                <script src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js" type="text/javascript"/>
-                <script src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js" type="text/javascript"/>
-                <script src="{$context-path}/assets/scripts/jquery.query-2.1.7m-ebi.js" type="text/javascript"/>
-                <script src="{$context-path}/assets/scripts/jquery.bs-studies-browse-1.0.150220.js" type="text/javascript"/>
+                <script  defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js" type="text/javascript"/>
+                <script  defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js" type="text/javascript"/>
+                <script  defer="defer" src="{$context-path}/assets/scripts/jquery.query-2.1.7m-ebi.js" type="text/javascript"/>
+                <script  defer="defer" src="{$context-path}/assets/scripts/jquery.bs-studies-browse-1.0.150220.js" type="text/javascript"/>
+                <script defer="defer" src="{$context-path}/assets/scripts/facetfiller-1.0.0.js"></script>
             </xsl:with-param>
             <xsl:with-param name="pExtraBodyClasses" select="if ($vTotal = 0) then 'noresults' else ''"/>
         </xsl:call-template>
@@ -86,27 +90,99 @@
                     <div id="ae-content">
                         <div id="ae-browse">
                             <div class="persist-area">
-                                <div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+                <section class="grid_24 alpha omega browser">
+                    <div id="ae-content">
+                        <div id="ae-browse">
+                            <div class="persist-area hecatos-persist-area">
+                                <div class="persist-header" border="0" cellpadding="0" cellspacing="0">
+                                    <xsl:call-template name="table-pager">
+                                        <xsl:with-param name="pColumnsToSpan" select="1"/>
+                                        <xsl:with-param name="pName" select="if ($vTotal > 1) then 'results' else 'result'"/>
+                                        <xsl:with-param name="pTotal" select="$vTotal"/>
+                                        <xsl:with-param name="pPage" select="$vPage"/>
+                                        <xsl:with-param name="pPageSize" select="$vPageSize"/>
+                                    </xsl:call-template>
+                                </div>
+                                <div id="ae-studies-browse-sort-by">
+                                    <xsl:text>Sort by: </xsl:text>
+                                    <select id="studies-browse-sorter">
+                                        <option class="col_relevance sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='relevance'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Relevance</option>
+                                        <option class="col_accession sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='accession'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Accession
+                                        </option>
+                                        <option class="col_title sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='title'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Title</option>
+                                        <option class="col_authors sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='authors'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Authors</option>
+                                        <option class="col_release_date sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='release_date'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Released</option>
+                                        <option class="col_files sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='files'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Files</option>
+                                        <option class="col_links sortable">
+                                            <xsl:if  test="fn:lower-case($vSortBy)='links'" >
+                                                <xsl:attribute name="selected" select="'selected'"/>
+                                            </xsl:if>Links</option>
+                                    </select>
+                                    <span id="sorting-links">
+                                        <a class="studies-browse-sort-order-left fa fa-angle-down"/>
+                                        <a class="studies-browse-sort-order-right fa fa-angle-up"/>
+                                    </span>
+                                </div>
+                                <div id="study-facet">
                                     <ul class="ae-studies-browse-list">
-                                        <xsl:call-template name="study-table">
+                                        <xsl:call-template name="study-facet">
                                             <xsl:with-param name="pStudies" select=".//study"/>
                                             <xsl:with-param name="pFrom" select="$vFrom"/>
                                             <xsl:with-param name="pTo" select="$vTo"/>
                                             <xsl:with-param name="pPosition" select="position()-1+$vFrom"/>
+                                            <xsl:with-param name="vFacetData" select="$vFacetData"/>
                                         </xsl:call-template>
+                                    </ul>
+                                    <div class="grid_24 intro" id="secondary">
+                                        <p>
+                                            <xsl:if test="$vTotal>0">
+                                                <h5 id="browsehecatos">
+                                                    <a id="hecatos-ref" title="Browse HeCaToS">
+                                                        <div id="hecatos-div" class="icon icon-functional home-icon" data-icon="1">
+                                                            Browse <xsl:value-of select="$project-title"/></div>
+                                                    </a>
+                                                </h5>
+                                            </xsl:if>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div id="browse-studies">
+                                    <ul class="ae-studies-browse-list">
+                                        <xsl:for-each select=".//study">
+                                            <xsl:call-template name="study">
+                                                <xsl:with-param name="pFrom" select="$vFrom"/>
+                                                <xsl:with-param name="pTo" select="$vTo"/>
+                                                <xsl:with-param name="pPosition" select="position()-1+$vFrom"/>
+                                            </xsl:call-template>
+                                        </xsl:for-each>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="grid_24 intro" id="secondary">
-                        <p>
-                        <xsl:if test="$vTotal>0">
-                            <h5><a href="{$context-path}/hecatos/studies/?" title="Browse BioStudies"><span class="icon icon-functional home-icon" data-icon="1">
-                                Browse <xsl:value-of select="$project-title"/></span>
-                            </a></h5>
-                        </xsl:if>
-                        </p>
                     </div>
                 </section>
             </xsl:when>
@@ -116,64 +192,115 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template name="study-table">
+    <xsl:template name="study-facet">
         <xsl:param name="pFrom"/>
         <xsl:param name="pTo"/>
         <xsl:param name="pPosition"/>
         <xsl:param name="pStudies"/>
-        <xsl:variable name="pColumnAttribute" select="'Assay Technology Type'"/>
-        <xsl:variable name="pRowAttribute" select="'Compound'"/>
-        <xsl:variable name="vColumns" select="distinct-values($pStudies/attribute[lower-case(@name)=lower-case($pColumnAttribute)]/value/text()/normalize-space(.))"/>
-        <xsl:variable name="vRows" select="distinct-values($pStudies/attribute[lower-case(@name)=lower-case($pRowAttribute)]/value/text()/normalize-space(.))"/>
+        <xsl:param name="vFacetData"/>
+        <xsl:variable name="vFacets" select="('Assay Technology Type','Compound','Organ')"/>
 
-        <table border="1" class="proptable">
-            <tr>
-                <th>
-                    <span class="right-header"><xsl:value-of select="$pColumnAttribute"/> <i class="project-table-arrow fa fa-long-arrow-right"></i></span>
-                    <span class="down-header"><xsl:value-of select="$pRowAttribute"/> <i class="project-table-arrow fa fa-long-arrow-down"></i></span>
-                </th>
-                <xsl:for-each select="$vColumns">
-                    <th><xsl:value-of select="."/></th>
+
+        <xsl:for-each select="$vFacets">
+            <xsl:variable name="vFacet" select="."/>
+            <xsl:variable name="vFacetPosition" select="position()"/>
+            <xsl:variable name="vFacetValues" select="distinct-values($vFacetData/facets/facet[lower-case(dim)=lower-case($vFacet)]/label/lower-case(normalize-space(text())))"/>
+            <b><xsl:value-of select="$vFacet"/></b><br/>
+            <ul style="list-style-type:none">
+                <xsl:for-each select="$vFacetValues">
+                    <xsl:variable name="vFacetVal" select="."/>
+                    <li style="height:25px">
+                        <!--<xsl:variable name="lid" select="concat( concat('facet',"$vFacetPosition1"), position())"/>-->
+                        <xsl:variable name="lid" select="concat(concat('facet',$vFacetPosition), position())"/>
+                        <input class="facet-value" type="checkbox"><xsl:attribute name="id" select="$lid" /><xsl:attribute name="value" select="." /><xsl:attribute
+                                name="data-facet" select="$vFacet"/></input>
+                        <label class="facet-label-class"><xsl:attribute name="for" select="$lid" /><xsl:value-of select="."/><span class="facet-freq-class"><xsl:value-of select="$vFacetData/facets/facet[label=$vFacetVal]/value"/></span></label> <!--fn:string-length(.)-->
+                    </li>
                 </xsl:for-each>
-            </tr>
-            <xsl:for-each select="$vRows">
-                <xsl:variable name="pCurrentRow" select="."/>
-                <tr>
-                    <td><xsl:value-of select="$pCurrentRow"/></td>
-                    <xsl:for-each select="$vColumns">
-                        <xsl:variable name="pCurrentCol" select="."/>
-                        <xsl:variable name="pMatchedStudy" select="$pStudies[./attribute[lower-case(@name)=fn:lower-case($pColumnAttribute)]/value/text()/lower-case(.)=lower-case($pCurrentCol)][./attribute[lower-case(@name)=fn:lower-case($pRowAttribute)]/value/text()/lower-case(.)= lower-case($pCurrentRow)]"/>
-                        <td><ul>
-                            <xsl:for-each select="$pMatchedStudy">
-                                <xsl:call-template name="study">
-                                    <xsl:with-param name="pFrom" select="$pFrom"/>
-                                    <xsl:with-param name="pTo" select="$pTo"/>
-                                    <xsl:with-param name="pPosition" select="$pPosition"/>
-                                </xsl:call-template>
-                            </xsl:for-each>
-                        </ul></td>
-                    </xsl:for-each>
-                </tr>
-            </xsl:for-each>
-        </table>
+            </ul>
+        </xsl:for-each>
+        <input type="hidden"  id="facetsinfo">
+            <xsl:attribute name="value" select="$vFacets" />
+        </input>
     </xsl:template>
+
 
     <xsl:template name="study">
         <xsl:param name="pFrom"/>
         <xsl:param name="pTo"/>
         <xsl:param name="pPosition"/>
-        <xsl:variable name="titleLink" select="if (fn:lower-case(@type)='project') then fn:concat($context-path,'/',accession,'/studies/') else fn:concat($context-path,$projectLink,'/studies/',accession,'/',$vQueryString)"/>
-        <xsl:variable name="isPublic" select="@releaseTime!=9999999999 and contains(concat(' ',lower-case(access),' '),' public ')"/>
-        <xsl:if test="not($isPublic)">
-            <span class="study-meta-data" data-icon="L">&#x1f512; </span>
-        </xsl:if>
-        <a href="{$titleLink}">
-            <xsl:call-template name="highlight">
-                <xsl:with-param name="pQueryId" select="$queryid"/>
-                <xsl:with-param name="pFieldName" select="'title'"/>
-                <xsl:with-param name="pText" select="accession"/>
-            </xsl:call-template>
-        </a>
+        <xsl:variable name="vAccession" select="accession"/>
+        <xsl:variable name="isPublic" select="release_date!=9999999999 and contains(concat(' ',lower-case(access),' '),' public ')"/>
+        <xsl:variable name="isProject" select="fn:lower-case(type)='project'"/>
+        <!-- <xsl:variable name="vFiles" select="ae:getMappedValue('ftp-folder', $vAccession)"/> -->
+        <li class="browse-study">
+            <div>
+                <xsl:if test="not($isPublic)">
+                    <span class="study-meta-data" data-icon="L">&#x1f512; private</span>
+                </xsl:if>
+                <xsl:if test="not($isProject) and $isPublic ">
+                    <span class="study-meta-data browse-study-release-date">
+                        <xsl:value-of select="ae:formatDateLong(ae:unixTimeToDate(release_date))"/>
+                    </span>
+                </xsl:if>
+                <xsl:if test="not($isProject)">
+                    <xsl:if test="files != '0'">
+                        <span class="study-meta-data browse-study-release-files">
+                            <xsl:value-of select="files"/><xsl:text> data file</xsl:text><xsl:value-of select="if (files>1) then 's' else ''" />
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="links != '0'">
+                        <span class="study-meta-data browse-study-release-links">
+                            <xsl:value-of select="links"/><xsl:text> link</xsl:text><xsl:value-of select="if (links>1) then 's' else ''" />
+                        </span>
+                    </xsl:if>
+                </xsl:if>
+            </div>
+            <div class="browse-study-title">
+                <xsl:variable name="titleLink" select="if (fn:lower-case(type)='project') then fn:concat($context-path,'/',accession,'/studies/') else fn:concat($context-path,$projectLink,'/studies/',accession,'/',$vQueryString)"/>
+                <xsl:variable name="accession" select="search:getQueryInfoParameter($queryid,'accessions')[$pPosition - $pFrom + 1]"/>
+                <xsl:if test="lower-case(type)='project'">
+                    <a class="project-logo no-border" href="{$titleLink}">
+                        <img src="{$context-path}/files/{fn:replace(fn:replace(lower-case($accession),'&#x00ab;',''),'&#x00bb;','')}/logo.png"/>
+                    </a>
+                </xsl:if>
+                <a href="{$titleLink}">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pFieldName" select="'title'"/>
+                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'titles')[$pPosition - $pFrom + 1]"/>
+                    </xsl:call-template>
+                </a>
+                <span class="browse-study-accession">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pFieldName" select="'accession'"/>
+                        <xsl:with-param name="pText" select="$accession"/>
+                    </xsl:call-template>
+                </span>
+            </div>
+            <xsl:variable name="vSize" select="fn:count(author)"/>
+            <xsl:if test="$vSize gt 0">
+                <div class="search-authors">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pFieldName" select="'authors'"/>
+                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'authors')[$pPosition - $pFrom + 1]"/>
+                    </xsl:call-template>
+                </div>
+            </xsl:if>
+            <xsl:variable name="snippet" select="search:getQueryInfoParameter($queryid,'fragments')[$pPosition - $pFrom + 1]"/>
+            <xsl:if test="$vSearchMode and $snippet!=''">
+                <div class="search-snippet">
+                    <xsl:if test="substring($snippet,1,1)=fn:lower-case(substring($snippet,1,1))"><xsl:attribute name="class">search-snippet search-snippet-before</xsl:attribute></xsl:if>
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="pQueryId" select="$queryid"/>
+                        <xsl:with-param name="pFieldName" select="'keywords'"/>
+                        <xsl:with-param name="pText" select="search:getQueryInfoParameter($queryid,'fragments')[$pPosition - $pFrom + 1]"/>
+                    </xsl:call-template>
+                </div>
+            </xsl:if>
+        </li>
     </xsl:template>
 
 
@@ -191,17 +318,7 @@
                 </xsl:for-each>
             </ul>
             </xsl:if>
-            <!--
-            <p>&#160;</p>
-            <xsl:if test="$vSearchMode">
-                <h3>Try Experiments Browser</h3>
-                <p>You can browse available experiments and create a more complex query using our <a href="{$context-path}/experiments/browse.html" title="Click to go to Experiments Browser">Experiments Browser</a>.</p>
-            </xsl:if>
-            -->
-            <!-- TODO:
-            <h4>Still can't find what you're looking for?</h4>
-            <p>Please <a href="#" title="">contact our support service</a> for help if you still get no results.</p>
-            -->
+
         </section>
         <aside class="grid_6 omega shortcuts" id="search-extras">
             <div id="ebi_search_results">

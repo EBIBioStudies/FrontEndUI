@@ -259,6 +259,20 @@
     <!-- this has to be the last rule so that /admin/ can work -->
     <!-- study view -->
     <rule>
+        <from>^/HeCaToS/studies/\?.*</from> <!-- handle project specific pages (without a query) -->
+        <set type="parameter" name="project">hecatos</set>
+        <set type="parameter" name="full">true</set>
+        <!--<set type="parameter" name="pagesize">10000000</set> &lt;!&ndash; show all hecatos projects &ndash;&gt;-->
+        <to type="forward" last="true">/servlets/query/hecatos/browse/html</to>
+    </rule>
+    <rule>
+        <from>^/HeCaToS/studies/$</from> <!-- handle project specific pages (without a query) -->
+        <set type="parameter" name="project">hecatos</set>
+        <set type="parameter" name="full">true</set>
+        <!--<set type="parameter" name="pagesize">10000000</set> &lt;!&ndash; show all hecatos projects &ndash;&gt;-->
+        <to type="forward" last="true">/servlets/query/hecatos/browse/html</to>
+    </rule>
+    <rule>
         <from>^/studies/([^/]+)/?$</from>
         <set type="parameter" name="accessionNumber">$1</set>
         <set type="parameter" name="accession">$1</set>
@@ -275,13 +289,7 @@
         <set type="parameter" name="project">$1</set>
         <to type="forward" last="true">/servlets/query/studies/browse/html</to>
     </rule>
-    <rule>
-        <from>^/hecatos/studies/$</from> <!-- handle project specific pages (without a query) -->
-        <set type="parameter" name="project">hecatos</set>
-        <set type="parameter" name="full">true</set>
-        <set type="parameter" name="pagesize">10000000</set> <!-- show all hecatos projects -->
-        <to type="forward" last="true">/servlets/query/hecatos/browse/html</to>
-    </rule>
+
     <rule>
          <from>^/([^/]+)/studies/$</from> <!-- handle general project page (without a query) -->
         <set type="parameter" name="project">$1</set>

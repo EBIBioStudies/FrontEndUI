@@ -78,6 +78,36 @@
                 </xsl:otherwise>
             </xsl:choose>
         </abstract>
+        <organ>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='organ'])">
+                    <xsl:value-of select="attributes/attribute[fn:lower-case(normalize-space(name))='organ']/value"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='organ']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </organ>
+        <compound>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='compound'])">
+                    <xsl:value-of select="attributes/attribute[fn:lower-case(normalize-space(name))='compound']/value"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='compound']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </compound>
+        <tech>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='assay technology type'])">
+                    <xsl:value-of select="attributes/attribute[fn:lower-case(normalize-space(name))='assay technology type']/value"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='assay technology type']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </tech>
         <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
             <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
             <author index="{fn:position()}">

@@ -39,6 +39,7 @@ import uk.ac.ebi.biostudies.utils.saxon.Document;
 import uk.ac.ebi.biostudies.utils.saxon.StoredDocument;
 import uk.ac.ebi.biostudies.utils.saxon.XMLDocumentSource;
 import uk.ac.ebi.biostudies.utils.saxon.SaxonException;
+import uk.ac.ebi.biostudies.utils.saxon.search.FacetManager;
 import uk.ac.ebi.fg.saxon.functions.*;
 
 import javax.xml.transform.*;
@@ -318,6 +319,11 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
 
             ((TransformerImpl) xslt).getUnderlyingController()
                     .setMessageEmitter(new LoggerWriter(logger));
+
+            if(params!=null && params.containsKey("chkfacets")){
+                xslt.setParameter("vFacetData", buildDocument(FacetManager.getFacetResults()));
+                params.remove("chkfacets");
+            }
 
             // assign the parameters (if not null)
             if (null != params) {

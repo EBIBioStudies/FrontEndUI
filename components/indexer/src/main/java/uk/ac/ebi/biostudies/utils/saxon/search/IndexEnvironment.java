@@ -129,8 +129,8 @@ public class IndexEnvironment {
             this.indexId = this.indexConfig.getString("[@id]");
 
             String indexBaseLocation = this.indexConfig.getString("[@location]");
+            FacetManager.TAXO_PATH = this.indexConfig.getString("[@taxonomy]");
             this.indexDirectory = FSDirectory.open(new File(indexBaseLocation, this.indexId).toPath());
-
             String indexAnalyzer = this.indexConfig.getString("[@defaultAnalyzer]");
             Analyzer a = (Analyzer) Class.forName(indexAnalyzer).newInstance();
 

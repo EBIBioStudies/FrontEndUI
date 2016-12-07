@@ -20,10 +20,15 @@ package uk.ac.ebi.biostudies.utils.saxon.search;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.trans.XPathException;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.facet.*;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queries.mlt.MoreLikeThis;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
@@ -40,10 +45,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static uk.ac.ebi.biostudies.utils.saxon.search.QueryConstructor.FIELD_PROJECT;
 
 public class Querier {
 
@@ -140,6 +149,10 @@ public class Querier {
 
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
             IndexSearcher searcher = new IndexSearcher(reader);
+            //if we want to search in Hecatos
+            if (params.containsKey("chkfacets")) {
+                query = searchInHecatos(searcher, query, params);
+            }
             logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
                     query.toString(), sort, shouldReverse);
             TopDocs hits = searcher.search(
@@ -326,5 +339,63 @@ public class Querier {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * extract user selected facets from querystring and return back facet category to make drill down query
+     * @param querySource
+     * @return
+     */
+    private Map<String, String> extractFacetParametersFromRequest(Map<String, String[]> querySource){
+        String queryStr = "";
+        Map<String,String> result = new HashMap<>();
+        try {
+            if(querySource.get("query-string")==null)
+                return result;
+            String fullQueryString = querySource.get("query-string")[0];
+            List<NameValuePair> params = URLEncodedUtils.parse(fullQueryString, Charset.forName("UTF-8"));
+            if(params!=null)
+                for(NameValuePair prms : params){
+                    if(prms.getName().equalsIgnoreCase("facets")) {
+                        queryStr = prms.getValue();
+                        break;
+                    }
+                }
+            if(queryStr!=null && !queryStr.isEmpty()) {
+                queryStr = URLDecoder.decode(queryStr, "UTF-8");
+            }
+            else
+                return result;
+        }
+        catch (Exception ex){
+            logger.debug("", ex);
+        }
+        String[] facets =  queryStr.split(",");
+        if(facets==null)
+            return result;
+        for(String fct:facets){
+            result.put(fct, FacetManager.getFacetDim(fct));
+        }
+        return result;
+    }
+
+    private Query searchInHecatos(IndexSearcher searcher, Query query, Map params) {
+        //IF it is the first Hecatos query we should first build the Hecatos facet categories
+        if(FacetManager.getFacetResults()==null) {
+            QueryParser qp = new QueryParser(FIELD_PROJECT, new SimpleAnalyzer());
+            Query fq = null;
+            try {
+                fq = qp.parse("project:hecatos");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            FacetManager.setHecatosFacets(searcher, fq);
+        }
+        Map<String, String> facets = extractFacetParametersFromRequest(params);
+        DrillDownQuery drillDownQuery = new DrillDownQuery(FacetManager.FACET_CONFIG, query);
+        for(String facet: facets.keySet())
+            drillDownQuery.add(facets.get(facet), facet);
+
+        return drillDownQuery;
     }
 }
