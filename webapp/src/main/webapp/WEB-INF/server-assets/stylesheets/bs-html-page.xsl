@@ -241,7 +241,7 @@
                                                     </p>
                                                 </xsl:if>
                                                 <div class="input-group-button">
-                                                    <input type="submit" value="Search" class="submit button secondary"/>
+                                                    <input id="search_submit" class="submit button icon icon-functional" data-icon="s" tabindex="2" type="submit" value="1"/>
                                                     <div class="small">
                                                     <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search,
                                                    with whatever features you want available -->
@@ -471,7 +471,7 @@
                 </footer>
             </div>  <!--! end of #wrapper -->
 
-            <script defer="defer" src="http://www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
+            <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/cookiebanner.js"/>
             <!--script defer="defer" src="http://www.ebi.ac.uk/web_guidelines/js/foot.js"/ -->
             <script><![CDATA[var contextPath = "]]><xsl:value-of select="$context-path"/><![CDATA[";]]>
             </script>

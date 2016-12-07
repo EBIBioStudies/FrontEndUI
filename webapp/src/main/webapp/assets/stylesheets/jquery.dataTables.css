@@ -17,7 +17,7 @@ table.dataTable {
 table.dataTable thead th,
 table.dataTable tfoot th {
   font-weight: normal;
-  background-color: rgb(107, 168, 197);
+  background-color: var(--P3);
   color: #fff;
 }
 table.dataTable thead th,
@@ -316,9 +316,7 @@ table.dataTable td {
 /*}*/
 
 .bioinfselectclass{
-  width:50px;
-  height:20px;
-  padding: 0px;
+  width:auto;
   font-size: inherit;
 
 }
@@ -344,10 +342,9 @@ label.inplabel{
 }
 
 input[type="search"].bioinpclass{
-    width: 50%;
+    width: 60%;
     display:inline;
     margin-left: 0.5em;
-    height:20px;
     padding: 0px;
     font-size: inherit;
 }

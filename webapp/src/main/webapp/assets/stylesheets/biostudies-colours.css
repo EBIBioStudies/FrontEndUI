@@ -111,22 +111,7 @@ th {
     background-color: var(--B1);
 }
 
-/* Form submission button */
-form input.submit {
-    /* colours */
-    color: #fff;
-    text-shadow: var(--P3) 1px 1px;
-    border-top: 1px solid var(--P5);
-    border-left: 1px solid var(--P5);
-    border-right: 1px solid var(--P3);
-    border-bottom: 1px solid var(--P3);
 
-    background-image: -moz-linear-gradient(top, var(--P1), var(--P2));
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ccc), color-stop(1, var(--P2)));
-    background-image: -webkit-linear-gradient(var(--P1), var(--P2));
-    background-image: linear-gradient(top, var(--P1), var(--P2));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='var(--P1)', EndColorStr='var(--P2)');
-}
 
 /* Define the basic colour your local masthead */
 div#local-masthead {
@@ -143,3 +128,7 @@ div#local-masthead {
 /*div#local-masthead ul li a:active {*/
     /*border-bottom: 3px solid var(--P1);*/
 /*}*/
+
+#local-search [type="submit"] {
+    background-color: var(--P1);
+}

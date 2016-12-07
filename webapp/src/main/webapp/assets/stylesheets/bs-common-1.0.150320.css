@@ -231,7 +231,7 @@ a.show-less:hover {
 
 #ae-login .icon-functional:before
 , #ae-feedback .icon-functional:before {
-    margin: 0
+    margin: 0;
 }
 
 #ae-login form
@@ -591,7 +591,7 @@ p.center {
 #ae-browse .col_pager a {
     padding: 2px 3px 0 3px;
     margin: 0 2px;
-    color: #8F5109;
+    color: var(--C3);
 }
 
 #ae-browse .col_pager span {
@@ -615,12 +615,12 @@ p.center {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-bottom: 0 none;
-    background-color: #8F5109;
+    background-color: var(--P3);
     color: #fff;
 }
 
 #ae-browse .col_pager span {
-    background-color: #275369;
+    background-color: var(--P3);
     color: #FFF;
 }
 
@@ -982,4 +982,13 @@ div#local-masthead ul {
 }
 .menu > li > a.inner {
     display: flex;
+}
+
+select {
+    -moz-appearance:none;
+    -webkit-appearance:none;
+}
+
+a.inner.icon.icon-functional.login:before {
+    padding-right: 3px;
 }
