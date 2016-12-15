@@ -27,6 +27,15 @@ nav ul, nav ol {
     position:relative;
 }
 
+#submit h5{
+    color:var(--C2);
+}
+#submit .submitlnk{
+    border-width:0;
+    color:var(--A1);
+}
+
+
 div.input-group{
     /*margin: 0;*/
 }

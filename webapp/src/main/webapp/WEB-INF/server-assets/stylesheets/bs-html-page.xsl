@@ -270,7 +270,7 @@
                                             <a class="inner" href="{$context-path}/studies/" title="Browse BioStudies">Browse</a>
                                         </li>
                                         <li>
-                                            <a class="inner" target="_blank" href="{$context-path}/submissions/" title="Submit a study">Submit a study</a>
+                                            <a class="inner" target="_self" href="{$context-path}/submit.html" title="Submit a study">Submit a study</a>
                                         </li>
                                         <li>
                                             <xsl:if test="fn:starts-with($relative-uri, '/help/')"><xsl:attribute name="class">active</xsl:attribute></xsl:if>

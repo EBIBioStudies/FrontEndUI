@@ -137,6 +137,11 @@
         <to type="forward" last="true">/servlets/view/-/static-page/html</to>
     </rule>
     <rule>
+        <from>^/submit[.]html?$</from>
+        <set type="parameter" name="filename">submit.html</set>
+        <to type="forward" last="true">/servlets/view/-/static-page/html</to>
+    </rule>
+    <rule>
         <from>^/acknowledgements[.]html?$</from>
         <to type="redirect" last="true">%{context-path}/about.html#acknowledgements</to>
     </rule>
