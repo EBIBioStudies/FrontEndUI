@@ -57,15 +57,14 @@
             <xsl:with-param name="pBreadcrumbTrail">
                 <xsl:choose>
                     <xsl:when test="$keywords != ''">
-                        <a href="{$context-path}{$projectLink}/studies/search.html?query={$keywords}">Studies matching "<xsl:value-of select="$keywords"/>"</a>
+                        <li><a href="{$context-path}{$projectLink}/studies/search.html?query={$keywords}">Studies matching "<xsl:value-of select="$keywords"/>"</a></li>
                     </xsl:when>
                     <xsl:otherwise>
-                        <a href="{$context-path}{$projectLink}/studies/"><xsl:value-of select="if ($project='') then 'Studies' else $project "/></a>
+                        <li><a href="{$context-path}{$projectLink}/studies/"><xsl:value-of select="if ($project='') then 'Studies' else $project "/></a></li>
                     </xsl:otherwise>
                 </xsl:choose>
-                >
-                <xsl:value-of select="$vAccession"/>
-                <span id="search-iterator">
+                <li><xsl:value-of select="$vAccession"/></li>
+                <!--span id="search-iterator">
                     <xsl:variable name="previousAccession" select="search:getQueryInfoParameter($queryid,'previousAccession')"/>
                     <xsl:variable name="nextAccession" select="search:getQueryInfoParameter($queryid,'nextAccession')"/>
                     <xsl:variable name="accessionIndex" select="xs:integer(search:getQueryInfoParameter($queryid,'accessionIndex'))"/>
@@ -79,7 +78,7 @@
                             Next<span class="icon icon-functional" data-icon="&gt;"></span>
                         </a>
                     </xsl:if>
-                </span>
+                </span -->
             </xsl:with-param>
             <xsl:with-param name="pEBISearchWidget"/>
             <xsl:with-param name="pExtraJS">

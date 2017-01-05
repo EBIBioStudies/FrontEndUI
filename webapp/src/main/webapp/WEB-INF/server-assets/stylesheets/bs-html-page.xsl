@@ -330,11 +330,10 @@
                                 <xsl:attribute name="class" select="'grid_18 alpha'"/>
                             </xsl:if>
                             <nav id="breadcrumb">
-                                <p>
-                                    <a href="{$context-path}/">BioStudies</a>
-                                    &gt;
+                                <ul class="breadcrumbs">
+                                    <li><a href="{$context-path}/">BioStudies</a></li>
                                     <xsl:copy-of select="$pBreadcrumbTrail"/>
-                                </p>
+                                </ul>
                             </nav>
                         </section>
                         <xsl:copy-of select="$pEBISearchWidget"/>

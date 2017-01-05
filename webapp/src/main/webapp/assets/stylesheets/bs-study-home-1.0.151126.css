@@ -40,13 +40,13 @@ div.input-group{
     /*margin: 0;*/
 }
 
+#local-masthead p.projectcheck input {
+    margin-right: 2px;
+}
+
 #local-masthead p.projectcheck{
-    /*color:#000;*/
-    position: absolute;
-    margin: 0;
-    right:0px;
-    font-size:14px;
-    font-family: "Helvetica Neue,Helvetica,Roboto,Arial,sans-serif" ;
+    float: right;
+    font-size: 14px;
 }
 
 #local-masthead p a{
@@ -128,7 +128,7 @@ div.input-group{
     color: #555;
 }
 /*#stats h5 a, #latest h5 a{*/
-    /*display: flex;*/
+/*display: flex;*/
 /*}*/
 
 #latestList li:before {
@@ -182,7 +182,6 @@ div.input-group{
     position: absolute;
     line-height: 160px;
     height: 160px;
-    /* border: 4px solid pink; */
 }
 
 .ribbon {
@@ -190,19 +189,21 @@ div.input-group{
 }
 .molecule {
     text-align: right;
-    width: 100%;
+    width: 72%;
 }
 .twist {
-    width: 80%;
-    font-size: 160px;
+    text-align: right;
+    font-size: 150pt;
     opacity: 0.1;
     color: #ee1c25;
+    width: 100%;
+    z-index: -1000;
 }
 .flask {
     font-family: 'EBI-Functional';
     font-size: 140px;
-    text-align: right;
-    width: 80%;
+    text-align: center;
+    width: 73%;
     color: #58585a;
     opacity: 0.1;
 }

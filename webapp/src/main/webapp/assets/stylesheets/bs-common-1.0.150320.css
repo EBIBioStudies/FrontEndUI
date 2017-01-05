@@ -992,3 +992,7 @@ select {
 a.inner.icon.icon-functional.login:before {
     padding-right: 3px;
 }
+
+#breadcrumb {
+    padding-top: 10px;
+}
