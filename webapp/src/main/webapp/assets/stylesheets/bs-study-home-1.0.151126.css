@@ -28,11 +28,13 @@ nav ul, nav ol {
 }
 
 #submit h5{
-    color:var(--C2);
+    color: var(--P3);
 }
+
 #submit .submitlnk{
-    border-width:0;
-    color:var(--A1);
+    border-width: 0;
+    text-align: center;
+    margin: 30pt 0;
 }
 
 

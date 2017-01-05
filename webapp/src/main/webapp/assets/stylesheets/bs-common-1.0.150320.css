@@ -978,7 +978,7 @@ p.center {
 
 div#local-masthead ul {
     /*margin-top: 0px;*/
-    /*background-color:#467088;*/
+    /* background-color:#467088; */
 }
 .menu > li > a.inner {
     display: flex;
@@ -995,4 +995,8 @@ a.inner.icon.icon-functional.login:before {
 
 #breadcrumb {
     padding-top: 10px;
+}
+
+h5.icon:before {
+    padding-right: 3px;
 }

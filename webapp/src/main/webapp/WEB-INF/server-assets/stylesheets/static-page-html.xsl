@@ -37,8 +37,10 @@
                 <xsl:call-template name="bs-page">
                     <xsl:with-param name="pIsSearchVisible" select="fn:true()"/>
                     <xsl:with-param name="pExtraSearchFields"/>
-                    <xsl:with-param name="pTitleTrail" select="fn:substring-before($vContent//html:title, '&lt; ArrayExpress')"/>
-                    <xsl:with-param name="pBreadcrumbTrail"/>
+                    <xsl:with-param name="pTitleTrail" select="fn:substring-before($vContent//html:title, '&lt; BioStudies')"/>
+                    <xsl:with-param name="pBreadcrumbTrail">
+                        <li><xsl:value-of select="if ($vSubFolder) then fn:replace($vSubFolder,'/','') else fn:replace($filename,'.html','')"/></li>
+                    </xsl:with-param>
                     <xsl:with-param name="pEBISearchWidget"/>
                     <xsl:with-param name="pExtraCSS"/>
                     <xsl:with-param name="pExtraJS"/>
