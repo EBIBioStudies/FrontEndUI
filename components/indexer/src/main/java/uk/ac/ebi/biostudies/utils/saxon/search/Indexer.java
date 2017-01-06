@@ -26,6 +26,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
+import net.sf.saxon.value.StringValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.facet.FacetField;
@@ -112,8 +113,11 @@ public class Indexer {
                                 logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
                             } else if ("boolean".equals(field.type)) {
                                 addBooleanIndexField(d, field.name, v);
-                            } else if(!v.getStringValue().isEmpty() && "facet".equalsIgnoreCase(field.type)) {
-                                addFacetField(d, v, field.name);
+                            } else if("facet".equalsIgnoreCase(field.type)) {
+                                if(v.getStringValue().isEmpty())
+                                    addFacetField(d, new StringValue("N/A"), field.name);
+                                else
+                                    addFacetField(d, v, field.name);
                             }
                             else {
                                 addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
@@ -137,8 +141,8 @@ public class Indexer {
                 //logger.debug("Indexing document {} = {}", env.idField, idValue);
                 try {
                     Document facetedDocument = FacetManager.FACET_CONFIG.build(FacetManager.getTaxonomyWriter() ,d);
-                    w.addDocument(facetedDocument);
-//                    w.updateDocument(new Term("id", idValue), facetedDocument);
+//                    w.addDocument(facetedDocument);
+                    w.updateDocument(new Term("id", idValue), facetedDocument);
                 } catch (Exception e) {
                     logger.error(" Error indexing " +d);
                     logger.error(e.getMessage());
