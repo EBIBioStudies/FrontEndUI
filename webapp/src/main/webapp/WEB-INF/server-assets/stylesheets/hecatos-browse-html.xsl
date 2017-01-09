@@ -161,7 +161,7 @@
                                         <p>
                                             <xsl:if test="$vTotal>0">
                                                 <h5 id="browsehecatos">
-                                                    <a id="hecatos-ref" title="Update">
+                                                    <a id="hecatos-ref" title="Browse HeCaToS">
                                                         <div id="hecatos-div" class="icon icon-functional home-icon" data-icon="1">
                                                             Browse <xsl:value-of select="$project-title"/></div>
                                                     </a>
@@ -214,7 +214,7 @@
                         <xsl:variable name="lid" select="concat(concat('facet',$vFacetPosition), position())"/>
                         <input class="facet-value" type="checkbox"><xsl:attribute name="id" select="$lid" /><xsl:attribute name="value" select="." /><xsl:attribute
                                 name="data-facet" select="$vFacet"/></input>
-                        <label class="facet-label-class"><xsl:attribute name="for" select="$lid" /><xsl:value-of select="."/><span class="facet-freq-class"><xsl:value-of select="$vFacetData/facets/facet[label=$vFacetVal and lower-case(dim)=lower-case($vFacet)]/value"/></span></label> <!--fn:string-length(.)-->
+                        <label class="facet-label-class"><xsl:attribute name="for" select="$lid" /><xsl:value-of select="."/><span class="facet-freq-class"><xsl:value-of select="$vFacetData/facets/facet[label=$vFacetVal]/value"/></span></label> <!--fn:string-length(.)-->
                     </li>
                 </xsl:for-each>
             </ul>

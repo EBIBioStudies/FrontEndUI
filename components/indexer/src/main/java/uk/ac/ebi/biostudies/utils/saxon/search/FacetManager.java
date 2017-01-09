@@ -87,43 +87,31 @@ public class FacetManager {
         }
         String fctName;
         int value;
-        int NAFreq = 0;
         for(FacetResult fcr:facetResults) {
             if(fcr==null)
                 continue;
-
             for (LabelAndValue lbv : fcr.labelValues) {
                 fctName = lbv.label;
                 value = lbv.value.intValue();
                 if(value==0)
                     continue;
-                if(fctName.equalsIgnoreCase("n/a")){
-                    NAFreq = value;
-                    continue;
-                }
-                addToStringBuilder(stringBuilder, fcr.dim, fctName, value);
+                stringBuilder.append("<facet>");
+                stringBuilder.append("<dim>");
+                stringBuilder.append(getFullName(fcr.dim));
+                stringBuilder.append("</dim>");
+                stringBuilder.append("<label>");
+                stringBuilder.append(fctName);
+                stringBuilder.append("</label>");
+                stringBuilder.append("<value>");
+                stringBuilder.append(value);
+                stringBuilder.append("</value>");
+                stringBuilder.append("</facet>");
+                AllDims.put(fctName, fcr.dim);
             }
-            addToStringBuilder(stringBuilder, fcr.dim, "n/a", NAFreq);
         }
         stringBuilder.append("</facets>");
         FACET_RESULTS = stringBuilder.toString();
     }
-
-    private static void addToStringBuilder(StringBuilder stringBuilder, String dim, String fctName, int value){
-        stringBuilder.append("<facet>");
-        stringBuilder.append("<dim>");
-        stringBuilder.append(getFullName(dim));
-        stringBuilder.append("</dim>");
-        stringBuilder.append("<label>");
-        stringBuilder.append(fctName);
-        stringBuilder.append("</label>");
-        stringBuilder.append("<value>");
-        stringBuilder.append(value);
-        stringBuilder.append("</value>");
-        stringBuilder.append("</facet>");
-        AllDims.put(fctName, dim);
-    }
-
 
     public static String getFacetResults(){
         return  FACET_RESULTS;
@@ -136,9 +124,9 @@ public class FacetManager {
             //                searcher.search(new MatchAllDocsQuery(), facetsCollector); new MatchAllDocsQuery()
             List<FacetResult> results = new ArrayList<>();
             Facets facets = new FastTaxonomyFacetCounts(FacetManager.getTaxonomyReader(), FacetManager.FACET_CONFIG, facetsCollector);
-            FacetResult organ = facets.getTopChildren(20, "organ");
-            FacetResult compound = facets.getTopChildren(20, "compound");
-            FacetResult tech = facets.getTopChildren(20, "tech");
+            FacetResult organ = facets.getTopChildren(10, "organ");
+            FacetResult compound = facets.getTopChildren(10, "compound");
+            FacetResult tech = facets.getTopChildren(10, "tech");
             List <FacetResult>allResults = new ArrayList();
             allResults.add(organ);
             allResults.add(compound);
