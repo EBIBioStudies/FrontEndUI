@@ -137,8 +137,7 @@ public class Indexer {
                 //logger.debug("Indexing document {} = {}", env.idField, idValue);
                 try {
                     Document facetedDocument = FacetManager.FACET_CONFIG.build(FacetManager.getTaxonomyWriter() ,d);
-                    w.addDocument(facetedDocument);
-//                    w.updateDocument(new Term("id", idValue), facetedDocument);
+                    w.updateDocument(new Term("id", idValue), facetedDocument);
                 } catch (Exception e) {
                     logger.error(" Error indexing " +d);
                     logger.error(e.getMessage());
