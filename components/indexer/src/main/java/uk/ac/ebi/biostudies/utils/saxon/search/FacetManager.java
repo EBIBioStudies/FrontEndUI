@@ -31,7 +31,9 @@ public class FacetManager {
 
     private final static Logger logger = LoggerFactory.getLogger(FacetManager.class);
 
-
+    public static String[] COMPOUNDS = {"idarubicin","doxorubicin", "dmso (0.1%)", "epirubicin", "untreated", "daunorubicin", "idarubicin"
+    ,"dmso", "dmso (fluctuating)"};
+    public static Map<String, String> ALL_COMPOUNDS = new HashMap<>();
     private static TaxonomyWriter TAXONOMY_WRITER;
     public final static FacetsConfig FACET_CONFIG = new FacetsConfig();
     public static TaxonomyReader TAXO_READER;
@@ -39,6 +41,10 @@ public class FacetManager {
     private static String FACET_RESULTS;
     private static Map <String, String> AllDims = new HashMap<>();
     public static void init(){
+        FACET_CONFIG.setMultiValued("compound", true);
+        for(String cmp:COMPOUNDS){
+            ALL_COMPOUNDS.put(cmp, cmp);
+        }
         Directory taxoDirectory = null;
         try {
             taxoDirectory = FSDirectory.open(new File(TAXO_PATH).toPath());
@@ -87,31 +93,43 @@ public class FacetManager {
         }
         String fctName;
         int value;
+        int NAFreq = 0;
         for(FacetResult fcr:facetResults) {
             if(fcr==null)
                 continue;
+
             for (LabelAndValue lbv : fcr.labelValues) {
                 fctName = lbv.label;
                 value = lbv.value.intValue();
                 if(value==0)
                     continue;
-                stringBuilder.append("<facet>");
-                stringBuilder.append("<dim>");
-                stringBuilder.append(getFullName(fcr.dim));
-                stringBuilder.append("</dim>");
-                stringBuilder.append("<label>");
-                stringBuilder.append(fctName);
-                stringBuilder.append("</label>");
-                stringBuilder.append("<value>");
-                stringBuilder.append(value);
-                stringBuilder.append("</value>");
-                stringBuilder.append("</facet>");
-                AllDims.put(fctName, fcr.dim);
+                if(fctName.equalsIgnoreCase("n/a")){
+                    NAFreq = value;
+                    continue;
+                }
+                addToStringBuilder(stringBuilder, fcr.dim, fctName, value);
             }
+            addToStringBuilder(stringBuilder, fcr.dim, "n/a", NAFreq);
         }
         stringBuilder.append("</facets>");
         FACET_RESULTS = stringBuilder.toString();
     }
+
+    private static void addToStringBuilder(StringBuilder stringBuilder, String dim, String fctName, int value){
+        stringBuilder.append("<facet>");
+        stringBuilder.append("<dim>");
+        stringBuilder.append(getFullName(dim));
+        stringBuilder.append("</dim>");
+        stringBuilder.append("<label>");
+        stringBuilder.append(fctName);
+        stringBuilder.append("</label>");
+        stringBuilder.append("<value>");
+        stringBuilder.append(value);
+        stringBuilder.append("</value>");
+        stringBuilder.append("</facet>");
+        AllDims.put(fctName, dim);
+    }
+
 
     public static String getFacetResults(){
         return  FACET_RESULTS;
@@ -124,9 +142,9 @@ public class FacetManager {
             //                searcher.search(new MatchAllDocsQuery(), facetsCollector); new MatchAllDocsQuery()
             List<FacetResult> results = new ArrayList<>();
             Facets facets = new FastTaxonomyFacetCounts(FacetManager.getTaxonomyReader(), FacetManager.FACET_CONFIG, facetsCollector);
-            FacetResult organ = facets.getTopChildren(10, "organ");
-            FacetResult compound = facets.getTopChildren(10, "compound");
-            FacetResult tech = facets.getTopChildren(10, "tech");
+            FacetResult organ = facets.getTopChildren(20, "organ");
+            FacetResult compound = facets.getTopChildren(20, "compound");
+            FacetResult tech = facets.getTopChildren(20, "tech");
             List <FacetResult>allResults = new ArrayList();
             allResults.add(organ);
             allResults.add(compound);
@@ -138,6 +156,14 @@ public class FacetManager {
     }
 
     public static String getFacetDim(String facetName){
+        if(facetName.equalsIgnoreCase("n/a1"))
+            return "tech";
+        else
+        if(facetName.equalsIgnoreCase("n/a2"))
+            return "compound";
+        else
+        if(facetName.equalsIgnoreCase("n/a3"))
+            return "organ";
         return AllDims.get(facetName);
     }
 

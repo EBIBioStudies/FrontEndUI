@@ -26,6 +26,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.NumericValue;
+import net.sf.saxon.value.StringValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.facet.FacetField;
@@ -112,8 +113,13 @@ public class Indexer {
                                 logger.error("Date fields are not supported yet, field [{}] will not be created", field.name);
                             } else if ("boolean".equals(field.type)) {
                                 addBooleanIndexField(d, field.name, v);
-                            } else if(!v.getStringValue().isEmpty() && "facet".equalsIgnoreCase(field.type)) {
-                                addFacetField(d, v, field.name);
+                            } else if("facet".equalsIgnoreCase(field.type)) {
+                                if(v.getStringValue().isEmpty())
+                                    addFacetField(d, new StringValue("n/a"), field.name);
+                                else if(!field.name.equalsIgnoreCase("compound"))
+                                    addFacetField(d, v, field.name);
+                                else
+                                    addCompound(d, v);
                             }
                             else {
                                 addStringField(d, field.name, v, field.shouldAnalyze, field.shouldStore, field.boost);
@@ -157,6 +163,13 @@ public class Indexer {
 
     private void addFacetField(Document d, Item value, String name){
         d.add(new FacetField(name, value.getStringValue().trim().toLowerCase()));
+    }
+    private void addCompound(Document doc, Item value){
+        String rvalue =value.getStringValue().toLowerCase();
+        for(String compName : FacetManager.COMPOUNDS) {
+            if(rvalue.contains(compName))
+                doc.add(new FacetField("compound", compName));
+        }
     }
 
     private void addXMLField(Document d, Item node) throws IndexerException {

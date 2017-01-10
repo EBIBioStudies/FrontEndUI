@@ -143,8 +143,8 @@ public class Querier {
             shouldReverse = !shouldReverse;
         }
         SortField sortField = sortFieldType==SortField.Type.LONG
-                    ? new SortedNumericSortField (sortBy, sortFieldType, shouldReverse)
-                    : new SortField(sortBy, sortFieldType, shouldReverse);
+                ? new SortedNumericSortField (sortBy, sortFieldType, shouldReverse)
+                : new SortField(sortBy, sortFieldType, shouldReverse);
         Sort sort = new Sort( sortField );
 
         try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
@@ -175,7 +175,7 @@ public class Querier {
             // if page is from search results, get the first hit only since it should be the one with the accession match
             if (isDetailPage && hits.totalHits>0) {
                 NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(
-                                reader.document(hits.scoreDocs[0].doc).get("xml"));
+                        reader.document(hits.scoreDocs[0].doc).get("xml"));
                 if(nodeInfo!=null) {
                     matchingNodes.add(nodeInfo);
                     try {
@@ -394,8 +394,13 @@ public class Querier {
         Map<String, String> facets = extractFacetParametersFromRequest(params);
         DrillDownQuery drillDownQuery = new DrillDownQuery(FacetManager.FACET_CONFIG, query);
         for(String facet: facets.keySet())
-            drillDownQuery.add(facets.get(facet), facet);
+            drillDownQuery.add(facets.get(facet), trimNaFacetName(facet));
 
         return drillDownQuery;
+    }
+    private  String trimNaFacetName(String facetName){
+        if(facetName.toLowerCase().contains("n/a"))
+            return "n/a";
+        else return facetName;
     }
 }

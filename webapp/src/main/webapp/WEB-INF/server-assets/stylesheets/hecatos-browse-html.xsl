@@ -161,9 +161,9 @@
                                         <p>
                                             <xsl:if test="$vTotal>0">
                                                 <h5 id="browsehecatos">
-                                                    <a id="hecatos-ref" title="Browse HeCaToS">
+                                                    <a id="hecatos-ref" title="Update">
                                                         <div id="hecatos-div" class="icon icon-functional home-icon" data-icon="1">
-                                                            Browse <xsl:value-of select="$project-title"/></div>
+                                                            Update</div>
                                                     </a>
                                                 </h5>
                                             </xsl:if>
@@ -212,9 +212,9 @@
                     <li style="height:25px">
                         <!--<xsl:variable name="lid" select="concat( concat('facet',"$vFacetPosition1"), position())"/>-->
                         <xsl:variable name="lid" select="concat(concat('facet',$vFacetPosition), position())"/>
-                        <input class="facet-value" type="checkbox"><xsl:attribute name="id" select="$lid" /><xsl:attribute name="value" select="." /><xsl:attribute
+                        <input class="facet-value" type="checkbox"><xsl:attribute name="id" select="$lid" /><xsl:attribute name="value" select="if(lower-case(.)='n/a') then concat(.,$vFacetPosition) else (.)" /><xsl:attribute
                                 name="data-facet" select="$vFacet"/></input>
-                        <label class="facet-label-class"><xsl:attribute name="for" select="$lid" /><xsl:value-of select="."/><span class="facet-freq-class"><xsl:value-of select="$vFacetData/facets/facet[label=$vFacetVal]/value"/></span></label> <!--fn:string-length(.)-->
+                        <label class="facet-label-class"><xsl:attribute name="for" select="$lid" /><xsl:value-of select="."/><span class="facet-freq-class"><xsl:value-of select="$vFacetData/facets/facet[label=$vFacetVal and lower-case(dim)=lower-case($vFacet)]/value"/></span></label> <!--fn:string-length(.)-->
                     </li>
                 </xsl:for-each>
             </ul>
@@ -311,12 +311,12 @@
                 <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
             </xsl:if>
             <xsl:if test="exists($vSuggestions) and $vSuggestions!=''">
-            <h3>Did you mean...</h3>
-            <ul>
-                <xsl:for-each select="$vSuggestions">
-                    <li><a href="search.html?query={.}"><xsl:value-of select="." /></a></li>
-                </xsl:for-each>
-            </ul>
+                <h3>Did you mean...</h3>
+                <ul>
+                    <xsl:for-each select="$vSuggestions">
+                        <li><a href="search.html?query={.}"><xsl:value-of select="." /></a></li>
+                    </xsl:for-each>
+                </ul>
             </xsl:if>
 
         </section>
@@ -335,7 +335,7 @@
             <xsl:if test="exists($keywords) and $keywords!=''">
                 <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> resulted in an error.</p>
             </xsl:if>
-             <p>Our servers may be busy. Please try again later and <a href="#" class="feedback">contact us</a> if the error persists.</p>
+            <p>Our servers may be busy. Please try again later and <a href="#" class="feedback">contact us</a> if the error persists.</p>
         </section>
         <aside class="grid_6 omega shortcuts" id="search-extras">
             <div id="ebi_search_results">
