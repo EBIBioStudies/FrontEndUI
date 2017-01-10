@@ -76,9 +76,9 @@ public abstract class AuthAwareApplicationServlet extends ApplicationServlet {
         try {
             CookieMap cookies = new CookieMap(request.getCookies());
             String userName = cookies.getCookieValue(AE_LOGIN_USER_COOKIE);
-            if (null != userName) {
-                userName = URLDecoder.decode(userName, "UTF-8");
-            }
+//            if (null != userName) { // Commenting this to enable + sign in username
+//                userName = URLDecoder.decode(userName, "UTF-8");
+//            }
             //TODO: token is hashed password for now. Check if it should be replaced
             String token = cookies.getCookieValue(AE_LOGIN_TOKEN_COOKIE);
             Users users = getComponent(Users.class);

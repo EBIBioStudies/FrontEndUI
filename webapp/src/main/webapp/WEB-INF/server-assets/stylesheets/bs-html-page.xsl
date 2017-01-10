@@ -36,6 +36,7 @@
     <xsl:param name="project-title" select="''"/>
     <xsl:param name="project-description" select="''"/>
     <xsl:param name="project-url" select="''"/>
+    <xsl:param name="project-logo" select="''"/>
 
     <xsl:output omit-xml-declaration="yes" method="html" indent="no" encoding="UTF-8"/>
 
@@ -307,15 +308,15 @@
                     </div>
                     <xsl:if test="$project">
                         <div class="project-banner clearfix">
-                            <span class="project-banner-content">
-                                <div class="project-logo">
+                            <div class="project-banner-content columns medium-12 clearfix row">
+                                <span class="project-logo">
                                     <a class="no-border" href="{$project-url}" target="_blank">
-                                        <img src="{$context-path}/files/{lower-case($project)}/logo.png"/></a>
-                                </div>
-                                <div class="project-text">
+                                        <img src="{$context-path}/files/{lower-case($project)}/{$project-logo}"/></a>
+                                </span>
+                                <span class="project-text">
                                     <span class="project-description"><xsl:value-of select="$project-description"/></span>
-                                </div>
-                            </span>
+                                </span>
+                            </div>
                         </div>
                     </xsl:if>
             </div>

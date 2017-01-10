@@ -892,7 +892,7 @@ p.center {
 .project-text{
     vertical-align: middle;
     color: #777;
-    display: table-cell;
+    /* display: table-cell; */
     padding-left: 10px;
 }
 .project-title{
@@ -909,6 +909,7 @@ p.center {
 .project-logo {
     padding-right:15px;
     height: 50px;
+    /* display: table-cell; */
 }
 .project-logo img{
     height: 50px !important;
@@ -916,7 +917,7 @@ p.center {
 }
 .project-banner-content {
     padding: 10px;
-    display: table;
+    text-align: left;
 }
 
 .no-select {

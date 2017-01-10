@@ -253,6 +253,9 @@ public class Querier {
                     params.put("project-url", new String[] {
                             saxon.evaluateXPathSingleAsString(projectXML,
                                     "study/attribute[lower-case(@name)='url']/value")});
+                    params.put("project-logo", new String[] {
+                            saxon.evaluateXPathSingleAsString(projectXML,
+                                    "//file[attribute/value='logo']/@path")});
                 } catch (XPathException e) {
                     throw new SaxonException(e);
                 }
