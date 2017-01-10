@@ -55,25 +55,31 @@
 
 a:link,
 a:visited {
-    color: var(--A3);
-    border-bottom-color: var(--A1);
+    /*color: var(--A3);*/
+    /*border-bottom-color: var(--A1);*/
+    color: #2A3A9B;
+    border-bottom-color: #8190EF;
 }
 
 a:hover,
 a:focus,
 a:active {
-    color: var(--B3);
+    /*color: var(--B3);*/
+    color: #259C55;
 }
 
 a.special:hover,
 a.special:focus,
 a.special:active {
-    color: var(--P1);
-    border-bottom: 3px double var(--P1);
+    /*color: var(--P1);*/
+    /*border-bottom: 3px double var(--P1);*/
+    color: #75C8EC;
+    border-bottom: 3px double #75C8EC;
 }
 
 a.special {
-    background-color: var(--B5);
+    /*background-color: var(--B5);*/
+    background-color: #B0F8CD;
 }
 
 /* Headings */
@@ -82,11 +88,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    color: var(--P1);
+    /*color: var(--P1);*/
+    color: #75C8EC;
 }
 
 h2 {
-    color: var(--C2);
+    /*color: var(--C2);*/
+    color: #BF9C73;
 }
 
 h1 a:link,
@@ -101,21 +109,24 @@ h3 a:visited,
 h4 a:visited,
 h5 a:visited,
 h6 a:visited {
-    border-bottom-color: var(--P1);
+    /*border-bottom-color: var(--P1);*/
+    border-bottom-color: #75C8EC;
     border-bottom-width: 0px;
     border-bottom-style: none;
 }
 
 /* Table heading cells */
 th {
-    background-color: var(--B1);
+    /*background-color: var(--B1);*/
+    background-color: #72F1A5;
 }
 
 
 
 /* Define the basic colour your local masthead */
 div#local-masthead {
-    background-color: var(--P1);
+    /*background-color: var(--P1);*/
+    background-color:  #75C8EC;
 }
 /*form#local-search fieldset {*/
     /*background-color: #F7F7F7;*/
@@ -130,5 +141,6 @@ div#local-masthead {
 /*}*/
 
 #local-search [type="submit"] {
-    background-color: var(--P1);
+    /*background-color: var(--P1);*/
+    background-color:  #75C8EC;
 }
