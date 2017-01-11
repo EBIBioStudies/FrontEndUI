@@ -18,7 +18,7 @@
 (function($, undefined) {
     if($ == undefined) throw "jQuery not loaded";
     $(function() {
-        $.getJSON( contextPath + "/servlets/query/-/home/json?type=Study&pagesize=5&sortby=release_date", function( data ) {
+        $.getJSON( contextPath + "/servlets/query/-/home/json?query=type:study&pagesize=5&sortby=release_date", function( data ) {
             $('#studyCount').text(data.studies.total + (data.studies.total==1 ? ' study' : ' studies') );
             if (data.studies.study) {
                 var studies =  $.isArray(data.studies.study) ? data.studies.study.slice(0, 5) : [data.studies.study];
@@ -30,7 +30,7 @@
                 $('#latest').fadeIn();
             }
         });
-        $.getJSON( contextPath + "/servlets/query/-/home/json?type=Project", function( data ) {
+        $.getJSON( contextPath + "/servlets/query/-/home/json?query=type:project", function( data ) {
             if (data.studies.total>0) {
                 $('#projectCount').text(data.studies.total + (data.studies.total == 1 ? ' project' : ' projects'));
                 $('#projectCountStats').fadeIn();

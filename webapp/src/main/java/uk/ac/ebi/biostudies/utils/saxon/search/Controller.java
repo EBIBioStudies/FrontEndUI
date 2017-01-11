@@ -40,7 +40,7 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
 
     private Configuration config;
     private QueryPool queryPool;
-    private IQueryConstructor queryConstructor;
+    private QueryConstructor queryConstructor;
     private IQueryExpander queryExpander;
     private IQueryHighlighter queryHighlighter;
     private IQueryInfoParameterAccessor queryInfoParameterGetter;
@@ -61,7 +61,7 @@ public class Controller implements IHighlighter, IQueryInfoAccessor {
         BooleanQuery.setMaxClauseCount(Integer.MAX_VALUE);
     }
 
-    public void setQueryConstructor(IQueryConstructor queryConstructor) {
+    public void setQueryConstructor(QueryConstructor queryConstructor) {
         this.queryConstructor = queryConstructor;
     }
 
