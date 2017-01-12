@@ -18,17 +18,15 @@
 package uk.ac.ebi.biostudies.utils.saxon.search;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.WildcardQuery;
 import uk.ac.ebi.biostudies.utils.AccessType;
 
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Map;
 
 public class QueryConstructor implements IQueryConstructor {
@@ -39,33 +37,6 @@ public class QueryConstructor implements IQueryConstructor {
     protected final static String FIELD_ACCESS = "access";
     protected final static String FIELD_PROJECT = "project";
     protected final static String FIELD_TYPE = "type";
-
-    public Query createQuery(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException{
-        String queryStr = "";
-        try {
-            String fullQueryString = querySource.get("query-string")[0];
-            List<NameValuePair> params = URLEncodedUtils.parse(fullQueryString, Charset.forName("UTF-8"));
-            if(params!=null)
-                for(NameValuePair prms : params){
-                    if(prms.getName().equalsIgnoreCase("query")) {
-                        queryStr = prms.getValue();
-                        break;
-                    }
-                }
-            queryStr = URLDecoder.decode(queryStr, "UTF-8");
-        }
-        catch(Throwable ex){
-            queryStr="";
-        }
-        QueryParser parser = new QueryParser(FIELD_KEYWORDS, env.indexAnalyzer);
-        if(!queryStr.equalsIgnoreCase(""))
-            return parser.parse(queryStr);
-        else {
-            querySource.put("queryIsEmpty",new String[]{"true"});
-            return new MatchAllDocsQuery();
-        }
-    }
-
 
     @Override
     public Query construct(IndexEnvironment env, Map<String, String[]> querySource) throws ParseException {

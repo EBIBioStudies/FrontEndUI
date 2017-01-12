@@ -40,7 +40,7 @@ public class QueryPool {
 
     public Integer addQuery(
             IndexEnvironment env
-            , QueryConstructor queryConstructor
+            , IQueryConstructor queryConstructor
             , Map<String, String[]> queryParams
             , IQueryExpander queryExpander)
             throws ParseException, IOException {
@@ -54,7 +54,7 @@ public class QueryPool {
 
         info.setIndexId(env.indexId);
         info.setParams(queryParams);
-        info.setQuery(queryConstructor.createQuery(env, queryParams));
+        info.setQuery(queryConstructor.construct(env, queryParams));
         if (null != queryExpander) {
             info.setQuery(queryExpander.expandQuery(env, info));
         }
