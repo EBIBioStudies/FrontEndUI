@@ -161,6 +161,16 @@ public class Indexer {
         }
     }
 
+    public void commit(){
+        IndexWriter w = indexWriters.get(env.indexId);
+        try {
+            w.commit();
+            logger.info("changes are committed to index");
+        }catch (Exception ex){
+            logger.error("problem in committing index changes", ex);
+        }
+    }
+
     private void addFacetField(Document d, Item value, String name){
         d.add(new FacetField(name, value.getStringValue().trim().toLowerCase()));
     }

@@ -40,7 +40,7 @@ public class FacetManager {
     public static String TAXO_PATH = null;
     private static String FACET_RESULTS;
     private static Map <String, String> AllDims = new HashMap<>();
-    public static void init(){
+    public static synchronized void init(){
         FACET_CONFIG.setMultiValued("compound", true);
         for(String cmp:COMPOUNDS){
             ALL_COMPOUNDS.put(cmp, cmp);
@@ -54,7 +54,7 @@ public class FacetManager {
         }
     }
 
-    public static TaxonomyWriter getTaxonomyWriter(){
+    public static synchronized TaxonomyWriter getTaxonomyWriter(){
         if(TAXONOMY_WRITER==null)
             init();
         return TAXONOMY_WRITER;
