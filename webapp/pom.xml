@@ -94,7 +94,7 @@
                 <interface.application.pref.test.integration.server.url>http://localhost:8080</interface.application.pref.test.integration.server.url>
                 <interface.application.pref.users.authentication.url>http://biostudy-dev.ebi.ac.uk:10180/biostd-beta/checkAccess</interface.application.pref.users.authentication.url>
                 <interface.application.pref.files.temp-zip.location>/nfs/public/rw/fg/tmp/biostudies/zips/beta</interface.application.pref.files.temp-zip.location>
-                <interface.application.pref.files.ftp.url>ftp://ftp.ebi.ac.uk/pub/databases/biostudies/beta/public/</interface.application.pref.files.ftp.url>
+                <interface.application.pref.files.ftp.url>ftp://ftp.biostudies.ebi.ac.uk/pub/.beta/</interface.application.pref.files.ftp.url>
             </properties>
         </profile>
         <profile>
