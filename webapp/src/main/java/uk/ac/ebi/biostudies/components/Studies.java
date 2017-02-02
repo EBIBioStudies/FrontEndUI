@@ -169,77 +169,22 @@ public class Studies extends ApplicationComponent  {
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
         if (isNotBlank(sourceLocation)) {
             File xmlFile = new File(sourceLocation, xmlFileName);
-            updateFromXMLFile(xmlFile, deleteFileAfterProcessing, makeCopy);
+            Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
+            MultithreadStudyParser.updateFromXMLFile(xmlFile, deleteFileAfterProcessing, makeCopy, sourceLocation, indexer, saxon, autocompletion);
         }
     }
 
     public synchronized void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
-        updateFromXMLFile(originalXMLFile, deleteFileAfterProcessing, true);
+        String sourceLocation = getPreferences().getString("bs.studies.source-location");
+        Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
+        MultithreadStudyParser.updateFromXMLFile(originalXMLFile, deleteFileAfterProcessing, true, sourceLocation, indexer, saxon, autocompletion);
     }
 
-        // Updates the index one study at a time
+    // Updates the index one study at a time
     public synchronized void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing, boolean makeCopy) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
-        File xmlFile;
-        if (makeCopy) {
-            xmlFile = new File(System.getProperty("java.io.tmpdir"), originalXMLFile.getName());
-            logger.info("Making a local copy  of {} at {}", originalXMLFile.getAbsolutePath(), xmlFile.getAbsolutePath());
-            com.google.common.io.Files.copy(originalXMLFile, xmlFile);
-        } else {
-            xmlFile = originalXMLFile;
-        }
         String sourceLocation = getPreferences().getString("bs.studies.source-location");
-        if (isNotBlank(sourceLocation)) {
-            logger.info("Reload of experiment data from [{}] requested", sourceLocation);
-            Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
-            if (xmlFile.getName().equalsIgnoreCase("studies.xml")) {
-                indexer.clearIndex(false);
-            }
-            try (InputStreamReader inputStreamReader= new InputStreamReader(new FileInputStream(xmlFile), "UTF-8")) {
-                XMLEventReader reader = XMLInputFactory.newInstance().createXMLEventReader(inputStreamReader);
-                XMLEventWriter writer = null;
-                StringWriter buffer = null;
-                XMLOutputFactory outputFactory = XMLOutputFactory.newFactory();
-                XMLEvent xmlEvent = reader.nextEvent(); // Advance to statements element
-                List<Source> submissionQueue = new ArrayList<>();
-                int count = 0;
-                do {
-                    if (writer != null) writer.add(xmlEvent);
-                    if (xmlEvent.isStartElement()
-                            && "submission".equalsIgnoreCase(((StartElement) xmlEvent).getName().getLocalPart())) {
-                        buffer = new StringWriter();
-                        writer = outputFactory.createXMLEventWriter(buffer);
-                        writer.add(xmlEvent);
-                    } else if (xmlEvent.isEndElement()
-                            && "submission".equalsIgnoreCase(((EndElement) xmlEvent).getName().getLocalPart())) {
-                        writer.flush();
-                        writer.close();
-                        submissionQueue.add(saxon.buildDocument(buffer.toString()));
-                        if (++count % SUBMISSIONS_PER_BATCH == 0) {
-                            logger.info("Processed {} submissions", count - 1);
-                            logger.info("Queued {} submissions for processing", submissionQueue.size());
-                            try {
-                                processSubmissionQueue(indexer, submissionQueue, false);
-                            } catch (Exception ie) {
-                                logger.error("Indexer threw an exception", ie);
-                                logger.debug("Trying to index the rest of the submissions");
-                            }
-                            submissionQueue.clear();
-                        }
-                        writer = null;
-                        buffer = null;
-                    }
-                    xmlEvent = reader.nextEvent();
-                } while (!xmlEvent.isEndDocument());
-
-                logger.info("Queued {} submissions for processing", submissionQueue.size());
-                processSubmissionQueue(indexer, submissionQueue, true);
-            }
-            autocompletion.rebuild();
-        }
-        if (deleteFileAfterProcessing) {
-            xmlFile.delete();
-        }
-        FacetManager.closeTaxonomy();
+        Indexer indexer = new Indexer(INDEX_ID, saxon.getxPathEvaluator());
+        MultithreadStudyParser.updateFromXMLFile(originalXMLFile, deleteFileAfterProcessing, makeCopy, sourceLocation, indexer, saxon, autocompletion);
     }
 
     private void processSubmissionQueue(Indexer indexer, List<Source> submissions, boolean commit) throws XPathException, IndexerException, InterruptedException, IOException, SaxonException {
@@ -326,91 +271,6 @@ public class Studies extends ApplicationComponent  {
     }
 
 
-//    private void updateMaps() throws IOException {
-//        this.logger.debug("Updating maps for studies");
-//
-//        maps.clearMap(MAP_VISIBLE_EXPERIMENTS);
-//        maps.clearMap(MAP_EXPERIMENTS_FOR_PROTOCOL);
-//        maps.clearMap(MAP_EXPERIMENTS_FOR_ARRAY);
-//        users.clearUserMap(INDEX_ID);
-//
-//        try {
-//            List<Object> documentNodes = saxon.evaluateXPath(getDocument(), "/experiments/experiment[source/@visible = 'true']");
-//
-//            for (Object node : documentNodes) {
-//                try {
-//                    NodeInfo exp = (NodeInfo) node;
-//
-//                    String accession = saxon.evaluateXPathSingleAsString(exp, "accession");
-//                    maps.setMappedValue(MAP_VISIBLE_EXPERIMENTS, accession, exp);
-//                    List<Object> userIds = saxon.evaluateXPath(exp, "user/@id");
-//                    if (null != userIds && userIds.size() > 0) {
-//                        Set<String> usersForExperiment = new HashSet<>(userIds.size());
-//                        for (Object userId : userIds) {
-//                            String id = ((Item) userId).getStringValue();
-//
-//                            @SuppressWarnings("unchecked")
-//                            Set<String> experimentsForUser = (Set<String>) maps.getMappedValue(MAP_EXPERIMENTS_FOR_USER, id);
-//                            if (null == experimentsForUser) {
-//                                experimentsForUser = new HashSet<>();
-//                                maps.setMappedValue(MAP_EXPERIMENTS_FOR_USER, id, experimentsForUser);
-//                            }
-//                            experimentsForUser.add(accession);
-//                            usersForExperiment.add(id);
-//                        }
-//                        users.setUserMapping(INDEX_ID, accession, usersForExperiment);
-//                    }
-//
-//                    List<Object> protocolIds = saxon.evaluateXPath(exp, "protocol/id");
-//                    if (null != protocolIds) {
-//                        for (Object protocolId : protocolIds) {
-//                            String id = ((Item) protocolId).getStringValue();
-//                            @SuppressWarnings("unchecked")
-//                            Set<String> experimentsForProtocol = (Set<String>) maps.getMappedValue(MAP_EXPERIMENTS_FOR_PROTOCOL, id);
-//                            if (null == experimentsForProtocol) {
-//                                experimentsForProtocol = new HashSet<>();
-//                                maps.setMappedValue(MAP_EXPERIMENTS_FOR_PROTOCOL, id, experimentsForProtocol);
-//                            }
-//                            experimentsForProtocol.add(accession);
-//                        }
-//                    }
-//                    List<Object> arrayAccessions = saxon.evaluateXPath(exp, "arraydesign/accession");
-//                    if (null != arrayAccessions) {
-//                        for (Object arrayAccession : arrayAccessions) {
-//                            String arrayAcc = ((Item) arrayAccession).getStringValue();
-//                            @SuppressWarnings("unchecked")
-//                            Set<String> experimentsForArray = (Set<String>) maps.getMappedValue(MAP_EXPERIMENTS_FOR_ARRAY, arrayAcc);
-//                            if (null == experimentsForArray) {
-//                                experimentsForArray = new HashSet<>();
-//                                maps.setMappedValue(MAP_EXPERIMENTS_FOR_ARRAY, arrayAcc, experimentsForArray);
-//                            }
-//                            experimentsForArray.add(accession);
-//                        }
-//                    }
-//                } catch (XPathException x) {
-//                    this.logger.error("Caught an exception:", x);
-//                }
-//            }
-//
-//            this.logger.debug("Maps updated");
-//        } catch (Exception x) {
-//            this.logger.error("Caught an exception:", x);
-//        }
-//    }
-//
-//    private void buildSpeciesArrays() throws IOException {
-//        // todo: move this to a separate component (autocompletion?)
-//        try {
-//            String speciesString = saxon.transformToString(this.getDocument(), "build-species-list-html.xsl", null);
-//            this.species.setObject(new PersistableString(speciesString));
-//
-//            String arraysString = saxon.transformToString(this.getDocument(), "build-arrays-list-html.xsl", null);
-//            this.arrays.setObject(new PersistableString(arraysString));
-//        } catch (SaxonException x) {
-//            throw new RuntimeException(x);
-//        }
-//
-//    }
 
 
 }

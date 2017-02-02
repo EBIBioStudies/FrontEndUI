@@ -29,7 +29,7 @@
 
         <interface.application.pref.reports.recipients>biostudies-mgmt&#64;ebi.ac.uk</interface.application.pref.reports.recipients>
         <interface.application.pref.reports.hidden-recipients>awais&#64;ebi.ac.uk</interface.application.pref.reports.hidden-recipients>
-        <interface.application.pref.feedback.recipients>awais&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
+        <interface.application.pref.feedback.recipients>biostudies&#64;ebi.ac.uk</interface.application.pref.feedback.recipients>
         <interface.application.pref.remind.recipients>biostudies-mgmt&#64;ebi.ac.uk</interface.application.pref.remind.recipients>
 
         <interface.application.pref.studies.source.location>/nfs/biostudies/.adm/databases/prod/updates</interface.application.pref.studies.source.location>

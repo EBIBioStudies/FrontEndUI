@@ -338,7 +338,7 @@
                 height = floatingHeader.prev().height();
 
 
-            if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
+            if ((scrollTop > offset.top)) {
                 if (!floatingHeader.hasClass("visible")) {
                     floatingHeader.addClass("floating-panel").addClass("visible").css({
                         "width": width + "px"

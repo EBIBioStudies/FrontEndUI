@@ -49,9 +49,8 @@
 
 #study-facet{
     clear:right;
-    float:right;
+    float:left;
     position:relative;
-    margin-right: -110px;
 }
 
 .home-icon:before {
@@ -69,7 +68,7 @@
 .facet-freq-class{
     font-size:small;
     color: #ffffff;
-    background-color:var(--A1);
+    background-color:#8190EF;/*var(--A1);*/
     padding:3px;
     border-radius:30%;
     margin-left:5px;
@@ -77,7 +76,17 @@
 
 .facet-label-class{
     font-size:medium;
-    color:var(--C3);
+    color: #A66A27;/*var(--C3);*/
+}
+
+#browse-studies{
+    float:right;
+    max-width: 800px;
+    clear:right;
+}
+
+#browse-studies .browse-study{
+    width:100%;
 }
 
 

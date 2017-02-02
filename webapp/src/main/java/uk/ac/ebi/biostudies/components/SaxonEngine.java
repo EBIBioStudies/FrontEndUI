@@ -305,14 +305,14 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
         try {
             Templates templates;
             if (!templatesCache.containsKey(stylesheet)) {
-                logger.debug("Caching prepared stylesheet [{}]", stylesheet);
+//                logger.debug("Caching prepared stylesheet [{}]", stylesheet);
                 // Open the stylesheet
                 Source xslSource = resolve(stylesheet, null);
 
                 templates = trFactory.newTemplates(xslSource);
                 templatesCache.put(stylesheet, templates);
             } else {
-                logger.debug("Getting prepared stylesheet [{}] from cache", stylesheet);
+//                logger.debug("Getting prepared stylesheet [{}] from cache", stylesheet);
                 templates = templatesCache.get(stylesheet);
             }
             Transformer xslt = templates.newTransformer();
@@ -337,9 +337,9 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
             }
 
             // Perform the transformation, sending the output to the response.
-            logger.debug("Performing transformation, stylesheet [{}]", stylesheet);
+//            logger.debug("Performing transformation, stylesheet [{}]", stylesheet);
             xslt.transform(src, dst);
-            logger.debug("Transformation completed");
+//            logger.debug("Transformation completed");
 
             result = true;
         } catch (TerminationException x) {
