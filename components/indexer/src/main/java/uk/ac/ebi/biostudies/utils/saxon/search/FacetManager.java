@@ -78,8 +78,10 @@ public class FacetManager {
 
     public static void closeTaxonomy(){
         try {
+            TAXONOMY_WRITER.commit();
             TAXONOMY_WRITER.close();
             TAXONOMY_WRITER = null;
+            FACET_RESULTS = null;
         } catch (IOException e) {
             logger.error("Closing taxonomy writer failed! ",e);
         }
@@ -145,13 +147,18 @@ public class FacetManager {
             FacetResult organ = facets.getTopChildren(20, "organ");
             FacetResult compound = facets.getTopChildren(20, "compound");
             FacetResult tech = facets.getTopChildren(20, "tech");
+            FacetResult dataType = facets.getTopChildren(20, "datatype");
+            FacetResult rawProcessed = facets.getTopChildren(20, "rawprocessed");
             List <FacetResult>allResults = new ArrayList();
             allResults.add(organ);
             allResults.add(compound);
             allResults.add(tech);
+            allResults.add(dataType);
+            allResults.add(rawProcessed);
             FacetManager.setFacetXmlFromFacetResults(allResults);
         }catch (Exception ex){
             logger.error("Problem in extracting facet counts", ex);
+            closeTaxonomy();
         }
     }
 
@@ -164,12 +171,23 @@ public class FacetManager {
         else
         if(facetName.equalsIgnoreCase("n/a3"))
             return "organ";
+        else
+        if(facetName.equalsIgnoreCase("n/a4"))
+            return "datatype";
+        else
+        if(facetName.equalsIgnoreCase("n/a5"))
+            return "rawprocessed";
+        else
         return AllDims.get(facetName);
     }
 
     private static String getFullName(String dim){
         if(dim.equalsIgnoreCase("tech"))
             return "Assay Technology Type";
+        if(dim.equalsIgnoreCase("datatype"))
+            return "Data Type";
+        if(dim.equalsIgnoreCase("rawprocessed"))
+            return "Raw/Processed";
         else return  dim;
     }
 

@@ -108,6 +108,26 @@
                 </xsl:otherwise>
             </xsl:choose>
         </tech>
+        <datatype>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='data type'])">
+                    <xsl:value-of select="attributes/attribute[fn:lower-case(normalize-space(name))='data type']/value"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='data type']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </datatype>
+        <rawprocessed>
+            <xsl:choose>
+                <xsl:when test="fn:exists(attributes/attribute[fn:lower-case(normalize-space(name))='raw/processed'])">
+                    <xsl:value-of select="attributes/attribute[fn:lower-case(normalize-space(name))='raw/processed']/value"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../attributes/attribute[fn:lower-case(normalize-space(name))='raw/processed']/value"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </rawprocessed>
         <xsl:for-each select="subsections/section[fn:lower-case(@type)='author']">
             <!--xsl:if test="fn:position() = 1 or fn:position() = fn:last()" -->
             <author index="{fn:position()}">

@@ -19,6 +19,8 @@
             <field name="organ" title="organ" type="facet" path="organ" analyze="false" expand="false" escape="false"/>
             <field name="compound" title="compound" type="facet" path="compound" analyze="false" expand="false" escape="false"/>
             <field name="tech" title="Assay Technology Type" type="facet" path="tech" analyze="false" expand="false" escape="false"/>
+            <field name="datatype" title="Data Type" type="facet" path="datatype" analyze="false" expand="false" escape="false"/>
+            <field name="rawprocessed" title="Raw/Processed" type="facet" path="rawprocessed" analyze="false" expand="false" escape="false"/>
         </document>
     </index>
 </configuration>

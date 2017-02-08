@@ -198,7 +198,7 @@
         <xsl:param name="pPosition"/>
         <xsl:param name="pStudies"/>
         <xsl:param name="vFacetData"/>
-        <xsl:variable name="vFacets" select="('Assay Technology Type','Compound','Organ')"/>
+        <xsl:variable name="vFacets" select="('Assay Technology Type','Compound','Organ', 'Data Type', 'Raw/Processed')"/>
 
 
         <xsl:for-each select="$vFacets">
