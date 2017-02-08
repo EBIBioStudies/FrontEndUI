@@ -364,10 +364,7 @@ public class Querier {
                         break;
                     }
                 }
-            if(queryStr!=null && !queryStr.isEmpty()) {
-                queryStr = URLDecoder.decode(queryStr, "UTF-8");
-            }
-            else
+            if(queryStr==null || queryStr.isEmpty())
                 return result;
         }
         catch (Exception ex){

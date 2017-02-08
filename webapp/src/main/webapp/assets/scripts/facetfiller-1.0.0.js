@@ -6,7 +6,7 @@
         $( document ).ready(function() {
             var url = decodeURIComponent(window.location.href);
             $('input[type=checkbox].facet-value').each(function () {
-                if(url.indexOf(this.value)>0)
+                if(url.indexOf(this.value+",")>0)
                     this.checked = true;
             });
         });
@@ -21,7 +21,10 @@
             var loc = window.location.href;
             if(loc.indexOf("?facets")>0)
                 loc = loc.replace(/\?facets=.*/g, "");
+            else if(loc.indexOf("&facets")>0)
+                    loc = loc.replace(/\&facets=.*/g, "");
 
+            sList = encodeURIComponent(sList+",");
             if(loc.indexOf("?")>=0)
                 sList = "&facets="+sList;
             else
