@@ -59,8 +59,34 @@ public class Querier {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private IndexEnvironment env;
+    private IndexSearcher indexSearcher;
+    private DirectoryReader directoryReader;
     public Querier(IndexEnvironment env) {
         this.env = env;
+        try  {
+            DirectoryReader dirReader = DirectoryReader.open(this.env.indexDirectory);
+            directoryReader = dirReader;
+            indexSearcher = new IndexSearcher(dirReader);
+            FacetManager.createTaxoReader();
+        } catch (IOException e) {
+            logger.error("problem in creating indexsearcher", e);
+        }
+    }
+
+    public IndexSearcher getIndexSearcher(){
+        try {
+            DirectoryReader newDirReader = DirectoryReader.openIfChanged(directoryReader);
+            if(newDirReader!=null)
+            {
+                directoryReader = newDirReader;
+                indexSearcher = new IndexSearcher(directoryReader);
+                FacetManager.createTaxoReader();
+            }
+
+        } catch (IOException e) {
+            logger.error("problem in updating indexsearcher", e);
+        }
+        return  indexSearcher;
     }
 
     public List<String> getTerms(String fieldName, int minFreq) throws IOException {
@@ -100,15 +126,11 @@ public class Querier {
     }
 
     public Integer getDocCount(Query query) throws IOException {
-        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
-            IndexSearcher searcher = new IndexSearcher(reader);
 
             // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
-            TopDocs hits = searcher.search(query, Integer.MAX_VALUE);
-
+            TopDocs hits = getIndexSearcher().search(query, Integer.MAX_VALUE);
 
             return hits.totalHits;
-        }
     }
 
     public List<NodeInfo> query(QueryInfo queryInfo) throws ParseException, IOException, SaxonException {
@@ -146,70 +168,68 @@ public class Querier {
                 ? new SortedNumericSortField (sortBy, sortFieldType, shouldReverse)
                 : new SortField(sortBy, sortFieldType, shouldReverse);
         Sort sort = new Sort( sortField );
-
-        try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
-            IndexSearcher searcher = new IndexSearcher(reader);
-            //if we want to search in Hecatos
-            if (params.containsKey("chkfacets")) {
-                query = searchInHecatos(searcher, query, params);
-            }
-            logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
-                    query.toString(), sort, shouldReverse);
-            TopDocs hits = searcher.search(
-                    query,
-                    isDetailPage ? 1 : Integer.MAX_VALUE,
-                    sort
-            );
-            logger.info("Search reported [{}] matches", hits.totalHits);
-
-            if (hits.totalHits==0 && params.containsKey("keywords")) {
-                String q = params.get("keywords")[0];
-                String[] suggestions = this.env.spellChecker.suggestSimilar(q,5);
-                if (suggestions.length>0) {
-                    params.put("suggestions", suggestions);
-                }
-            }
-
-            final List<NodeInfo> matchingNodes = new ArrayList<>();
-
-            // if page is from search results, get the first hit only since it should be the one with the accession match
-            if (isDetailPage && hits.totalHits>0) {
-                NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(
-                        reader.document(hits.scoreDocs[0].doc).get("xml"));
-                if(nodeInfo!=null) {
-                    matchingNodes.add(nodeInfo);
-                    try {
-                        getSimilarStudies(params, hits.scoreDocs[0], reader, searcher);
-                    } catch (Exception ex) {
-                        logger.error("Error getting similar studies", ex);
-                    }
-                }
-            } else {
-                int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
-                int pageSize = params.containsKey("pagesize") ? Integer.parseInt(params.get("pagesize")[0].toString()) : 25;
-                int from = 1+ ( page - 1 ) * pageSize <  hits.totalHits ? 1+ ( page - 1 ) * pageSize : 1;
-                int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
-                params.put("total", new String[]{hits.totalHits+""});
-                params.put("from", new String[]{from+""});
-                params.put("to", new String[]{to + ""});
-                ScoreDoc [] scoreDocs = hits.scoreDocs;
-                for (int i = from - 1; i < to; i++) {
-                    try {
-                        NodeInfo nodeInfo = getNodeInfo(reader.document(scoreDocs[i].doc), params);
-                        if(nodeInfo!=null) matchingNodes.add(nodeInfo);
-                    } catch (SaxonException e) {
-                        e.printStackTrace();
-                    }
-                }
-                addHighlights(queryInfo, params, reader, from, to, scoreDocs);
-            }
-
-            logger.info("Search completed {}", matchingNodes.size());
-
-            addProjectParameters(params, reader, searcher);
-
-            return matchingNodes;
+        IndexSearcher tempSearcher = getIndexSearcher();
+        //if we want to search in Hecatos
+        if (params.containsKey("chkfacets")) {
+            query = searchInHecatos(tempSearcher, query, params);
         }
+        logger.info("Search of index [{}] with query [{}] started sorted by {} reversed={}", env.indexId,
+                query.toString(), sort, shouldReverse);
+        TopDocs hits = tempSearcher.search(
+                query,
+                isDetailPage ? 1 : Integer.MAX_VALUE,
+                sort
+        );
+        logger.info("Search reported [{}] matches", hits.totalHits);
+
+        if (hits.totalHits==0 && params.containsKey("keywords")) {
+            String q = params.get("keywords")[0];
+            String[] suggestions = this.env.spellChecker.suggestSimilar(q,5);
+            if (suggestions.length>0) {
+                params.put("suggestions", suggestions);
+            }
+        }
+
+        final List<NodeInfo> matchingNodes = new ArrayList<>();
+
+        // if page is from search results, get the first hit only since it should be the one with the accession match
+        if (isDetailPage && hits.totalHits>0) {
+            NodeInfo nodeInfo = Application.getAppComponent(SaxonEngine.class).buildDocument(
+                    tempSearcher.getIndexReader().document(hits.scoreDocs[0].doc).get("xml"));
+            if(nodeInfo!=null) {
+                matchingNodes.add(nodeInfo);
+                try {
+                    getSimilarStudies(params, hits.scoreDocs[0], tempSearcher.getIndexReader(), tempSearcher);
+                } catch (Exception ex) {
+                    logger.error("Error getting similar studies", ex);
+                }
+            }
+        } else {
+            int page = params.containsKey("page") ? Integer.parseInt(params.get("page")[0].toString()) : 1;
+            int pageSize = params.containsKey("pagesize") ? Integer.parseInt(params.get("pagesize")[0].toString()) : 25;
+            int from = 1+ ( page - 1 ) * pageSize <  hits.totalHits ? 1+ ( page - 1 ) * pageSize : 1;
+            int to =  ( from + pageSize - 1 ) > hits.totalHits ? hits.totalHits : from + pageSize - 1;
+            params.put("total", new String[]{hits.totalHits+""});
+            params.put("from", new String[]{from+""});
+            params.put("to", new String[]{to + ""});
+            ScoreDoc [] scoreDocs = hits.scoreDocs;
+            for (int i = from - 1; i < to; i++) {
+                try {
+                    NodeInfo nodeInfo = getNodeInfo(tempSearcher.getIndexReader().document(scoreDocs[i].doc), params);
+                    if(nodeInfo!=null) matchingNodes.add(nodeInfo);
+                } catch (SaxonException e) {
+                    e.printStackTrace();
+                }
+            }
+            addHighlights(queryInfo, params, tempSearcher.getIndexReader(), from, to, scoreDocs);
+        }
+
+        logger.info("Search completed {}", matchingNodes.size());
+
+        addProjectParameters(params, tempSearcher.getIndexReader(), tempSearcher);
+
+        return matchingNodes;
+
     }
 
     private NodeInfo getNodeInfo(Document doc, Map<String, String[]> params) throws SaxonException {
@@ -331,15 +351,15 @@ public class Querier {
             QueryConstructor qc = new QueryConstructor();
             Query query = qc.construct(this.env, querySource);
             query = qc.getAccessControlledQuery(query, this.env, querySource);
-            try (IndexReader reader = DirectoryReader.open(this.env.indexDirectory)) {
-                IndexSearcher searcher = new IndexSearcher(reader);
-                TopDocs hits = searcher.search(query, 1);
-                if (hits != null && hits.totalHits == 1) {
-                    return reader.document(hits.scoreDocs[0].doc).get("xml");
-                }
+
+            IndexSearcher tempSearcher = getIndexSearcher();
+            TopDocs hits = tempSearcher.search(query, 1);
+            if (hits != null && hits.totalHits == 1) {
+                return tempSearcher.getIndexReader().document(hits.scoreDocs[0].doc).get("xml");
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
         }
         return null;
     }

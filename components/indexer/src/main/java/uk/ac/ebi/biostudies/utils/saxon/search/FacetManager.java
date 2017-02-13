@@ -36,8 +36,8 @@ public class FacetManager {
     public static Map<String, String> ALL_COMPOUNDS = new HashMap<>();
     private static TaxonomyWriter TAXONOMY_WRITER;
     public final static FacetsConfig FACET_CONFIG = new FacetsConfig();
-    public static TaxonomyReader TAXO_READER;
-    public static String TAXO_PATH = null;
+    private static TaxonomyReader TAXO_READER;
+    private static String TAXO_PATH = null;
     private static String FACET_RESULTS;
     private static Map <String, String> AllDims = new HashMap<>();
     public static synchronized void init(){
@@ -62,25 +62,29 @@ public class FacetManager {
     }
 
     public static TaxonomyReader getTaxonomyReader(){
-        Directory taxoDirectory = null;
+        if(TAXO_READER!=null)
+            return TAXO_READER;
+        return  createTaxoReader();
+    }
+
+    public static TaxonomyReader createTaxoReader(){
         try {
-            taxoDirectory = FSDirectory.open(new File(TAXO_PATH).toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            TAXO_READER = new DirectoryTaxonomyReader(taxoDirectory);
+            if(TAXO_READER == null){
+                Directory taxoDirectory = FSDirectory.open(new File(TAXO_PATH).toPath());
+                TAXO_READER = new DirectoryTaxonomyReader(taxoDirectory);
+            }
+            TaxonomyReader tempReader;
+            if((tempReader=TaxonomyReader.openIfChanged(TAXO_READER))!= null)
+                TAXO_READER = tempReader;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return  TAXO_READER;
     }
 
-    public static void closeTaxonomy(){
+    public static void commitTaxonomy(){
         try {
             TAXONOMY_WRITER.commit();
-            TAXONOMY_WRITER.close();
-            TAXONOMY_WRITER = null;
             FACET_RESULTS = null;
         } catch (IOException e) {
             logger.error("Closing taxonomy writer failed! ",e);
@@ -158,7 +162,6 @@ public class FacetManager {
             FacetManager.setFacetXmlFromFacetResults(allResults);
         }catch (Exception ex){
             logger.error("Problem in extracting facet counts", ex);
-            closeTaxonomy();
         }
     }
 

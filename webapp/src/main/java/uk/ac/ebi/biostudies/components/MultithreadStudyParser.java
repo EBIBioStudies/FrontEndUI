@@ -34,7 +34,7 @@ public class MultithreadStudyParser {
     private static ExecutorService Executor_Service;
 
     // Updates the index one study at a time
-    public static void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing, boolean makeCopy, String sourceLocation, Indexer indexer, SaxonEngine saxon, Autocompletion autocompletion ) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
+    public synchronized static void updateFromXMLFile(File originalXMLFile, boolean deleteFileAfterProcessing, boolean makeCopy, String sourceLocation, Indexer indexer, SaxonEngine saxon, Autocompletion autocompletion ) throws IOException, InterruptedException, SaxonException, TransformerException, IndexerException, XMLStreamException {
         File xmlFile;
         if (makeCopy) {
             xmlFile = new File(System.getProperty("java.io.tmpdir"), originalXMLFile.getName());
@@ -93,8 +93,9 @@ public class MultithreadStudyParser {
         if (deleteFileAfterProcessing) {
             xmlFile.delete();
         }
+
+        FacetManager.commitTaxonomy();
         indexer.commit();
-        FacetManager.closeTaxonomy();
         logger.info("finished indexing {} documents", DocParser.COUNT);
     }
 
