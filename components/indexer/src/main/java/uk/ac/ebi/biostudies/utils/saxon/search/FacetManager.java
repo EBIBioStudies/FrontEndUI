@@ -37,7 +37,7 @@ public class FacetManager {
     private static TaxonomyWriter TAXONOMY_WRITER;
     public final static FacetsConfig FACET_CONFIG = new FacetsConfig();
     private static TaxonomyReader TAXO_READER;
-    private static String TAXO_PATH = null;
+    public static String TAXO_PATH = null;
     private static String FACET_RESULTS;
     private static Map <String, String> AllDims = new HashMap<>();
     public static synchronized void init(){
