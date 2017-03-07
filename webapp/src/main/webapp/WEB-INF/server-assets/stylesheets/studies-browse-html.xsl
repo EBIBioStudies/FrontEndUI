@@ -256,7 +256,7 @@
 
     <xsl:template name="browse-no-results">
         <section class="grid_18 alpha">
-            <h2 class="alert">We’re sorry that we couldn’t find any matching studies</h2>
+            <h3 class="alert">We’re sorry that we couldn’t find any matching studies</h3>
             <xsl:if test="exists($keywords) and $keywords!=''">
                 <p>Your search for <span class="alert"><xsl:value-of select="$keywords"/></span> returned no results.</p>
             </xsl:if>
