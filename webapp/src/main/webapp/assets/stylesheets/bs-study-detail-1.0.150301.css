@@ -282,6 +282,10 @@ input.link-filter {
     border-left: none;
 }
 
+input.link-filter + label {
+    margin: 0px;
+}
+
 input.link-filter + label > span:before {
     content : '\2717';
     padding-right:3px;
@@ -312,6 +316,7 @@ input.link-filter:checked + label {
     border-color: var(--P3);
     border-right: 1px solid #ddd;
     color: white;
+    margin: 0px;
 }
 
 .link-filter-label:last-child {
