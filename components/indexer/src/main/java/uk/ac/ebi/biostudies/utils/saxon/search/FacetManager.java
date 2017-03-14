@@ -32,7 +32,7 @@ public class FacetManager {
     private final static Logger logger = LoggerFactory.getLogger(FacetManager.class);
 
     public static String[] COMPOUNDS = {"idarubicin","doxorubicin", "dmso (0.1%)", "epirubicin", "untreated", "daunorubicin", "idarubicin"
-    ,"dmso", "dmso (fluctuating)"};
+            ,"dmso", "dmso (fluctuating)", "fluorouracil", "phenytoin", "rifampicin", "diclofenac", "mitoxantrone", "docetaxel", "azathioprine", "acetaminophen"};
     public static Map<String, String> ALL_COMPOUNDS = new HashMap<>();
     private static TaxonomyWriter TAXONOMY_WRITER;
     public final static FacetsConfig FACET_CONFIG = new FacetsConfig();
@@ -181,7 +181,7 @@ public class FacetManager {
         if(facetName.equalsIgnoreCase("n/a5"))
             return "rawprocessed";
         else
-        return AllDims.get(facetName);
+            return AllDims.get(facetName);
     }
 
     private static String getFullName(String dim){
