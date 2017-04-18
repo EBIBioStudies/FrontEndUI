@@ -180,6 +180,8 @@ public class Indexer {
             if(rvalue.contains(compName))
                 doc.add(new FacetField("compound", compName));
         }
+        if(!rvalue.contains("dmso (") && rvalue.contains("dmso"))
+            doc.add(new FacetField("compound", "dmso"));
     }
 
     private void addXMLField(Document d, Item node) throws IndexerException {
