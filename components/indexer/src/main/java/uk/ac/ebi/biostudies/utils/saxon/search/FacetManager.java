@@ -32,7 +32,7 @@ public class FacetManager {
     private final static Logger logger = LoggerFactory.getLogger(FacetManager.class);
 
     public static String[] COMPOUNDS = {"idarubicin","doxorubicin", "dmso (0.1%)", "epirubicin", "untreated", "daunorubicin", "idarubicin"
-    ,"dmso", "dmso (fluctuating)", "fluorouracil", "phenytoin", "rifampicin", "diclofenac", "mitoxantrone", "docetaxel", "azathioprine", "acetaminophen"};
+    , "dmso (fluctuating)", "fluorouracil", "phenytoin", "rifampicin", "diclofenac", "mitoxantrone", "docetaxel", "azathioprine", "acetaminophen"};
     public static Map<String, String> ALL_COMPOUNDS = new HashMap<>();
     private static TaxonomyWriter TAXONOMY_WRITER;
     public final static FacetsConfig FACET_CONFIG = new FacetsConfig();
