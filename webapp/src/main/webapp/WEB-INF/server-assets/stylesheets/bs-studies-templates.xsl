@@ -291,7 +291,7 @@
                                     <xsl:value-of select="concat(
                                         if (fn:exists(attribute[fn:lower-case(@name)='journal']))
                                               then '&#160;(' else '','doi:')"/>
-                                    <a href="http://dx.doi.org/{attribute[fn:lower-case(@name)='doi']}" target="_blank">
+                                    <a href="https://dx.doi.org/{attribute[fn:lower-case(@name)='doi']}" target="_blank">
                                         <xsl:call-template name="highlight">
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                             <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
