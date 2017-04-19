@@ -175,7 +175,7 @@ public class Indexer {
         d.add(new FacetField(name, value.getStringValue().trim().toLowerCase()));
     }
     private void addCompound(Document doc, Item value){
-        String rvalue =value.getStringValue();
+        String rvalue =value.getStringValue().toLowerCase();
         for(String compName : FacetManager.COMPOUNDS) {
             if(rvalue.contains(compName))
                 doc.add(new FacetField("compound", compName));
