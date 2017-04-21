@@ -984,7 +984,7 @@
                 <xsl:value-of select="fn:concat('http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'doi'">
-                <xsl:value-of select="fn:concat('http://dx.doi.org/', $pId)"/>
+                <xsl:value-of select="fn:concat('https://dx.doi.org/', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'intact'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/intact/pages/details/details.xhtml?experimentAc=', $pId)"/>
