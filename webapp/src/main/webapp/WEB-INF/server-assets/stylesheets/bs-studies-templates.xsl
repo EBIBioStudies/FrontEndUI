@@ -158,7 +158,7 @@
                 </xsl:with-param>
                 <xsl:with-param name="pContent">
                     <div>
-                        <xsl:if test="descendant::section">
+                        <xsl:if test="descendant::section or descendant::links or descendant::files">
                             <xsl:attribute name="class" select="('has-child-section')"/>
                         </xsl:if>
                         <xsl:if test="ancestor::section">
