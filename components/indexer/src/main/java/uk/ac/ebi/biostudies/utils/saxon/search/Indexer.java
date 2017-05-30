@@ -166,6 +166,9 @@ public class Indexer {
         try {
             w.commit();
             logger.info("changes are committed to index");
+            w.forceMerge(1);
+            w.commit();
+            logger.info("Merge is committed to index");
         }catch (Exception ex){
             logger.error("problem in committing index changes", ex);
         }
