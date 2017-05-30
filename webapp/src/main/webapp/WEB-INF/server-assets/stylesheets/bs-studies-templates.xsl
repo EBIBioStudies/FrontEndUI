@@ -158,7 +158,7 @@
                 </xsl:with-param>
                 <xsl:with-param name="pContent">
                     <div>
-                        <xsl:if test="descendant::section">
+                        <xsl:if test="descendant::section or descendant::links or descendant::files">
                             <xsl:attribute name="class" select="('has-child-section')"/>
                         </xsl:if>
                         <xsl:if test="ancestor::section">
@@ -868,7 +868,7 @@
         <xsl:param name="pType"/>
         <xsl:param name="pUrl" select="''"/>
         <xsl:param name="pCallHighlightingFunction" as="xs:boolean?"  select="false()"/>
-        <xsl:variable name="vUrl" select="ae:getUrlFor($pType, $pText, $pUrl)"/>
+        <xsl:variable name="vUrl" select="if ($pText!=$pUrl) then  ae:getUrlFor($pType, $pUrl, $pUrl) else ae:getUrlFor($pType, $pText, $pText)"/>
         <xsl:choose>
             <xsl:when test="$vUrl != ''">
                 <a href="{$vUrl}" target="_blank" title="{$vUrl}">
