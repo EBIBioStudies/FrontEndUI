@@ -34,7 +34,7 @@ public final class AccessFieldAnalyzer extends Analyzer {
     private static class AccessFieldAnalyzerTextTokenizer extends CharTokenizer {
         @Override
         protected boolean isTokenChar(int c) {
-            return Character.isLetter(c) | Character.isDigit(c) | c=='@' | c=='.' | c=='~' | c=='#' ;
+            return Character.isLetter(c) | Character.isDigit(c) | c=='@' | c=='.' | c=='~' | c=='#' | c=='-' | c=='_' ;
         }
 
         @Override

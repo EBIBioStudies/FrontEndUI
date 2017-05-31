@@ -158,7 +158,7 @@
                 </xsl:with-param>
                 <xsl:with-param name="pContent">
                     <div>
-                        <xsl:if test="descendant::section">
+                        <xsl:if test="descendant::section or descendant::links or descendant::files">
                             <xsl:attribute name="class" select="('has-child-section')"/>
                         </xsl:if>
                         <xsl:if test="ancestor::section">
@@ -291,7 +291,7 @@
                                     <xsl:value-of select="concat(
                                         if (fn:exists(attribute[fn:lower-case(@name)='journal']))
                                               then '&#160;(' else '','doi:')"/>
-                                    <a href="http://dx.doi.org/{attribute[fn:lower-case(@name)='doi']}" target="_blank">
+                                    <a href="https://dx.doi.org/{attribute[fn:lower-case(@name)='doi']}" target="_blank">
                                         <xsl:call-template name="highlight">
                                             <xsl:with-param name="pQueryId" select="$pQueryId"/>
                                             <xsl:with-param name="pCallHighlightingFunction" select="true()"/>
@@ -868,7 +868,7 @@
         <xsl:param name="pType"/>
         <xsl:param name="pUrl" select="''"/>
         <xsl:param name="pCallHighlightingFunction" as="xs:boolean?"  select="false()"/>
-        <xsl:variable name="vUrl" select="ae:getUrlFor($pType, $pText, $pUrl)"/>
+        <xsl:variable name="vUrl" select="if ($pText!=$pUrl) then  ae:getUrlFor($pType, $pUrl, $pUrl) else ae:getUrlFor($pType, $pText, $pText)"/>
         <xsl:choose>
             <xsl:when test="$vUrl != ''">
                 <a href="{$vUrl}" target="_blank" title="{$vUrl}">
@@ -984,7 +984,7 @@
                 <xsl:value-of select="fn:concat('http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'doi'">
-                <xsl:value-of select="fn:concat('http://dx.doi.org/', $pId)"/>
+                <xsl:value-of select="fn:concat('https://dx.doi.org/', $pId)"/>
             </xsl:when>
             <xsl:when test="$type = 'intact'">
                 <xsl:value-of select="fn:concat('http://www.ebi.ac.uk/intact/pages/details/details.xhtml?experimentAc=', $pId)"/>
