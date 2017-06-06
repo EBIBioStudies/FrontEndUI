@@ -161,11 +161,13 @@ public class Indexer {
         }
     }
 
-    public void commit(){
+    public synchronized void commit(boolean reOpenWriter){
         IndexWriter w = indexWriters.get(env.indexId);
         try {
             w.forceMergeDeletes();
             w.commit();
+            w.close();
+            indexWriters.put(env.indexId, createOrAppendIndex(this.env.indexDirectory, this.env.indexAnalyzer));
             logger.info("Merge is committed to index");
         }catch (Exception ex){
             logger.error("problem in committing index changes", ex);

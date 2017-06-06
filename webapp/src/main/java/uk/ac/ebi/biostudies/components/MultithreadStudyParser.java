@@ -95,7 +95,10 @@ public class MultithreadStudyParser {
         }
 
         FacetManager.commitTaxonomy();
-        indexer.commit();
+        boolean reOpenWriter = false;
+        if (xmlFile.getName().equalsIgnoreCase("studies.xml"))
+            reOpenWriter = true;
+        indexer.commit(reOpenWriter);
         logger.info("finished indexing {} documents", DocParser.COUNT);
     }
 
