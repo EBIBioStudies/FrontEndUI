@@ -164,9 +164,7 @@ public class Indexer {
     public void commit(){
         IndexWriter w = indexWriters.get(env.indexId);
         try {
-            w.commit();
-            logger.info("changes are committed to index");
-            w.forceMerge(1);
+            w.forceMergeDeletes();
             w.commit();
             logger.info("Merge is committed to index");
         }catch (Exception ex){
