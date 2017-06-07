@@ -100,7 +100,6 @@ public class MultithreadStudyParser {
         if (xmlFile.getName().equalsIgnoreCase("studies.xml"))
             reOpenWriter = true;
         indexer.commit(reOpenWriter);
-        Querier.closeSearcher();
         logger.info("finished indexing {} documents", DocParser.COUNT);
     }
 
