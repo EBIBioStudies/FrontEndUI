@@ -9,6 +9,7 @@ import uk.ac.ebi.biostudies.utils.saxon.SaxonException;
 import uk.ac.ebi.biostudies.utils.saxon.search.FacetManager;
 import uk.ac.ebi.biostudies.utils.saxon.search.Indexer;
 import uk.ac.ebi.biostudies.utils.saxon.search.IndexerException;
+import uk.ac.ebi.biostudies.utils.saxon.search.Querier;
 
 import javax.xml.stream.*;
 import javax.xml.stream.events.EndElement;
@@ -95,7 +96,11 @@ public class MultithreadStudyParser {
         }
 
         FacetManager.commitTaxonomy();
-        indexer.commit();
+        boolean reOpenWriter = false;
+        if (xmlFile.getName().equalsIgnoreCase("studies.xml"))
+            reOpenWriter = true;
+        indexer.commit(reOpenWriter);
+        Querier.closeSearcher();
         logger.info("finished indexing {} documents", DocParser.COUNT);
     }
 
