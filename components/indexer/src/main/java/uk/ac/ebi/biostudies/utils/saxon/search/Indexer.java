@@ -91,7 +91,7 @@ public class Indexer {
             //logger.debug( serializeDocument(documentNode));
             List<Item> documentNodes = evaluateXPath(documentNode, this.env.indexDocumentPath);
             List<NodeInfo> indexedNodes = new ArrayList<>(documentNodes.size());
-            IndexWriter w = getIndexWriter();
+            IndexWriter w = indexWriters.get(env.indexId);
             for (Item node : documentNodes) {
                 Document d = new Document();
 
@@ -161,14 +161,13 @@ public class Indexer {
         }
     }
 
-    public synchronized void commit(boolean reOpenWriter){
-        IndexWriter w = getIndexWriter();
+    public void commit(){
+        IndexWriter w = indexWriters.get(env.indexId);
         try {
-            w.forceMergeDeletes();
             w.commit();
-            w.close();
-            w = null;
-            logger.info("Merge is committed to index");
+            logger.info("Changes are committed to index");
+            w.forceMergeDeletes();
+            logger.info("Deleted index parts are merged");
         }catch (Exception ex){
             logger.error("problem in committing index changes", ex);
         }
@@ -206,7 +205,7 @@ public class Indexer {
     }
 
     public void clearIndex(boolean commit) throws IOException {
-        IndexWriter w = getIndexWriter();
+        IndexWriter w = indexWriters.get(env.indexId);
         w.deleteAll();
         if (commit) {
             w.forceMergeDeletes();
@@ -215,7 +214,7 @@ public class Indexer {
     }
 
     public void delete(String accession) throws IOException {
-        IndexWriter w = getIndexWriter();
+        IndexWriter w = indexWriters.get(env.indexId);
         w.deleteDocuments( new Term("id",accession));
         w.forceMergeDeletes();
         w.commit();
@@ -291,18 +290,5 @@ public class Indexer {
         } catch (TransformerException | IOException x) {
             throw new IndexerException(x);
         }
-    }
-
-    private IndexWriter getIndexWriter(){
-        IndexWriter indexWriter = indexWriters.get(env.indexId);
-        if(indexWriter==null){
-            try {
-                indexWriter = createOrAppendIndex(this.env.indexDirectory, this.env.indexAnalyzer);
-                indexWriters.put(env.indexId,indexWriter);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-         return indexWriter;
     }
 }

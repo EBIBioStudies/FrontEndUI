@@ -58,13 +58,13 @@ public class Querier {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static IndexEnvironment env;
-    private static IndexSearcher indexSearcher;
-    private static DirectoryReader directoryReader;
+    private IndexEnvironment env;
+    private IndexSearcher indexSearcher;
+    private DirectoryReader directoryReader;
     public Querier(IndexEnvironment env) {
         this.env = env;
         try  {
-            DirectoryReader dirReader = DirectoryReader.open(env.indexDirectory);
+            DirectoryReader dirReader = DirectoryReader.open(this.env.indexDirectory);
             directoryReader = dirReader;
             indexSearcher = new IndexSearcher(dirReader);
             FacetManager.createTaxoReader();
@@ -73,31 +73,8 @@ public class Querier {
         }
     }
 
-    public static void closeSearcher(){
-        try {
-            directoryReader.close();
-            indexSearcher.getIndexReader().close();
-            indexSearcher = null;
-            directoryReader = null;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void openSearcher(){
-        DirectoryReader dirReader = null;
-        try {
-            dirReader = DirectoryReader.open(env.indexDirectory);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        directoryReader = dirReader;
-        indexSearcher = new IndexSearcher(dirReader);
-    }
-
     public IndexSearcher getIndexSearcher(){
         try {
-            if(indexSearcher == null)
-                openSearcher();
             DirectoryReader newDirReader = DirectoryReader.openIfChanged(directoryReader);
             if(newDirReader!=null)
             {
@@ -150,10 +127,10 @@ public class Querier {
 
     public Integer getDocCount(Query query) throws IOException {
 
-            // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
-            TopDocs hits = getIndexSearcher().search(query, Integer.MAX_VALUE);
+        // +1 is a trick to prevent from having an exception thrown if documentNodes.size() value is 0
+        TopDocs hits = getIndexSearcher().search(query, Integer.MAX_VALUE);
 
-            return hits.totalHits;
+        return hits.totalHits;
     }
 
     public List<NodeInfo> query(QueryInfo queryInfo) throws ParseException, IOException, SaxonException {
