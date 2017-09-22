@@ -296,6 +296,11 @@
     </rule>
 
     <rule>
+        <from>^/([^/]+)/studies$</from>
+        <to type="redirect" last="true">%{context-path}/$1/studies/</to>
+    </rule>
+
+    <rule>
          <from>^/([^/]+)/studies/$</from> <!-- handle general project page (without a query) -->
         <set type="parameter" name="project">$1</set>
         <to type="forward" last="true">/servlets/query/studies/browse/html</to>
