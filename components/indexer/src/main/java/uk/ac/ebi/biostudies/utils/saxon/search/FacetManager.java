@@ -3,6 +3,7 @@ package uk.ac.ebi.biostudies.utils.saxon.search;
 /**
  * Created by ehsan on 24/11/2016.
  */
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.facet.*;
 import  org.apache.lucene.facet.taxonomy.*;
@@ -124,10 +125,10 @@ public class FacetManager {
     private static void addToStringBuilder(StringBuilder stringBuilder, String dim, String fctName, int value){
         stringBuilder.append("<facet>");
         stringBuilder.append("<dim>");
-        stringBuilder.append(getFullName(dim));
+        stringBuilder.append(getFullName(StringEscapeUtils.escapeXml(dim)));
         stringBuilder.append("</dim>");
         stringBuilder.append("<label>");
-        stringBuilder.append(fctName);
+        stringBuilder.append(StringEscapeUtils.escapeXml(fctName));
         stringBuilder.append("</label>");
         stringBuilder.append("<value>");
         stringBuilder.append(value);

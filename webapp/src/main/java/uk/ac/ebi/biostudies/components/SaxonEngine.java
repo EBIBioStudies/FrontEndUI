@@ -221,6 +221,7 @@ public class SaxonEngine extends ApplicationComponent implements URIResolver, Er
             Configuration config = trFactory.getConfiguration();
             return config.buildDocument(new StreamSource(reader));
         } catch (XPathException x) {
+            logger.error("SaxonEngine has problem in parsing following xml {}", xml, x);
             throw new SaxonException(x);
         }
     }
