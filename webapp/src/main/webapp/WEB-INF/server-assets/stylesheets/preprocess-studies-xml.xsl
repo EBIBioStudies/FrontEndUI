@@ -200,21 +200,33 @@
             <xsl:if test="fn:exists(@acc)">
                 <xsl:attribute name="acc" select="@acc"/>
             </xsl:if>
-            <xsl:if test="fn:lower-case(@type)='publication' and fn:lower-case(fn:substring(@acc,1,3))='pmc'">
-                <attribute name="PMCID">
-                    <value><xsl:value-of select="@acc"/></value>
-                </attribute>
-            </xsl:if>
-            <xsl:if test="fn:lower-case(@type)='publication' and not(fn:lower-case(fn:substring(@acc,1,3))='pmc')">
-                <attribute name="PMID">
-                    <value><xsl:value-of select="@acc"/></value>
-                </attribute>
-            </xsl:if>
-            <xsl:if test="fn:lower-case(@type)='publication'
-                and matches(@acc,'^10.\d{4,9}/.+$')">
-                <attribute name="DOI">
-                    <value><xsl:value-of select="@acc"/></value>
-                </attribute>
+            <xsl:if test="fn:lower-case(@type)='publication'">
+                <xsl:for-each select="links/table/link">
+                    <attribute>
+                        <xsl:attribute name="name"><xsl:value-of select="./attributes/attribute[name='Type']/value"/></xsl:attribute>
+                        <value><xsl:value-of select="url"/></value>
+                    </attribute>
+                </xsl:for-each>
+                <xsl:if test="fn:exists(@acc) and not(fn:exists(links/table/link))">
+                    <xsl:if test="fn:lower-case(fn:substring(@acc,1,3))='pmc'">
+                        <attribute name="PMCID">
+                            <value><xsl:value-of select="@acc"/></value>
+                        </attribute>
+                    </xsl:if>
+                    <xsl:if test="not(fn:lower-case(fn:substring(@acc,1,3))='pmc')">
+                        <xsl:if test="matches(@acc,'^10.\d{4,9}/.+$')">
+                            <attribute name="DOI">
+                                <value><xsl:value-of select="@acc"/></value>
+                            </attribute>
+                        </xsl:if>
+                        <xsl:if test="not(matches(@acc,'^10.\d{4,9}/.+$'))">
+                            <attribute name="PMID">
+                                <value><xsl:value-of select="@acc"/></value>
+                            </attribute>
+                        </xsl:if>
+                    </xsl:if>
+
+                </xsl:if>
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:copy-of select="./*[not(name()='section' or name()='subsections' or name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
