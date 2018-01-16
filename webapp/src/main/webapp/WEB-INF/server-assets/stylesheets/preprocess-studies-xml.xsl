@@ -249,7 +249,7 @@
 
 
     <xsl:template match="file" mode="files">
-        <file name="{fn:replace(path, '.+/([^/]+)$', '$1')}" path="{path}" size="{@size}" parent="{ancestor::*[@acc][1]/@acc}">
+        <file name="{if (exists(path)) then fn:replace(path, '.+/([^/]+)$', '$1') else name}" path="{if (exists(path)) then path else name}" size="{@size}" parent="{ancestor::*[@acc][1]/@acc}">
             <xsl:if test="fn:exists(@type)">
                 <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
             </xsl:if>
