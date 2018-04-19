@@ -41,7 +41,7 @@
         <xsl:variable name="vAccess" select="fn:replace(fn:replace(@access,';',' '),'~','')"/>
         <xsl:variable name="vNow"  select="ae:now()"/>
         <study files="{fn:count(.//file)}"
-               links="{fn:count(.//link)}"
+               links="{fn:count(.//link[not(ancestor::section[fn:lower-case(@type)='publication'])])}"
                relPath="{@relPath}"
                type="{lower-case(if (section[1]/@type='') then 'study' else section[1]/@type)}"
                releaseTime="{if (exists(@rtime)) then @rtime else if (fn:contains(lower-case($vAccess),'public')) then ae:now() else 9999999999}"> <!-- Keeping a future date for unreleased submissions -->
