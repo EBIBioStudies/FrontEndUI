@@ -398,12 +398,9 @@
                     </section>
                 </div>
                 <footer>
-                    <!-- Optional local footer (insert citation / project-specific copyright / etc here -->
-                    <!--
-                    <div id="local-footer" class="grid_24 clearfix">
-                            <p>How to reference this page: ...</p>
-                        </div>
-                    -->
+                    <div id="elixir-banner" data-color="grey" data-name="BioStudies" data-description="BioStudies is a recommended ELIXIR Deposition Database" data-more-information-link="https://www.elixir-europe.org/platforms/data/elixir-deposition-databases" data-use-basic-styles="true"></div>
+                    <script defer="defer" src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/elixirBanner.js"></script>
+
                     <!-- End optional local footer -->
                     <div id="global-footer" class="columns medium-12">
                         <nav id="global-nav-expanded" class="row">
