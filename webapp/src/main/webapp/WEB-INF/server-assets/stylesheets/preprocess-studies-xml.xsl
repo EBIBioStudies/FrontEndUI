@@ -230,20 +230,22 @@
             </xsl:if>
             <xsl:apply-templates select="attributes" mode="attributes"/>
             <xsl:copy-of select="./*[not(name()='section' or name()='subsections' or name()='file' or name()='files' or name()='link' or name()='links' or  name()='attribute' or name()='attributes')]"/>
-            <xsl:apply-templates select="section | subsections/section" mode="section"/>
-            <xsl:apply-templates select="file|files/file" mode="files"/>
-            <xsl:if test="fn:exists(files/table)">
-                <xsl:for-each select="files/table">
-                    <files><table><xsl:apply-templates select="file" mode="files"/></table></files>
-                </xsl:for-each>
+            <xsl:if test="not(fn:lower-case(@type)='publication')">
+                <xsl:apply-templates select="section | subsections/section" mode="section"/>
+                <xsl:apply-templates select="file|files/file" mode="files"/>
+                <xsl:if test="fn:exists(files/table)">
+                    <xsl:for-each select="files/table">
+                        <files><table><xsl:apply-templates select="file" mode="files"/></table></files>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:apply-templates select="link|links/link" mode="links"/>
+                <xsl:if test="fn:exists(links/table)">
+                    <xsl:for-each select="links/table">
+                        <links><table> <xsl:apply-templates select="link" mode="links"/> </table></links>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:copy-of select="subsections/table"  />
             </xsl:if>
-            <xsl:apply-templates select="link|links/link" mode="links"/>
-            <xsl:if test="fn:exists(links/table)">
-                <xsl:for-each select="links/table">
-                    <links><table> <xsl:apply-templates select="link" mode="links"/> </table></links>
-                </xsl:for-each>
-            </xsl:if>
-            <xsl:copy-of select="subsections/table"  />
         </section>
     </xsl:template>
 
